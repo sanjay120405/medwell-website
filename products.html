@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products – Medwell Logix Medical &amp; Surgical Equipment</title>
+  <link rel="icon" type="image/png" href="medwell logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal:        #0D7A7A;
+      --teal-dark:   #065A5A;
+      --teal-deeper: #044040;
+      --teal-light:  #E0F5F5;
+      --teal-mid:    #1A9090;
+      --orange:      #E87820;
+      --orange-dark: #C56010;
+      --orange-light:#FFF3E0;
+      --white:       #FFFFFF;
+      --off-white:   #F5FAFA;
+      --dark:        #0F2A2A;
+      --text:        #1A3A3A;
+      --text-muted:  #5A7A7A;
+      --border:      #C8E8E8;
+      --shadow-sm:   0 2px 12px rgba(13,122,122,.08);
+      --shadow-md:   0 8px 32px rgba(13,122,122,.14);
+      --shadow-lg:   0 20px 60px rgba(13,122,122,.18);
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   22px;
+      --radius-xl:   32px;
+      --sidebar-w:   260px;
+      --transition:  0.3s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--off-white); overflow-x: hidden; line-height: 1.6; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+    svg { display: inline-block; vertical-align: middle; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--teal-light); }
+    ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 99px; }
+
+    .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── TOPBAR ── */
+    .topbar { background: #0a1a1a; color: rgba(255,255,255,.82); font-size: 0.76rem; padding: 8px 0; display: none; }
+    @media(min-width:768px){ .topbar { display: block; } }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+    .topbar-left { display: flex; align-items: center; gap: 20px; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-left a, .topbar-right a { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,.82); transition: color .2s; }
+    .topbar-left a:hover, .topbar-right a:hover { color: var(--orange); }
+    .topbar-icon { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── NAVBAR ── */
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--white); box-shadow: 0 2px 20px rgba(13,122,122,.1); }
+    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 20px; }
+    .logo-wrap { display: flex; align-items: center; flex-shrink: 0; }
+    .logo-wrap img { height: 50px; width: auto; }
+    .nav-links { display: none; align-items: center; gap: 4px; }
+    @media(min-width:900px){ .nav-links { display: flex; } }
+    .nav-links a { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--text); padding: 8px 14px; border-radius: var(--radius-sm); transition: var(--transition); position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); border-radius: 99px; transition: width .3s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 60%; }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+    .nav-cta { display: none; }
+    @media(min-width:900px){ .nav-cta { display: inline-flex; } }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: var(--transition); white-space: nowrap; cursor: pointer; border: none; }
+    .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 18px rgba(232,120,32,.35); }
+    .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+    .hamburger { display: flex; flex-direction: column; gap: 5px; padding: 7px; background: var(--teal-light); border-radius: var(--radius-sm); transition: var(--transition); border: none; }
+    @media(min-width:900px){ .hamburger { display: none; } }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--teal); border-radius: 99px; transition: var(--transition); }
+    .hamburger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { position: fixed; inset: 0; z-index: 999; background: var(--white); transform: translateX(100%); transition: transform .38s cubic-bezier(.4,0,.2,1); overflow-y: auto; padding: 24px; }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
+    .mobile-menu-close { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; cursor: pointer; border: none; }
+    .mobile-menu nav a { display: block; font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 500; color: var(--text); padding: 14px 0; border-bottom: 1px solid var(--border); transition: color .2s, padding-left .2s; }
+    .mobile-menu nav a:hover { color: var(--teal); padding-left: 8px; }
+    .mobile-menu-footer { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+    .mobile-menu-footer .btn { width: 100%; justify-content: center; }
+
+    /* ── PAGE HERO STRIP ── */
+    .page-hero {
+      background: linear-gradient(135deg, var(--teal-deeper) 0%, var(--teal) 100%);
+      padding: 40px 0 44px; position: relative; overflow: hidden;
+    }
+    .page-hero::after { content: ''; position: absolute; width: 340px; height: 340px; border-radius: 50%; background: rgba(255,255,255,.05); top: -120px; right: -80px; pointer-events: none; }
+    .page-hero-inner { position: relative; z-index: 1; }
+    .page-hero h1 { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: white; margin-bottom: 8px; }
+    .page-hero p { color: rgba(255,255,255,.78); font-size: 0.95rem; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .breadcrumb a { color: rgba(255,255,255,.65); font-size: 0.8rem; font-family: 'Poppins', sans-serif; transition: color .2s; }
+    .breadcrumb a:hover { color: var(--orange); }
+    .breadcrumb span { color: rgba(255,255,255,.4); font-size: 0.75rem; }
+    .breadcrumb .current { color: var(--orange); font-size: 0.8rem; font-family: 'Poppins', sans-serif; font-weight: 600; }
+
+    /* ── LAYOUT ── */
+    .products-layout {
+      display: flex;
+      gap: 0;
+      min-height: calc(100vh - 200px);
+      align-items: flex-start;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--white);
+      border-right: 1.5px solid var(--border);
+      position: sticky;
+      top: 70px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      display: none;
+    }
+    @media(min-width:768px){ .sidebar { display: block; } }
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+    .sidebar-header {
+      padding: 20px 18px 14px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .sidebar-header h3 { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+    .cat-list { padding: 10px 0; }
+    .cat-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 18px; cursor: pointer;
+      transition: var(--transition); position: relative;
+      border-left: 3px solid transparent;
+    }
+    .cat-item:hover { background: var(--off-white); border-left-color: var(--border); }
+    .cat-item.active { background: var(--teal-light); border-left-color: var(--teal); }
+    .cat-item.active .cat-name { color: var(--teal); font-weight: 700; }
+    .cat-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border-radius: var(--radius-sm);
+      overflow: hidden; background: var(--off-white);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cat-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .cat-name { font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 500; color: var(--text); line-height: 1.3; }
+    .cat-count { margin-left: auto; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); background: var(--off-white); padding: 2px 7px; border-radius: 99px; flex-shrink: 0; }
+    .cat-item.active .cat-count { background: var(--teal); color: white; }
+
+    /* ── MOBILE CATEGORY TABS ── */
+    .mobile-cats {
+      display: flex; overflow-x: auto; gap: 8px; padding: 12px 16px;
+      background: var(--white); border-bottom: 1.5px solid var(--border);
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .mobile-cats::-webkit-scrollbar { display: none; }
+    @media(min-width:768px){ .mobile-cats { display: none; } }
+    .mob-cat-btn {
+      flex-shrink: 0; padding: 8px 16px; border-radius: 99px;
+      font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 600;
+      border: 1.5px solid var(--border); background: var(--white); color: var(--text);
+      transition: var(--transition); cursor: pointer; white-space: nowrap;
+    }
+    .mob-cat-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+
+    /* ── CONTENT AREA ── */
+    .products-content {
+      flex: 1; min-width: 0;
+      padding: 28px 28px 60px;
+    }
+    @media(max-width:767px){ .products-content { padding: 16px 14px 40px; } }
+
+    /* Content header */
+    .content-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap; margin-bottom: 26px;
+      padding-bottom: 20px; border-bottom: 1.5px solid var(--border);
+    }
+    .content-title { font-family: 'Poppins', sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+    .content-desc { font-size: 0.84rem; color: var(--text-muted); }
+    .content-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .product-count-badge { background: var(--teal-light); color: var(--teal); font-family: 'Poppins', sans-serif; font-size: 0.76rem; font-weight: 700; padding: 5px 12px; border-radius: 99px; border: 1px solid var(--border); }
+
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media(min-width:500px){ .product-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(min-width:900px){ .product-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media(min-width:1100px){ .product-grid { grid-template-columns: repeat(5, 1fr); gap: 18px; } }
+
+    /* Product card */
+    .prod-card {
+      background: var(--white); border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      overflow: hidden; transition: var(--transition);
+      cursor: pointer; position: relative;
+    }
+    .prod-card:hover { box-shadow: var(--shadow-md); transform: translateY(-5px); border-color: var(--teal); }
+    .prod-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--orange));
+      transform: scaleX(0); transform-origin: left; transition: transform .35s;
+    }
+    .prod-card:hover::after { transform: scaleX(1); }
+    .prod-img-wrap {
+      width: 100%; aspect-ratio: 1/1;
+      background: var(--off-white);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .prod-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .prod-card:hover .prod-img-wrap img { transform: scale(1.07); }
+    .prod-info { padding: 12px 12px 14px; }
+    .prod-name {
+      font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600;
+      color: var(--dark); line-height: 1.35; text-align: center;
+    }
+    .prod-enquire {
+      display: block; margin: 8px auto 0; padding: 6px 14px;
+      background: var(--teal-light); color: var(--teal);
+      border: 1px solid var(--border); border-radius: 99px;
+      font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700;
+      text-align: center; transition: var(--transition); cursor: pointer;
+      text-decoration: none;
+    }
+    .prod-enquire:hover { background: var(--teal); color: white; border-color: var(--teal); }
+
+    /* Skeleton loader */
+    .skel { animation: skel-pulse 1.4s ease-in-out infinite; }
+    @keyframes skel-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .skel-card { background: var(--border); border-radius: var(--radius-md); aspect-ratio: 1/1; }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--teal-deeper); color: rgba(255,255,255,.78); }
+    .footer-bottom-bar { padding: 22px 0; border-top: 1px solid rgba(255,255,255,.1); display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+    @media(min-width:600px){ .footer-bottom-bar { flex-direction: row; justify-content: space-between; } }
+    .footer-bottom-bar p { font-size: 0.8rem; color: rgba(255,255,255,.5); }
+    .footer-bottom-links { display: flex; gap: 18px; }
+    .footer-bottom-links a { font-size: 0.78rem; color: rgba(255,255,255,.5); transition: color .2s; }
+    .footer-bottom-links a:hover { color: var(--orange); }
+    .footer-main-bar { padding: 28px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .footer-logo { height: 40px; filter: brightness(0) invert(1); }
+    .footer-tagline { font-size: 0.82rem; color: rgba(255,255,255,.55); max-width: 360px; }
+    .footer-cta-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .fbtn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; transition: var(--transition); white-space: nowrap; }
+    .fbtn-wa { background: #25D366; color: white; }
+    .fbtn-wa:hover { background: #1EBE57; }
+    .fbtn-call { background: rgba(255,255,255,.12); color: white; border: 1px solid rgba(255,255,255,.25); }
+    .fbtn-call:hover { background: rgba(255,255,255,.22); }
+
+    /* ── FLOATING CTA ── */
+    .floating-cta { position: fixed; bottom: 24px; right: 20px; z-index: 900; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+    .float-btn { display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,.2); transition: var(--transition); cursor: pointer; border: none; }
+    .float-btn-wa { background: #25D366; color: white; }
+    .float-btn-wa:hover { background: #1EBE57; transform: scale(1.06); }
+    .float-btn-ph { background: var(--teal); color: white; }
+    .float-btn-ph:hover { background: var(--teal-dark); transform: scale(1.06); }
+    .float-label { display: none; }
+    @media(min-width:480px){ .float-label { display: block; } }
+
+    /* ── ANIMATIONS ── */
+    .fade-in { animation: fadeIn .35s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in:nth-child(1){animation-delay:.03s}.fade-in:nth-child(2){animation-delay:.06s}
+    .fade-in:nth-child(3){animation-delay:.09s}.fade-in:nth-child(4){animation-delay:.12s}
+    .fade-in:nth-child(5){animation-delay:.15s}.fade-in:nth-child(6){animation-delay:.18s}
+    .fade-in:nth-child(7){animation-delay:.21s}.fade-in:nth-child(8){animation-delay:.24s}
+    .fade-in:nth-child(9){animation-delay:.27s}.fade-in:nth-child(10){animation-delay:.30s}
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <a href="tel:+919876543210">
+          <svg class="topbar-icon" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          +91 80565 84041
+        </a>
+        <a href="mailto:info@medwelllogix.com">
+          <svg class="topbar-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          medwelllogix@gmail.com
+        </a>
+      </div>
+      <div class="topbar-right">
+        <a href="#">
+          <svg class="topbar-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          4th CROSS, NORTH WEST, THILLAI NAGAR, TIRUCHIRAPALLI
+        </a>
+        <a href="#">Mon – Sat: 9:00 AM – 6:00 PM</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="logo-wrap">
+        <img src="medwell logo.png" alt="Medwell Logix" />
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="products.html" class="active">Products</a>
+                <a href="index.html#about">About Us</a>
+        <a href="index.html#contact">Contact Us</a>
+      </nav>
+      <a href="index.html#contact" class="btn btn-primary nav-cta">Request Quote</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <img src="medwell logo.png" alt="Medwell Logix" style="height:44px;" />
+    <button class="mobile-menu-close" id="menuClose">✕</button>
+  </div>
+  <nav>
+    <a href="index.html" onclick="closeMobileMenu()">Home</a>
+    <a href="products.html" onclick="closeMobileMenu()">Products</a>
+        <a href="index.html#about" onclick="closeMobileMenu()">About Us</a>
+    <a href="index.html#contact" onclick="closeMobileMenu()">Contact Us</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="index.html#contact" class="btn btn-primary" onclick="closeMobileMenu()">Request a Quote</a>
+    <a href="tel:+919876543210" class="btn" style="border:2px solid var(--teal);color:var(--teal);" onclick="closeMobileMenu()">Call Us Now</a>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span class="current">Products</span>
+      </div>
+      <h1>Our Products</h1>
+      <p>Browse our complete range of medical &amp; surgical equipment</p>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE CATEGORY TABS -->
+<div class="mobile-cats" id="mobileCats"></div>
+
+<!-- PRODUCTS LAYOUT -->
+<div class="products-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h3>Categories</h3>
+    </div>
+    <ul class="cat-list" id="catList"></ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="products-content">
+    <div class="content-header">
+      <div>
+        <h2 class="content-title" id="contentTitle">Surgical Instruments</h2>
+        <p class="content-desc" id="contentDesc">High-grade stainless steel tools for all surgical specialties</p>
+      </div>
+      <div class="content-meta">
+        <span class="product-count-badge" id="countBadge">0 Products</span>
+      </div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-main-bar">
+      <div>
+        <img src="medwell logo.png" alt="Medwell Logix" class="footer-logo" />
+        <p class="footer-tagline" style="margin-top:10px;">Quality medical &amp; surgical equipment — pan-India delivery.</p>
+      </div>
+      
+    </div>
+    <div class="footer-bottom-bar">
+      <p>© 2025 Medwell Logix Medical &amp; Surgicals. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING CTA -->
+<div class="floating-cta">
+  <a href="https://wa.me/919876543210" class="float-btn float-btn-wa" target="_blank" rel="noopener">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="float-label">WhatsApp</span>
+  </a>
+  <a href="tel:+919876543210" class="float-btn float-btn-ph">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+    <span class="float-label">Call Now</span>
+  </a>
+</div>
+
+<script>
+  // ── Product data ──
+  const CATEGORIES = [
+    {
+      id: 'surgical-instruments',
+      name: 'Surgical Instruments',
+      desc: 'High-grade stainless steel tools for all surgical specialties',
+      thumb: 'surgical instruments.png',
+      folder: 'Surgical Instruments',
+      products: [
+        { name: 'Cheatle Forceps',           file: 'CHEATLE-FORCEPS.jpg.jpeg' },
+        { name: 'Dissecting Forceps',         file: 'Dissecting-Forceps.jpg.jpeg' },
+        { name: 'Allis Tissue Forceps',       file: 'thoms-allis-tissue-forceps.png' },
+        { name: 'Sponge Holding Forceps',     file: 'SPONGE-HOLDING.jpg.jpeg' },
+        { name: 'Dressing Scissors',          file: 'dressing-scissors-1.jpg.jpeg' },
+        { name: 'Mosquito Forceps',           file: 'mosquito-forceps.jpg.jpeg' },
+        { name: 'Artery Forceps',             file: 'artery-forceps.jpg.jpeg' },
+        { name: 'Needle Holder',              file: 'needle-holder.jpg.jpeg' },
+      ]
+    },
+    {
+      id: 'surgical-disposables',
+      name: 'Surgical Disposables',
+      desc: 'Sterile single-use items for infection prevention and hygiene',
+      thumb: 'Surgical Disposables.png',
+      folder: 'Surgical Disposables',
+      products: [
+        { name: 'Surgical Mask',              file: 'surgical-mask.jpg.jpeg' },
+        { name: 'Bandages',                   file: 'bandages.jpg.jpeg' },
+        { name: 'Disposable Surgical Cap',    file: 'disposable-surgical-cap.jpg.jpeg' },
+        { name: 'Non-Woven Shoe Cover',       file: 'shoe-cover-non-woven.jpg.jpeg' },
+        { name: 'Patient Gown',               file: 'patient-gown.jpg.jpeg' },
+        { name: 'Gauze Swabs',                file: 'gauze-swabs.jpg.jpeg' },
+      ]
+    },
+    {
+      id: 'hospital-furniture',
+      name: 'Hospital Furniture',
+      desc: 'Beds, trolleys, stretchers and complete ward equipment',
+      thumb: 'Hospital Furniture.png',
+      folder: 'Hospital Furniture',
+      products: [
+        { name: 'Hospital Stretcher',         file: 'hospital-stretcher.jpg.jpeg' },
+        { name: 'Revolving Stool',            file: 'REVOLVING-STOOL.jpg.jpeg' },
+        { name: 'ICU Bed',                    file: 'icu-bed.png' },
+        { name: 'Wheelchair',                 file: 'wheel-chairs.jpg.jpeg' },
+        { name: 'Plain Bed',                  file: 'plain-bed.jpg.jpeg' },
+        { name: 'Hospital Trolley',           file: 'hospital-trolley.jpg.jpeg' },
+        { name: 'Examination Table',          file: 'examination-table.jpg.jpeg' },
+        { name: 'Semi Fowler Bed',            file: 'SEMI-FOWLER-BED.jpg.jpeg' },
+        { name: 'IV Stand',                   file: 'IV-Stand.jpg.jpeg' },
+      ]
+    },
+    {
+      id: 'rehabilitation-aids',
+      name: 'Rehabilitation Aids',
+      desc: 'Supports, braces and mobility aids for recovery and comfort',
+      thumb: 'Patient Wheelchairs.png',
+      folder: 'Rehabilitation Aids',
+      products: [
+        { name: 'Commode Elevator',           file: 'Commode-Elevator.jpg.jpeg' },
+        { name: 'Knee Brace',                 file: 'knee-brace.jpeg' },
+        { name: 'Back Support Cushion',       file: 'back-support-cushion.jpg.jpeg' },
+        { name: 'Cervical Collar',            file: 'Cervical-Collar.jpeg' },
+        { name: 'Knee Cup',                   file: 'Kneecup.jpg.jpeg' },
+        { name: 'Round Ring Pillow',          file: 'round-ring-pillow.jpg.jpeg' },
+        { name: 'Cervical Pillow',            file: 'Cervical-Pillow.jpg.jpeg' },
+        { name: 'Coccyx Cushion',             file: 'coccyy-cushion.jpeg' },
+        { name: 'Knee Support',               file: 'knee_support_plain.jpg.jpeg' },
+        { name: 'Abdominal Support',          file: 'Reha-Aids-abdominal-support.jpg.jpeg' },
+        { name: 'Ankle Support',              file: 'Ankle-Support.jpg.jpeg' },
+        { name: 'Elbow Crutches',             file: 'thumbs_elbow-crutches.jpg.jpeg' },
+        { name: 'Varicose Vein Stockings',    file: 'varicose-vein-stockings.jpg.jpeg' },
+        { name: 'Lumbo Sacral Belt',          file: 'Lumbo-Sacral-belt.jpg.jpeg' },
+        { name: 'Arm Sling Pouch',            file: 'Arm-Sling-Pouch-Baggy.jpg.jpeg' },
+      ]
+    },
+    {
+      id: 'home-care',
+      name: 'Home Care',
+      desc: 'Essential home care products for patient comfort and hygiene',
+      thumb: 'Home Care Products.png',
+      folder: 'Home Care',
+      products: [
+        { name: 'Under Pad',                  file: 'thumbs_under-pad.jpg.jpeg' },
+        { name: 'Wet Wipes',                  file: 'HOME-CARE-WET-WIPES-2.jpeg' },
+        { name: 'Adult Diapers (Friends)',    file: 'ADULT-DIAPHERS-FRIENDS.jpg.jpeg' },
+        { name: 'Adult Diapers (Seni)',       file: 'ADULT-DIAPHERS-SENI.jpg.jpeg' },
+        { name: 'Air Bed',                    file: 'air-bed.jpg.jpeg' },
+        { name: 'Surgical Mask',              file: 'surgical-mask.jpg.jpeg' },
+        { name: 'Sitz Bath Basin',            file: 'Sitz-Bath-Basin.jpg.jpeg' },
+        { name: 'Wet Wipes Classic',          file: 'HOME-CARE-WET-WIPES.jpeg' },
+        { name: 'Water Bed',                  file: 'water_bed.jpg.jpeg' },
+        { name: 'Accu-Chek Instant Meter',    file: 'accuchekinstantmeter.png' },
+      ]
+    },
+    {
+      id: 'bp-apparatus',
+      name: 'BP Apparatus',
+      desc: 'Digital and manual blood pressure monitoring devices',
+      thumb: 'BP Apparatus.png',
+      folder: 'BP Apparatus',
+      products: [
+        { name: 'Diamond BP Apparatus',              file: 'diamond-bp-app.jpg.jpeg' },
+        { name: 'Beurer Digital BP Monitor',         file: 'BEURER-DIGITAL.jpg.jpeg' },
+        { name: 'Diamond Mercury BP Apparatus',      file: 'diamond-mercury-bp-apparatus.jpg.jpeg' },
+        { name: 'Diamond Clock Type BP',             file: 'DIAMOND-CLOCK-TYPE-BP.jpeg' },
+        { name: 'Diamond BP Stand',                  file: 'diamond-bp-stand.jpg.jpeg' },
+        { name: 'Diamond Dial BP Apparatus',         file: 'diamond-dial-bp-app.jpg.jpeg' },
+        { name: 'Omron Advanced BP HEM-7156',        file: 'OMRON-ADV-BP-HEM-7156.jpg.jpeg' },
+        { name: 'Omron BP Apparatus',                file: 'omaron-bp-app.jpg.jpeg' },
+      ]
+    },
+    {
+      id: 'ss-wares',
+      name: 'SS Wares',
+      desc: 'Stainless steel surgical trays, drums, bowls and sterilization equipment',
+      thumb: 'SS Wares.png',
+      folder: 'SS  wares',
+      products: [
+        { name: 'Dressing Drum',              file: 'dressing-drum.jpg.jpeg' },
+        { name: 'Kidney Tray',                file: 'kindney-tray.jpg.jpeg' },
+        { name: 'AutoClaves',                 file: 'AutoClaves.jpg.jpeg' },
+        { name: 'Instrument Tray with Cover', file: 'instrument-tray-with-cover.jpg.jpeg' },
+        { name: 'Bed Pan',                    file: 'Bed-Pan-patient-min.jpg.jpeg' },
+        { name: 'Electric Sterilizer',        file: 'sterilizer-electric.jpg.jpeg' },
+      ]
+    },
+    {
+      id: 'hospital-needs',
+      name: 'Hospital Needs',
+      desc: 'OT supplies, diagnostic instruments and essential hospital equipment',
+      thumb: 'Hospital Needs.png',
+      folder: 'Hospital Needs',
+      products: [
+        { name: 'Stethoscope',                file: 'thumbs_stethoscope-1.jpg.jpeg' },
+        { name: 'Flow Meter',                 file: 'FLOW-METER.jpg.jpeg' },
+        { name: 'Hand Gloves',                file: 'thumbs_hand-gloves.jpg.jpeg' },
+        { name: 'Laryngoscope',               file: 'laryngoscope-surgical_instrument.jpg.jpeg' },
+        { name: 'Compressor Nebulizer',       file: 'Compressor-Nebulizer.jpg.jpeg' },
+        { name: 'Needle Destroyer',           file: 'needle-destroyer.jpg.jpeg' },
+        { name: 'Ambu Bag',                   file: 'AMBU-BAG.jpg.jpeg' },
+        { name: 'Syringe & Needle',           file: 'Syringe-needle.jpg.jpeg' },
+        { name: "Doctor's Coat",              file: 'Doctors-coat.jpg.jpeg' },
+        { name: 'OT Dress',                   file: 'green-ot-dress.jpg' },
+      ]
+    },
+  ];
+
+  let activeId = CATEGORIES[0].id;
+
+  // ── Build sidebar ──
+  function buildSidebar() {
+    const list = document.getElementById('catList');
+    const mobileCats = document.getElementById('mobileCats');
+    list.innerHTML = '';
+    mobileCats.innerHTML = '';
+
+    CATEGORIES.forEach(cat => {
+      // desktop sidebar item
+      const li = document.createElement('li');
+      li.className = 'cat-item' + (cat.id === activeId ? ' active' : '');
+      li.dataset.id = cat.id;
+      li.innerHTML = `
+        <div class="cat-icon"><img src="${cat.thumb}" alt="${cat.name}" onerror="this.style.display='none'" /></div>
+        <span class="cat-name">${cat.name}</span>
+        <span class="cat-count">${cat.products.length}</span>
+      `;
+      li.addEventListener('click', () => selectCategory(cat.id));
+      list.appendChild(li);
+
+      // mobile tab button
+      const btn = document.createElement('button');
+      btn.className = 'mob-cat-btn' + (cat.id === activeId ? ' active' : '');
+      btn.dataset.id = cat.id;
+      btn.textContent = cat.name;
+      btn.addEventListener('click', () => selectCategory(cat.id));
+      mobileCats.appendChild(btn);
+    });
+  }
+
+  // ── Render products ──
+  function renderProducts(catId) {
+    const cat = CATEGORIES.find(c => c.id === catId);
+    if (!cat) return;
+
+    document.getElementById('contentTitle').textContent = cat.name;
+    document.getElementById('contentDesc').textContent = cat.desc;
+    document.getElementById('countBadge').textContent = cat.products.length + ' Products';
+
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = '';
+
+    cat.products.forEach((prod, i) => {
+      const card = document.createElement('div');
+      card.className = 'prod-card fade-in';
+      const src = `${cat.folder}/${prod.file}`;
+      card.innerHTML = `
+        <div class="prod-img-wrap">
+          <img src="${src}" alt="${prod.name}" loading="lazy"
+               onerror="this.src='';this.parentElement.style.background='var(--teal-light)'" />
+        </div>
+        <div class="prod-info">
+          <div class="prod-name">${prod.name}</div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // ── Select category ──
+  function selectCategory(id) {
+    activeId = id;
+
+    // update sidebar active state
+    document.querySelectorAll('.cat-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.id === id);
+    });
+    document.querySelectorAll('.mob-cat-btn').forEach(el => {
+      el.classList.toggle('active', el.dataset.id === id);
+    });
+
+    // scroll mobile tab into view
+    const activeBtn = document.querySelector(`.mob-cat-btn[data-id="${id}"]`);
+    if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+    renderProducts(id);
+
+    // scroll content top on mobile
+    if (window.innerWidth < 768) {
+      document.querySelector('.products-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // ── Mobile menu ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.getElementById('menuClose').addEventListener('click', closeMobileMenu);
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── Init ──
+  buildSidebar();
+  renderProducts(activeId);
+
+  // ── Load from URL hash if present ──
+  const hash = location.hash.replace('#', '');
+  if (hash && CATEGORIES.find(c => c.id === hash)) {
+    selectCategory(hash);
+  }
+</script>
+</body>
+</html>

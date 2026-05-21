@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medwell Logix – Medical &amp; Surgical Equipment</title>
+  <link rel="icon" type="image/png" href="medwell logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal:        #0D7A7A;
+      --teal-dark:   #065A5A;
+      --teal-deeper: #044040;
+      --teal-light:  #E0F5F5;
+      --teal-mid:    #1A9090;
+      --orange:      #E87820;
+      --orange-dark: #C56010;
+      --orange-light:#FFF3E0;
+      --white:       #FFFFFF;
+      --off-white:   #F5FAFA;
+      --dark:        #0F2A2A;
+      --text:        #1A3A3A;
+      --text-muted:  #5A7A7A;
+      --border:      #C8E8E8;
+      --shadow-sm:   0 2px 12px rgba(13,122,122,.08);
+      --shadow-md:   0 8px 32px rgba(13,122,122,.14);
+      --shadow-lg:   0 20px 60px rgba(13,122,122,.18);
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   22px;
+      --radius-xl:   32px;
+      --transition:  0.35s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; line-height: 1.6; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+    svg { display: inline-block; vertical-align: middle; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--teal-light); }
+    ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 99px; }
+
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── TOPBAR ── */
+    .topbar { background: #0a1a1a; color: rgba(255,255,255,.82); font-size: 0.76rem; padding: 8px 0; display: none; }
+    @media(min-width:768px){ .topbar { display: block; } }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+    .topbar-left { display: flex; align-items: center; gap: 20px; }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-left a, .topbar-right a { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,.82); transition: color .2s; }
+    .topbar-left a:hover, .topbar-right a:hover { color: var(--orange); }
+    .topbar-icon { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── NAVBAR ── */
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--white); box-shadow: 0 2px 20px rgba(13,122,122,.1); transition: var(--transition); }
+    .navbar.scrolled { box-shadow: 0 4px 30px rgba(13,122,122,.18); }
+    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 20px; }
+    .logo-wrap { display: flex; align-items: center; flex-shrink: 0; }
+    .logo-wrap img { height: 50px; width: auto; }
+    .nav-links { display: none; align-items: center; gap: 4px; }
+    @media(min-width:900px){ .nav-links { display: flex; } }
+    .nav-links a {
+      font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 500;
+      color: var(--text); padding: 8px 14px; border-radius: var(--radius-sm);
+      transition: var(--transition); position: relative;
+    }
+    .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); border-radius: 99px; transition: width .3s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 60%; }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+    .nav-cta { display: none; }
+    @media(min-width:900px){ .nav-cta { display: inline-flex; } }
+
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: var(--transition); white-space: nowrap; cursor: pointer; border: none; }
+    .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 18px rgba(232,120,32,.35); }
+    .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,120,32,.45); }
+    .btn-teal { background: var(--teal); color: var(--white); box-shadow: 0 4px 18px rgba(13,122,122,.3); }
+    .btn-teal:hover { background: var(--teal-dark); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--teal); border: 2px solid var(--teal); }
+    .btn-outline:hover { background: var(--teal); color: var(--white); transform: translateY(-2px); }
+    .btn-white { background: var(--white); color: var(--teal); box-shadow: 0 4px 18px rgba(0,0,0,.12); }
+    .btn-white:hover { background: var(--teal-light); transform: translateY(-2px); }
+
+    /* ── HAMBURGER / MOBILE ── */
+    .hamburger { display: flex; flex-direction: column; gap: 5px; padding: 7px; background: var(--teal-light); border-radius: var(--radius-sm); transition: var(--transition); border: none; }
+    @media(min-width:900px){ .hamburger { display: none; } }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--teal); border-radius: 99px; transition: var(--transition); }
+    .hamburger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { position: fixed; inset: 0; z-index: 999; background: var(--white); transform: translateX(100%); transition: transform .38s cubic-bezier(.4,0,.2,1); overflow-y: auto; padding: 24px; }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
+    .mobile-menu-close { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 600; cursor: pointer; border: none; }
+    .mobile-menu nav a { display: block; font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 500; color: var(--text); padding: 14px 0; border-bottom: 1px solid var(--border); transition: color .2s, padding-left .2s; }
+    .mobile-menu nav a:hover { color: var(--teal); padding-left: 8px; }
+    .mobile-menu-footer { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+    .mobile-menu-footer .btn { width: 100%; justify-content: center; }
+    .mobile-contact { margin-top: 28px; padding: 18px; background: var(--teal-light); border-radius: var(--radius-md); }
+    .mobile-contact p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 8px; }
+    .mobile-contact a { display: flex; align-items: center; gap: 8px; color: var(--teal); font-weight: 600; font-size: 0.95rem; margin-bottom: 6px; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #f2fafa 55%, #e5f5f5 100%);
+      position: relative; overflow: hidden;
+      padding: 72px 0 90px;
+    }
+    .hero-dots {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(13,122,122,.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .hero-circle {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .hero-circle-1 { width: 420px; height: 420px; background: rgba(13,122,122,.05); top: -140px; right: -100px; }
+    .hero-circle-2 { width: 260px; height: 260px; border: 2px solid rgba(13,122,122,.07); bottom: -80px; left: -60px; }
+    .hero-grid { display: grid; grid-template-columns: 1fr; gap: 52px; align-items: center; position: relative; z-index: 1; }
+    @media(min-width:900px){ .hero-grid { grid-template-columns: 1fr 1fr; gap: 64px; } .hero { padding: 90px 0 110px; } }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      color: var(--orange); font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 26px; height: 2.5px; background: var(--orange); border-radius: 99px; }
+    .hero-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 3.7rem);
+      font-weight: 800; line-height: 1.1;
+      color: var(--dark); margin-bottom: 20px;
+    }
+    .hero-title .accent { color: var(--teal); }
+    .hero-desc { color: var(--text-muted); font-size: 0.97rem; line-height: 1.78; margin-bottom: 32px; max-width: 490px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* Hero inline stats */
+    .hero-stats { display: flex; gap: 28px; flex-wrap: wrap; padding-top: 30px; margin-top: 32px; border-top: 1.5px solid var(--border); }
+    .hero-stat { display: flex; flex-direction: column; }
+    .hero-stat-num { font-family: 'Poppins', sans-serif; font-size: 1.55rem; font-weight: 800; color: var(--teal); line-height: 1.1; }
+    .hero-stat-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; letter-spacing: .02em; }
+
+    /* Hero visual */
+    .hero-visual { position: relative; }
+    .hero-img-box {
+      border-radius: var(--radius-xl);
+      box-shadow: 0 24px 80px rgba(13,122,122,.2);
+      overflow: hidden;
+      line-height: 0;
+    }
+    .hero-main-img {
+      width: 100%; height: auto; display: block;
+      border-radius: var(--radius-xl);
+    }
+    .hero-illustration {
+      background: linear-gradient(135deg, #e8f6f6 0%, #f0fafa 60%, #e0f2f2 100%);
+      border-radius: var(--radius-lg); padding: 24px; position: relative;
+    }
+    .hero-equip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .heq-card {
+      background: white; border-radius: var(--radius-md);
+      padding: 20px 14px; text-align: center;
+      box-shadow: var(--shadow-sm); border: 1.5px solid var(--border);
+      transition: transform .3s;
+    }
+    .heq-card:hover { transform: translateY(-3px); }
+    .heq-card.teal { background: linear-gradient(135deg, var(--teal), var(--teal-mid)); border-color: transparent; }
+    .heq-icon { font-size: 2.2rem; margin-bottom: 8px; line-height: 1; }
+    .heq-label { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--dark); }
+    .heq-card.teal .heq-label { color: white; }
+    .heq-card.teal .heq-sub { color: rgba(255,255,255,.75); }
+    .heq-sub { font-size: 0.68rem; color: var(--text-muted); margin-top: 3px; }
+    .hero-cert-strip {
+      background: white; border-radius: var(--radius-md); padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-around; gap: 6px;
+      box-shadow: var(--shadow-sm); flex-wrap: wrap;
+    }
+    .cbadge { display: flex; align-items: center; gap: 5px; font-family: 'Poppins', sans-serif; font-size: 0.69rem; font-weight: 700; padding: 5px 10px; border-radius: 99px; }
+    .cbadge.green { background: #e8f5e9; color: #2e7d32; }
+    .cbadge.orange { background: var(--orange-light); color: var(--orange-dark); }
+    .cbadge.teal { background: var(--teal-light); color: var(--teal); }
+
+    /* Floating cards */
+    .hfc { position: absolute; background: var(--white); border-radius: var(--radius-md); padding: 12px 16px; box-shadow: 0 12px 40px rgba(13,122,122,.18); display: flex; align-items: center; gap: 10px; animation: floatUp 4s ease-in-out infinite; z-index: 10; }
+    @keyframes floatUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+    .hfc-1 { bottom: -14px; left: -18px; animation-delay: 0s; }
+    .hfc-2 { top: 10px; right: -18px; animation-delay: -2s; }
+    @media(max-width:500px){ .hfc-1{left:6px} .hfc-2{right:6px} }
+    .hfc-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .hfc-icon.t { background: var(--teal-light); }
+    .hfc-icon.o { background: var(--orange-light); }
+    .hfc-label { font-size: 0.66rem; color: var(--text-muted); margin-bottom: 2px; }
+    .hfc-value { font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--dark); }
+
+    /* ── STATS STRIP ── */
+    .stats-wrap { padding: 0 20px 80px; max-width: 1200px; margin: 0 auto; }
+    .stats-strip { background: var(--white); box-shadow: var(--shadow-lg); border-radius: var(--radius-lg); margin-top: -38px; position: relative; z-index: 5; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2,1fr); }
+    @media(min-width:600px){ .stats-grid { grid-template-columns: repeat(4,1fr); } }
+    .stat-cell { display: flex; align-items: center; gap: 14px; padding: 24px 22px; border-right: 1px solid var(--border); transition: var(--transition); }
+    .stat-cell:nth-child(2n){ border-right: none; }
+    @media(min-width:600px){ .stat-cell:nth-child(2n){ border-right: 1px solid var(--border); } .stat-cell:last-child{ border-right: none; } }
+    .stat-cell:hover { background: var(--off-white); }
+    .stat-ico { width: 52px; height: 52px; border-radius: 50%; background: var(--orange-light); display: flex; align-items: center; justify-content: center; font-size: 1.45rem; flex-shrink: 0; transition: var(--transition); }
+    .stat-cell:hover .stat-ico { background: var(--teal-light); }
+    .stat-num { font-family: 'Poppins', sans-serif; font-size: 1.55rem; font-weight: 800; color: var(--teal); line-height: 1.1; }
+    .stat-lbl { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── SECTION COMMON ── */
+    .section-tag { display: inline-flex; align-items: center; gap: 7px; background: var(--teal-light); color: var(--teal); font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 6px 14px; border-radius: 99px; border: 1px solid var(--border); margin-bottom: 14px; }
+    .section-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+    .section-title { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem, 4.5vw, 2.6rem); font-weight: 700; line-height: 1.2; color: var(--dark); }
+    .section-title em { font-style: normal; color: var(--teal); }
+    .section-sub { font-size: 0.95rem; color: var(--text-muted); margin-top: 10px; max-width: 540px; line-height: 1.7; }
+
+    /* ── PRODUCTS ── */
+    .products { padding: 90px 0 70px; background: var(--off-white); }
+    .products-header { text-align: center; margin-bottom: 50px; }
+    .products-header .section-sub { margin: 10px auto 0; }
+    .products-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+    @media(min-width:600px){ .products-grid { grid-template-columns: repeat(3,1fr); gap: 18px; } }
+    @media(min-width:900px){ .products-grid { grid-template-columns: repeat(4,1fr); gap: 20px; } }
+    .pcard { background: var(--white); border-radius: var(--radius-md); border: 1.5px solid var(--border); padding: 26px 16px 20px; text-align: center; transition: var(--transition); cursor: pointer; position: relative; overflow: hidden; }
+    .pcard::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), var(--orange)); transform: scaleX(0); transform-origin: left; transition: transform .35s; }
+    .pcard:hover::after { transform: scaleX(1); }
+    .pcard:hover { box-shadow: var(--shadow-md); transform: translateY(-5px); border-color: var(--teal); }
+    .pcard-ico { width: 90px; height: 90px; border-radius: var(--radius-md); background: var(--teal-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; transition: var(--transition); overflow: hidden; }
+    .pcard-ico img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-md); transition: transform .35s; }
+    .pcard:hover .pcard-ico { background: var(--teal-light); box-shadow: var(--shadow-sm); }
+    .pcard:hover .pcard-ico img { transform: scale(1.08); }
+    .pcard-name { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--dark); line-height: 1.3; margin-bottom: 6px; }
+    .pcard-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+    .pcard-arrow { margin-top: 12px; width: 28px; height: 28px; border-radius: 50%; background: var(--teal-light); display: inline-flex; align-items: center; justify-content: center; color: var(--teal); font-size: 1rem; transition: var(--transition); border: none; cursor: pointer; }
+    .pcard:hover .pcard-arrow { background: var(--teal); color: white; }
+
+    /* ── TRUSTED HOSPITALS ── */
+    .trusted { padding: 70px 0; background: var(--white); }
+    .trusted-inner { text-align: center; }
+    .trusted-heading { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 40px; }
+    .trusted-logos { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .tlogo-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 16px 24px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .tlogo-card:hover { border-color: var(--teal); box-shadow: var(--shadow-sm); transform: translateY(-3px); }
+    .tlogo-card img { height: 52px; width: auto; max-width: 120px; object-fit: contain; filter: grayscale(20%); transition: filter .3s; }
+    .tlogo-card:hover img { filter: grayscale(0%); }
+
+    /* ── WHY CHOOSE US (4-card) ── */
+    .why-choose { padding: 84px 0; background: var(--off-white); }
+    .why-choose-header { text-align: center; margin-bottom: 52px; }
+    .why-choose-header .section-sub { margin: 10px auto 0; }
+    .why-cards { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media(min-width:600px){ .why-cards { grid-template-columns: repeat(2,1fr); } }
+    @media(min-width:900px){ .why-cards { grid-template-columns: repeat(4,1fr); } }
+    .wcard { background: var(--white); border-radius: var(--radius-lg); padding: 30px 22px 26px; text-align: center; border: 1.5px solid var(--border); transition: var(--transition); position: relative; overflow: hidden; }
+    .wcard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), var(--orange)); transform: scaleX(0); transform-origin: left; transition: transform .4s; }
+    .wcard:hover::before { transform: scaleX(1); }
+    .wcard:hover { box-shadow: var(--shadow-md); transform: translateY(-6px); border-color: var(--teal); }
+    .wcard-ico { width: 68px; height: 68px; border-radius: 50%; background: var(--teal-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; transition: var(--transition); font-size: 1.7rem; }
+    .wcard:hover .wcard-ico { background: var(--teal); transform: scale(1.1) rotate(-5deg); }
+    .wcard h3 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+    .wcard p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.68; }
+
+    /* ── ABOUT / WHY (detailed 2-col) ── */
+    .about { padding: 90px 0; background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr; gap: 54px; align-items: center; }
+    @media(min-width:900px){ .about-grid { grid-template-columns: 1fr 1fr; } }
+    .about-visual { position: relative; }
+    .about-img-wrap { border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); aspect-ratio: 4/3; background: linear-gradient(135deg, var(--teal-light), #c8e8e8); display: flex; align-items: center; justify-content: center; }
+    .about-img-content { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 40px; }
+    .about-big-icon { font-size: 5rem; }
+    .about-img-content p { color: var(--teal-dark); font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.1rem; text-align: center; }
+    .about-cert-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .acert { padding: 5px 12px; border-radius: 99px; font-size: 0.72rem; font-weight: 700; font-family: 'Poppins', sans-serif; }
+    .acert.t { background: var(--teal); color: white; }
+    .acert.o { background: var(--orange); color: white; }
+    .acert.d { background: var(--teal-dark); color: white; }
+    .about-badge { position: absolute; bottom: -16px; right: -8px; background: var(--orange); color: white; border-radius: var(--radius-md); padding: 14px 20px; box-shadow: 0 8px 24px rgba(232,120,32,.4); text-align: center; min-width: 110px; }
+    @media(max-width:480px){ .about-badge { right: 10px; } }
+    .about-badge .num { font-family: 'Poppins', sans-serif; font-size: 1.8rem; font-weight: 800; line-height: 1; }
+    .about-badge .lbl { font-size: 0.72rem; opacity: .9; }
+    .about-features { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 30px; }
+    @media(min-width:480px){ .about-features { grid-template-columns: 1fr 1fr; } }
+    .afeat { display: flex; gap: 13px; align-items: flex-start; padding: 15px; border-radius: var(--radius-md); border: 1.5px solid var(--border); transition: var(--transition); }
+    .afeat:hover { border-color: var(--teal); background: var(--teal-light); }
+    .afeat-ico { width: 42px; height: 42px; flex-shrink: 0; border-radius: var(--radius-sm); background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: var(--transition); }
+    .afeat:hover .afeat-ico { background: var(--teal); }
+    .afeat h4 { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--dark); margin-bottom: 3px; }
+    .afeat p { font-size: 0.77rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── PARTNERS (scrolling) ── */
+    .partners { padding: 72px 0; background: var(--off-white); overflow: hidden; }
+    .partners-header { text-align: center; margin-bottom: 44px; }
+    .partners-track-wrap { overflow: hidden; }
+    .partners-track { display: flex; gap: 24px; animation: scrollTrack 28s linear infinite; width: max-content; }
+    .partners-track:hover { animation-play-state: paused; }
+    @keyframes scrollTrack { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .ppill { display: flex; align-items: center; gap: 10px; background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 14px 20px; white-space: nowrap; flex-shrink: 0; transition: var(--transition); }
+    .ppill:hover { border-color: var(--teal); box-shadow: var(--shadow-sm); }
+    .ppill img { height: 36px; width: auto; object-fit: contain; }
+    .ppill-name { font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--dark); }
+    .ppill-type { font-size: 0.7rem; color: var(--text-muted); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { padding: 88px 0; background: var(--white); }
+    .testimonials-header { text-align: center; margin-bottom: 50px; }
+    .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media(min-width:600px){ .testimonials-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(min-width:900px){ .testimonials-grid { grid-template-columns: repeat(3,1fr); } }
+    .tcard { background: var(--off-white); border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 28px 22px; transition: var(--transition); position: relative; }
+    .tcard:hover { border-color: var(--teal); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .tcard::before { content: '\201C'; font-size: 5rem; font-family: Georgia, serif; color: var(--teal-light); position: absolute; top: 8px; right: 16px; line-height: 1; pointer-events: none; }
+    .tcard-stars { display: flex; gap: 3px; margin-bottom: 12px; }
+    .tcard-stars span { color: var(--orange); font-size: 0.9rem; }
+    .tcard-text { font-size: 0.87rem; color: var(--text); line-height: 1.7; margin-bottom: 18px; }
+    .tcard-author { display: flex; align-items: center; gap: 12px; }
+    .tcard-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--teal-mid)); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: white; flex-shrink: 0; }
+    .tcard-name { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--dark); }
+    .tcard-role { font-size: 0.74rem; color: var(--text-muted); }
+
+    /* ── CTA BANNER ── */
+    .cta-banner { background: linear-gradient(135deg, var(--teal-deeper) 0%, var(--teal) 55%, var(--teal-mid) 100%); padding: 72px 0; position: relative; overflow: hidden; }
+    .cta-banner::before { content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%; background: rgba(255,255,255,.04); top: -200px; right: -150px; pointer-events: none; }
+    .cta-banner::after { content: ''; position: absolute; width: 300px; height: 300px; border-radius: 50%; border: 2px solid rgba(255,255,255,.07); bottom: -100px; left: -50px; pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; }
+    @media(min-width:768px){ .cta-inner { flex-direction: row; text-align: left; justify-content: space-between; } }
+    .cta-text h2 { font-family: 'Poppins', sans-serif; font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 700; color: var(--white); line-height: 1.25; }
+    .cta-text p { color: rgba(255,255,255,.78); font-size: 0.92rem; margin-top: 8px; }
+    .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; flex-shrink: 0; }
+
+    /* ── CONTACT ── */
+    .contact { padding: 88px 0; background: var(--off-white); }
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 48px; }
+    @media(min-width:900px){ .contact-grid { grid-template-columns: 1fr 1.2fr; } }
+    .contact-info h2 { font-family: 'Poppins', sans-serif; font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 700; color: var(--dark); margin-bottom: 14px; }
+    .contact-info > p { color: var(--text-muted); font-size: 0.93rem; line-height: 1.7; margin-bottom: 32px; }
+    .contact-items { display: flex; flex-direction: column; gap: 18px; }
+    .citem { display: flex; gap: 14px; align-items: flex-start; }
+    .citem-ico { width: 44px; height: 44px; flex-shrink: 0; border-radius: var(--radius-sm); background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .citem-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 3px; }
+    .citem-value { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 600; color: var(--dark); }
+    .citem-value a { color: var(--teal); }
+    .citem-value a:hover { color: var(--orange); }
+    .contact-form { background: var(--white); border-radius: var(--radius-xl); padding: 36px 28px; box-shadow: var(--shadow-md); border: 1.5px solid var(--border); }
+    .contact-form h3 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 14px; }
+    @media(min-width:480px){ .form-row { grid-template-columns: 1fr 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+    .form-group input, .form-group select, .form-group textarea { padding: 12px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--off-white); transition: var(--transition); outline: none; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); background: var(--white); box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-submit { margin-top: 8px; width: 100%; padding: 14px; font-size: 0.95rem; }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--teal-deeper); color: rgba(255,255,255,.78); }
+    .footer-main { padding: 64px 0 40px; display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media(min-width:600px){ .footer-main { grid-template-columns: repeat(2,1fr); } }
+    @media(min-width:900px){ .footer-main { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; } }
+    .footer-logo { height: 44px; margin-bottom: 16px; filter: brightness(0) invert(1); }
+    .footer-tagline { font-size: 0.85rem; line-height: 1.7; margin-bottom: 22px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .fsocial { width: 36px; height: 36px; border-radius: var(--radius-sm); background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.8); font-size: 0.9rem; transition: var(--transition); border: 1px solid rgba(255,255,255,.15); }
+    .fsocial:hover { background: var(--orange); color: white; border-color: var(--orange); }
+    .footer-col h4 { font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--white); margin-bottom: 18px; }
+    .footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 0.84rem; color: rgba(255,255,255,.68); transition: color .2s, padding-left .2s; display: flex; align-items: center; gap: 6px; }
+    .footer-col ul li a::before { content: '›'; font-size: 1rem; color: var(--orange); }
+    .footer-col ul li a:hover { color: var(--white); padding-left: 4px; }
+    .fci { display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start; }
+    .fci span:first-child { font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+    .fci .detail { font-size: 0.82rem; color: rgba(255,255,255,.68); }
+    .fci a { color: rgba(255,255,255,.68); }
+    .fci a:hover { color: var(--orange); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+    @media(min-width:600px){ .footer-bottom { flex-direction: row; justify-content: space-between; } }
+    .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,.5); }
+    .footer-bottom-links { display: flex; gap: 18px; }
+    .footer-bottom-links a { font-size: 0.78rem; color: rgba(255,255,255,.5); transition: color .2s; }
+    .footer-bottom-links a:hover { color: var(--orange); }
+
+    /* ── FLOATING CTA ── */
+    .floating-cta { position: fixed; bottom: 24px; right: 20px; z-index: 900; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+    .float-btn { display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,.2); transition: var(--transition); cursor: pointer; border: none; }
+    .float-btn-wa { background: #25D366; color: white; }
+    .float-btn-wa:hover { background: #1EBE57; transform: scale(1.06); }
+    .float-btn-ph { background: var(--teal); color: white; }
+    .float-btn-ph:hover { background: var(--teal-dark); transform: scale(1.06); }
+    .float-label { display: none; }
+    @media(min-width:480px){ .float-label { display: block; } }
+
+    /* ── BACK TO TOP ── */
+    .back-top { position: fixed; bottom: 24px; left: 20px; z-index: 900; width: 42px; height: 42px; border-radius: 50%; background: var(--orange); color: white; border: none; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 4px 18px rgba(232,120,32,.4); transition: var(--transition); opacity: 0; pointer-events: none; transform: translateY(10px); }
+    .back-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .back-top:hover { background: var(--orange-dark); transform: translateY(-3px); }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-28px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal-left.revealed { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(28px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal-right.revealed { opacity: 1; transform: translateX(0); }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+    .d5 { transition-delay: .5s; } .d6 { transition-delay: .6s; }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <a href="tel:+919876543210">
+          <svg class="topbar-icon" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          +91 80565 84041
+        </a>
+        <a href="mailto:info@medwelllogix.com">
+          <svg class="topbar-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          medwelllogix@gmail.com
+        </a>
+      </div>
+      <div class="topbar-right">
+        <a href="#">
+          <svg class="topbar-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          4th CROSS, NORTH WEST, THILLAI NAGAR, TIRUCHIRAPALLI
+        </a>
+        <a href="#">Mon – Sat: 9:00 AM – 6:00 PM</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAVBAR ══ -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="#" class="logo-wrap">
+        <img src="medwell logo.png" alt="Medwell Logix – Medical &amp; Surgicals" />
+      </a>
+      <nav class="nav-links">
+        <a href="#" class="active">Home</a>
+        <a href="products.html">Products</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact Us</a>
+      </nav>
+      <a href="https://wa.me/918056584041?text=I%20want%20to%20purchase" 
+   class="btn btn-primary nav-cta" 
+   target="_blank">
+   Request Quote
+</a>
+
+<button class="hamburger" id="hamburger" aria-label="Open menu">
+  <span></span><span></span><span></span>
+</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <img src="medwell logo.png" alt="Medwell Logix" style="height:44px;" />
+    <button class="mobile-menu-close" id="menuClose">✕</button>
+  </div>
+  <nav>
+    <a href="#" onclick="closeMobileMenu()">Home</a>
+        <a href="products.html" onclick="closeMobileMenu()">Products</a>
+    <a href="#about" onclick="closeMobileMenu()">About Us</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact Us</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="#contact" class="btn btn-primary" onclick="closeMobileMenu()">Request a Quote</a>
+    <a href="tel:+919876543210" class="btn btn-outline" onclick="closeMobileMenu()">Call Us Now</a>
+  </div>
+  <div class="mobile-contact">
+    <p>Reach us directly</p>
+    <a href="tel:+919876543210">📞 +91 80565 84041</a>
+    <a href="mailto:info@medwelllogix.com">✉️ medwelllogix@gmail.com</a>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+  <div class="hero-dots"></div>
+  <div class="hero-circle hero-circle-1"></div>
+  <div class="hero-circle hero-circle-2"></div>
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- Left content -->
+      <div class="hero-content">
+        <div class="hero-eyebrow">Reliable, Affordable, Always.</div>
+        <h1 class="hero-title">
+          Healthcare<br/>
+          <span class="accent">Solutions</span><br/>
+          You Can Trust
+        </h1>
+        <p class="hero-desc">
+          Delivering High-Quality medical equipment, surgical instruments, 
+          rehabilitation aids, and healthcare solutions across Tamil Nadu.
+        </p>
+        <div class="hero-actions">
+          <a 
+  href="catalouge.pdf" 
+  target="_blank"
+  class="btn btn-teal" 
+  style="text-transform:uppercase;letter-spacing:.06em;font-size:0.82rem;padding:13px 22px;"
+>
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="white">
+    <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+  </svg>
+  Download Catalogue
+</a>
+          <a href="tel:++918056584041" class="btn btn-outline">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="var(--teal)">
+        <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
+    </svg>
+    Contact Us
+</a>
+        </div>
+      </div>
+
+      <!-- Right visual -->
+      <div class="hero-visual">
+        <div class="hero-img-box">
+          <img src="Gemini_Generated_Image_qeezxdqeezxdqeez.png" alt="Medical &amp; Surgical Equipment" class="hero-main-img" />
+        </div>
+        
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS STRIP ══ -->
+<div class="stats-wrap">
+  <div class="stats-strip reveal">
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-ico">🏥</div>
+        <div>
+          <div class="stat-num" data-target="20">0+</div>
+          <div class="stat-lbl">Years Experience</div>
+        </div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-ico">👥</div>
+        <div>
+          <div class="stat-num" data-target="10000">0+</div>
+          <div class="stat-lbl">Customers</div>
+        </div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-ico">📦</div>
+        <div>
+          <div class="stat-num" data-target="3000">0+</div>
+          <div class="stat-lbl">Products</div>
+        </div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-ico">🎧</div>
+        <div>
+          <div class="stat-num">24/7</div>
+          <div class="stat-lbl">Customer Support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRODUCTS ══ -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="products-header">
+      <div class="section-tag"><span></span>Our Products &amp; Services</div>
+      <h2 class="section-title reveal">Everything For Your <em>Healthcare Needs</em></h2>
+      <p class="section-sub reveal d1">Comprehensive range of medical and surgical products from ISO-certified manufacturers — quality and reliability at every step.</p>
+    </div>
+    <div class="products-grid">
+
+      <div class="pcard reveal d1">
+        <div class="pcard-ico">
+          <img src="surgical instruments.png" alt="Surgical Instruments" />
+        </div>
+        <div class="pcard-name">Surgical Instruments</div>
+        <div class="pcard-desc">High-grade stainless steel tools for all surgical specialties</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+      <div class="pcard reveal d2">
+        <div class="pcard-ico">
+          <img src="Surgical Disposables.png" alt="Surgical Disposables" />
+        </div>
+        <div class="pcard-name">Surgical Disposables</div>
+        <div class="pcard-desc">Sterile single-use items for infection prevention &amp; hygiene</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+      <div class="pcard reveal d3">
+        <div class="pcard-ico">
+          <img src="Hospital Furniture.png" alt="Hospital Furniture" />
+        </div>
+        <div class="pcard-name">Hospital Furniture</div>
+        <div class="pcard-desc">Beds, trolleys, stretchers and ward equipment</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+      <div class="pcard reveal d4">
+        <div class="pcard-ico">
+          <img src="Patient Wheelchairs.png" alt="Rehabilitation Aids" />
+        </div>
+        <div class="pcard-name">Rehabilitation Aids</div>
+        <div class="pcard-desc">Designed to support recovery, improve mobility</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+      <div class="pcard reveal d1">
+        <div class="pcard-ico">
+          <img src="Home Care Products.png" alt="Home Care" />
+        </div>
+        <div class="pcard-name">Home Care</div>
+        <div class="pcard-desc">Commodes, walkers, bath aids for home recovery</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+      <div class="pcard reveal d2">
+        <div class="pcard-ico">
+          <img src="BP Apparatus.png" alt="BP Apparatus" />
+        </div>
+        <div class="pcard-name">BP Apparatus</div>
+        <div class="pcard-desc">Digital and mercury sphygmomanometers</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+      <div class="pcard reveal d3">
+        <div class="pcard-ico">
+          <img src="SS Wares.png" alt="SS Wares" />
+        </div>
+        <div class="pcard-name">SS Wares</div>
+        <div class="pcard-desc">Stainless steel dressing drums, bowls and surgical trays</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+      <div class="pcard reveal d4">
+        <div class="pcard-ico">
+          <img src="Hospital Needs.png" alt="Hospital Needs" />
+        </div>
+        <div class="pcard-name">Hospital Needs</div>
+        <div class="pcard-desc">OT supplies, lab equipment, sterilization systems</div>
+        <button class="pcard-arrow">›</button>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:44px;" class="reveal">
+      <a href="products.html" class="btn btn-primary" style="padding:14px 38px;font-size:0.95rem;">
+        View Full Catalogue
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ═════════ PARTNERS SECTION ═════════ */
+
+.partners{
+  padding:80px 0;
+  background:#f8fbfc;
+  overflow:hidden;
+}
+
+.partners-header{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.partners-track-wrap{
+  overflow:hidden;
+  width:100%;
+}
+
+.partners-track{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  width:max-content;
+  animation:partnerScroll 28s linear infinite;
+}
+
+.ppill{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:20px 28px;
+  min-width:300px;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  transition:0.3s ease;
+}
+
+.ppill:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.12);
+}
+
+.ppill img{
+  width:90px;
+  height:90px;
+  object-fit:contain;
+}
+
+.ppill-name{
+  font-size:20px;
+  font-weight:700;
+  color:#0b5c63;
+}
+
+.ppill-type{
+  font-size:15px;
+  color:#666;
+  margin-top:4px;
+}
+
+@keyframes partnerScroll{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(-50%);
+  }
+}
+</style>
+
+<!-- ══ PARTNERS (scrolling logos) ══ -->
+<section class="partners" id="partners">
+  <div class="container">
+    <div class="partners-header">
+      <div class="section-tag"><span></span>Our Partners</div>
+
+      <h2 class="section-title reveal">
+        Trusted by <em>Leading Hospitals</em>
+      </h2>
+
+      <p class="section-sub reveal d1" style="margin:10px auto 0;">
+        We proudly supply to top healthcare institutions across India.
+      </p>
+    </div>
+  </div>
+
+  <div class="partners-track-wrap">
+    <div class="partners-track">
+
+      <div class="ppill">
+        <img src="images (1).png" alt="Atlas Hospitals" />
+        <div>
+          <div class="ppill-name">Atlas Hospitals</div>
+          <div class="ppill-type">Tertiary Care</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images (2).png" alt="Sundaram Hospital" />
+        <div>
+          <div class="ppill-name">Sundaram Hospital</div>
+          <div class="ppill-type">Multi-Specialty</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images (3).png" alt="Apollo Hospitals" />
+        <div>
+          <div class="ppill-name">Apollo Hospitals</div>
+          <div class="ppill-type">Super-Specialty Chain</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images (4).png" alt="GVN Hospital" />
+        <div>
+          <div class="ppill-name">GVN Hospital</div>
+          <div class="ppill-type">Diagnostic Centre</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images.png" alt="Kauvery Hospital" />
+        <div>
+          <div class="ppill-name">Kauvery Hospital</div>
+          <div class="ppill-type">Cardiac Specialty</div>
+        </div>
+      </div>
+
+      <!-- Duplicate for seamless scrolling -->
+
+      <div class="ppill">
+        <img src="images (1).png" alt="Atlas Hospitals" />
+        <div>
+          <div class="ppill-name">Atlas Hospitals</div>
+          <div class="ppill-type">Tertiary Care</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images (2).png" alt="Sundaram Hospital" />
+        <div>
+          <div class="ppill-name">Sundaram Hospital</div>
+          <div class="ppill-type">Multi-Specialty</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images (3).png" alt="Apollo Hospitals" />
+        <div>
+          <div class="ppill-name">Apollo Hospitals</div>
+          <div class="ppill-type">Super-Specialty Chain</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images (4).png" alt="GVN Hospital" />
+        <div>
+          <div class="ppill-name">GVN Hospital</div>
+          <div class="ppill-type">Diagnostic Centre</div>
+        </div>
+      </div>
+
+      <div class="ppill">
+        <img src="images.png" alt="Kauvery Hospital" />
+        <div>
+          <div class="ppill-name">Kauvery Hospital</div>
+          <div class="ppill-type">Cardiac Specialty</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY CHOOSE US (4-card) ══ -->
+<section class="why-choose" id="about">
+  <div class="container">
+    <div class="why-choose-header">
+      <div class="section-tag"><span></span>Why Choose Us</div>
+      <h2 class="section-title reveal">Why <em>Choose Us?</em></h2>
+      <p class="section-sub reveal d1">We combine quality products, competitive pricing, and expert support to deliver an unmatched healthcare procurement experience.</p>
+    </div>
+    <div class="why-cards">
+      <div class="wcard reveal d1">
+        <div class="wcard-ico">🏅</div>
+        <h3>Quality Products</h3>
+        <p>ISO-certified products sourced from trusted manufacturers with rigorous quality checks before dispatch.</p>
+      </div>
+      <div class="wcard reveal d2">
+        <div class="wcard-ico">💰</div>
+        <h3>Affordable Pricing</h3>
+        <p>Best-in-market rates through direct manufacturer partnerships and volume-based buying advantages.</p>
+      </div>
+      <div class="wcard reveal d3">
+        <div class="wcard-ico">🚚</div>
+        <h3>Timely Delivery</h3>
+        <p>Pan-India express delivery network ensuring your critical medical supplies always arrive on time.</p>
+      </div>
+      <div class="wcard reveal d4">
+        <div class="wcard-ico">🎧</div>
+        <h3>Expert Support</h3>
+        <p>Dedicated relationship managers and technical support team available round the clock for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT (detailed 2-col) 
+<section class="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal-left">
+        <div class="about-img-wrap">
+          <div class="about-img-content">
+            <div class="about-big-icon">⚕️</div>
+            <p>Committed to Healthcare Excellence</p>
+            <div class="about-cert-row">
+              <span class="acert t">ISO 9001:2015</span>
+              <span class="acert o">CDSCO Registered</span>
+              <span class="acert d">GST Compliant</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-badge">
+          <div class="num">99%</div>
+          <div class="lbl">Satisfaction Rate</div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <div class="section-tag"><span></span>About Us</div>
+        <h2 class="section-title">Your Reliable <em>Medical Partner</em></h2>
+        <p class="section-sub">For over 20 years, Medwell Logix has been a trusted name in medical and surgical equipment supply — serving hospitals, clinics, and healthcare institutions across India.</p>
+        <div class="about-features">
+          <div class="afeat">
+            <div class="afeat-ico">🏅</div>
+            <div>
+              <h4>Quality Assurance</h4>
+              <p>Every product sourced from ISO-certified manufacturers and quality-tested before dispatch.</p>
+            </div>
+          </div>
+          <div class="afeat">
+            <div class="afeat-ico">💰</div>
+            <div>
+              <h4>Affordable Pricing</h4>
+              <p>Best-in-market rates through direct manufacturer partnerships and bulk buying.</p>
+            </div>
+          </div>
+          <div class="afeat">
+            <div class="afeat-ico">🚚</div>
+            <div>
+              <h4>Timely Delivery</h4>
+              <p>Pan-India express network ensuring critical supplies arrive on schedule.</p>
+            </div>
+          </div>
+          <div class="afeat">
+            <div class="afeat-ico">🎧</div>
+            <div>
+              <h4>24/7 Expert Support</h4>
+              <p>Dedicated managers and technical support available round the clock.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:28px;">
+          <a href="#contact" class="btn btn-primary">
+            Partner With Us
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>  ══ -->
+
+
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="testimonials-header">
+      <div class="section-tag"><span></span>Customer Reviews</div>
+      <h2 class="section-title reveal">What Our <em>Clients Say</em></h2>
+      <p class="section-sub reveal d1" style="margin:10px auto 0;">Real feedback from healthcare professionals who trust us.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="tcard reveal d1">
+        <div class="tcard-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="tcard-text">"Medwell Logix has been our go-to supplier for 8 years. The quality of their surgical instruments is exceptional and delivery is always on time. Highly recommended for any hospital procurement team."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">DR</div>
+          <div>
+            <div class="tcard-name">Dr. Rajesh </div>
+            <div class="tcard-role">Chief Surgeon, Apollo Hospitals</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard reveal d2">
+        <div class="tcard-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="tcard-text">"Excellent product range and very competitive pricing. Their team understands healthcare requirements and always suggests the right products. The after-sales support is truly commendable."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">SP</div>
+          <div>
+            <div class="tcard-name">Sunita </div>
+            <div class="tcard-role">Purchase Manager, Kauvery Hospital</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard reveal d3">
+        <div class="tcard-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="tcard-text">"We source all our OT equipment from Medwell Logix. Their ISO-certified products and strong compliance standards give us complete confidence in every purchase. By far one of the best medical suppliers in Tamilnadu."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">AK</div>
+          <div>
+            <div class="tcard-name">Arjun Kumar</div>
+            <div class="tcard-role">Hospital Administrator, Atlas Medical</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ CONTACT ══ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal-left">
+        <div class="section-tag"><span></span>Get In Touch</div>
+        <h2 class="contact-info" style="font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:var(--dark);margin-bottom:14px;">Let's Work Together</h2>
+        <p style="color:var(--text-muted);font-size:0.93rem;line-height:1.7;margin-bottom:32px;">Send us your requirements and our team will respond within 2 hours with a detailed quote and product recommendations.</p>
+
+        <div class="contact-items">
+          <div class="citem">
+            <div class="citem-ico">📍</div>
+            <div>
+              <div class="citem-label">Address</div>
+              <div class="citem-value">C23, 4th CROSS, NORTH WEST, THILLAI NAGAR, TIRUCHIRAPALLI, 620018, Tamil Nadu</div>
+            </div>
+          </div>
+
+          <div class="citem">
+            <div class="citem-ico">📞</div>
+            <div>
+              <div class="citem-label">Phone</div>
+              <div class="citem-value">
+                <a href="tel:+918056584041">+91 80565 84041</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="citem">
+            <div class="citem-ico">✉️</div>
+            <div>
+              <div class="citem-label">Email</div>
+              <div class="citem-value">
+                <a href="mailto:medwelllogix@gmail.com">medwelllogix@gmail.com</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="citem">
+            <div class="citem-ico">🕐</div>
+            <div>
+              <div class="citem-label">Business Hours</div>
+              <div class="citem-value">Mon–Sat: 9:00 AM – 6:00 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal-right">
+        <h3>Request a Quote</h3>
+
+        <form onsubmit="handleSubmit(event)">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name *</label>
+              <input type="text" placeholder="Dr. John Smith" required />
+            </div>
+
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" placeholder="+91 98765 43210" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="you@hospital.com" />
+            </div>
+
+            <div class="form-group">
+              <label>Organisation</label>
+              <input type="text" placeholder="Hospital / Clinic Name" />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:14px;">
+            <label>Product Category *</label>
+
+            <select required>
+              <option value="">Select category…</option>
+              <option>Surgical Instruments</option>
+              <option>Surgical Disposables</option>
+              <option>Hospital Furniture</option>
+              <option>Wheelchairs &amp; Mobility</option>
+              <option>Diagnostic Equipment</option>
+              <option>Home Care</option>
+              <option>OT Supplies</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:18px;">
+            <label>Requirements / Message</label>
+
+            <textarea placeholder="Describe your requirements, quantity, and product details…"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit">
+            Send Enquiry
+
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WhatsApp Form Script -->
+<script>
+function handleSubmit(event){
+  event.preventDefault();
+
+  const name = document.querySelector('input[type="text"]').value;
+
+  const message = `New Enquiry from ${name}`;
+
+  window.open(`https://wa.me/918056584041?text=${encodeURIComponent(message)}`);
+}
+</script>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-main">
+      <div>
+        <img src="medwell logo.png" alt="Medwell Logix" class="footer-logo" />
+        <p class="footer-tagline">Your trusted partner for comprehensive medical and surgical equipment supply. Quality products, competitive prices, pan-India delivery.</p>
+        <div class="footer-socials">
+          <a href="#" class="fsocial" aria-label="Facebook">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="fsocial" aria-label="Instagram">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          
+          <a href="https://wa.me/918056584041" class="fsocial" aria-label="WhatsApp">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="#partners">Our Partners</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Products</h4>
+        <ul>
+          <li><a href="products.html#surgical-instruments">Surgical Instruments</a></li>
+          <li><a href="products.html#hospital-furniture">Hospital Furniture</a></li>
+          <li><a href="products.html#surgical-disposables">Disposables</a></li>
+          <li><a href="products.html#rehabilitation-aids">Rehabilitation Aids</a></li>
+          <li><a href="products.html#ss-wares">SS Wares</a></li>
+          <li><a href="products.html#home-care">Home Care</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <div class="fci">
+          <span>📍</span>
+          <div class="detail">C23, 4th CROSS, NORTH WEST, THILLAI NAGAR, TIRUCHIRAPALLI, 620018, Tamil Nadu</div>
+        </div>
+        <div class="fci">
+          <span>📞</span>
+          <div class="detail"><a href="tel:+918056584041">+91 80565 84041</a></div>
+        </div>
+        <div class="fci">
+          <span>✉️</span>
+          <div class="detail"><a href="mailto:medwelllogix@gmail.com">medwelllogix@gmail.com</a></div>
+        </div>
+        <div class="fci">
+          <span>🕐</span>
+          <div class="detail">Mon–Sat: 9AM – 6PM</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Medwell Logix Medical &amp; Surgicals. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ FLOATING CTA ══ -->
+<div class="floating-cta">
+  <a href="https://wa.me/918056584041" class="float-btn float-btn-wa" target="_blank" rel="noopener">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="float-label">WhatsApp</span>
+  </a>
+  <a href="tel:+918056584041" class="float-btn float-btn-ph">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+    <span class="float-label">Call Now</span>
+  </a>
+</div>
+
+<!-- ══ BACK TO TOP ══ -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+</button>
+
+<script>
+  // ── Navbar scroll ──
+  const navbar = document.getElementById('navbar');
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 30);
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+
+  // ── Mobile menu ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.getElementById('menuClose').addEventListener('click', closeMobileMenu);
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── Scroll reveal ──
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  // ── Counter animation ──
+  function animateCounter(el, target) {
+    const dur = 1800; const start = performance.now();
+    const run = (now) => {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = Math.round(eased * target);
+      el.textContent = (target >= 1000 ? val.toLocaleString() : val) + '+';
+      if (p < 1) requestAnimationFrame(run);
+    };
+    requestAnimationFrame(run);
+  }
+  const cntObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const t = parseInt(e.target.dataset.target);
+        if (t) animateCounter(e.target, t);
+        cntObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-target]').forEach(el => cntObs.observe(el));
+
+  // ── Active nav on scroll ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const lk = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (lk) lk.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+  sections.forEach(s => navObs.observe(s));
+
+  // ── Form submit ──
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✓ Enquiry Sent!';
+    btn.style.background = 'var(--teal)';
+    setTimeout(() => {
+      btn.innerHTML = 'Send Enquiry <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>

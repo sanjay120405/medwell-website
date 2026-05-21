@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\Program Files\\\\Git\\\\bin;\" + $env:PATH; git --version)",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\Program Files\\\\Git\\\\bin;\" + $env:PATH; cd \"d:\\\\newwwwwwwww\\\\Medwell Website\"; git init; git config user.email \"luviorshop@gmail.com\"; git config user.name \"sanjay120405\")",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\Program Files\\\\Git\\\\bin;\" + $env:PATH; cd \"d:\\\\newwwwwwwww\\\\Medwell Website\"; git add .; git status --short)",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\Program Files\\\\Git\\\\bin;\" + $env:PATH; cd \"d:\\\\newwwwwwwww\\\\Medwell Website\"; git rm --cached .claude/settings.local.json 2>$null; git rm --cached \"CLAUDE \\(1\\).md\" 2>$null; git add .gitignore; git status --short | Select-Object -First 5)"
+    ]
+  }
+}
