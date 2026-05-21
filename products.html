@@ -280,6 +280,29 @@
     .fade-in:nth-child(5){animation-delay:.15s}.fade-in:nth-child(6){animation-delay:.18s}
     .fade-in:nth-child(7){animation-delay:.21s}.fade-in:nth-child(8){animation-delay:.24s}
     .fade-in:nth-child(9){animation-delay:.27s}.fade-in:nth-child(10){animation-delay:.30s}
+
+    /* ══ MOBILE RESPONSIVE ══ */
+    @media (max-width: 480px) {
+      .container { padding: 0 12px; }
+
+      .page-hero { padding: 28px 0 32px; }
+      .page-hero h1 { font-size: clamp(1.35rem, 7vw, 1.8rem); }
+      .page-hero p { font-size: 0.85rem; }
+
+      .mobile-cats { padding: 10px 12px; gap: 6px; }
+      .mob-cat-btn { padding: 7px 13px; font-size: 0.74rem; }
+
+      .products-content { padding: 12px 10px 36px; }
+      .content-title { font-size: 1.1rem; }
+      .content-header { margin-bottom: 18px; padding-bottom: 14px; gap: 10px; }
+
+      .product-grid { gap: 10px; }
+      .prod-info { padding: 9px 9px 11px; }
+      .prod-name { font-size: 0.77rem; }
+
+      .floating-cta { bottom: 14px; right: 10px; gap: 7px; }
+      .float-btn { padding: 11px 13px; font-size: 0.78rem; }
+    }
   </style>
 </head>
 <body>

@@ -412,6 +412,132 @@
     .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
     .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
     .d5 { transition-delay: .5s; } .d6 { transition-delay: .6s; }
+
+    /* ══ MOBILE RESPONSIVE ══ */
+    @media (max-width: 768px) {
+      .hero { padding: 44px 0 52px; }
+      .hero-grid { gap: 32px; }
+      .hero-title { font-size: clamp(1.85rem, 8vw, 2.5rem); }
+      .hero-desc { font-size: 0.91rem; margin-bottom: 26px; }
+      .hero-actions .btn { padding: 11px 20px; font-size: 0.83rem; }
+
+      .stats-wrap { padding: 0 16px 48px; }
+      .stat-cell { padding: 18px 12px; gap: 10px; }
+      .stat-ico { width: 44px; height: 44px; font-size: 1.2rem; }
+      .stat-num { font-size: 1.3rem; }
+      .stat-lbl { font-size: 0.73rem; }
+
+      .products { padding: 52px 0 40px; }
+      .products-header { margin-bottom: 30px; }
+      .pcard { padding: 20px 12px 16px; }
+      .pcard-ico { width: 76px; height: 76px; }
+
+      .trusted { padding: 44px 0; }
+      .trusted-logos { gap: 10px; }
+      .tlogo-card { padding: 12px 16px; }
+      .tlogo-card img { height: 40px; max-width: 90px; }
+
+      .why-choose { padding: 52px 0; }
+      .why-choose-header { margin-bottom: 34px; }
+      .wcard { padding: 24px 18px 20px; }
+
+      .partners { padding: 48px 0; }
+      .partners-header { margin-bottom: 28px; }
+
+      .testimonials { padding: 52px 0; }
+      .testimonials-header { margin-bottom: 34px; }
+      .tcard { padding: 22px 18px; }
+
+      .cta-banner { padding: 48px 0; }
+      .cta-actions { flex-wrap: wrap; }
+      .cta-actions .btn { flex: 1 1 140px; justify-content: center; }
+
+      .contact { padding: 52px 0; }
+      .contact-grid { gap: 32px; }
+      .contact-form { padding: 26px 18px; }
+      .contact-form h3 { font-size: 1.1rem; margin-bottom: 20px; }
+      .form-group input,
+      .form-group select,
+      .form-group textarea { font-size: 16px; }
+
+      .footer-main { padding: 44px 0 32px; gap: 32px; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 14px; }
+
+      .hero { padding: 32px 0 40px; }
+      .hero-circle-1 { width: 220px; height: 220px; right: -60px; top: -60px; }
+      .hero-circle-2 { width: 140px; height: 140px; }
+      .hero-title { font-size: clamp(1.7rem, 9vw, 2.1rem); line-height: 1.15; }
+      .hero-desc { font-size: 0.87rem; margin-bottom: 22px; }
+      .hero-actions { gap: 8px; }
+      .hero-actions .btn { flex: 1 1 120px; justify-content: center; text-align: center; }
+      .hero-stats { gap: 16px; padding-top: 18px; margin-top: 20px; }
+      .hero-stat-num { font-size: 1.25rem; }
+      .hero-stat-label { font-size: 0.68rem; }
+
+      .stats-wrap { padding: 0 12px 36px; }
+      .stat-cell { padding: 14px 8px; gap: 7px; }
+      .stat-ico { width: 38px; height: 38px; font-size: 1rem; }
+      .stat-num { font-size: 1.15rem; }
+      .stat-lbl { font-size: 0.68rem; }
+
+      .products { padding: 40px 0 32px; }
+      .products-header { margin-bottom: 22px; }
+      .pcard { padding: 16px 10px 14px; }
+      .pcard-ico { width: 64px; height: 64px; margin-bottom: 10px; border-radius: var(--radius-sm); }
+      .pcard-name { font-size: 0.81rem; margin-bottom: 4px; }
+      .pcard-desc { font-size: 0.7rem; }
+      .pcard-arrow { width: 26px; height: 26px; font-size: 0.95rem; margin-top: 8px; }
+
+      .trusted { padding: 36px 0; }
+      .trusted-logos { gap: 8px; }
+      .tlogo-card { padding: 10px 12px; }
+      .tlogo-card img { height: 34px; max-width: 80px; }
+
+      .why-choose { padding: 40px 0; }
+      .why-choose-header { margin-bottom: 26px; }
+      .wcard { padding: 20px 14px 18px; }
+      .wcard-ico { width: 54px; height: 54px; font-size: 1.4rem; margin-bottom: 14px; }
+      .wcard h3 { font-size: 0.93rem; }
+      .wcard p { font-size: 0.79rem; }
+
+      .partners { padding: 36px 0; }
+      .partners-header { margin-bottom: 20px; }
+
+      .testimonials { padding: 40px 0; }
+      .testimonials-header { margin-bottom: 26px; }
+      .tcard { padding: 18px 14px; }
+      .tcard-text { font-size: 0.83rem; }
+
+      .cta-banner { padding: 36px 0; }
+      .cta-text h2 { font-size: clamp(1.25rem, 7vw, 1.7rem); }
+      .cta-text p { font-size: 0.85rem; }
+      .cta-actions { flex-direction: column; width: 100%; }
+      .cta-actions .btn { width: 100%; flex: none; }
+
+      .contact { padding: 40px 0; }
+      .contact-form { padding: 18px 13px; border-radius: var(--radius-lg); }
+      .contact-form h3 { font-size: 1rem; margin-bottom: 16px; }
+      .citem-ico { width: 38px; height: 38px; font-size: 1rem; }
+      .citem-value { font-size: 0.86rem; }
+
+      .footer-main { padding: 36px 0 24px; gap: 24px; }
+      .footer-logo { height: 38px; }
+      .footer-col h4 { font-size: 0.85rem; margin-bottom: 14px; }
+      .footer-col ul li a { font-size: 0.8rem; }
+
+      .floating-cta { bottom: 14px; right: 10px; gap: 7px; }
+      .float-btn { padding: 11px 13px; font-size: 0.78rem; }
+      .back-top { bottom: 14px; left: 10px; width: 40px; height: 40px; font-size: 1rem; }
+
+      .section-tag { font-size: 0.66rem; padding: 5px 11px; }
+      .section-title { font-size: clamp(1.35rem, 7vw, 1.85rem); }
+      .section-sub { font-size: 0.88rem; }
+
+      .btn { padding: 11px 20px; font-size: 0.84rem; min-height: 44px; }
+    }
   </style>
 </head>
 <body>
