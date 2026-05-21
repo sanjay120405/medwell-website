@@ -75,8 +75,27 @@
     .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); border-radius: 99px; transition: width .3s; }
     .nav-links a:hover::after, .nav-links a.active::after { width: 60%; }
     .nav-links a:hover, .nav-links a.active { color: var(--teal); }
-    .nav-cta { display: none; }
-    @media(min-width:900px){ .nav-cta { display: inline-flex; } }
+    .nav-cta { display: inline-flex; padding: 9px 15px; font-size: 0.78rem; flex-shrink: 0; }
+    @media(min-width:900px){ .nav-cta { padding: 12px 26px; font-size: 0.88rem; } }
+
+    /* ── NAVBAR MOBILE LAYOUT ── */
+    @media(max-width:899px){
+      .navbar { max-width: 100vw; }
+      .navbar-inner { gap: 10px; height: 62px; justify-content: flex-start; }
+      .logo-wrap img { height: 40px; }
+      .nav-cta { margin-left: auto; }
+      .hamburger { flex-shrink: 0; }
+      /* Hero: image on top, text below */
+      .hero-grid { gap: 20px; }
+      .hero-content { order: 2; }
+      .hero-visual { order: 1; }
+      .hfc-1, .hfc-2 { display: none; }
+    }
+    @media(max-width:480px){
+      .navbar-inner { gap: 6px; height: 56px; }
+      .logo-wrap img { height: 32px; }
+      .nav-cta { padding: 7px 11px; font-size: 0.72rem; }
+    }
 
     /* ── BUTTONS ── */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: var(--transition); white-space: nowrap; cursor: pointer; border: none; }
@@ -257,9 +276,8 @@
     .why-choose { padding: 84px 0; background: var(--off-white); }
     .why-choose-header { text-align: center; margin-bottom: 52px; }
     .why-choose-header .section-sub { margin: 10px auto 0; }
-    .why-cards { display: grid; grid-template-columns: 1fr; gap: 20px; }
-    @media(min-width:600px){ .why-cards { grid-template-columns: repeat(2,1fr); } }
-    @media(min-width:900px){ .why-cards { grid-template-columns: repeat(4,1fr); } }
+    .why-cards { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+    @media(min-width:900px){ .why-cards { grid-template-columns: repeat(4,1fr); gap: 20px; } }
     .wcard { background: var(--white); border-radius: var(--radius-lg); padding: 30px 22px 26px; text-align: center; border: 1.5px solid var(--border); transition: var(--transition); position: relative; overflow: hidden; }
     .wcard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), var(--orange)); transform: scaleX(0); transform-origin: left; transition: transform .4s; }
     .wcard:hover::before { transform: scaleX(1); }
@@ -312,9 +330,9 @@
     /* ── TESTIMONIALS ── */
     .testimonials { padding: 88px 0; background: var(--white); }
     .testimonials-header { text-align: center; margin-bottom: 50px; }
-    .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-    @media(min-width:600px){ .testimonials-grid { grid-template-columns: repeat(2,1fr); } }
-    @media(min-width:900px){ .testimonials-grid { grid-template-columns: repeat(3,1fr); } }
+    .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media(min-width:480px){ .testimonials-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(min-width:900px){ .testimonials-grid { grid-template-columns: repeat(3,1fr); gap: 20px; } }
     .tcard { background: var(--off-white); border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 28px 22px; transition: var(--transition); position: relative; }
     .tcard:hover { border-color: var(--teal); box-shadow: var(--shadow-md); transform: translateY(-4px); }
     .tcard::before { content: '\201C'; font-size: 5rem; font-family: Georgia, serif; color: var(--teal-light); position: absolute; top: 8px; right: 16px; line-height: 1; pointer-events: none; }
@@ -439,10 +457,20 @@
 
       .why-choose { padding: 52px 0; }
       .why-choose-header { margin-bottom: 34px; }
-      .wcard { padding: 24px 18px 20px; }
+      .why-cards { gap: 12px; }
+      .wcard { padding: 24px 14px 20px; }
+
+      .testimonials-grid { gap: 12px; }
+      .tcard { padding: 20px 14px; }
+      .tcard::before { font-size: 3.5rem; top: 4px; right: 10px; }
+      .tcard-text { font-size: 0.82rem; line-height: 1.6; }
 
       .partners { padding: 48px 0; }
       .partners-header { margin-bottom: 28px; }
+      .ppill { padding: 12px 16px; gap: 12px; min-width: 190px; border-radius: 12px; }
+      .ppill img { width: 54px; height: 54px; }
+      .ppill-name { font-size: 13px; }
+      .ppill-type { font-size: 11px; }
 
       .testimonials { padding: 52px 0; }
       .testimonials-header { margin-bottom: 34px; }
@@ -498,13 +526,27 @@
 
       .why-choose { padding: 40px 0; }
       .why-choose-header { margin-bottom: 26px; }
-      .wcard { padding: 20px 14px 18px; }
-      .wcard-ico { width: 54px; height: 54px; font-size: 1.4rem; margin-bottom: 14px; }
-      .wcard h3 { font-size: 0.93rem; }
-      .wcard p { font-size: 0.79rem; }
+      .why-cards { gap: 10px; }
+      .wcard { padding: 18px 10px 16px; }
+      .wcard-ico { width: 52px; height: 52px; font-size: 1.3rem; margin-bottom: 12px; }
+      .wcard h3 { font-size: 0.85rem; }
+      .wcard p { font-size: 0.75rem; line-height: 1.55; }
+
+      .testimonials-grid { gap: 10px; }
+      .tcard { padding: 16px 11px; }
+      .tcard::before { font-size: 2.8rem; }
+      .tcard-text { font-size: 0.79rem; line-height: 1.55; margin-bottom: 12px; }
+      .tcard-author { gap: 8px; }
+      .tcard-avatar { width: 34px; height: 34px; font-size: 0.76rem; }
+      .tcard-name { font-size: 0.8rem; }
+      .tcard-role { font-size: 0.68rem; }
 
       .partners { padding: 36px 0; }
       .partners-header { margin-bottom: 20px; }
+      .ppill { padding: 10px 13px; gap: 10px; min-width: 160px; border-radius: 10px; }
+      .ppill img { width: 44px; height: 44px; }
+      .ppill-name { font-size: 12px; }
+      .ppill-type { font-size: 10px; }
 
       .testimonials { padding: 40px 0; }
       .testimonials-header { margin-bottom: 26px; }
@@ -715,77 +757,77 @@
     </div>
     <div class="products-grid">
 
-      <div class="pcard reveal d1">
+      <a class="pcard reveal d1" href="products.html#surgical-instruments">
         <div class="pcard-ico">
           <img src="surgical instruments.png" alt="Surgical Instruments" />
         </div>
         <div class="pcard-name">Surgical Instruments</div>
         <div class="pcard-desc">High-grade stainless steel tools for all surgical specialties</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
-      <div class="pcard reveal d2">
+      <a class="pcard reveal d2" href="products.html#surgical-disposables">
         <div class="pcard-ico">
           <img src="Surgical Disposables.png" alt="Surgical Disposables" />
         </div>
         <div class="pcard-name">Surgical Disposables</div>
         <div class="pcard-desc">Sterile single-use items for infection prevention &amp; hygiene</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
-      <div class="pcard reveal d3">
+      <a class="pcard reveal d3" href="products.html#hospital-furniture">
         <div class="pcard-ico">
           <img src="Hospital Furniture.png" alt="Hospital Furniture" />
         </div>
         <div class="pcard-name">Hospital Furniture</div>
         <div class="pcard-desc">Beds, trolleys, stretchers and ward equipment</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
-      <div class="pcard reveal d4">
+      <a class="pcard reveal d4" href="products.html#rehabilitation-aids">
         <div class="pcard-ico">
           <img src="Patient Wheelchairs.png" alt="Rehabilitation Aids" />
         </div>
         <div class="pcard-name">Rehabilitation Aids</div>
         <div class="pcard-desc">Designed to support recovery, improve mobility</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
-      <div class="pcard reveal d1">
+      <a class="pcard reveal d1" href="products.html#home-care">
         <div class="pcard-ico">
           <img src="Home Care Products.png" alt="Home Care" />
         </div>
         <div class="pcard-name">Home Care</div>
         <div class="pcard-desc">Commodes, walkers, bath aids for home recovery</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
-      <div class="pcard reveal d2">
+      <a class="pcard reveal d2" href="products.html#bp-apparatus">
         <div class="pcard-ico">
           <img src="BP Apparatus.png" alt="BP Apparatus" />
         </div>
         <div class="pcard-name">BP Apparatus</div>
         <div class="pcard-desc">Digital and mercury sphygmomanometers</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
-      <div class="pcard reveal d3">
+      <a class="pcard reveal d3" href="products.html#ss-wares">
         <div class="pcard-ico">
           <img src="SS Wares.png" alt="SS Wares" />
         </div>
         <div class="pcard-name">SS Wares</div>
         <div class="pcard-desc">Stainless steel dressing drums, bowls and surgical trays</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
-      <div class="pcard reveal d4">
+      <a class="pcard reveal d4" href="products.html#hospital-needs">
         <div class="pcard-ico">
           <img src="Hospital Needs.png" alt="Hospital Needs" />
         </div>
         <div class="pcard-name">Hospital Needs</div>
         <div class="pcard-desc">OT supplies, lab equipment, sterilization systems</div>
-        <button class="pcard-arrow">›</button>
-      </div>
+        <span class="pcard-arrow">›</span>
+      </a>
 
     </div>
     <div style="text-align:center;margin-top:44px;" class="reveal">
@@ -1240,11 +1282,29 @@
 function handleSubmit(event){
   event.preventDefault();
 
-  const name = document.querySelector('input[type="text"]').value;
+  const name = document.querySelector('input[placeholder="Dr. John Smith"]').value;
+  const phone = document.querySelector('input[type="tel"]').value;
+  const email = document.querySelector('input[type="email"]').value;
+  const organisation = document.querySelector('input[placeholder="Hospital / Clinic Name"]').value;
+  const category = document.querySelector('select').value;
+  const requirements = document.querySelector('textarea').value;
 
-  const message = `New Enquiry from ${name}`;
+  const message =
+`*New Enquiry*
 
-  window.open(`https://wa.me/918056584041?text=${encodeURIComponent(message)}`);
+👤 Name: ${name}
+📞 Phone: ${phone}
+✉️ Email: ${email}
+🏥 Organisation: ${organisation}
+📦 Category: ${category}
+
+📝 Requirements:
+${requirements}`;
+
+  window.open(
+    `https://wa.me/918056584041?text=${encodeURIComponent(message)}`,
+    '_blank'
+  );
 }
 </script>
 
@@ -1253,15 +1313,28 @@ function handleSubmit(event){
   <div class="container">
     <div class="footer-main">
       <div>
-        <img src="medwell logo.png" alt="Medwell Logix" class="footer-logo" />
-        <p class="footer-tagline">Your trusted partner for comprehensive medical and surgical equipment supply. Quality products, competitive prices, pan-India delivery.</p>
+<img src="footerlogo.png" alt="Medwell Logix" class="footer-logo" style="width:150px; height:auto; filter:none; opacity:1; mix-blend-mode:normal;" />        <p class="footer-tagline">Your trusted partner for comprehensive medical and surgical equipment supply. Quality products, competitive prices, pan-India delivery.</p>
         <div class="footer-socials">
-          <a href="#" class="fsocial" aria-label="Facebook">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </a>
-          <a href="#" class="fsocial" aria-label="Instagram">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
+          <a href="https://www.facebook.com/profile.php?id=61552956532464" 
+   class="fsocial" 
+   aria-label="Facebook" 
+   target="_blank" 
+   rel="noopener noreferrer">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+  </svg>
+</a>
+          <a href="https://www.instagram.com/medwellsurgicals/" 
+   class="fsocial" 
+   aria-label="Instagram" 
+   target="_blank" 
+   rel="noopener noreferrer">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="2" y="2" width="20" height="20" rx="5"/>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+  </svg>
+</a>
           
           <a href="https://wa.me/918056584041" class="fsocial" aria-label="WhatsApp">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>

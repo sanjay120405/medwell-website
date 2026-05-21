@@ -71,8 +71,22 @@
     .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); border-radius: 99px; transition: width .3s; }
     .nav-links a:hover::after, .nav-links a.active::after { width: 60%; }
     .nav-links a:hover, .nav-links a.active { color: var(--teal); }
-    .nav-cta { display: none; }
-    @media(min-width:900px){ .nav-cta { display: inline-flex; } }
+    .nav-cta { display: inline-flex; padding: 9px 15px; font-size: 0.78rem; flex-shrink: 0; }
+    @media(min-width:900px){ .nav-cta { padding: 12px 26px; font-size: 0.88rem; } }
+
+    /* ── NAVBAR MOBILE LAYOUT ── */
+    @media(max-width:899px){
+      .navbar { max-width: 100vw; }
+      .navbar-inner { gap: 10px; height: 62px; justify-content: flex-start; }
+      .logo-wrap img { height: 40px; }
+      .nav-cta { margin-left: auto; }
+      .hamburger { flex-shrink: 0; }
+    }
+    @media(max-width:480px){
+      .navbar-inner { gap: 6px; height: 56px; }
+      .logo-wrap img { height: 32px; }
+      .nav-cta { padding: 7px 11px; font-size: 0.72rem; }
+    }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: var(--transition); white-space: nowrap; cursor: pointer; border: none; }
     .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 18px rgba(232,120,32,.35); }
     .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
@@ -367,7 +381,7 @@
   </nav>
   <div class="mobile-menu-footer">
     <a href="index.html#contact" class="btn btn-primary" onclick="closeMobileMenu()">Request a Quote</a>
-    <a href="tel:+919876543210" class="btn" style="border:2px solid var(--teal);color:var(--teal);" onclick="closeMobileMenu()">Call Us Now</a>
+    <a href="tel:+918056584041" class="btn" style="border:2px solid var(--teal);color:var(--teal);" onclick="closeMobileMenu()">Call Us Now</a>
   </div>
 </div>
 
@@ -421,7 +435,7 @@
   <div class="container">
     <div class="footer-main-bar">
       <div>
-        <img src="medwell logo.png" alt="Medwell Logix" class="footer-logo" />
+<img src="footerlogo.png" alt="Medwell Logix" class="footer-logo" style="width:150px; height:auto; filter:none; opacity:1; mix-blend-mode:normal;" />        
         <p class="footer-tagline" style="margin-top:10px;">Quality medical &amp; surgical equipment — pan-India delivery.</p>
       </div>
       
@@ -438,11 +452,11 @@
 
 <!-- FLOATING CTA -->
 <div class="floating-cta">
-  <a href="https://wa.me/919876543210" class="float-btn float-btn-wa" target="_blank" rel="noopener">
+  <a href="https://wa.me/918056584041" class="float-btn float-btn-wa" target="_blank" rel="noopener">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
     <span class="float-label">WhatsApp</span>
   </a>
-  <a href="tel:+919876543210" class="float-btn float-btn-ph">
+  <a href="tel:+918056584041" class="float-btn float-btn-ph">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
     <span class="float-label">Call Now</span>
   </a>
@@ -699,12 +713,20 @@
 
   // ── Init ──
   buildSidebar();
-  renderProducts(activeId);
 
-  // ── Load from URL hash if present ──
+  // ── Load from URL hash if present, otherwise default to first category ──
   const hash = location.hash.replace('#', '');
   if (hash && CATEGORIES.find(c => c.id === hash)) {
-    selectCategory(hash);
+    activeId = hash;
+    buildSidebar();
+    renderProducts(hash);
+    // Scroll mobile tab into view after short delay (DOM ready)
+    setTimeout(() => {
+      const activeBtn = document.querySelector(`.mob-cat-btn[data-id="${hash}"]`);
+      if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }, 100);
+  } else {
+    renderProducts(activeId);
   }
 </script>
 </body>
