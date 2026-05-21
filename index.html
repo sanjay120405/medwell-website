@@ -623,10 +623,21 @@
         <a href="#contact">Contact Us</a>
       </nav>
       <a href="https://wa.me/918056584041?text=I%20want%20to%20purchase" 
-   class="btn btn-primary nav-cta" 
+   class="btn btn-primary nav-cta custom-quote-btn" 
    target="_blank">
    Request Quote
 </a>
+
+<style>
+/* Mobile view only */
+@media (max-width: 768px) {
+  .custom-quote-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    margin-left: -8px;
+  }
+}
+</style>
 
 <button class="hamburger" id="hamburger" aria-label="Open menu">
   <span></span><span></span><span></span>
@@ -712,6 +723,15 @@
 </section>
 
 <!-- ══ STATS STRIP ══ -->
+<style>
+/* Mobile view only */
+@media (max-width: 768px) {
+  .stats-wrap {
+    margin-top: 8px;
+  }
+}
+</style>
+
 <div class="stats-wrap">
   <div class="stats-strip reveal">
     <div class="stats-grid">
@@ -722,6 +742,7 @@
           <div class="stat-lbl">Years Experience</div>
         </div>
       </div>
+
       <div class="stat-cell">
         <div class="stat-ico">👥</div>
         <div>
@@ -729,6 +750,7 @@
           <div class="stat-lbl">Customers</div>
         </div>
       </div>
+
       <div class="stat-cell">
         <div class="stat-ico">📦</div>
         <div>
@@ -736,6 +758,7 @@
           <div class="stat-lbl">Products</div>
         </div>
       </div>
+
       <div class="stat-cell">
         <div class="stat-ico">🎧</div>
         <div>
@@ -912,6 +935,13 @@
 </style>
 
 <!-- ══ PARTNERS (scrolling logos) ══ -->
+
+<style>
+.partners-track {
+  animation: scroll 15s linear infinite;
+}
+</style>
+
 <section class="partners" id="partners">
   <div class="container">
     <div class="partners-header">
@@ -1313,7 +1343,10 @@ ${requirements}`;
   <div class="container">
     <div class="footer-main">
       <div>
-<img src="footerlogo.png" alt="Medwell Logix" class="footer-logo" style="width:150px; height:auto; filter:none; opacity:1; mix-blend-mode:normal;" />        <p class="footer-tagline">Your trusted partner for comprehensive medical and surgical equipment supply. Quality products, competitive prices, pan-India delivery.</p>
+<div style="display:inline-block;border-radius:8px;padding:7px 14px;margin-bottom:16px;">
+  <img src="footerlogo.png" alt="Medwell Logix" style="height:60px;width:auto;display:block;" />
+</div>
+        <p class="footer-tagline">Your trusted partner for comprehensive medical and surgical equipment supply. Quality products, competitive prices, pan-India delivery.</p>
         <div class="footer-socials">
           <a href="https://www.facebook.com/profile.php?id=61552956532464" 
    class="fsocial" 
@@ -1385,10 +1418,11 @@ ${requirements}`;
     </div>
     <div class="footer-bottom">
       <p>© 2025 Medwell Logix Medical &amp; Surgicals. All rights reserved.</p>
+      <p style="font-weight: bold; text-align: center; margin-top: 10px;">
+  Made By Mahaan Technologies™</p>
       <div class="footer-bottom-links">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
-        <a href="#">Sitemap</a>
       </div>
     </div>
   </div>
