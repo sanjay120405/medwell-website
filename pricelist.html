@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Price List – Medwell Logix Medical &amp; Surgical Equipment</title>
+  <link rel="icon" type="image/png" href="medwell logo.png" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3VNPYNZYLS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3VNPYNZYLS');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal:        #0D7A7A;
+      --teal-dark:   #065A5A;
+      --teal-deeper: #044040;
+      --teal-light:  #E0F5F5;
+      --teal-mid:    #1A9090;
+      --orange:      #E87820;
+      --orange-dark: #C56010;
+      --orange-light:#FFF3E0;
+      --white:       #FFFFFF;
+      --off-white:   #F5FAFA;
+      --dark:        #0F2A2A;
+      --text:        #1A3A3A;
+      --text-muted:  #5A7A7A;
+      --border:      #C8E8E8;
+      --shadow-sm:   0 2px 12px rgba(13,122,122,.08);
+      --shadow-md:   0 8px 32px rgba(13,122,122,.14);
+      --shadow-lg:   0 20px 60px rgba(13,122,122,.18);
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   22px;
+      --radius-xl:   32px;
+      --transition:  0.3s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--off-white); overflow-x: hidden; line-height: 1.6; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--teal-light); }
+    ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 99px; }
+
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--white); box-shadow: 0 2px 20px rgba(13,122,122,.1); transition: var(--transition); }
+    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 20px; }
+    .logo-wrap { display: flex; align-items: center; flex-shrink: 0; }
+    .logo-wrap img { height: 50px; width: auto; }
+    .nav-links { display: none; align-items: center; gap: 4px; }
+    @media(min-width:900px){ .nav-links { display: flex; } }
+    .nav-links a { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--text); padding: 8px 14px; border-radius: var(--radius-sm); transition: var(--transition); position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); border-radius: 99px; transition: width .3s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 60%; }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+    .nav-cta { display: inline-flex; padding: 9px 15px; font-size: 0.78rem; flex-shrink: 0; }
+    @media(min-width:900px){ .nav-cta { padding: 12px 26px; font-size: 0.88rem; } }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: var(--transition); white-space: nowrap; cursor: pointer; border: none; }
+    .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 18px rgba(232,120,32,.35); }
+    .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+
+    /* MOBILE */
+    @media(max-width:899px){
+      .navbar-inner { gap: 12px; height: 70px; justify-content: flex-start; }
+      .logo-wrap img { height: 50px; }
+      .nav-cta { margin-left: auto; padding: 11px 20px; font-size: 0.84rem; }
+      .hamburger { flex-shrink: 0; }
+    }
+    @media(max-width:480px){
+      .navbar-inner { gap: 8px; height: 66px; }
+      .logo-wrap img { height: 44px; }
+      .nav-cta { padding: 10px 16px; font-size: 0.8rem; }
+    }
+
+    .hamburger { display: flex; flex-direction: column; gap: 6px; padding: 10px 11px; background: var(--teal-light); border-radius: var(--radius-sm); transition: var(--transition); border: none; }
+    @media(min-width:900px){ .hamburger { display: none; } }
+    .hamburger span { display: block; width: 26px; height: 2.5px; background: var(--teal); border-radius: 99px; transition: var(--transition); }
+    .hamburger.open span:nth-child(1){ transform: translateY(8.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3){ transform: translateY(-8.5px) rotate(-45deg); }
+    .mobile-menu { position: fixed; inset: 0; z-index: 999; background: var(--white); transform: translateX(100%); transition: transform .38s cubic-bezier(.4,0,.2,1); overflow-y: auto; padding: 24px; }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
+    .mobile-menu-close { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; cursor: pointer; border: none; }
+    .mobile-menu nav a { display: block; font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 500; color: var(--text); padding: 14px 0; border-bottom: 1px solid var(--border); transition: color .2s, padding-left .2s; }
+    .mobile-menu nav a:hover { color: var(--teal); padding-left: 8px; }
+    .mobile-menu-footer { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+    .mobile-menu-footer .btn { width: 100%; justify-content: center; }
+
+    /* PAGE HERO */
+    .page-hero { background: linear-gradient(135deg, var(--teal-deeper) 0%, var(--teal-dark) 60%, var(--teal) 100%); padding: 48px 0 52px; color: white; }
+    .page-hero-inner { display: flex; flex-direction: column; gap: 10px; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; opacity: .75; }
+    .breadcrumb a { color: white; }
+    .breadcrumb .current { color: var(--orange); }
+    .page-hero h1 { font-family: 'Poppins', sans-serif; font-size: clamp(1.7rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.2; }
+    .page-hero p { font-size: 0.95rem; opacity: .8; max-width: 500px; }
+
+    /* SEARCH SECTION */
+    .search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 24px 0; box-shadow: var(--shadow-sm); }
+    .search-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media(min-width:600px){ .search-grid { grid-template-columns: 1fr 1fr; } }
+    @media(min-width:900px){ .search-grid { grid-template-columns: 1fr 1fr 1fr auto; align-items: end; } }
+
+    .search-field { display: flex; flex-direction: column; gap: 6px; }
+    .search-field label { font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); letter-spacing: .05em; text-transform: uppercase; }
+    .search-input-wrap { position: relative; }
+    .search-input-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; }
+    .search-input { width: 100%; padding: 10px 12px 10px 38px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--off-white); transition: border-color .2s, box-shadow .2s; }
+    .search-input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,122,122,.12); background: var(--white); }
+    .search-input::placeholder { color: var(--text-muted); }
+
+    .search-btn { display: flex; align-items: center; gap: 8px; padding: 10px 22px; background: var(--teal); color: white; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; transition: background .2s, transform .2s; white-space: nowrap; }
+    .search-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .clear-btn { display: flex; align-items: center; gap: 6px; padding: 10px 18px; background: transparent; color: var(--text-muted); border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 500; border: 1.5px solid var(--border); cursor: pointer; transition: all .2s; }
+    .clear-btn:hover { border-color: var(--orange); color: var(--orange); }
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    @media(min-width:900px){ .btn-group { flex-direction: column; } }
+
+    /* RESULTS INFO */
+    .results-info { padding: 18px 0 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .results-count { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--teal); }
+    .results-count span { color: var(--text-muted); font-weight: 400; }
+
+    /* TABLE */
+    .table-section { padding: 0 0 60px; }
+    .table-wrap { overflow-x: auto; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); background: var(--white); margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    thead { background: linear-gradient(90deg, var(--teal-deeper), var(--teal-dark)); position: sticky; top: 0; z-index: 2; }
+    thead th { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: white; text-align: left; padding: 14px 16px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+    thead th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--teal-light); }
+    tbody tr:nth-child(even) { background: #f9fefe; }
+    tbody tr:nth-child(even):hover { background: var(--teal-light); }
+
+    tbody td { padding: 12px 16px; font-size: 0.84rem; color: var(--text); vertical-align: middle; }
+    td.code { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--teal); font-size: 0.82rem; }
+    td.product { font-weight: 500; color: var(--dark); }
+    td.molecule { color: var(--teal-dark); font-size: 0.82rem; }
+    td.category { }
+
+    .cat-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; font-family: 'Poppins', sans-serif; background: var(--teal-light); color: var(--teal); }
+
+    /* NO RESULTS */
+    .no-results { display: none; text-align: center; padding: 60px 20px; }
+    .no-results.show { display: block; }
+    .no-results-icon { font-size: 3rem; margin-bottom: 12px; }
+    .no-results h3 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    .no-results p { font-size: 0.88rem; color: var(--text-muted); }
+
+    /* HIGHLIGHT */
+    mark { background: rgba(232,120,32,.25); color: inherit; border-radius: 2px; padding: 0 1px; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="logo-wrap">
+        <img src="medwell logo.png" alt="Medwell Logix" />
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="pricelist.html" class="active">Price List</a>
+        <a href="index.html#about">About Us</a>
+        <a href="index.html#contact">Contact Us</a>
+      </nav>
+      <a href="index.html#contact" class="btn btn-primary nav-cta">Request Quote</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <img src="medwell logo.png" alt="Medwell Logix" style="height:44px;" />
+    <button class="mobile-menu-close" id="menuClose">&#10005;</button>
+  </div>
+  <nav>
+    <a href="index.html" onclick="closeMobileMenu()">Home</a>
+    <a href="products.html" onclick="closeMobileMenu()">Products</a>
+    <a href="pricelist.html" onclick="closeMobileMenu()">Price List</a>
+    <a href="index.html#about" onclick="closeMobileMenu()">About Us</a>
+    <a href="index.html#contact" onclick="closeMobileMenu()">Contact Us</a>
+  </nav>
+  <div class="mobile-menu-footer">
+    <a href="index.html#contact" class="btn btn-primary" onclick="closeMobileMenu()">Request a Quote</a>
+    <a href="tel:+918056584041" class="btn" style="border:2px solid var(--teal);color:var(--teal);" onclick="closeMobileMenu()">Call Us Now</a>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>&#x203A;</span>
+        <span class="current">Price List</span>
+      </div>
+      <h1>Product List</h1>
+      <p>Browse our complete catalogue of medical &amp; surgical equipment</p>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH SECTION -->
+<div class="search-section">
+  <div class="container">
+    <div class="search-grid">
+      <div class="search-field">
+        <label for="searchProduct">Product</label>
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="searchProduct" class="search-input" type="text" placeholder="Search by product name..." autocomplete="off" />
+        </div>
+      </div>
+      <div class="search-field">
+        <label for="searchCompany">Company</label>
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <input id="searchCompany" class="search-input" type="text" placeholder="Search by company..." autocomplete="off" />
+        </div>
+      </div>
+      <div class="search-field">
+        <label for="searchMolecule">Molecule</label>
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          <input id="searchMolecule" class="search-input" type="text" placeholder="Search by molecule..." autocomplete="off" />
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="search-btn" id="searchBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Search
+        </button>
+        <button class="clear-btn" id="clearBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLE SECTION -->
+<div class="table-section">
+  <div class="container">
+    <div class="results-info">
+      <div class="results-count" id="resultsCount">Showing <span id="countNum">87</span> of 87 products</div>
+    </div>
+    <div class="table-wrap">
+      <table id="priceTable">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Product</th>
+            <th>Packing</th>
+            <th>Company</th>
+            <th>Molecule</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div class="no-results" id="noResults">
+        <div class="no-results-icon">&#128269;</div>
+        <h3>No products found</h3>
+        <p>Try adjusting your search terms or clear the filters.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PRODUCTS = [
+    [10101,"EC 1800 DIGITAL STATUREMETER","1S","EASYCARE","HEIGHT MACHINE","SURGICALS"],
+    [10102,"EC 1080 MANUAL HEIGHT MEASURE","1S","EASYCARE","HEIGHT MACHINE","SURGICALS"],
+    [10103,"EC 3141 SMART BODY SCALE","1S","EASYCARE","WEIGHING SCALE","SURGICALS"],
+    [10131,"EC 1008 HOTWATER BAG 2LIT","1","EASYCARE","HOT AND COLD","SURGICALS"],
+    [10132,"EC 1008 HOTWATER BAG 2LIT","1","EASYCARE","HOT AND COLD","SURGICALS"],
+    [10134,"EC 1807 ELECTRIC HEATING WATER PAD (WITHOUT COVER)","1S","EASYCARE","HEATING PAD","SURGICALS"],
+    [10135,"EC 1870 ELECTRIC HEAT GEL PAD WITH COVER","1S","EASYCARE","HEATING PAD","SURGICALS"],
+    [10151,"EC 3402A 3 IN 1 BABY AND CHILD AND ADULT WEIGHING SCALE","1","EASYCARE","WEIGHING SCALE","SURGICALS"],
+    [10152,"EC 3402 BABY AND CHILD WEIGHING SCALE","1","EASYCARE","WEIGHING SCALE","SURGICALS"],
+    [10153,"EC 3024 WEIGHING SCALE W/H","1S","EASYCARE","WEIGHING SCALE","SURGICALS"],
+    [10154,"EC 3033 WEIGHING SCALE (WOH)","1S","EASYCARE","WEIGHING SCALE","SURGICALS"],
+    [10155,"EC 3321 WH WEIGHING SCALE","1S","EASYCARE","WEIGHING SCALE","SURGICALS"],
+    [10171,"EC STRETCHER MS CHROME 2FOLD B","1S","EASYCARE","WALKER","SURGICALS"],
+    [10104,"EC 1035 X-RAY VIEWER","1S","EASYCARE","X-RAY VIEWER","SURGICALS"],
+    [10105,"EC7060D-4 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS"],
+    [10106,"EC7060D-6 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS"],
+    [10107,"EC7060C4 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS"],
+    [10108,"EC7060C-6 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS"],
+    [10109,"EC7060C-6 COMMODE RAISER (WOL)","1S","EASYCARE","COMMODE","SURGICALS"],
+    [10110,"EC 2610 OTOSCOPE","1S","EASYCARE","OTOSCOPE","SURGICALS"],
+    [10111,"EC 700 BR WHEEL CHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10112,"EC DIAPER TAPE M","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10113,"EC DIAPER TAPE L","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10114,"EC DIAPER TAPE XL","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10115,"EC DIAPER TAPE XXL","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10116,"EC DIAPER PANT M","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10117,"EC DIAPER PANT L","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10118,"EC DIAPER PANT XL","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10119,"EC DIAPER PANT XXL","10S","EASYCARE","DIAPER","SURGICALS"],
+    [10120,"EC 700 WHEEL CHAIR (MAG WHEEL)","1S","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10121,"EC 6026 AIRBED MATTRESS","1","EASYCARE","AIR BED","SURGICALS"],
+    [10122,"EC 7050 ENGLISH PORTABLE TOILET","1","EASYCARE","COMMODE","SURGICALS"],
+    [10123,"EC 809 WHEEL CHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10124,"EC 809Y WHEEL CHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10125,"EC 7072 NEBULIZER","1S","EASYCARE","NEBULIZER","SURGICALS"],
+    [10126,"EC 9009 DIGITAL BP","1S","EASYCARE","BP MONITOR","SURGICALS"],
+    [10127,"EC 6027 AIRBED BUBBLE","1S","EASYCARE","AIR BED","SURGICALS"],
+    [10128,"EC 6012 AIRBED TUBULAR","1S","EASYCARE","AIR BED","SURGICALS"],
+    [10129,"EC ROUND BLOOD LANCET","1","EASYCARE","LANCETS","SURGICALS"],
+    [10130,"EC9002L WHEEL CHAIR","1S","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10133,"EC 1890 HEATING PAD","1S","EASYCARE","HEATING PAD","SURGICALS"],
+    [10136,"EC 5023 IR THERMOMETER (PAEDIATRIC)","1S","EASYCARE","THERMOMETER","SURGICALS"],
+    [10137,"EC 5121 IR THERMOMETER (ADULT)","1S","EASYCARE","THERMOMETER","SURGICALS"],
+    [10138,"EC 7207 NEBULISER GREY","1S","EASYCARE","NEBULIZER","SURGICALS"],
+    [10139,"EC 7720 NEBULISER BIG","1S","EASYCARE","NEBULIZER","SURGICALS"],
+    [10140,"EC 7022 NEBULISER SMALL","1S","EASYCARE","NEBULIZER","SURGICALS"],
+    [10141,"EC7225 NEBULIZER IP","1S","EASYCARE","NEBULIZER","SURGICALS"],
+    [10142,"EC 2511 PULSE OXIMETER","1S","EASYCARE","PULSE OXIMETER","SURGICALS"],
+    [10143,"EC 2970 G PULSE OXIMETER","1","EASYCARE","PULSE OXIMETER","SURGICALS"],
+    [10144,"EC 9270 ANEROID SPHYGMOMANOMETER","1S","EASYCARE","BP MONITOR","SURGICALS"],
+    [10145,"EC9027 MERCURY FREE SPHYGMO","1S","EASYCARE","BP MONITOR","SURGICALS"],
+    [10146,"EC 9013 DIGITAL BP MONITOR ARM","1S","EASYCARE","BP MONITOR","SURGICALS"],
+    [10147,"EC-9022 DIGITAL BP MONITOR ARM","1S","EASYCARE","BP MONITOR","SURGICALS"],
+    [10148,"EC 9031 BP MONITOR","1S","EASYCARE","BP MONITOR","SURGICALS"],
+    [10149,"EC 036 DELUX STETHOSCOPE","1S","EASYCARE","STETHOSCOPE","SURGICALS"],
+    [10150,"EC 045 DUAL HEAD STETHOSCOPE","1S","EASYCARE","STETHOSCOPE","SURGICALS"],
+    [10156,"EC 596 COMMODE CHAIR (SS)","1S","EASYCARE","COMMODE CHAIR","SURGICALS"],
+    [10157,"EC 660 INVALID COMMODE CHAIR (MS)","1","EASYCARE","COMMODE CHAIR","SURGICALS"],
+    [10158,"EC 895 INVALID COMMODE CHAIR (SS)","1S","EASYCARE","COMMODE CHAIR","SURGICALS"],
+    [10159,"EC860 MS COMMODE CHAIR","1S","EASYCARE","COMMODE CHAIR","SURGICALS"],
+    [10160,"EC 794 COMMODE CHAIR (SS)","1S","EASYCARE","COMMODE CHAIR","SURGICALS"],
+    [10161,"EC 7702 SUCTION MACHINE","1S","EASYCARE","SUCTION MACHINE","SURGICALS"],
+    [10162,"EC 7742 SUCTION MACHINE","1S","EASYCARE","SUCTION MACHINE","SURGICALS"],
+    [10163,"EC 7A-23D ELECTRIC SUCTION APPARATUS","1","EASYCARE","SUCTION MACHINE","SURGICALS"],
+    [10164,"EC 7040 ENGLISH PORTABLE TOILET","1","EASYCARE","COMMODE","SURGICALS"],
+    [10165,"EC 9072 BP MONITOR DIGITAL (AUTO)","1S","EASYCARE","BP APPARATUS","SURGICALS"],
+    [10166,"EC 912 L WALKING FRAME WHEEL","1S","EASYCARE","WALKER","SURGICALS"],
+    [10167,"EC 913 L WALKING FRAME GREY","1S","EASYCARE","WALKER","SURGICALS"],
+    [10168,"EC905 WALKER","1S","EASYCARE","WALKER","SURGICALS"],
+    [10169,"EC 909 WALKER","1S","EASYCARE","WALKER","SURGICALS"],
+    [10170,"EC 913 L WALKING FRAME BROWN","1S","EASYCARE","WALKER","SURGICALS"],
+    [10172,"EC 924 WALKING FRAME STICK SINGLE LEG","1","EASYCARE","WALKING STICK","SURGICALS"],
+    [10173,"EC 926 3 LEG WALKING STICK","1","EASYCARE","WALKING STICK","SURGICALS"],
+    [10174,"EC 932 4 LEG WALKING STICK","1","EASYCARE","WALKING STICK","SURGICALS"],
+    [10175,"EC 924 4 LEG WALKING STICK","1","EASYCARE","WALKING STICK","SURGICALS"],
+    [10176,"EC 920 ALM WALKING STICK","1S","EASYCARE","WALKING STICK","SURGICALS"],
+    [10177,"EC 1143 UNDERPAD","10S","EASYCARE","UNDERPAD","SURGICALS"],
+    [10178,"EC 609 GC COMMODE WHEEL CHAIR","1S","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10179,"EC 878 CSS COMMODE STOOL","1S","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10180,"EC 797 L SHOWER STOOL","1S","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10181,"EC 696 COMMODE WHEEL CHAIR","1S","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10182,"EC716S ELECTRIC WHEELCHAIR (EL45CM)","1","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10183,"EC 863 LAJ FOLDABLE TRAVEL WHEELCHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10184,"EC 958LC WHEEL CHAIR-36","1S","EASYCARE","WHEEL CHAIR","SURGICALS"],
+    [10185,"EC BLOOD LANCET FLAT","100S","EASYCARE","LANCETS","SURGICALS"],
+    [10186,"EC 2016 FETAL DOPPLER","1S","EASYCARE","FETAL DOPPLER","SURGICALS"],
+    [10187,"EC 2070 FETAL DOPPLER","1S","EASYCARE","FETAL DOPPLER","SURGICALS"]
+  ];
+
+  const TOTAL = PRODUCTS.length;
+
+  function escape(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function highlight(text, term) {
+    if (!term) return escape(text);
+    const escaped = escape(text);
+    if (!term) return escaped;
+    const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    return escaped.replace(re, '<mark>$1</mark>');
+  }
+
+  function renderTable(rows, terms) {
+    const tbody = document.getElementById('tableBody');
+    const noResults = document.getElementById('noResults');
+    const countNum = document.getElementById('countNum');
+
+    if (rows.length === 0) {
+      tbody.innerHTML = '';
+      noResults.classList.add('show');
+      countNum.textContent = '0';
+      return;
+    }
+
+    noResults.classList.remove('show');
+    countNum.textContent = rows.length;
+
+    tbody.innerHTML = rows.map(p => `
+      <tr>
+        <td class="code">${escape(p[0])}</td>
+        <td class="product">${highlight(p[1], terms.product)}</td>
+        <td>${escape(p[2].trim())}</td>
+        <td>${highlight(p[3], terms.company)}</td>
+        <td class="molecule">${highlight(p[4], terms.molecule)}</td>
+        <td class="category"><span class="cat-badge">${escape(p[5])}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  function getTerms() {
+    return {
+      product:  document.getElementById('searchProduct').value.trim(),
+      company:  document.getElementById('searchCompany').value.trim(),
+      molecule: document.getElementById('searchMolecule').value.trim()
+    };
+  }
+
+  function applyFilter() {
+    const t = getTerms();
+    const filtered = PRODUCTS.filter(p => {
+      const matchProduct  = !t.product  || p[1].toLowerCase().includes(t.product.toLowerCase());
+      const matchCompany  = !t.company  || p[3].toLowerCase().includes(t.company.toLowerCase());
+      const matchMolecule = !t.molecule || p[4].toLowerCase().includes(t.molecule.toLowerCase());
+      return matchProduct && matchCompany && matchMolecule;
+    });
+    renderTable(filtered, t);
+  }
+
+  function clearAll() {
+    document.getElementById('searchProduct').value = '';
+    document.getElementById('searchCompany').value = '';
+    document.getElementById('searchMolecule').value = '';
+    renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
+  }
+
+  document.getElementById('searchBtn').addEventListener('click', applyFilter);
+  document.getElementById('clearBtn').addEventListener('click', clearAll);
+
+  ['searchProduct','searchCompany','searchMolecule'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') applyFilter();
+    });
+    document.getElementById(id).addEventListener('input', applyFilter);
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.getElementById('menuClose').addEventListener('click', closeMobileMenu);
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Initial render
+  renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
+</script>
+</body>
+</html>
