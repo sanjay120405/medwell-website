@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Price List – Medwell Logix Medical &amp; Surgical Equipment</title>
+  <title>Customer List – Medwell Logix Medical &amp; Surgical Equipment</title>
   <link rel="icon" type="image/png" href="medwell logo.png" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3VNPYNZYLS"></script>
   <script>
@@ -139,7 +139,7 @@
     /* TABLE */
     .table-section { padding: 0 0 60px; }
     .table-wrap { overflow-x: auto; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); background: var(--white); margin-top: 4px; }
-    table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
     thead { background: linear-gradient(90deg, var(--teal-deeper), var(--teal-dark)); position: sticky; top: 0; z-index: 2; }
     thead th { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: white; text-align: left; padding: 14px 16px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
     thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
@@ -152,18 +152,17 @@
     tbody tr:nth-child(even):hover { background: var(--teal-light); }
 
     tbody td { padding: 12px 16px; font-size: 0.84rem; color: var(--text); vertical-align: middle; }
-    td.code { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--teal); font-size: 0.82rem; }
-    td.product { font-weight: 500; color: var(--dark); }
-    td.molecule { color: var(--teal-dark); font-size: 0.82rem; }
-    td.category { }
+    td.name { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--teal); }
+    td.institution { font-weight: 500; color: var(--dark); }
+    td.contact-num { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--teal-dark); white-space: nowrap; }
+    td.location { color: var(--text-muted); font-size: 0.82rem; }
+    td.address { font-size: 0.82rem; max-width: 200px; }
 
-    .cat-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; font-family: 'Poppins', sans-serif; background: var(--teal-light); color: var(--teal); }
-    td.price { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--teal-dark); white-space: nowrap; }
-    td.tax { color: var(--text-muted); font-size: 0.82rem; text-align: center; }
-    td.mrp { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--orange-dark); white-space: nowrap; }
-    thead th.right { text-align: right; }
-    thead th:nth-child(7), thead th:nth-child(9) { text-align: right; }
-    td.price, td.mrp { text-align: right; }
+    .type-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; font-family: 'Poppins', sans-serif; white-space: nowrap; }
+    .type-dealer    { background: #E0F5F5; color: var(--teal); }
+    .type-hospital  { background: #FFF3E0; color: var(--orange-dark); }
+    .type-medical   { background: #EEF5E0; color: #5A7A2A; }
+    .type-other     { background: #F0F0F0; color: #5A5A7A; }
 
     /* NO RESULTS */
     .no-results { display: none; text-align: center; padding: 60px 20px; }
@@ -172,15 +171,15 @@
     .no-results h3 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
     .no-results p { font-size: 0.88rem; color: var(--text-muted); }
 
-    /* HIGHLIGHT */
-    mark { background: rgba(232,120,32,.25); color: inherit; border-radius: 2px; padding: 0 1px; }
-
     /* PAGINATION */
     .pagination { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 24px 0 8px; }
     .page-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 24px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; border: 2px solid var(--teal); color: var(--teal); background: var(--white); cursor: pointer; transition: all .2s; }
     .page-btn:hover:not(:disabled) { background: var(--teal); color: var(--white); transform: translateY(-1px); }
     .page-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
     .page-info { font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); min-width: 90px; text-align: center; }
+
+    /* HIGHLIGHT */
+    mark { background: rgba(232,120,32,.25); color: inherit; border-radius: 2px; padding: 0 1px; }
 
     /* COPY PROTECTION */
     body, table, td, th, .page-hero, .search-section, .table-section {
@@ -204,8 +203,8 @@
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="products.html">Products</a>
-        <a href="pricelist.html" class="active">Price List</a>
-        <a href="customerlist.html">Customer List</a>
+        <a href="pricelist.html">Price List</a>
+        <a href="customerlist.html" class="active">Customer List</a>
         <a href="index.html#about">About Us</a>
         <a href="index.html#contact">Contact Us</a>
       </nav>
@@ -244,10 +243,10 @@
       <div class="breadcrumb">
         <a href="index.html">Home</a>
         <span>&#x203A;</span>
-        <span class="current">Price List</span>
+        <span class="current">Customer List</span>
       </div>
-      <h1>Product List</h1>
-      <p>Browse our complete catalogue of medical &amp; surgical equipment</p>
+      <h1>Customer List</h1>
+      <p>Our network of dealers, hospitals &amp; medical shops</p>
     </div>
   </div>
 </div>
@@ -257,24 +256,24 @@
   <div class="container">
     <div class="search-grid">
       <div class="search-field">
-        <label for="searchProduct">Product</label>
+        <label for="searchName">Name</label>
         <div class="search-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="searchProduct" class="search-input" type="text" placeholder="Search by product name..." autocomplete="off" />
+          <input id="searchName" class="search-input" type="text" placeholder="Search by name..." autocomplete="off" />
         </div>
       </div>
       <div class="search-field">
-        <label for="searchCompany">Company</label>
+        <label for="searchLocation">Location</label>
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <input id="searchLocation" class="search-input" type="text" placeholder="Search by location..." autocomplete="off" />
+        </div>
+      </div>
+      <div class="search-field">
+        <label for="searchInstitution">Institution</label>
         <div class="search-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          <input id="searchCompany" class="search-input" type="text" placeholder="Search by company..." autocomplete="off" />
-        </div>
-      </div>
-      <div class="search-field">
-        <label for="searchMolecule">Molecule</label>
-        <div class="search-input-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-          <input id="searchMolecule" class="search-input" type="text" placeholder="Search by molecule..." autocomplete="off" />
+          <input id="searchInstitution" class="search-input" type="text" placeholder="Search by institution..." autocomplete="off" />
         </div>
       </div>
       <div class="btn-group">
@@ -295,28 +294,28 @@
 <div class="table-section">
   <div class="container">
     <div class="results-info">
-      <div class="results-count" id="resultsCount">Showing <span id="countNum">87</span> of 87 products</div>
+      <div class="results-count" id="resultsCount">Showing <span id="countNum">0</span> customers</div>
     </div>
     <div class="table-wrap">
-      <table id="priceTable">
+      <table id="customerTable">
         <thead>
           <tr>
-            <th>Code</th>
-            <th>Product</th>
-            <th>Packing</th>
-            <th>Company</th>
-            <th>Molecule</th>
-            <th>Category</th>
-            <th>Sales Rate (&#8377;)</th>
-            <th>Tax (%)</th>
-            <th>MRP (&#8377;)</th>
+            <th>#</th>
+            <th>Name</th>
+            <th>Executive</th>
+            <th>Type</th>
+            <th>Institution Name</th>
+            <th>Contact Name</th>
+            <th>Contact Number</th>
+            <th>Location</th>
+            <th>Address</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
       </table>
       <div class="no-results" id="noResults">
         <div class="no-results-icon">&#128269;</div>
-        <h3>No products found</h3>
+        <h3>No customers found</h3>
         <p>Try adjusting your search terms or clear the filters.</p>
       </div>
     </div>
@@ -335,104 +334,18 @@
 </div>
 
 <script>
-  const PRODUCTS = [
-    [10101,"EC 1800 DIGITAL STATUREMETER","1S","EASYCARE","HEIGHT MACHINE","SURGICALS",1100,18,2999],
-    [10102,"EC 1080 MANUAL HEIGHT MEASURE","1S","EASYCARE","HEIGHT MACHINE","SURGICALS",183.43,18,499],
-    [10103,"EC 3141 SMART BODY SCALE","1S","EASYCARE","WEIGHING SCALE","SURGICALS",1265,18,6999],
-    [10131,"EC 1008 HOTWATER BAG 2LIT","1","EASYCARE","HOT AND COLD","SURGICALS",93.5,18,499],
-    [10132,"EC 1008 HOTWATER BAG 2LIT","1","EASYCARE","HOT AND COLD","SURGICALS",93.5,18,499],
-    [10134,"EC 1807 ELECTRIC HEATING WATER PAD (WITHOUT COVER)","1S","EASYCARE","HEATING PAD","SURGICALS",126.5,18,699],
-    [10135,"EC 1870 ELECTRIC HEAT GEL PAD WITH COVER","1S","EASYCARE","HEATING PAD","SURGICALS",148.5,18,999],
-    [10151,"EC 3402A 3 IN 1 BABY AND CHILD AND ADULT WEIGHING SCALE","1","EASYCARE","WEIGHING SCALE","SURGICALS",1320,18,6399],
-    [10152,"EC 3402 BABY AND CHILD WEIGHING SCALE","1","EASYCARE","WEIGHING SCALE","SURGICALS",2145,18,6799],
-    [10153,"EC 3024 WEIGHING SCALE W/H","1S","EASYCARE","WEIGHING SCALE","SURGICALS",825,18,2399],
-    [10154,"EC 3033 WEIGHING SCALE (WOH)","1S","EASYCARE","WEIGHING SCALE","SURGICALS",770,18,2199],
-    [10155,"EC 3321 WH WEIGHING SCALE","1S","EASYCARE","WEIGHING SCALE","SURGICALS",1155,18,4999],
-    [10171,"EC STRETCHER MS CHROME 2FOLD B","1S","EASYCARE","WALKER","SURGICALS",1980,18,6999],
-    [10104,"EC 1035 X-RAY VIEWER","1S","EASYCARE","X-RAY VIEWER","SURGICALS",990,5,4499],
-    [10105,"EC7060D-4 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS",1072.5,5,2999],
-    [10106,"EC7060D-6 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS",1210,5,3099],
-    [10107,"EC7060C4 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS",880,5,2699],
-    [10108,"EC7060C-6 COMMODE RAISER","1S","EASYCARE","COMMODE","SURGICALS",0,5,0],
-    [10109,"EC7060C-6 COMMODE RAISER (WOL)","1S","EASYCARE","COMMODE","SURGICALS",990,5,2799],
-    [10110,"EC 2610 OTOSCOPE","1S","EASYCARE","OTOSCOPE","SURGICALS",825,5,2811.56],
-    [10111,"EC 700 BR WHEEL CHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS",3355,5,0],
-    [10112,"EC DIAPER TAPE M","10S","EASYCARE","DIAPER","SURGICALS",187,5,599],
-    [10113,"EC DIAPER TAPE L","10S","EASYCARE","DIAPER","SURGICALS",198,5,699],
-    [10114,"EC DIAPER TAPE XL","10S","EASYCARE","DIAPER","SURGICALS",209,5,799],
-    [10115,"EC DIAPER TAPE XXL","10S","EASYCARE","DIAPER","SURGICALS",236.5,5,899],
-    [10116,"EC DIAPER PANT M","10S","EASYCARE","DIAPER","SURGICALS",203.5,5,699],
-    [10117,"EC DIAPER PANT L","10S","EASYCARE","DIAPER","SURGICALS",214.5,5,749],
-    [10118,"EC DIAPER PANT XL","10S","EASYCARE","DIAPER","SURGICALS",225.5,5,799],
-    [10119,"EC DIAPER PANT XXL","10S","EASYCARE","DIAPER","SURGICALS",247.5,5,795.94],
-    [10120,"EC 700 WHEEL CHAIR (MAG WHEEL)","1S","EASYCARE","WHEEL CHAIR","SURGICALS",3080,5,0],
-    [10121,"EC 6026 AIRBED MATTRESS","1","EASYCARE","AIR BED","SURGICALS",1023,5,4590],
-    [10122,"EC 7050 ENGLISH PORTABLE TOILET","1","EASYCARE","COMMODE","SURGICALS",1265,5,0],
-    [10123,"EC 809 WHEEL CHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS",5376.25,5,13499],
-    [10124,"EC 809Y WHEEL CHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS",6160,5,16999],
-    [10125,"EC 7072 NEBULIZER","1S","EASYCARE","NEBULIZER","SURGICALS",627,5,1785],
-    [10126,"EC 9009 DIGITAL BP","1S","EASYCARE","BP MONITOR","SURGICALS",687.5,5,1545.94],
-    [10127,"EC 6027 AIRBED BUBBLE","1S","EASYCARE","AIR BED","SURGICALS",1045,5,0],
-    [10128,"EC 6012 AIRBED TUBULAR","1S","EASYCARE","AIR BED","SURGICALS",4290,5,9990],
-    [10129,"EC ROUND BLOOD LANCET","1","EASYCARE","LANCETS","SURGICALS",39.6,5,399],
-    [10130,"EC9002L WHEEL CHAIR","1S","EASYCARE","WHEEL CHAIR","SURGICALS",5335,5,0],
-    [10133,"EC 1890 HEATING PAD","1S","EASYCARE","HEATING PAD","SURGICALS",506,5,1175],
-    [10136,"EC 5023 IR THERMOMETER (PAEDIATRIC)","1S","EASYCARE","THERMOMETER","SURGICALS",715,5,3499],
-    [10137,"EC 5121 IR THERMOMETER (ADULT)","1S","EASYCARE","THERMOMETER","SURGICALS",605,5,2499],
-    [10138,"EC 7207 NEBULISER GREY","1S","EASYCARE","NEBULIZER","SURGICALS",715,5,1664.06],
-    [10139,"EC 7720 NEBULISER BIG","1S","EASYCARE","NEBULIZER","SURGICALS",797.5,5,1753.13],
-    [10140,"EC 7022 NEBULISER SMALL","1S","EASYCARE","NEBULIZER","SURGICALS",605,5,1875],
-    [10141,"EC7225 NEBULIZER IP","1S","EASYCARE","NEBULIZER","SURGICALS",632.5,5,1500],
-    [10142,"EC 2511 PULSE OXIMETER","1S","EASYCARE","PULSE OXIMETER","SURGICALS",522.5,5,2811.56],
-    [10143,"EC 2970 G PULSE OXIMETER","1","EASYCARE","PULSE OXIMETER","SURGICALS",605,5,2811.56],
-    [10144,"EC 9270 ANEROID SPHYGMOMANOMETER","1S","EASYCARE","BP MONITOR","SURGICALS",550,5,1175],
-    [10145,"EC9027 MERCURY FREE SPHYGMO","1S","EASYCARE","BP MONITOR","SURGICALS",1650,5,3280.31],
-    [10146,"EC 9013 DIGITAL BP MONITOR ARM","1S","EASYCARE","BP MONITOR","SURGICALS",731.5,5,2340],
-    [10147,"EC-9022 DIGITAL BP MONITOR ARM","1S","EASYCARE","BP MONITOR","SURGICALS",632.5,5,1545.94],
-    [10148,"EC 9031 BP MONITOR","1S","EASYCARE","BP MONITOR","SURGICALS",742.5,5,2430],
-    [10149,"EC 036 DELUX STETHOSCOPE","1S","EASYCARE","STETHOSCOPE","SURGICALS",236.5,5,749.06],
-    [10150,"EC 045 DUAL HEAD STETHOSCOPE","1S","EASYCARE","STETHOSCOPE","SURGICALS",385,5,1096.88],
-    [10156,"EC 596 COMMODE CHAIR (SS)","1S","EASYCARE","COMMODE CHAIR","SURGICALS",2255,5,5999],
-    [10157,"EC 660 INVALID COMMODE CHAIR (MS)","1","EASYCARE","COMMODE CHAIR","SURGICALS",990,5,2149],
-    [10158,"EC 895 INVALID COMMODE CHAIR (SS)","1S","EASYCARE","COMMODE CHAIR","SURGICALS",1375,5,3599],
-    [10159,"EC860 MS COMMODE CHAIR","1S","EASYCARE","COMMODE CHAIR","SURGICALS",825,5,2199],
-    [10160,"EC 794 COMMODE CHAIR (SS)","1S","EASYCARE","COMMODE CHAIR","SURGICALS",2145,5,5499],
-    [10161,"EC 7702 SUCTION MACHINE","1S","EASYCARE","SUCTION MACHINE","SURGICALS",2695,5,8717.81],
-    [10162,"EC 7742 SUCTION MACHINE","1S","EASYCARE","SUCTION MACHINE","SURGICALS",2695,5,8717.81],
-    [10163,"EC 7A-23D ELECTRIC SUCTION APPARATUS","1","EASYCARE","SUCTION MACHINE","SURGICALS",8360,5,16152.19],
-    [10164,"EC 7040 ENGLISH PORTABLE TOILET","1","EASYCARE","COMMODE","SURGICALS",1210,5,0],
-    [10165,"EC 9072 BP MONITOR DIGITAL (AUTO)","1S","EASYCARE","BP APPARATUS","SURGICALS",1925,5,3740],
-    [10166,"EC 912 L WALKING FRAME WHEEL","1S","EASYCARE","WALKER","SURGICALS",1320,5,3999],
-    [10167,"EC 913 L WALKING FRAME GREY","1S","EASYCARE","WALKER","SURGICALS",1210,5,3499],
-    [10168,"EC905 WALKER","1S","EASYCARE","WALKER","SURGICALS",671,5,1850],
-    [10169,"EC 909 WALKER","1S","EASYCARE","WALKER","SURGICALS",632.5,5,1749],
-    [10170,"EC 913 L WALKING FRAME BROWN","1S","EASYCARE","WALKER","SURGICALS",1320,5,4499],
-    [10172,"EC 924 WALKING FRAME STICK SINGLE LEG","1","EASYCARE","WALKING STICK","SURGICALS",407,5,1099],
-    [10173,"EC 926 3 LEG WALKING STICK","1","EASYCARE","WALKING STICK","SURGICALS",407,5,1099],
-    [10174,"EC 932 4 LEG WALKING STICK","1","EASYCARE","WALKING STICK","SURGICALS",423.5,5,1149],
-    [10175,"EC 924 4 LEG WALKING STICK","1","EASYCARE","WALKING STICK","SURGICALS",407,5,1099],
-    [10176,"EC 920 ALM WALKING STICK","1S","EASYCARE","WALKING STICK","SURGICALS",264,5,1099],
-    [10177,"EC 1143 UNDERPAD","10S","EASYCARE","UNDERPAD","SURGICALS",106.7,5,655.31],
-    [10178,"EC 609 GC COMMODE WHEEL CHAIR","1S","EASYCARE","WHEEL CHAIR","SURGICALS",9570,5,20000],
-    [10179,"EC 878 CSS COMMODE STOOL","1S","EASYCARE","WHEEL CHAIR","SURGICALS",968,5,2099],
-    [10180,"EC 797 L SHOWER STOOL","1S","EASYCARE","WHEEL CHAIR","SURGICALS",1815,5,2499],
-    [10181,"EC 696 COMMODE WHEEL CHAIR","1S","EASYCARE","WHEEL CHAIR","SURGICALS",2365,5,5999],
-    [10182,"EC716S ELECTRIC WHEELCHAIR (EL45CM)","1","EASYCARE","WHEEL CHAIR","SURGICALS",35750,5,0],
-    [10183,"EC 863 LAJ FOLDABLE TRAVEL WHEELCHAIR","1","EASYCARE","WHEEL CHAIR","SURGICALS",5115,5,13449],
-    [10184,"EC 958LC WHEEL CHAIR-36","1S","EASYCARE","WHEEL CHAIR","SURGICALS",18700,5,0],
-    [10185,"EC BLOOD LANCET FLAT","100S","EASYCARE","LANCETS","SURGICALS",30.8,5,0],
-    [10186,"EC 2016 FETAL DOPPLER","1S","EASYCARE","FETAL DOPPLER","SURGICALS",1485,5,6999],
-    [10187,"EC 2070 FETAL DOPPLER","1S","EASYCARE","FETAL DOPPLER","SURGICALS",1870,5,7499.06]
+  // Columns: [Name, Executive, Type, Institution Name, Contact Name, Contact Number, Location, Address]
+  const CUSTOMERS = [
+    // Data will be added here
   ];
 
-  const TOTAL = PRODUCTS.length;
   const PAGE_SIZE = 20;
   let currentPage = 1;
-  let filteredRows = PRODUCTS.slice();
-  let currentTerms = { product:'', company:'', molecule:'' };
+  let filteredRows = CUSTOMERS.slice();
+  let currentTerms = { name:'', location:'', institution:'' };
 
   function escape(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return String(str == null ? '' : str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
   function highlight(text, term) {
@@ -440,6 +353,15 @@
     const escaped = escape(text);
     const re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
     return escaped.replace(re, '<mark>$1</mark>');
+  }
+
+  function typeBadge(type) {
+    const t = String(type).toLowerCase();
+    let cls = 'type-other';
+    if (t.includes('dealer'))   cls = 'type-dealer';
+    else if (t.includes('hospital')) cls = 'type-hospital';
+    else if (t.includes('medical')) cls = 'type-medical';
+    return `<span class="type-badge ${cls}">${escape(type)}</span>`;
   }
 
   function renderTable(rows, terms) {
@@ -466,17 +388,17 @@
     const start = (currentPage - 1) * PAGE_SIZE;
     const pageRows = rows.slice(start, start + PAGE_SIZE);
 
-    tbody.innerHTML = pageRows.map(p => `
+    tbody.innerHTML = pageRows.map((c, i) => `
       <tr>
-        <td class="code">${escape(p[0])}</td>
-        <td class="product">${highlight(p[1], terms.product)}</td>
-        <td>${escape(p[2].trim())}</td>
-        <td>${highlight(p[3], terms.company)}</td>
-        <td class="molecule">${highlight(p[4], terms.molecule)}</td>
-        <td class="category"><span class="cat-badge">${escape(p[5])}</span></td>
-        <td class="price">${p[6] > 0 ? '&#8377;' + p[6].toFixed(2) : '—'}</td>
-        <td class="tax">${p[7]}%</td>
-        <td class="mrp">${p[8] > 0 ? '&#8377;' + p[8].toFixed(2) : '—'}</td>
+        <td style="color:var(--text-muted);font-size:0.8rem;">${start + i + 1}</td>
+        <td class="name">${highlight(c[0], terms.name)}</td>
+        <td>${escape(c[1])}</td>
+        <td>${typeBadge(c[2])}</td>
+        <td class="institution">${highlight(c[3], terms.institution)}</td>
+        <td>${escape(c[4])}</td>
+        <td class="contact-num">${escape(c[5])}</td>
+        <td class="location">${highlight(c[6], terms.location)}</td>
+        <td class="address">${escape(c[7])}</td>
       </tr>
     `).join('');
 
@@ -488,30 +410,30 @@
 
   function getTerms() {
     return {
-      product:  document.getElementById('searchProduct').value.trim(),
-      company:  document.getElementById('searchCompany').value.trim(),
-      molecule: document.getElementById('searchMolecule').value.trim()
+      name:        document.getElementById('searchName').value.trim(),
+      location:    document.getElementById('searchLocation').value.trim(),
+      institution: document.getElementById('searchInstitution').value.trim()
     };
   }
 
   function applyFilter() {
     currentPage = 1;
     const t = getTerms();
-    const filtered = PRODUCTS.filter(p => {
-      const matchProduct  = !t.product  || p[1].toLowerCase().includes(t.product.toLowerCase());
-      const matchCompany  = !t.company  || p[3].toLowerCase().includes(t.company.toLowerCase());
-      const matchMolecule = !t.molecule || p[4].toLowerCase().includes(t.molecule.toLowerCase());
-      return matchProduct && matchCompany && matchMolecule;
+    const filtered = CUSTOMERS.filter(c => {
+      const matchName        = !t.name        || String(c[0]).toLowerCase().includes(t.name.toLowerCase());
+      const matchLocation    = !t.location    || String(c[6]).toLowerCase().includes(t.location.toLowerCase());
+      const matchInstitution = !t.institution || String(c[3]).toLowerCase().includes(t.institution.toLowerCase());
+      return matchName && matchLocation && matchInstitution;
     });
     renderTable(filtered, t);
   }
 
   function clearAll() {
-    document.getElementById('searchProduct').value = '';
-    document.getElementById('searchCompany').value = '';
-    document.getElementById('searchMolecule').value = '';
+    document.getElementById('searchName').value = '';
+    document.getElementById('searchLocation').value = '';
+    document.getElementById('searchInstitution').value = '';
     currentPage = 1;
-    renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
+    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
   }
 
   document.getElementById('prevBtn').addEventListener('click', () => {
@@ -525,10 +447,8 @@
   document.getElementById('searchBtn').addEventListener('click', applyFilter);
   document.getElementById('clearBtn').addEventListener('click', clearAll);
 
-  ['searchProduct','searchCompany','searchMolecule'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-      if (e.key === 'Enter') applyFilter();
-    });
+  ['searchName','searchLocation','searchInstitution'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') applyFilter(); });
     document.getElementById(id).addEventListener('input', applyFilter);
   });
 
@@ -547,9 +467,6 @@
     document.body.style.overflow = '';
   }
 
-  // Initial render
-  renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
-
   // Copy protection
   document.addEventListener('contextmenu', e => e.preventDefault());
   document.addEventListener('copy', e => e.preventDefault());
@@ -566,6 +483,9 @@
   document.addEventListener('selectstart', e => {
     if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
   });
+
+  // Initial render
+  renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
 </script>
 </body>
 </html>
