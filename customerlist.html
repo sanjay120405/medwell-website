@@ -14,7 +14,7 @@
   </script>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -526,10 +526,11 @@
     storageBucket:     "medwelllogix26.firebasestorage.app",
     messagingSenderId: "235307517931",
     appId:             "1:235307517931:web:8842a23ca6ec83a3dfbbae",
-    measurementId:     "G-8Z83759VP6"
+    measurementId:     "G-8Z83759VP6",
+    databaseURL:       "https://medwelllogix26-default-rtdb.asia-southeast1.firebasedatabase.app"
   };
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  const db = firebase.database();
   // ─────────────────────────────────────────────────────────────
 
   // ── LOGIN CREDENTIALS ────────────────────────────────────────
@@ -583,17 +584,19 @@
   }
   document.getElementById('logoutBtn').addEventListener('click', doLogout);
 
-  // ── FIRESTORE: LOAD ──────────────────────────────────────────
+  // ── REALTIME DB: LOAD ────────────────────────────────────────
   async function loadCustomers() {
     try {
       document.getElementById('tableBody').innerHTML =
         '<tr class="loading-row"><td colspan="9">Loading customers...</td></tr>';
-      const snap = await db.collection('customers').orderBy('name').get();
-      CUSTOMERS = snap.docs.map(doc => {
-        const d = doc.data();
-        return [d.name||'', d.executive||'', d.type||'', d.institution||'',
-                d.contactName||'', d.contactNumber||'', d.location||'', d.address||''];
-      });
+      const snap = await db.ref('customers').once('value');
+      const val = snap.val();
+      CUSTOMERS = val
+        ? Object.values(val)
+            .map(d => [d.name||'', d.executive||'', d.type||'', d.institution||'',
+                       d.contactName||'', d.contactNumber||'', d.location||'', d.address||''])
+            .sort((a, b) => a[0].localeCompare(b[0]))
+        : [];
       currentPage = 1;
       renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
     } catch(err) {
@@ -602,7 +605,7 @@
     }
   }
 
-  // ── FIRESTORE: ADD ───────────────────────────────────────────
+  // ── REALTIME DB: ADD ─────────────────────────────────────────
   document.getElementById('addBtn').addEventListener('click', () => {
     document.getElementById('addModal').classList.remove('hidden');
   });
@@ -623,7 +626,7 @@
     const btn = document.getElementById('modalSave');
     btn.disabled = true; btn.textContent = 'Saving...';
     try {
-      await db.collection('customers').add({
+      await db.ref('customers').push({
         name,
         executive:     document.getElementById('fExecutive').value.trim(),
         type:          document.getElementById('fType').value,
@@ -632,7 +635,7 @@
         contactNumber: document.getElementById('fContactNum').value.trim(),
         location:      document.getElementById('fLocation').value.trim(),
         address:       document.getElementById('fAddress').value.trim(),
-        createdAt:     firebase.firestore.FieldValue.serverTimestamp()
+        createdAt:     Date.now()
       });
       closeModal();
       await loadCustomers();
