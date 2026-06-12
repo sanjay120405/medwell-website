@@ -14,6 +14,7 @@
   </script>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -286,10 +287,10 @@
     <p>Login to access the customer database</p>
     <form class="login-form" id="loginForm" autocomplete="off">
       <div class="login-field">
-        <label>Username</label>
+        <label>Email</label>
         <div class="login-input-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <input id="loginUser" class="login-input" type="text" placeholder="Enter username" autocomplete="off" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <input id="loginUser" class="login-input" type="email" placeholder="Enter your email" autocomplete="off" />
         </div>
       </div>
       <div class="login-field">
@@ -533,11 +534,6 @@
   const db = firebase.database();
   // ─────────────────────────────────────────────────────────────
 
-  // ── LOGIN CREDENTIALS ────────────────────────────────────────
-  const VALID_USERNAME = 'medwelladmin';
-  const VALID_PASSWORD = 'Medwell@2024';
-  // ─────────────────────────────────────────────────────────────
-
   const PAGE_SIZE = 20;
   let currentPage = 1;
   let CUSTOMERS = [];
@@ -553,34 +549,37 @@
     document.getElementById('eyeHide').style.display = isHidden ? ''     : 'none';
   });
 
-  // ── SESSION CHECK ────────────────────────────────────────────
-  function isLoggedIn() { return sessionStorage.getItem('cl_auth') === '1'; }
+  // ── FIREBASE AUTH ────────────────────────────────────────────
+  const auth = firebase.auth();
 
-  function showApp() {
-    document.getElementById('loginOverlay').classList.add('hidden');
-    loadCustomers();
-  }
-
-  if (isLoggedIn()) showApp();
-
-  document.getElementById('loginForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const u = document.getElementById('loginUser').value.trim();
-    const p = document.getElementById('loginPass').value;
-    if (u === VALID_USERNAME && p === VALID_PASSWORD) {
-      sessionStorage.setItem('cl_auth', '1');
-      showApp();
+  // Watch auth state — show app or login screen automatically
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById('loginOverlay').classList.add('hidden');
+      loadCustomers();
     } else {
-      document.getElementById('loginError').textContent = 'Incorrect username or password.';
+      document.getElementById('loginOverlay').classList.remove('hidden');
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = document.getElementById('loginUser').value.trim();
+    const pass  = document.getElementById('loginPass').value;
+    const errEl = document.getElementById('loginError');
+    errEl.textContent = '';
+    try {
+      await auth.signInWithEmailAndPassword(email, pass);
+    } catch(err) {
+      const msg = err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found'
+        ? 'Incorrect email or password.'
+        : err.message;
+      errEl.textContent = msg;
     }
   });
 
   function doLogout() {
-    sessionStorage.removeItem('cl_auth');
-    document.getElementById('loginOverlay').classList.remove('hidden');
-    document.getElementById('loginUser').value = '';
-    document.getElementById('loginPass').value = '';
-    document.getElementById('loginError').textContent = '';
+    auth.signOut();
   }
   document.getElementById('logoutBtn').addEventListener('click', doLogout);
 
