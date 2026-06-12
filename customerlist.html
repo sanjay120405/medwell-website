@@ -12,10 +12,6 @@
     gtag('js', new Date());
     gtag('config', 'G-3VNPYNZYLS');
   </script>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -492,9 +488,7 @@
             <th>Address</th>
           </tr>
         </thead>
-        <tbody id="tableBody">
-          <tr class="loading-row"><td colspan="9">Loading customers...</td></tr>
-        </tbody>
+        <tbody id="tableBody"></tbody>
       </table>
       <div class="no-results" id="noResults">
         <div class="no-results-icon">&#128269;</div>
@@ -517,23 +511,6 @@
 </div>
 
 <script>
-  // ── FIREBASE CONFIG ──────────────────────────────────────────
-  // Fill in your Firebase project credentials below.
-  // Get these from: Firebase Console → Project Settings → Your Apps → SDK setup
-  const firebaseConfig = {
-    apiKey:            "AIzaSyDhYJoYpOI2GLWXQQIaz-xbRcaynHqUUG4",
-    authDomain:        "medwelllogix26.firebaseapp.com",
-    projectId:         "medwelllogix26",
-    storageBucket:     "medwelllogix26.firebasestorage.app",
-    messagingSenderId: "235307517931",
-    appId:             "1:235307517931:web:8842a23ca6ec83a3dfbbae",
-    measurementId:     "G-8Z83759VP6",
-    databaseURL:       "https://medwelllogix26-default-rtdb.asia-southeast1.firebasedatabase.app"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  // ─────────────────────────────────────────────────────────────
-
   const PAGE_SIZE = 20;
   let currentPage = 1;
   let CUSTOMERS = [];
@@ -549,66 +526,38 @@
     document.getElementById('eyeHide').style.display = isHidden ? ''     : 'none';
   });
 
-  // ── FIREBASE AUTH ────────────────────────────────────────────
-  const auth = firebase.auth();
+  // ── LOGIN ────────────────────────────────────────────────────
+  function isLoggedIn() { return sessionStorage.getItem('cl_auth') === '1'; }
 
-  // Watch auth state — show app or login screen automatically
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      document.getElementById('loginOverlay').classList.add('hidden');
-      loadCustomers();
-    } else {
-      document.getElementById('loginOverlay').classList.remove('hidden');
-    }
-  });
+  function showApp() {
+    document.getElementById('loginOverlay').classList.add('hidden');
+    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
+  }
 
-  // Maps username → Firebase Auth email
-  const USER_MAP = {
-    'medwelladmin': 'medwelladmin@medwelllogix.com'
-  };
+  if (isLoggedIn()) showApp();
 
-  document.getElementById('loginForm').addEventListener('submit', async e => {
+  document.getElementById('loginForm').addEventListener('submit', e => {
     e.preventDefault();
-    const username = document.getElementById('loginUser').value.trim().toLowerCase();
-    const pass     = document.getElementById('loginPass').value;
-    const errEl    = document.getElementById('loginError');
-    errEl.textContent = '';
-    const email = USER_MAP[username];
-    if (!email) { errEl.textContent = 'Incorrect username or password.'; return; }
-    try {
-      await auth.signInWithEmailAndPassword(email, pass);
-    } catch(err) {
-      errEl.textContent = 'Incorrect username or password.';
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    if (u === 'medwelladmin' && p === 'Medwell@2024') {
+      sessionStorage.setItem('cl_auth', '1');
+      showApp();
+    } else {
+      document.getElementById('loginError').textContent = 'Incorrect username or password.';
     }
   });
 
   function doLogout() {
-    auth.signOut();
+    sessionStorage.removeItem('cl_auth');
+    document.getElementById('loginOverlay').classList.remove('hidden');
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginError').textContent = '';
   }
   document.getElementById('logoutBtn').addEventListener('click', doLogout);
 
-  // ── REALTIME DB: LOAD ────────────────────────────────────────
-  async function loadCustomers() {
-    try {
-      document.getElementById('tableBody').innerHTML =
-        '<tr class="loading-row"><td colspan="9">Loading customers...</td></tr>';
-      const snap = await db.ref('customers').once('value');
-      const val = snap.val();
-      CUSTOMERS = val
-        ? Object.values(val)
-            .map(d => [d.name||'', d.executive||'', d.type||'', d.institution||'',
-                       d.contactName||'', d.contactNumber||'', d.location||'', d.address||''])
-            .sort((a, b) => a[0].localeCompare(b[0]))
-        : [];
-      currentPage = 1;
-      renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
-    } catch(err) {
-      document.getElementById('tableBody').innerHTML =
-        `<tr class="loading-row"><td colspan="9">Failed to load: ${err.message}</td></tr>`;
-    }
-  }
-
-  // ── REALTIME DB: ADD ─────────────────────────────────────────
+  // ── ADD CUSTOMER (in-page) ───────────────────────────────────
   document.getElementById('addBtn').addEventListener('click', () => {
     document.getElementById('addModal').classList.remove('hidden');
   });
@@ -623,30 +572,23 @@
     document.getElementById('fType').value = 'Dealer';
   }
 
-  document.getElementById('modalSave').addEventListener('click', async () => {
+  document.getElementById('modalSave').addEventListener('click', () => {
     const name = document.getElementById('fName').value.trim();
     if (!name) { document.getElementById('modalError').textContent = 'Name is required.'; return; }
-    const btn = document.getElementById('modalSave');
-    btn.disabled = true; btn.textContent = 'Saving...';
-    try {
-      await db.ref('customers').push({
-        name,
-        executive:     document.getElementById('fExecutive').value.trim(),
-        type:          document.getElementById('fType').value,
-        institution:   document.getElementById('fInstitution').value.trim(),
-        contactName:   document.getElementById('fContactName').value.trim(),
-        contactNumber: document.getElementById('fContactNum').value.trim(),
-        location:      document.getElementById('fLocation').value.trim(),
-        address:       document.getElementById('fAddress').value.trim(),
-        createdAt:     Date.now()
-      });
-      closeModal();
-      await loadCustomers();
-    } catch(err) {
-      document.getElementById('modalError').textContent = 'Save failed: ' + err.message;
-    } finally {
-      btn.disabled = false; btn.textContent = 'Save Customer';
-    }
+    CUSTOMERS.push([
+      name,
+      document.getElementById('fExecutive').value.trim(),
+      document.getElementById('fType').value,
+      document.getElementById('fInstitution').value.trim(),
+      document.getElementById('fContactName').value.trim(),
+      document.getElementById('fContactNum').value.trim(),
+      document.getElementById('fLocation').value.trim(),
+      document.getElementById('fAddress').value.trim()
+    ]);
+    CUSTOMERS.sort((a, b) => a[0].localeCompare(b[0]));
+    closeModal();
+    currentPage = 1;
+    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
   });
 
   // ── TABLE RENDER ─────────────────────────────────────────────
