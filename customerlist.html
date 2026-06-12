@@ -287,10 +287,10 @@
     <p>Login to access the customer database</p>
     <form class="login-form" id="loginForm" autocomplete="off">
       <div class="login-field">
-        <label>Email</label>
+        <label>Username</label>
         <div class="login-input-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <input id="loginUser" class="login-input" type="email" placeholder="Enter your email" autocomplete="off" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input id="loginUser" class="login-input" type="text" placeholder="Enter username" autocomplete="off" />
         </div>
       </div>
       <div class="login-field">
@@ -562,19 +562,23 @@
     }
   });
 
+  // Maps username → Firebase Auth email
+  const USER_MAP = {
+    'medwelladmin': 'medwelladmin@medwelllogix.com'
+  };
+
   document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
-    const email = document.getElementById('loginUser').value.trim();
-    const pass  = document.getElementById('loginPass').value;
-    const errEl = document.getElementById('loginError');
+    const username = document.getElementById('loginUser').value.trim().toLowerCase();
+    const pass     = document.getElementById('loginPass').value;
+    const errEl    = document.getElementById('loginError');
     errEl.textContent = '';
+    const email = USER_MAP[username];
+    if (!email) { errEl.textContent = 'Incorrect username or password.'; return; }
     try {
       await auth.signInWithEmailAndPassword(email, pass);
     } catch(err) {
-      const msg = err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found'
-        ? 'Incorrect email or password.'
-        : err.message;
-      errEl.textContent = msg;
+      errEl.textContent = 'Incorrect username or password.';
     }
   });
 
