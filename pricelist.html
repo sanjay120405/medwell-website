@@ -792,7 +792,7 @@
       const total = c.salesRate * c.qty;
       return `${i + 1}. ${c.name}\n   ${c.company} | ${c.molecule}\n   Price: ₹${c.salesRate > 0 ? c.salesRate.toFixed(2) : 'N/A'} | Qty: ${c.qty} | Total: ₹${total > 0 ? total.toFixed(2) : 'N/A'}`;
     }).join('\n\n');
-    const msg = `*Order from Medwell Logix Website*\n\n*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Order Summary:*\n${itemLines}\n\n*Subtotal: ₹${grandTotal.toFixed(2)}*`;
+    const msg = `*Order To Medwell Logix *\n\n*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Order Summary:*\n${itemLines}\n\n*Subtotal: ₹${grandTotal.toFixed(2)}*`;
 
     const waUrl = `https://wa.me/919790611559?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
