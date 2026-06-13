@@ -67,6 +67,7 @@
       background: var(--white); border-radius: var(--radius-lg); padding: 44px 40px;
       width: 100%; max-width: 420px; box-shadow: var(--shadow-lg);
       display: flex; flex-direction: column; align-items: center; gap: 6px;
+      position: relative;
     }
     .login-card img { height: 56px; margin-bottom: 8px; }
     .login-card h2 { font-family: 'Poppins', sans-serif; font-size: 1.35rem; font-weight: 800; color: var(--dark); }
@@ -291,6 +292,7 @@
 <!-- ══ LOGIN OVERLAY ══ -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-card">
+    <a href="index.html" class="close-home-btn" title="Go to Home" style="position:absolute;top:16px;right:16px;">&#10005;</a>
     <img src="medwell logo.png" alt="Medwell Logix" />
     <h2>Customer List</h2>
     <p>Login to access the customer database</p>
