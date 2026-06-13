@@ -367,6 +367,7 @@
             <th>Sales Rate (&#8377;)</th>
             <th>Tax (%)</th>
             <th>MRP (&#8377;)</th>
+            <th class="center">Qty</th>
             <th class="center">Add to Cart</th>
           </tr>
         </thead>
@@ -577,16 +578,16 @@
         <td class="tax">${p[7]}%</td>
         <td class="mrp">${p[8] > 0 ? '&#8377;' + p[8].toFixed(2) : '—'}</td>
         <td class="center">
-          <div class="cart-cell">
-            <div class="qty-wrap">
-              <button class="qty-btn" data-code="${String(p[0])}" data-delta="-1">−</button>
-              <span class="qty-num">${qty}</span>
-              <button class="qty-btn" data-code="${String(p[0])}" data-delta="1">+</button>
-            </div>
-            <button class="add-cart-btn${inCart ? ' added' : ''}" data-code="${String(p[0])}">
-              ${inCart ? '&#10003; Added' : '+ Add'}
-            </button>
+          <div class="qty-wrap">
+            <button class="qty-btn" data-code="${String(p[0])}" data-delta="-1">−</button>
+            <span class="qty-num">${qty}</span>
+            <button class="qty-btn" data-code="${String(p[0])}" data-delta="1">+</button>
           </div>
+        </td>
+        <td class="center">
+          <button class="add-cart-btn${inCart ? ' added' : ''}" data-code="${String(p[0])}">
+            ${inCart ? '&#10003; Added' : '+ Add'}
+          </button>
         </td>
       </tr>`;
     }).join('');
