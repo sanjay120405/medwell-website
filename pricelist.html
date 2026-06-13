@@ -231,13 +231,11 @@
     .order-input { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--off-white); transition: border-color .2s; width: 100%; -webkit-user-select: text; user-select: text; }
     .order-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
     .order-error { font-size: 0.82rem; color: #c0392b; font-family: 'Poppins', sans-serif; font-weight: 500; min-height: 16px; }
-    .order-footer { display: flex; gap: 10px; justify-content: flex-end; padding-top: 4px; flex-wrap: wrap; }
-    .order-cancel-btn { padding: 11px 22px; border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; border: 1.5px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: all .2s; }
+    .order-footer { display: flex; gap: 10px; justify-content: flex-end; padding-top: 4px; }
+    .order-cancel-btn { padding: 11px 22px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; border: 1.5px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: all .2s; }
     .order-cancel-btn:hover { border-color: var(--orange); color: var(--orange); }
-    .order-place-btn { padding: 12px 24px; border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; background: #25D366; color: white; border: none; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(37,211,102,.4); }
-    .order-place-btn:hover { background: #1EBE59; transform: translateY(-1px); }
-    .order-call-btn { padding: 12px 24px; border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; background: var(--teal-deeper); color: white; border: none; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(4,64,64,.3); text-decoration: none; }
-    .order-call-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .order-place-btn { padding: 11px 22px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 700; background: #25D366; color: white; border: none; cursor: pointer; transition: background .2s; display: inline-flex; align-items: center; gap: 7px; }
+    .order-place-btn:hover { background: #1EBE59; }
 
     /* COPY PROTECTION */
     body, table, td, th, .page-hero, .search-section, .table-section {
@@ -430,13 +428,9 @@
       <div class="order-error" id="orderError"></div>
       <div class="order-footer">
         <button class="order-cancel-btn" id="orderCancelBtn">Cancel</button>
-        <a href="tel:+919790611559" class="order-call-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
-          Call Now
-        </a>
         <button class="order-place-btn" id="orderPlaceBtn">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.428a.5.5 0 0 0 .619.612l5.717-1.485A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.518-5.157-1.416l-.371-.22-3.845.999 1.023-3.742-.242-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-          WhatsApp
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.428a.5.5 0 0 0 .619.612l5.717-1.485A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.518-5.157-1.416l-.371-.22-3.845.999 1.023-3.742-.242-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Place Order on WhatsApp
         </button>
       </div>
     </div>
@@ -675,7 +669,7 @@
     if (cart.some(c => c.code === code)) {
       cart = cart.filter(c => c.code !== code);
     } else {
-      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6], qty: 1 });
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], qty: 1 });
     }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
@@ -731,7 +725,6 @@
         <div class="order-item-info">
           <div class="order-item-name">${escape(c.name)}</div>
           <div class="order-item-sub">${escape(c.company)} &nbsp;·&nbsp; ${escape(c.molecule)}</div>
-          <div class="order-item-sub" style="color:var(--teal-dark);font-weight:600;">&#8377;${c.salesRate > 0 ? c.salesRate.toFixed(2) : '—'} &nbsp;·&nbsp; Qty: ${c.qty}</div>
         </div>
         <div class="order-qty-wrap">
           <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="-1">−</button>
@@ -764,7 +757,7 @@
     if (!name || !phone || !address) { errEl.textContent = 'Please fill in all fields.'; return; }
     errEl.textContent = '';
 
-    const itemLines = cart.map((c, i) => `${i + 1}. ${c.name}\n   Company: ${c.company} | Molecule: ${c.molecule}\n   Rate: ₹${c.salesRate > 0 ? c.salesRate.toFixed(2) : 'N/A'} | Qty: ${c.qty}`).join('\n\n');
+    const itemLines = cart.map((c, i) => `${i + 1}. ${c.name} | ${c.company} | ${c.molecule} | Qty: ${c.qty}`).join('\n');
     const msg = `*Order from Medwell Logix Website*\n\n*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Order Summary:*\n${itemLines}`;
 
     const waUrl = `https://wa.me/919790611559?text=${encodeURIComponent(msg)}`;
