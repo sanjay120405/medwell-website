@@ -566,7 +566,7 @@
         <td class="tax">${p[7]}%</td>
         <td class="mrp">${p[8] > 0 ? '&#8377;' + p[8].toFixed(2) : '—'}</td>
         <td class="center">
-          <button class="add-cart-btn${inCart ? ' added' : ''}" onclick="addToCart('${escape(p[0])}')">
+          <button class="add-cart-btn${inCart ? ' added' : ''}" data-code="${escape(p[0])}">
             ${inCart ? '&#10003; Added' : '+ Add'}
           </button>
         </td>
@@ -628,6 +628,11 @@
   // ── CART ──────────────────────────────────────────────────────
   let cart = [];
 
+  document.getElementById('tableBody').addEventListener('click', e => {
+    const btn = e.target.closest('.add-cart-btn');
+    if (btn) addToCart(btn.dataset.code);
+  });
+
   function updateCartBadge() {
     document.getElementById('cartBadge').textContent = cart.length;
   }
@@ -683,10 +688,15 @@
           <div class="order-item-name">${escape(c.name)}</div>
           <div class="order-item-sub">${escape(c.company)} &nbsp;·&nbsp; ${escape(c.molecule)}</div>
         </div>
-        <button class="order-item-remove" onclick="removeFromCart('${escape(c.code)}')" title="Remove">&#10005;</button>
+        <button class="order-item-remove" data-code="${escape(c.code)}" title="Remove">&#10005;</button>
       </div>
     `).join('');
   }
+
+  document.getElementById('orderItemsList').addEventListener('click', e => {
+    const btn = e.target.closest('.order-item-remove');
+    if (btn) removeFromCart(btn.dataset.code);
+  });
 
   document.getElementById('checkoutBtn').addEventListener('click', openOrder);
   document.getElementById('orderClose').addEventListener('click', closeOrder);
