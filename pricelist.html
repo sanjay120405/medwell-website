@@ -209,22 +209,34 @@
     /* ORDER MODAL */
     .order-overlay { position: fixed; inset: 0; z-index: 6000; background: rgba(4,64,64,.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .25s; }
     .order-overlay.open { opacity: 1; pointer-events: all; }
-    .order-card { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; box-shadow: var(--shadow-lg); transform: scale(.94); transition: transform .25s; }
+    .order-card { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 680px; max-height: 92vh; overflow-y: auto; box-shadow: var(--shadow-lg); transform: scale(.94); transition: transform .25s; }
     .order-overlay.open .order-card { transform: scale(1); }
     .order-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0; margin-bottom: 16px; }
     .order-header h3 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--dark); }
     .order-close { width: 32px; height: 32px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; border: none; flex-shrink: 0; }
     .order-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
     .order-section-label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
-    .order-items-box { border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; max-height: 200px; overflow-y: auto; }
-    .order-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+
+    /* Order items table */
+    .order-items-box { border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+    .order-tbl-head { display: grid; grid-template-columns: 1fr 90px 110px 90px 32px; gap: 8px; padding: 9px 14px; background: var(--off-white); border-bottom: 1.5px solid var(--border); }
+    .order-tbl-head span { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); }
+    .order-tbl-head span:nth-child(2), .order-tbl-head span:nth-child(4) { text-align: right; }
+    .order-tbl-head span:nth-child(3) { text-align: center; }
+    .order-tbl-rows { max-height: 220px; overflow-y: auto; }
+    .order-item { display: grid; grid-template-columns: 1fr 90px 110px 90px 32px; gap: 8px; padding: 11px 14px; border-bottom: 1px solid var(--border); align-items: center; }
     .order-item:last-child { border-bottom: none; }
-    .order-item-num { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 2px; flex-shrink: 0; }
-    .order-item-info { flex: 1; min-width: 0; }
-    .order-item-name { font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 600; color: var(--dark); }
-    .order-item-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
-    .order-item-remove { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 1rem; padding: 2px 5px; border-radius: 4px; flex-shrink: 0; transition: background .2s; }
+    .order-item-info { min-width: 0; }
+    .order-item-name { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .order-item-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .order-item-price { font-size: 0.82rem; color: var(--text-muted); text-align: right; white-space: nowrap; }
+    .order-item-total { font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 700; color: var(--teal-dark); text-align: right; white-space: nowrap; }
+    .order-item-remove { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 1rem; padding: 2px; border-radius: 4px; justify-self: center; transition: background .2s; }
     .order-item-remove:hover { background: #fde8e8; }
+    .order-subtotal-row { display: flex; align-items: center; justify-content: flex-end; gap: 16px; padding: 12px 14px; border-top: 2px solid var(--border); background: var(--off-white); }
+    .order-subtotal-label { font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .order-subtotal-amount { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--teal); }
+
     .order-empty { text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.86rem; }
     .order-field { display: flex; flex-direction: column; gap: 6px; }
     .order-field label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
@@ -669,7 +681,7 @@
     if (cart.some(c => c.code === code)) {
       cart = cart.filter(c => c.code !== code);
     } else {
-      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], qty: 1 });
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6], qty: 1 });
     }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
@@ -719,21 +731,39 @@
       box.innerHTML = '<div class="order-empty">No products selected.</div>';
       return;
     }
-    box.innerHTML = cart.map((c, i) => `
-      <div class="order-item">
-        <span class="order-item-num">${i + 1}.</span>
-        <div class="order-item-info">
-          <div class="order-item-name">${escape(c.name)}</div>
-          <div class="order-item-sub">${escape(c.company)} &nbsp;·&nbsp; ${escape(c.molecule)}</div>
-        </div>
-        <div class="order-qty-wrap">
-          <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="-1">−</button>
-          <span class="order-qty-num">${c.qty}</span>
-          <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="1">+</button>
-        </div>
-        <button class="order-item-remove" data-code="${escape(c.code)}" title="Remove">&#10005;</button>
+    const subtotal = cart.reduce((sum, c) => sum + c.salesRate * c.qty, 0);
+    box.innerHTML = `
+      <div class="order-tbl-head">
+        <span>Product</span>
+        <span>Price</span>
+        <span>Quantity</span>
+        <span>Total</span>
+        <span></span>
       </div>
-    `).join('');
+      <div class="order-tbl-rows">
+        ${cart.map(c => {
+          const total = c.salesRate * c.qty;
+          return `
+          <div class="order-item">
+            <div class="order-item-info">
+              <div class="order-item-name">${escape(c.name)}</div>
+              <div class="order-item-sub">${escape(c.company)} · ${escape(c.molecule)}</div>
+            </div>
+            <div class="order-item-price">&#8377;${c.salesRate > 0 ? c.salesRate.toFixed(2) : '—'}</div>
+            <div class="order-qty-wrap" style="justify-self:center;">
+              <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="-1">−</button>
+              <span class="order-qty-num">${c.qty}</span>
+              <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="1">+</button>
+            </div>
+            <div class="order-item-total">&#8377;${total > 0 ? total.toFixed(2) : '—'}</div>
+            <button class="order-item-remove" data-code="${escape(c.code)}" title="Remove">&#10005;</button>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="order-subtotal-row">
+        <span class="order-subtotal-label">Subtotal:</span>
+        <span class="order-subtotal-amount">&#8377;${subtotal.toFixed(2)}</span>
+      </div>`;
   }
 
   document.getElementById('orderItemsList').addEventListener('click', e => {
@@ -757,8 +787,12 @@
     if (!name || !phone || !address) { errEl.textContent = 'Please fill in all fields.'; return; }
     errEl.textContent = '';
 
-    const itemLines = cart.map((c, i) => `${i + 1}. ${c.name} | ${c.company} | ${c.molecule} | Qty: ${c.qty}`).join('\n');
-    const msg = `*Order from Medwell Logix Website*\n\n*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Order Summary:*\n${itemLines}`;
+    const grandTotal = cart.reduce((sum, c) => sum + c.salesRate * c.qty, 0);
+    const itemLines = cart.map((c, i) => {
+      const total = c.salesRate * c.qty;
+      return `${i + 1}. ${c.name}\n   ${c.company} | ${c.molecule}\n   Price: ₹${c.salesRate > 0 ? c.salesRate.toFixed(2) : 'N/A'} | Qty: ${c.qty} | Total: ₹${total > 0 ? total.toFixed(2) : 'N/A'}`;
+    }).join('\n\n');
+    const msg = `*Order from Medwell Logix Website*\n\n*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Order Summary:*\n${itemLines}\n\n*Subtotal: ₹${grandTotal.toFixed(2)}*`;
 
     const waUrl = `https://wa.me/919790611559?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
