@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
       --teal:        #0D7A7A;
@@ -511,11 +512,33 @@
 </div>
 
 <script>
+  const SUPABASE_URL = 'https://vogxaylmrzulbdltxrwv.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_pbkwLLVoV82l4FJ1BpFbcQ_I-mdsYE7';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
   const PAGE_SIZE = 20;
   let currentPage = 1;
   let CUSTOMERS = [];
   let filteredRows = [];
   let currentTerms = { name:'', location:'', institution:'' };
+
+  function rowToArr(r) {
+    return [r.name||'', r.executive||'', r.type||'Dealer', r.institution||'',
+            r.contact_name||'', r.contact_number||'', r.location||'', r.address||''];
+  }
+
+  async function loadCustomers() {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="9">Loading customers…</td></tr>';
+    const { data, error } = await sb.from('customers').select('*').order('name', { ascending: true });
+    if (error) {
+      tbody.innerHTML = '<tr class="loading-row"><td colspan="9">Error loading data — please refresh.</td></tr>';
+      console.error(error);
+      return;
+    }
+    CUSTOMERS = (data || []).map(rowToArr);
+    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
+  }
 
   // ── PASSWORD TOGGLE ─────────────────────────────────────────
   document.getElementById('togglePass').addEventListener('click', () => {
@@ -529,9 +552,9 @@
   // ── LOGIN ────────────────────────────────────────────────────
   function isLoggedIn() { return sessionStorage.getItem('cl_auth') === '1'; }
 
-  function showApp() {
+  async function showApp() {
     document.getElementById('loginOverlay').classList.add('hidden');
-    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
+    await loadCustomers();
   }
 
   if (isLoggedIn()) showApp();
@@ -572,23 +595,37 @@
     document.getElementById('fType').value = 'Dealer';
   }
 
-  document.getElementById('modalSave').addEventListener('click', () => {
+  document.getElementById('modalSave').addEventListener('click', async () => {
     const name = document.getElementById('fName').value.trim();
     if (!name) { document.getElementById('modalError').textContent = 'Name is required.'; return; }
-    CUSTOMERS.push([
+
+    const btn = document.getElementById('modalSave');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const { error } = await sb.from('customers').insert({
       name,
-      document.getElementById('fExecutive').value.trim(),
-      document.getElementById('fType').value,
-      document.getElementById('fInstitution').value.trim(),
-      document.getElementById('fContactName').value.trim(),
-      document.getElementById('fContactNum').value.trim(),
-      document.getElementById('fLocation').value.trim(),
-      document.getElementById('fAddress').value.trim()
-    ]);
-    CUSTOMERS.sort((a, b) => a[0].localeCompare(b[0]));
+      executive:      document.getElementById('fExecutive').value.trim(),
+      type:           document.getElementById('fType').value,
+      institution:    document.getElementById('fInstitution').value.trim(),
+      contact_name:   document.getElementById('fContactName').value.trim(),
+      contact_number: document.getElementById('fContactNum').value.trim(),
+      location:       document.getElementById('fLocation').value.trim(),
+      address:        document.getElementById('fAddress').value.trim()
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Save Customer';
+
+    if (error) {
+      document.getElementById('modalError').textContent = 'Failed to save — please try again.';
+      console.error(error);
+      return;
+    }
+
     closeModal();
     currentPage = 1;
-    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
+    await loadCustomers();
   });
 
   // ── TABLE RENDER ─────────────────────────────────────────────
