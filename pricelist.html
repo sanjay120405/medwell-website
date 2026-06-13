@@ -188,6 +188,15 @@
     .add-cart-btn.added { background: #27ae60; border-color: #27ae60; }
     .add-cart-btn.added:hover { background: #229954; }
     thead th.center, td.center { text-align: center; }
+    .cart-cell { display: inline-flex; flex-direction: column; align-items: center; gap: 5px; }
+    .qty-wrap { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .qty-btn { width: 28px; height: 26px; border: none; background: var(--off-white); color: var(--text); font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; flex-shrink: 0; }
+    .qty-btn:hover { background: var(--teal-light); color: var(--teal); }
+    .qty-num { width: 30px; text-align: center; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--dark); border-left: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 26px; }
+    .order-qty-wrap { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; flex-shrink: 0; }
+    .order-qty-btn { width: 26px; height: 26px; border: none; background: var(--off-white); color: var(--text); font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; }
+    .order-qty-btn:hover { background: var(--teal-light); color: var(--teal); }
+    .order-qty-num { width: 28px; text-align: center; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--dark); border-left: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 26px; }
 
     /* CHECKOUT BUTTON */
     .checkout-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--orange); color: white; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; border: none; cursor: pointer; transition: all .2s; }
@@ -553,7 +562,9 @@
     const pageRows = rows.slice(start, start + PAGE_SIZE);
 
     tbody.innerHTML = pageRows.map(p => {
-      const inCart = cart.some(c => c.code === String(p[0]));
+      const cartItem = cart.find(c => c.code === String(p[0]));
+      const inCart = !!cartItem;
+      const qty = cartItem ? cartItem.qty : 1;
       return `
       <tr>
         <td class="code">${escape(p[0])}</td>
@@ -566,9 +577,16 @@
         <td class="tax">${p[7]}%</td>
         <td class="mrp">${p[8] > 0 ? '&#8377;' + p[8].toFixed(2) : '—'}</td>
         <td class="center">
-          <button class="add-cart-btn${inCart ? ' added' : ''}" data-code="${escape(p[0])}">
-            ${inCart ? '&#10003; Added' : '+ Add'}
-          </button>
+          <div class="cart-cell">
+            <div class="qty-wrap">
+              <button class="qty-btn" data-code="${String(p[0])}" data-delta="-1">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn" data-code="${String(p[0])}" data-delta="1">+</button>
+            </div>
+            <button class="add-cart-btn${inCart ? ' added' : ''}" data-code="${String(p[0])}">
+              ${inCart ? '&#10003; Added' : '+ Add'}
+            </button>
+          </div>
         </td>
       </tr>`;
     }).join('');
@@ -629,12 +647,15 @@
   let cart = [];
 
   document.getElementById('tableBody').addEventListener('click', e => {
-    const btn = e.target.closest('.add-cart-btn');
-    if (btn) addToCart(btn.dataset.code);
+    const addBtn = e.target.closest('.add-cart-btn');
+    if (addBtn) { addToCart(addBtn.dataset.code); return; }
+    const qtyBtn = e.target.closest('.qty-btn');
+    if (qtyBtn) changeQty(qtyBtn.dataset.code, Number(qtyBtn.dataset.delta));
   });
 
   function updateCartBadge() {
-    document.getElementById('cartBadge').textContent = cart.length;
+    const total = cart.reduce((sum, c) => sum + c.qty, 0);
+    document.getElementById('cartBadge').textContent = total;
   }
 
   function addToCart(code) {
@@ -644,7 +665,7 @@
     if (cart.some(c => c.code === code)) {
       cart = cart.filter(c => c.code !== code);
     } else {
-      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4] });
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], qty: 1 });
     }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
@@ -656,6 +677,17 @@
     updateCartBadge();
     renderOrderItems();
     renderTable(filteredRows, currentTerms);
+  }
+
+  function changeQty(code, delta) {
+    code = String(code);
+    const item = cart.find(c => c.code === code);
+    if (!item) { if (delta > 0) addToCart(code); return; }
+    item.qty += delta;
+    if (item.qty <= 0) { removeFromCart(code); return; }
+    updateCartBadge();
+    renderTable(filteredRows, currentTerms);
+    if (document.getElementById('orderOverlay').classList.contains('open')) renderOrderItems();
   }
 
   // ── ORDER MODAL ───────────────────────────────────────────────
@@ -690,14 +722,21 @@
           <div class="order-item-name">${escape(c.name)}</div>
           <div class="order-item-sub">${escape(c.company)} &nbsp;·&nbsp; ${escape(c.molecule)}</div>
         </div>
+        <div class="order-qty-wrap">
+          <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="-1">−</button>
+          <span class="order-qty-num">${c.qty}</span>
+          <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="1">+</button>
+        </div>
         <button class="order-item-remove" data-code="${escape(c.code)}" title="Remove">&#10005;</button>
       </div>
     `).join('');
   }
 
   document.getElementById('orderItemsList').addEventListener('click', e => {
-    const btn = e.target.closest('.order-item-remove');
-    if (btn) removeFromCart(btn.dataset.code);
+    const removeBtn = e.target.closest('.order-item-remove');
+    if (removeBtn) { removeFromCart(removeBtn.dataset.code); return; }
+    const qtyBtn = e.target.closest('.order-qty-btn');
+    if (qtyBtn) changeQty(qtyBtn.dataset.code, Number(qtyBtn.dataset.delta));
   });
 
   document.getElementById('checkoutBtn').addEventListener('click', openOrder);
@@ -714,7 +753,7 @@
     if (!name || !phone || !address) { errEl.textContent = 'Please fill in all fields.'; return; }
     errEl.textContent = '';
 
-    const itemLines = cart.map((c, i) => `${i + 1}. ${c.name} | ${c.company} | ${c.molecule}`).join('\n');
+    const itemLines = cart.map((c, i) => `${i + 1}. ${c.name} | ${c.company} | ${c.molecule} | Qty: ${c.qty}`).join('\n');
     const msg = `*Order from Medwell Logix Website*\n\n*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Order Summary:*\n${itemLines}`;
 
     const waUrl = `https://wa.me/919790611559?text=${encodeURIComponent(msg)}`;
