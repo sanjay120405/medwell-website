@@ -244,6 +244,14 @@
     .type-medical  { background: #EEF5E0; color: #5A7A2A; }
     .type-other    { background: #F0F0F0; color: #5A5A7A; }
 
+    /* ROW ACTIONS */
+    .row-actions { display: flex; gap: 6px; }
+    .action-btn { padding: 5px 11px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; font-family: 'Poppins', sans-serif; border: 1.5px solid; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: 4px; background: transparent; white-space: nowrap; }
+    .action-btn.edit  { border-color: var(--teal); color: var(--teal); }
+    .action-btn.edit:hover  { background: var(--teal); color: white; }
+    .action-btn.del   { border-color: #e74c3c; color: #e74c3c; }
+    .action-btn.del:hover   { background: #e74c3c; color: white; }
+
     /* NO RESULTS */
     .no-results { display: none; text-align: center; padding: 60px 20px; }
     .no-results.show { display: block; }
@@ -487,6 +495,7 @@
             <th>Contact Number</th>
             <th>Location</th>
             <th>Address</th>
+          <th>Actions</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -522,9 +531,11 @@
   let filteredRows = [];
   let currentTerms = { name:'', location:'', institution:'' };
 
+  let editId = null;
+
   function rowToArr(r) {
     return [r.name||'', r.executive||'', r.type||'Dealer', r.institution||'',
-            r.contact_name||'', r.contact_number||'', r.location||'', r.address||''];
+            r.contact_name||'', r.contact_number||'', r.location||'', r.address||'', r.id];
   }
 
   async function loadCustomers() {
@@ -588,11 +599,38 @@
   document.getElementById('modalCancel').addEventListener('click', closeModal);
 
   function closeModal() {
+    editId = null;
     document.getElementById('addModal').classList.add('hidden');
     document.getElementById('modalError').textContent = '';
+    document.querySelector('.modal-header h3').textContent = 'Add New Customer';
+    document.getElementById('modalSave').textContent = 'Save Customer';
     ['fName','fExecutive','fInstitution','fContactName','fContactNum','fLocation','fAddress']
       .forEach(id => document.getElementById(id).value = '');
     document.getElementById('fType').value = 'Dealer';
+  }
+
+  function openEdit(id) {
+    const c = CUSTOMERS.find(r => String(r[8]) === String(id));
+    if (!c) return;
+    editId = id;
+    document.getElementById('fName').value        = c[0];
+    document.getElementById('fExecutive').value   = c[1];
+    document.getElementById('fType').value        = c[2];
+    document.getElementById('fInstitution').value = c[3];
+    document.getElementById('fContactName').value = c[4];
+    document.getElementById('fContactNum').value  = c[5];
+    document.getElementById('fLocation').value    = c[6];
+    document.getElementById('fAddress').value     = c[7];
+    document.querySelector('.modal-header h3').textContent = 'Edit Customer';
+    document.getElementById('modalSave').textContent = 'Update Customer';
+    document.getElementById('addModal').classList.remove('hidden');
+  }
+
+  async function deleteCustomer(id) {
+    if (!confirm('Delete this customer? This cannot be undone.')) return;
+    const { error } = await sb.from('customers').delete().eq('id', id);
+    if (error) { alert('Failed to delete. Please try again.'); console.error(error); return; }
+    await loadCustomers();
   }
 
   document.getElementById('modalSave').addEventListener('click', async () => {
@@ -601,9 +639,9 @@
 
     const btn = document.getElementById('modalSave');
     btn.disabled = true;
-    btn.textContent = 'Saving…';
+    btn.textContent = editId ? 'Updating…' : 'Saving…';
 
-    const { error } = await sb.from('customers').insert({
+    const payload = {
       name,
       executive:      document.getElementById('fExecutive').value.trim(),
       type:           document.getElementById('fType').value,
@@ -612,10 +650,17 @@
       contact_number: document.getElementById('fContactNum').value.trim(),
       location:       document.getElementById('fLocation').value.trim(),
       address:        document.getElementById('fAddress').value.trim()
-    });
+    };
+
+    let error;
+    if (editId) {
+      ({ error } = await sb.from('customers').update(payload).eq('id', editId));
+    } else {
+      ({ error } = await sb.from('customers').insert(payload));
+    }
 
     btn.disabled = false;
-    btn.textContent = 'Save Customer';
+    btn.textContent = editId ? 'Update Customer' : 'Save Customer';
 
     if (error) {
       document.getElementById('modalError').textContent = 'Failed to save — please try again.';
@@ -684,6 +729,18 @@
         <td class="contact-num">${escape(c[5])}</td>
         <td class="location">${highlight(c[6], terms.location)}</td>
         <td class="address">${escape(c[7])}</td>
+        <td>
+          <div class="row-actions">
+            <button class="action-btn edit" onclick="openEdit('${c[8]}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit
+            </button>
+            <button class="action-btn del" onclick="deleteCustomer('${c[8]}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+              Delete
+            </button>
+          </div>
+        </td>
       </tr>
     `).join('');
 
