@@ -553,7 +553,7 @@
     const pageRows = rows.slice(start, start + PAGE_SIZE);
 
     tbody.innerHTML = pageRows.map(p => {
-      const inCart = cart.some(c => c.code === p[0]);
+      const inCart = cart.some(c => c.code === String(p[0]));
       return `
       <tr>
         <td class="code">${escape(p[0])}</td>
@@ -638,18 +638,20 @@
   }
 
   function addToCart(code) {
-    const prod = PRODUCTS.find(p => p[0] === code);
+    code = String(code);
+    const prod = PRODUCTS.find(p => String(p[0]) === code);
     if (!prod) return;
     if (cart.some(c => c.code === code)) {
       cart = cart.filter(c => c.code !== code);
     } else {
-      cart.push({ code: prod[0], name: prod[1], company: prod[3], molecule: prod[4] });
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4] });
     }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
   }
 
   function removeFromCart(code) {
+    code = String(code);
     cart = cart.filter(c => c.code !== code);
     updateCartBadge();
     renderOrderItems();
