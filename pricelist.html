@@ -424,7 +424,7 @@
           </div>
           <div class="order-field">
             <label>Phone Number *</label>
-            <input class="order-input" id="orderPhone" type="tel" placeholder="+91 XXXXX XXXXX" />
+            <input class="order-input" id="orderPhone" type="tel" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" />
           </div>
           <div class="order-field">
             <label>Address *</label>
@@ -784,6 +784,7 @@
     const errEl   = document.getElementById('orderError');
 
     if (!name || !phone || !address) { errEl.textContent = 'Please fill in all fields.'; return; }
+    if (!/^[0-9]{10}$/.test(phone)) { errEl.textContent = 'Phone number must be exactly 10 digits.'; return; }
     errEl.textContent = '';
 
     const grandTotal = cart.reduce((sum, c) => sum + c.salesRate * c.qty, 0);
