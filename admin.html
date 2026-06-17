@@ -424,8 +424,6 @@
   const SESSION_KEY = 'mw_admin_auth';
   const LS_KEY = 'medwell_products_v2';
 
-  if (sessionStorage.getItem(SESSION_KEY) === '1') bootAdmin();
-
   /* Eye toggle */
   document.getElementById('eyeBtn').addEventListener('click', () => {
     const inp = document.getElementById('pwdInput');
@@ -712,6 +710,9 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
   }
+
+  // Run after all variables are declared to avoid TDZ crash on refresh
+  if (sessionStorage.getItem(SESSION_KEY) === '1') bootAdmin();
 </script>
 </body>
 </html>
