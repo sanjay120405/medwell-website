@@ -702,6 +702,17 @@
     }
   });
 
+  /* ── LIVE SYNC FROM PRICELIST ──────────────── */
+  window.addEventListener('storage', e => {
+    if (e.key !== LS_KEY || !e.newValue) return;
+    try {
+      products = JSON.parse(e.newValue);
+      refreshStats();
+      runSearch();
+      toast('Price list updated — admin synced.', 'info');
+    } catch(err) {}
+  });
+
   /* ── TOAST ──────────────────────────────────── */
   let toastTimer;
   function toast(msg, type = 'info') {
