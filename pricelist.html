@@ -1063,14 +1063,18 @@
 
   // Live sync from admin panel
   window.addEventListener('storage', e => {
-    if (e.key !== _PL_KEY || !e.newValue) return;
-    try {
-      PRODUCTS = JSON.parse(e.newValue);
-      TOTAL = PRODUCTS.length;
-      document.getElementById('totalNum').textContent = TOTAL;
-      clearAll();
-      showSyncBanner();
-    } catch(err) {}
+    if (e.key !== _PL_KEY) return;
+    if (!e.newValue) {
+      // Admin reset — re-seed from defaults so admin can pick it up
+      localStorage.setItem(_PL_KEY, JSON.stringify(PRODUCTS_DEFAULT));
+      PRODUCTS = PRODUCTS_DEFAULT.slice();
+    } else {
+      try { PRODUCTS = JSON.parse(e.newValue); } catch(err) { return; }
+    }
+    TOTAL = PRODUCTS.length;
+    document.getElementById('totalNum').textContent = TOTAL;
+    clearAll();
+    showSyncBanner();
   });
 
   function showSyncBanner() {

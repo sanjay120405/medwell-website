@@ -693,12 +693,12 @@
 
   /* ── RESET ──────────────────────────────────── */
   document.getElementById('resetBtn').addEventListener('click', () => {
-    if (confirm('Reset all products to the original defaults?\n\nAll edits will be lost. The price list page will re-seed data on next visit.')) {
+    if (confirm('Reset all products to the original defaults?\n\nAll your edits will be lost and the original 317 products will be restored.')) {
       localStorage.removeItem(LS_KEY);
       products = [];
       refreshStats();
       runSearch();
-      toast('Reset done. Visit the Price List page to reload the default products.', 'info');
+      toast('Resetting… price list page will re-seed defaults automatically.', 'info');
     }
   });
 
@@ -709,7 +709,7 @@
       products = JSON.parse(e.newValue);
       refreshStats();
       runSearch();
-      toast('Price list updated — admin synced.', 'info');
+      toast('Synced — default products reloaded.', 'success');
     } catch(err) {}
   });
 
