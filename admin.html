@@ -224,6 +224,7 @@
     }
   </style>
 </head>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script src="products-data.js"></script>
 <body>
 
@@ -672,20 +673,24 @@
 
   /* ── EXPORT ─────────────────────────────────── */
   document.getElementById('exportBtn').addEventListener('click', () => {
-    const json = JSON.stringify(products);
-    try {
-      navigator.clipboard.writeText(json).then(() => {
-        toast('Products JSON copied to clipboard!', 'success');
-      });
-    } catch(e) {
-      const ta = document.createElement('textarea');
-      ta.value = json;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      toast('Products JSON copied to clipboard!', 'success');
-    }
+    const headers = ['Code','Product','Pkg','Company','Molecule','Category','Sales Rate','Tax%','MRP'];
+    const rows = products.map(p => ({
+      'Code':        p[0],
+      'Product':     p[1],
+      'Pkg':         p[2],
+      'Company':     p[3],
+      'Molecule':    p[4],
+      'Category':    p[5],
+      'Sales Rate':  p[6],
+      'Tax%':        p[7],
+      'MRP':         p[8]
+    }));
+    const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
+    ws['!cols'] = [8,40,8,18,20,14,12,7,12].map(w => ({ wch: w }));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Price List');
+    XLSX.writeFile(wb, 'Medwell_PriceList.xlsx');
+    toast('Excel file downloaded!', 'success');
   });
 
   /* ── RESET ──────────────────────────────────── */
