@@ -448,7 +448,7 @@
 </div>
 
 <script>
-  const PRODUCTS = [
+  const PRODUCTS_DEFAULT = [
     [8487,"EC 1035 X-RAY VIEWER","1","EASYCARE","X - RAY VIEWER","SURGICALS",1240.3125,5,4499],
     [9148,"EC 036 DELUX STETHOSCOPE","1","EASYCARE","STETHOSCOPE","SURGICALS",296.296875,5,749.06],
     [8483,"EC 045 DUAL HEAD STETHOSCOPE","1","EASYCARE","STETHOSCOPE","SURGICALS",482.34375,5,1096.88],
@@ -768,6 +768,15 @@
     [14086,"RIO SANITARY NAPKINS XLARGE COTTONY COVER 6S","6","FRIENDS","NAPKIN","SURGICALS",31.0845,0,36]
   ];
 
+  const _PL_KEY = 'medwell_products_v2';
+  const PRODUCTS = (() => {
+    try {
+      const s = localStorage.getItem(_PL_KEY);
+      if (s) return JSON.parse(s);
+      localStorage.setItem(_PL_KEY, JSON.stringify(PRODUCTS_DEFAULT));
+    } catch(e) {}
+    return PRODUCTS_DEFAULT;
+  })();
   const TOTAL = PRODUCTS.length;
   const PAGE_SIZE = 20;
   let currentPage = 1;
