@@ -484,12 +484,17 @@
   async function fetchDefaultProducts() {
     try {
       const html = await fetch('pricelist.html').then(r => r.text());
-      const marker = 'const PRODUCTS_DEFAULT = [';
-      const arrayStart = html.indexOf(marker) + marker.length - 1;
-      const arrayEnd = html.indexOf('\n  ];', arrayStart) + 4;
-      return JSON.parse(html.slice(arrayStart, arrayEnd));
+      const marker = 'const PRODUCTS_DEFAULT = ';
+      const start = html.indexOf(marker) + marker.length;
+      let depth = 0, end = start;
+      for (let i = start; i < html.length; i++) {
+        if (html[i] === '[') depth++;
+        else if (html[i] === ']') { depth--; if (depth === 0) { end = i + 1; break; } }
+      }
+      return JSON.parse(html.slice(start, end));
     } catch(e) {
-      toast('Could not load product data.', 'error');
+      toast('Could not load product data. Check console for details.', 'error');
+      console.error('fetchDefaultProducts error:', e);
       return [];
     }
   }
