@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Price List – Medwell Logix Medical &amp; Surgical Equipment</title>
+  <title>Web Order – Medwell Logix Medical &amp; Surgical Equipment</title>
   <link rel="icon" type="image/png" href="medwell logo.png" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3VNPYNZYLS"></script>
   <script>
@@ -56,42 +56,35 @@
     .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
     /* NAVBAR */
-    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--white); box-shadow: 0 2px 20px rgba(13,122,122,.1); transition: var(--transition); }
-    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 20px; }
-    .logo-wrap { display: flex; align-items: center; flex-shrink: 0; }
-    .logo-wrap img { height: 50px; width: auto; }
-    .nav-links { display: none; align-items: center; gap: 4px; }
+    .navbar { position: sticky; top: 0; z-index: 1000; background: linear-gradient(90deg, var(--teal-deeper), var(--teal-dark)); box-shadow: 0 2px 14px rgba(4,64,64,.28); }
+    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 62px; padding: 0 24px; }
+    .nb-left { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+    .logo-wrap { display: flex; align-items: center; }
+    .logo-wrap img { height: 38px; width: auto; }
+    .page-title { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); }
+    .page-badge { background: var(--orange); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 0.67rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; letter-spacing: .03em; white-space: nowrap; }
+    .nav-links { display: none; align-items: center; gap: 2px; }
     @media(min-width:900px){ .nav-links { display: flex; } }
-    .nav-links a { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--text); padding: 8px 14px; border-radius: var(--radius-sm); transition: var(--transition); position: relative; }
-    .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); border-radius: 99px; transition: width .3s; }
-    .nav-links a:hover::after, .nav-links a.active::after { width: 60%; }
-    .nav-links a:hover, .nav-links a.active { color: var(--teal); }
-    .nav-cta { display: inline-flex; padding: 9px 15px; font-size: 0.78rem; flex-shrink: 0; }
-    @media(min-width:900px){ .nav-cta { padding: 12px 26px; font-size: 0.88rem; } }
+    .nav-links a { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,.78); padding: 7px 12px; border-radius: 8px; transition: background .2s, color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(255,255,255,.14); }
 
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: var(--transition); white-space: nowrap; cursor: pointer; border: none; }
     .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 18px rgba(232,120,32,.35); }
     .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
 
-    /* MOBILE */
-    @media(max-width:899px){
-      .navbar-inner { gap: 12px; height: 70px; justify-content: flex-start; }
-      .logo-wrap img { height: 50px; }
-      .nav-cta { margin-left: auto; padding: 11px 20px; font-size: 0.84rem; }
-      .hamburger { flex-shrink: 0; }
-    }
-    @media(max-width:480px){
-      .navbar-inner { gap: 8px; height: 66px; }
-      .logo-wrap img { height: 44px; }
-      .nav-cta { padding: 10px 16px; font-size: 0.8rem; }
-    }
-
-    .hamburger { display: flex; flex-direction: column; gap: 6px; padding: 10px 11px; background: var(--teal-light); border-radius: var(--radius-sm); transition: var(--transition); border: none; }
+    .hamburger { display: flex; flex-direction: column; gap: 5px; padding: 9px 10px; background: rgba(255,255,255,.12); border-radius: 8px; border: none; cursor: pointer; flex-shrink: 0; }
     @media(min-width:900px){ .hamburger { display: none; } }
-    .hamburger span { display: block; width: 26px; height: 2.5px; background: var(--teal); border-radius: 99px; transition: var(--transition); }
-    .hamburger.open span:nth-child(1){ transform: translateY(8.5px) rotate(45deg); }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 99px; transition: var(--transition); }
+    .hamburger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
     .hamburger.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3){ transform: translateY(-8.5px) rotate(-45deg); }
+    .hamburger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+    /* STATS BAR */
+    .stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 13px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .stat { display: flex; flex-direction: column; gap: 1px; }
+    .stat-label { font-size: 0.68rem; font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; }
+    .stat-value { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--teal); }
+    .stat-divider { width: 1px; height: 32px; background: var(--border); flex-shrink: 0; }
     .mobile-menu { position: fixed; inset: 0; z-index: 999; background: var(--white); transform: translateX(100%); transition: transform .38s cubic-bezier(.4,0,.2,1); overflow-y: auto; padding: 24px; }
     .mobile-menu.open { transform: translateX(0); }
     .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
@@ -101,14 +94,6 @@
     .mobile-menu-footer { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
     .mobile-menu-footer .btn { width: 100%; justify-content: center; }
 
-    /* PAGE HERO */
-    .page-hero { background: linear-gradient(135deg, var(--teal-deeper) 0%, var(--teal-dark) 60%, var(--teal) 100%); padding: 48px 0 52px; color: white; }
-    .page-hero-inner { display: flex; flex-direction: column; gap: 10px; }
-    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; opacity: .75; }
-    .breadcrumb a { color: white; }
-    .breadcrumb .current { color: var(--orange); }
-    .page-hero h1 { font-family: 'Poppins', sans-serif; font-size: clamp(1.7rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.2; }
-    .page-hero p { font-size: 0.95rem; opacity: .8; max-width: 500px; }
 
     /* SEARCH SECTION */
     .search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 24px 0; box-shadow: var(--shadow-sm); }
@@ -262,26 +247,50 @@
 
 <!-- NAVBAR -->
 <header class="navbar" id="navbar">
-  <div class="container">
-    <div class="navbar-inner">
+  <div class="navbar-inner">
+    <div class="nb-left">
       <a href="index.html" class="logo-wrap">
         <img src="medwell logo.png" alt="Medwell Logix" />
       </a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="products.html">Products</a>
-        <a href="pricelist.html" class="active">Price List</a>
-        <a href="customerlist.html">Customer List</a>
-        <a href="index.html#about">About Us</a>
-        <a href="index.html#contact">Contact Us</a>
-      </nav>
-
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
+      <span class="page-title">Web Order</span>
+      <span class="page-badge">Medical &amp; Surgical</span>
     </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="pricelist.html" class="active">Web Order</a>
+      <a href="customerlist.html">Customer List</a>
+      <a href="index.html#about">About Us</a>
+      <a href="index.html#contact">Contact Us</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-label">Total Products</span>
+    <span class="stat-value" id="statTotal">—</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-label">Showing</span>
+    <span class="stat-value" id="statShowing">—</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-label">Companies</span>
+    <span class="stat-value" id="statCompanies">—</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-label">Categories</span>
+    <span class="stat-value" id="statCategories">—</span>
+  </div>
+</div>
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
@@ -292,28 +301,13 @@
   <nav>
     <a href="index.html" onclick="closeMobileMenu()">Home</a>
     <a href="products.html" onclick="closeMobileMenu()">Products</a>
-    <a href="pricelist.html" onclick="closeMobileMenu()">Price List</a>
+    <a href="pricelist.html" onclick="closeMobileMenu()">Web Order</a>
     <a href="customerlist.html" onclick="closeMobileMenu()">Customer List</a>
     <a href="index.html#about" onclick="closeMobileMenu()">About Us</a>
     <a href="index.html#contact" onclick="closeMobileMenu()">Contact Us</a>
   </nav>
   <div class="mobile-menu-footer">
     <a href="tel:+918056584041" class="btn" style="border:2px solid var(--teal);color:var(--teal);" onclick="closeMobileMenu()">Call Us Now</a>
-  </div>
-</div>
-
-<!-- PAGE HERO -->
-<div class="page-hero">
-  <div class="container">
-    <div class="page-hero-inner">
-      <div class="breadcrumb">
-        <a href="index.html">Home</a>
-        <span>&#x203A;</span>
-        <span class="current">Price List</span>
-      </div>
-      <h1>Product List</h1>
-      <p>Browse our complete catalogue of medical &amp; surgical equipment</p>
-    </div>
   </div>
 </div>
 
@@ -803,6 +797,8 @@
     const countNum = document.getElementById('countNum');
     const pagination = document.getElementById('pagination');
 
+    if (typeof updateStats === 'function') updateStats(rows.length);
+
     if (rows.length === 0) {
       tbody.innerHTML = '';
       noResults.classList.add('show');
@@ -1059,8 +1055,16 @@
 
   document.getElementById('totalNum').textContent = TOTAL;
 
+  function updateStats(showingCount) {
+    document.getElementById('statTotal').textContent = PRODUCTS.length;
+    document.getElementById('statShowing').textContent = showingCount;
+    document.getElementById('statCompanies').textContent = new Set(PRODUCTS.map(p => p[3])).size;
+    document.getElementById('statCategories').textContent = new Set(PRODUCTS.map(p => p[5])).size;
+  }
+
   // Initial render
   renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
+  updateStats(PRODUCTS.length);
 
   // Live sync from admin panel
   window.addEventListener('storage', e => {
@@ -1075,6 +1079,7 @@
     TOTAL = PRODUCTS.length;
     document.getElementById('totalNum').textContent = TOTAL;
     clearAll();
+    updateStats(TOTAL);
     showSyncBanner();
   });
 
