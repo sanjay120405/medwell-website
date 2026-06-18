@@ -135,6 +135,8 @@
     .tb-btn.add:hover { background: var(--teal-dark); }
     .tb-btn.export { background: var(--orange); color: var(--white); }
     .tb-btn.export:hover { background: var(--orange-dark); }
+    .tb-btn.import { background: #2563eb; color: var(--white); }
+    .tb-btn.import:hover { background: #1d4ed8; }
 
 
     /* TABLE */
@@ -315,6 +317,11 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
       Export
     </button>
+    <button class="tb-btn import" id="importBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 14l5-5 5 5M12 3v12"/></svg>
+      Import
+    </button>
+    <input type="file" id="importFile" accept=".xlsx,.xls,.csv" style="display:none;" />
   </div>
 
   <div class="table-section">
@@ -691,6 +698,78 @@
     XLSX.utils.book_append_sheet(wb, ws, 'Price List');
     XLSX.writeFile(wb, 'Medwell_PriceList.xlsx');
     toast('Excel file downloaded!', 'success');
+  });
+
+  /* ── IMPORT ─────────────────────────────────── */
+  document.getElementById('importBtn').addEventListener('click', () => {
+    document.getElementById('importFile').click();
+  });
+
+  document.getElementById('importFile').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const wb = XLSX.read(e.target.result, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+        if (!rows.length) { toast('No data found in file.', 'error'); return; }
+
+        const colMap = {
+          code:     ['Code','CODE','code'],
+          product:  ['Product','PRODUCT','product','Name','name'],
+          pkg:      ['Pkg','PKG','pkg','Packing','packing','Pack'],
+          company:  ['Company','COMPANY','company'],
+          molecule: ['Molecule','MOLECULE','molecule'],
+          category: ['Category','CATEGORY','category'],
+          rate:     ['Sales Rate','SALES RATE','sales rate','Rate','rate','Price','price'],
+          tax:      ['Tax%','TAX%','tax%','Tax','tax','GST','gst'],
+          mrp:      ['MRP','mrp','M.R.P']
+        };
+
+        function getVal(row, keys) {
+          for (const k of keys) if (row[k] !== undefined && row[k] !== '') return row[k];
+          return '';
+        }
+
+        let added = 0, skipped = 0;
+        const existingCodes = new Set(products.map(p => String(p[0]).trim().toLowerCase()));
+
+        rows.forEach(row => {
+          const code    = String(getVal(row, colMap.code)).trim();
+          const product = String(getVal(row, colMap.product)).trim();
+          if (!product) { skipped++; return; }
+
+          const pkg      = String(getVal(row, colMap.pkg)).trim();
+          const company  = String(getVal(row, colMap.company)).trim();
+          const molecule = String(getVal(row, colMap.molecule)).trim();
+          const category = String(getVal(row, colMap.category)).trim();
+          const rate     = parseFloat(getVal(row, colMap.rate)) || 0;
+          const tax      = parseFloat(getVal(row, colMap.tax)) || 0;
+          const mrp      = parseFloat(getVal(row, colMap.mrp)) || 0;
+
+          if (code && existingCodes.has(code.toLowerCase())) {
+            // update existing entry
+            const idx = products.findIndex(p => String(p[0]).trim().toLowerCase() === code.toLowerCase());
+            if (idx !== -1) products[idx] = [code, product, pkg, company, molecule, category, rate, tax, mrp];
+          } else {
+            products.push([code || String(products.length + 1), product, pkg, company, molecule, category, rate, tax, mrp]);
+            if (code) existingCodes.add(code.toLowerCase());
+          }
+          added++;
+        });
+
+        localStorage.setItem(LS_KEY, JSON.stringify(products));
+        refreshStats();
+        runSearch();
+        toast(`Imported ${added} products${skipped ? `, ${skipped} skipped` : ''}.`, 'success');
+      } catch(err) {
+        toast('Failed to read file: ' + err.message, 'error');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    this.value = ''; // allow re-importing same file
   });
 
   /* ── RESET ──────────────────────────────────── */
