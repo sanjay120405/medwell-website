@@ -377,12 +377,10 @@
       <table id="priceTable">
         <thead>
           <tr>
-            <th>Code</th>
             <th>Product</th>
             <th>Pkg</th>
             <th>Company</th>
             <th>Molecule</th>
-            <th>Category</th>
             <th>Sales Rate (&#8377;)</th>
             <th>Tax (%)</th>
             <th>MRP (&#8377;)</th>
@@ -833,12 +831,10 @@
       const qty = cartItem ? cartItem.qty : 1;
       return `
       <tr>
-        <td class="code">${escape(p[0])}</td>
         <td class="product">${highlight(p[1], terms.product)}</td>
         <td>${escape(p[2].trim())}</td>
         <td>${highlight(p[3], terms.company)}</td>
         <td class="molecule">${highlight(p[4], terms.molecule)}</td>
-        <td class="category"><span class="cat-badge">${escape(p[5])}</span></td>
         <td class="price">${p[6] > 0 ? '&#8377;' + p[6].toFixed(2) : '—'}</td>
         <td class="tax">${p[7]}%</td>
         <td class="mrp">${p[8] > 0 ? '&#8377;' + p[8].toFixed(2) : '—'}</td>
