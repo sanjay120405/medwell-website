@@ -1107,13 +1107,20 @@
     try {
       const { data, error } = await sb_pl.from('products').select('*').order('id');
       if (error) throw error;
-      PRODUCTS = data.map(r => [r.code||'', r.product||'', r.packing||'', r.company||'', r.molecule||'', r.category||'', +r.sales_rate||0, +r.tax||0, +r.mrp||0, r.id]);
-      TOTAL = PRODUCTS.length;
-      localStorage.setItem(_PL_KEY, JSON.stringify(PRODUCTS.map(p => p.slice(0, 9))));
+      if (data && data.length > 0) {
+        PRODUCTS = data.map(r => [r.code||'', r.product||'', r.packing||'', r.company||'', r.molecule||'', r.category||'', +r.sales_rate||0, +r.tax||0, +r.mrp||0, r.id]);
+        TOTAL = PRODUCTS.length;
+        localStorage.setItem(_PL_KEY, JSON.stringify(PRODUCTS.map(p => p.slice(0, 9))));
+      } else {
+        // Table empty — use localStorage or built-in defaults
+        throw new Error('empty');
+      }
     } catch(err) {
       const raw = localStorage.getItem(_PL_KEY);
-      try { PRODUCTS = raw ? JSON.parse(raw) : PRODUCTS_DEFAULT.slice(); }
-      catch { PRODUCTS = PRODUCTS_DEFAULT.slice(); }
+      try {
+        const parsed = raw ? JSON.parse(raw) : null;
+        PRODUCTS = (Array.isArray(parsed) && parsed.length > 0) ? parsed : PRODUCTS_DEFAULT.slice();
+      } catch { PRODUCTS = PRODUCTS_DEFAULT.slice(); }
       TOTAL = PRODUCTS.length;
     }
     filteredRows = PRODUCTS.slice();
