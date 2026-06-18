@@ -56,28 +56,41 @@
     .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
     /* NAVBAR */
-    .navbar { position: sticky; top: 0; z-index: 1000; background: linear-gradient(90deg, var(--teal-deeper), var(--teal-dark)); box-shadow: 0 2px 14px rgba(4,64,64,.28); }
-    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 62px; padding: 0 24px; }
-    .nb-left { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
-    .logo-wrap { display: flex; align-items: center; }
-    .logo-wrap img { height: 38px; width: auto; }
-    .page-title { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); }
-    .page-badge { background: var(--orange); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 0.67rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; letter-spacing: .03em; white-space: nowrap; }
-    .nav-links { display: none; align-items: center; gap: 2px; }
+    .navbar { position: sticky; top: 0; z-index: 1000; background: var(--white); box-shadow: 0 2px 20px rgba(13,122,122,.1); transition: var(--transition); }
+    .navbar.scrolled { box-shadow: 0 4px 30px rgba(13,122,122,.18); }
+    .navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 20px; }
+    .logo-wrap { display: flex; align-items: center; flex-shrink: 0; }
+    .logo-wrap img { height: 50px; width: auto; }
+    .nav-links { display: none; align-items: center; gap: 4px; }
     @media(min-width:900px){ .nav-links { display: flex; } }
-    .nav-links a { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,.78); padding: 7px 12px; border-radius: 8px; transition: background .2s, color .2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--white); background: rgba(255,255,255,.14); }
+    .nav-links a { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--text); padding: 8px 14px; border-radius: var(--radius-sm); transition: var(--transition); position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--teal); border-radius: 99px; transition: width .3s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 60%; }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); }
+    .nav-cta { display: inline-flex; padding: 9px 15px; font-size: 0.78rem; flex-shrink: 0; }
+    @media(min-width:900px){ .nav-cta { padding: 12px 26px; font-size: 0.88rem; } }
 
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; transition: var(--transition); white-space: nowrap; cursor: pointer; border: none; }
     .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 18px rgba(232,120,32,.35); }
     .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
 
-    .hamburger { display: flex; flex-direction: column; gap: 5px; padding: 9px 10px; background: rgba(255,255,255,.12); border-radius: 8px; border: none; cursor: pointer; flex-shrink: 0; }
+    @media(max-width:899px){
+      .navbar-inner { gap: 12px; height: 70px; justify-content: flex-start; }
+      .logo-wrap img { height: 50px; }
+      .nav-cta { margin-left: auto; padding: 11px 20px; font-size: 0.84rem; }
+      .hamburger { flex-shrink: 0; }
+    }
+    @media(max-width:480px){
+      .navbar-inner { gap: 8px; height: 66px; }
+      .logo-wrap img { height: 44px; }
+      .nav-cta { padding: 10px 16px; font-size: 0.8rem; }
+    }
+    .hamburger { display: flex; flex-direction: column; gap: 6px; padding: 10px 11px; background: var(--teal-light); border-radius: var(--radius-sm); transition: var(--transition); border: none; cursor: pointer; }
     @media(min-width:900px){ .hamburger { display: none; } }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 99px; transition: var(--transition); }
-    .hamburger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+    .hamburger span { display: block; width: 26px; height: 2.5px; background: var(--teal); border-radius: 99px; transition: var(--transition); }
+    .hamburger.open span:nth-child(1){ transform: translateY(8.5px) rotate(45deg); }
     .hamburger.open span:nth-child(2){ opacity: 0; transform: scaleX(0); }
-    .hamburger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+    .hamburger.open span:nth-child(3){ transform: translateY(-8.5px) rotate(-45deg); }
 
     /* STATS BAR */
     .stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 13px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
@@ -247,25 +260,24 @@
 
 <!-- NAVBAR -->
 <header class="navbar" id="navbar">
-  <div class="navbar-inner">
-    <div class="nb-left">
+  <div class="container">
+    <div class="navbar-inner">
       <a href="index.html" class="logo-wrap">
-        <img src="medwell logo.png" alt="Medwell Logix" />
+        <img src="medwell logo.png" alt="Medwell Logix – Medical &amp; Surgicals" />
       </a>
-      <span class="page-title">Web Order</span>
-      <span class="page-badge">Medical &amp; Surgical</span>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="pricelist.html" class="active">Web Order</a>
+        <a href="customerlist.html">Customer List</a>
+        <a href="index.html#about">About Us</a>
+        <a href="index.html#contact">Contact Us</a>
+      </nav>
+      <a href="https://wa.me/919790611559?text=I%20want%20to%20purchase" class="btn btn-primary nav-cta" target="_blank">Request Quote</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="pricelist.html" class="active">Web Order</a>
-      <a href="customerlist.html">Customer List</a>
-      <a href="index.html#about">About Us</a>
-      <a href="index.html#contact">Contact Us</a>
-    </nav>
-    <button class="hamburger" id="hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </header>
 
@@ -1037,6 +1049,10 @@
     window.open(waUrl, '_blank');
     closeOrder();
   });
+
+  // Navbar scroll shadow
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30), { passive: true });
 
   // Mobile menu
   const hamburger = document.getElementById('hamburger');
