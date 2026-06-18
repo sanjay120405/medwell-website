@@ -226,6 +226,7 @@
     }
   </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script src="products-data.js"></script>
 <body>
@@ -432,6 +433,18 @@
   const SESSION_KEY = 'mw_admin_auth';
   const LS_KEY = 'medwell_products_v2';
 
+  /* ── SUPABASE ───────────────────────────────── */
+  const SB_URL = 'https://vogxaylmrzulbdltxrwv.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
+  const sb = window.supabase.createClient(SB_URL, SB_KEY);
+
+  function rowToArr(r) {
+    return [r.code||'', r.product||'', r.packing||'', r.company||'', r.molecule||'', r.category||'', +r.sales_rate||0, +r.tax||0, +r.mrp||0, r.id];
+  }
+  function arrToRow(p) {
+    return { code: String(p[0]), product: p[1], packing: p[2], company: p[3], molecule: p[4], category: p[5], sales_rate: +p[6], tax: +p[7], mrp: +p[8] };
+  }
+
   /* Eye toggle */
   document.getElementById('eyeBtn').addEventListener('click', () => {
     const inp = document.getElementById('pwdInput');
@@ -465,10 +478,10 @@
     location.reload();
   });
 
-  function bootAdmin() {
+  async function bootAdmin() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminWrap').style.display = 'block';
-    initProducts();
+    await initProducts();
   }
 
   /* ── PRODUCTS STATE ─────────────────────────── */
@@ -476,23 +489,40 @@
   let filtered = [];
   let deleteIdx = null;
 
-  function initProducts() {
-    const raw = localStorage.getItem(LS_KEY);
-    if (raw) {
+  async function initProducts() {
+    try {
+      const { data, error } = await sb.from('products').select('*').order('id');
+      if (error) throw error;
+      if (data && data.length > 0) {
+        products = data.map(rowToArr);
+      } else {
+        // Seed database with defaults in chunks of 100
+        let seeded = [];
+        for (let i = 0; i < PRODUCTS_DEFAULT.length; i += 100) {
+          const chunk = PRODUCTS_DEFAULT.slice(i, i + 100).map(arrToRow);
+          const { data: ins, error: e } = await sb.from('products').insert(chunk).select();
+          if (e) throw e;
+          seeded = seeded.concat(ins.map(rowToArr));
+        }
+        products = seeded;
+        toast('Database seeded with ' + products.length + ' products!', 'success');
+      }
+      localStorage.setItem(LS_KEY, JSON.stringify(products.map(p => p.slice(0, 9))));
+    } catch(err) {
+      console.warn('Supabase unavailable, falling back to localStorage:', err.message);
+      const raw = localStorage.getItem(LS_KEY);
       try {
-        const parsed = JSON.parse(raw);
-        products = Array.isArray(parsed) && parsed.length > 0 ? parsed : PRODUCTS_DEFAULT.slice();
-      } catch(e) { products = PRODUCTS_DEFAULT.slice(); }
-    } else {
-      products = PRODUCTS_DEFAULT.slice();
-      localStorage.setItem(LS_KEY, JSON.stringify(products));
+        const parsed = raw ? JSON.parse(raw) : null;
+        products = (Array.isArray(parsed) && parsed.length > 0) ? parsed : PRODUCTS_DEFAULT.slice();
+      } catch { products = PRODUCTS_DEFAULT.slice(); }
+      toast('Offline — using cached data.', 'error');
     }
     refreshStats();
     runSearch();
   }
 
   function persist() {
-    localStorage.setItem(LS_KEY, JSON.stringify(products));
+    localStorage.setItem(LS_KEY, JSON.stringify(products.map(p => p.slice(0, 9))));
   }
 
   /* ── STATS ──────────────────────────────────── */
@@ -608,7 +638,7 @@
   document.getElementById('modalCancelBtn').addEventListener('click', closeEdit);
   editOverlay.addEventListener('click', e => { if (e.target === editOverlay) closeEdit(); });
 
-  document.getElementById('modalSaveBtn').addEventListener('click', () => {
+  document.getElementById('modalSaveBtn').addEventListener('click', async () => {
     const code = document.getElementById('fCode').value.trim();
     const product = document.getElementById('fProduct').value.trim();
     const company = document.getElementById('fCompany').value.trim();
@@ -633,9 +663,20 @@
 
     const ri = parseInt(document.getElementById('editIdx').value);
     if (ri === -1) {
+      try {
+        const { data, error } = await sb.from('products').insert(arrToRow(entry)).select().single();
+        if (error) throw error;
+        entry[9] = data.id;
+      } catch(e) { toast('Cloud save failed — saved locally.', 'error'); }
       products.push(entry);
       toast('Product added successfully!', 'success');
     } else {
+      const id = products[ri][9];
+      entry[9] = id;
+      try {
+        const { error } = await sb.from('products').update(arrToRow(entry)).eq('id', id);
+        if (error) throw error;
+      } catch(e) { toast('Cloud save failed — saved locally.', 'error'); }
       products[ri] = entry;
       toast('Product updated successfully!', 'success');
     }
@@ -667,9 +708,16 @@
   document.getElementById('confirmCancelBtn').addEventListener('click', closeConfirm);
   confirmOverlay.addEventListener('click', e => { if (e.target === confirmOverlay) closeConfirm(); });
 
-  document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+  document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
     if (deleteIdx === null) return;
     const name = products[deleteIdx][1];
+    const id = products[deleteIdx][9];
+    if (id) {
+      try {
+        const { error } = await sb.from('products').delete().eq('id', id);
+        if (error) throw error;
+      } catch(e) { toast('Cloud delete failed — removed locally.', 'error'); }
+    }
     products.splice(deleteIdx, 1);
     persist();
     refreshStats();
@@ -709,7 +757,7 @@
     const file = this.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = async function(e) {
       try {
         const wb = XLSX.read(e.target.result, { type: 'array' });
         const ws = wb.Sheets[wb.SheetNames[0]];
@@ -735,6 +783,8 @@
 
         let added = 0, skipped = 0;
         const existingCodes = new Set(products.map(p => String(p[0]).trim().toLowerCase()));
+        const toInsert = [];
+        const toUpdate = [];
 
         rows.forEach(row => {
           const code    = String(getVal(row, colMap.code)).trim();
@@ -748,19 +798,42 @@
           const rate     = parseFloat(getVal(row, colMap.rate)) || 0;
           const tax      = parseFloat(getVal(row, colMap.tax)) || 0;
           const mrp      = parseFloat(getVal(row, colMap.mrp)) || 0;
+          const entry    = [code || '', product, pkg, company, molecule, category, rate, tax, mrp];
 
           if (code && existingCodes.has(code.toLowerCase())) {
-            // update existing entry
             const idx = products.findIndex(p => String(p[0]).trim().toLowerCase() === code.toLowerCase());
-            if (idx !== -1) products[idx] = [code, product, pkg, company, molecule, category, rate, tax, mrp];
+            if (idx !== -1) {
+              entry[9] = products[idx][9];
+              products[idx] = entry;
+              toUpdate.push({ id: entry[9], row: arrToRow(entry) });
+            }
           } else {
-            products.push([code || String(products.length + 1), product, pkg, company, molecule, category, rate, tax, mrp]);
+            toInsert.push(entry);
             if (code) existingCodes.add(code.toLowerCase());
           }
           added++;
         });
 
-        localStorage.setItem(LS_KEY, JSON.stringify(products));
+        // Sync updates to Supabase
+        for (const { id, row } of toUpdate) {
+          if (id) await sb.from('products').update(row).eq('id', id);
+        }
+
+        // Batch insert new rows to Supabase
+        for (let i = 0; i < toInsert.length; i += 100) {
+          const chunk = toInsert.slice(i, i + 100);
+          const { data, error } = await sb.from('products').insert(chunk.map(arrToRow)).select();
+          if (!error && data) {
+            data.forEach((r, j) => {
+              chunk[j][9] = r.id;
+              products.push(chunk[j]);
+            });
+          } else {
+            chunk.forEach(e => products.push(e));
+          }
+        }
+
+        persist();
         refreshStats();
         runSearch();
         toast(`Imported ${added} products${skipped ? `, ${skipped} skipped` : ''}.`, 'success');
@@ -769,21 +842,11 @@
       }
     };
     reader.readAsArrayBuffer(file);
-    this.value = ''; // allow re-importing same file
+    this.value = '';
   });
 
   /* ── RESET ──────────────────────────────────── */
 
-  /* ── LIVE SYNC FROM PRICELIST ──────────────── */
-  window.addEventListener('storage', e => {
-    if (e.key !== LS_KEY || !e.newValue) return;
-    try {
-      products = JSON.parse(e.newValue);
-      refreshStats();
-      runSearch();
-      toast('Synced — default products reloaded.', 'success');
-    } catch(err) {}
-  });
 
   /* ── TOAST ──────────────────────────────────── */
   let toastTimer;

@@ -481,6 +481,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="products-data.js"></script>
 <script>
   // PRODUCTS_DEFAULT loaded from products-data.js
@@ -803,16 +804,13 @@
     [14086,"RIO SANITARY NAPKINS XLARGE COTTONY COVER 6S","6","FRIENDS","NAPKIN","SURGICALS",31.0845,0,36]
   ];
 
+  const SB_URL = 'https://vogxaylmrzulbdltxrwv.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
+  const sb_pl = window.supabase.createClient(SB_URL, SB_KEY);
+
   const _PL_KEY = 'medwell_products_v2';
-  let PRODUCTS = (() => {
-    try {
-      const s = localStorage.getItem(_PL_KEY);
-      if (s) return JSON.parse(s);
-      localStorage.setItem(_PL_KEY, JSON.stringify(PRODUCTS_DEFAULT));
-    } catch(e) {}
-    return PRODUCTS_DEFAULT;
-  })();
-  let TOTAL = PRODUCTS.length;
+  let PRODUCTS = [];
+  let TOTAL = 0;
   const PAGE_SIZE = 20;
   let currentPage = 1;
   let filteredRows = PRODUCTS.slice();
@@ -1104,26 +1102,37 @@
     document.getElementById('statCategories').textContent = new Set(PRODUCTS.map(p => p[5])).size;
   }
 
-  // Initial render
-  renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
-  updateStats(PRODUCTS.length);
-
-  // Live sync from admin panel
-  window.addEventListener('storage', e => {
-    if (e.key !== _PL_KEY) return;
-    if (!e.newValue) {
-      // Admin reset — re-seed from defaults so admin can pick it up
-      localStorage.setItem(_PL_KEY, JSON.stringify(PRODUCTS_DEFAULT));
-      PRODUCTS = PRODUCTS_DEFAULT.slice();
-    } else {
-      try { PRODUCTS = JSON.parse(e.newValue); } catch(err) { return; }
+  // Load from Supabase with localStorage fallback
+  async function loadProducts() {
+    try {
+      const { data, error } = await sb_pl.from('products').select('*').order('id');
+      if (error) throw error;
+      PRODUCTS = data.map(r => [r.code||'', r.product||'', r.packing||'', r.company||'', r.molecule||'', r.category||'', +r.sales_rate||0, +r.tax||0, +r.mrp||0, r.id]);
+      TOTAL = PRODUCTS.length;
+      localStorage.setItem(_PL_KEY, JSON.stringify(PRODUCTS.map(p => p.slice(0, 9))));
+    } catch(err) {
+      const raw = localStorage.getItem(_PL_KEY);
+      try { PRODUCTS = raw ? JSON.parse(raw) : PRODUCTS_DEFAULT.slice(); }
+      catch { PRODUCTS = PRODUCTS_DEFAULT.slice(); }
+      TOTAL = PRODUCTS.length;
     }
-    TOTAL = PRODUCTS.length;
+    filteredRows = PRODUCTS.slice();
     document.getElementById('totalNum').textContent = TOTAL;
-    clearAll();
-    updateStats(TOTAL);
-    showSyncBanner();
-  });
+    renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
+    updateStats(PRODUCTS.length);
+  }
+
+  // Realtime: refresh when admin makes any change
+  function subscribeRealtime() {
+    sb_pl.channel('products_pl')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, async () => {
+        await loadProducts();
+        showSyncBanner();
+      })
+      .subscribe();
+  }
+
+  loadProducts().then(() => subscribeRealtime());
 
   function showSyncBanner() {
     let b = document.getElementById('syncBanner');
