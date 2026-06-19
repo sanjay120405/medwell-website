@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     :root {
       --teal:        #0D7A7A;
@@ -224,10 +225,61 @@
       .form-grid { grid-template-columns: 1fr; }
       .ff.full { grid-column: 1; }
     }
+
+    /* ── TABS ──────────────────────────── */
+    .tab-bar { background: var(--white); border-bottom: 2px solid var(--border); padding: 0 24px; display: flex; gap: 2px; flex-shrink: 0; }
+    .tab-btn { padding: 11px 20px; background: none; border: none; border-bottom: 3px solid transparent; font-family: 'Poppins',sans-serif; font-size: 0.83rem; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; margin-bottom: -2px; white-space: nowrap; }
+    .tab-btn:hover { color: var(--teal); }
+    .tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+    .t-online-badge { background: #22c55e; color: white; border-radius: 99px; padding: 1px 7px; font-size: 0.63rem; font-weight: 700; min-width: 18px; text-align: center; }
+
+    /* ── TRACKING VIEW ─────────────────── */
+    #tabTracking { height: calc(100vh - 110px); display: flex; flex-direction: column; position: relative; }
+    .track-body { flex: 1; display: flex; overflow: hidden; }
+    .track-sidebar { width: 268px; background: #0c1f1f; display: flex; flex-direction: column; border-right: 1px solid rgba(255,255,255,.08); flex-shrink: 0; }
+    .track-sb-head { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.08); flex-shrink: 0; }
+    .track-sb-head input { width: 100%; padding: 7px 11px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; color: var(--white); font-size: 0.8rem; font-family: 'Inter',sans-serif; }
+    .track-sb-head input::placeholder { color: rgba(255,255,255,.3); }
+    .track-sb-head input:focus { outline: none; border-color: var(--teal); }
+    .track-sb-info { padding: 7px 14px; font-family: 'Poppins',sans-serif; font-size: 0.72rem; color: rgba(255,255,255,.4); border-bottom: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .t-pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: tpulse 2s infinite; flex-shrink: 0; }
+    @keyframes tpulse { 0%,100%{opacity:1;} 50%{opacity:.25;} }
+    .track-sb-list { flex: 1; overflow-y: auto; }
+    .track-sb-list::-webkit-scrollbar { width: 3px; }
+    .track-sb-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+    .te-item { padding: 10px 13px; border-bottom: 1px solid rgba(255,255,255,.05); cursor: pointer; transition: background .15s; }
+    .te-item:hover { background: rgba(13,122,122,.18); }
+    .te-item.active { background: rgba(13,122,122,.3); border-left: 3px solid var(--teal); padding-left: 10px; }
+    .te-row { display: flex; align-items: center; gap: 10px; }
+    .te-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--teal-dark); display: flex; align-items: center; justify-content: center; font-family: 'Poppins',sans-serif; font-size: 12px; font-weight: 800; color: var(--white); flex-shrink: 0; position: relative; }
+    .te-dot { position: absolute; bottom: 0; right: 0; width: 9px; height: 9px; border-radius: 50%; border: 2px solid #0c1f1f; }
+    .te-dot.online { background: #22c55e; }
+    .te-dot.offline { background: #64748b; }
+    .te-info { flex: 1; min-width: 0; }
+    .te-name { font-family: 'Poppins',sans-serif; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,.88); }
+    .te-meta { font-size: 0.67rem; color: rgba(255,255,255,.32); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .te-time { font-size: 0.65rem; color: rgba(255,255,255,.28); white-space: nowrap; font-family: 'Poppins',sans-serif; }
+    .track-map-wrap { flex: 1; position: relative; }
+    #trackMap { width: 100%; height: 100%; }
+    .track-loading { position: absolute; inset: 0; background: rgba(12,31,31,.7); display: flex; align-items: center; justify-content: center; z-index: 600; }
+    .t-spinner { width: 36px; height: 36px; border: 3px solid rgba(13,122,122,.2); border-top-color: var(--teal); border-radius: 50%; animation: tspin .8s linear infinite; }
+    @keyframes tspin { to { transform: rotate(360deg); } }
+    .track-route-panel { position: absolute; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 2px solid var(--teal); border-radius: 16px 16px 0 0; transform: translateY(100%); transition: transform .3s cubic-bezier(.4,0,.2,1); z-index: 800; box-shadow: 0 -6px 30px rgba(0,0,0,.18); }
+    .track-route-panel.open { transform: translateY(0); }
+    .trp-hdr { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid var(--border); }
+    .trp-title { font-family: 'Poppins',sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--teal-dark); display: flex; align-items: center; gap: 8px; }
+    .trp-close { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1rem; padding: 4px 8px; border-radius: 6px; transition: all .15s; }
+    .trp-close:hover { color: var(--red); background: var(--red-light); }
+    .trp-stats { display: flex; }
+    .trp-stat { flex: 1; text-align: center; padding: 12px 10px; border-right: 1px solid var(--border); }
+    .trp-stat:last-child { border-right: none; }
+    .trp-val { font-family: 'Poppins',sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--teal); }
+    .trp-key { font-family: 'Poppins',sans-serif; font-size: 0.62rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
   </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="products-data.js"></script>
 <body>
 
@@ -274,7 +326,7 @@
     <div class="ah-right">
       <a href="pricelist.html" class="view-pl-btn" target="_blank">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        View Price List
+        Web Order
       </a>
       <button class="logout-btn" id="logoutBtn">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
@@ -283,6 +335,21 @@
     </div>
   </header>
 
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tabBtnProducts" onclick="switchTab('products')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Products
+    </button>
+    <button class="tab-btn" id="tabBtnTracking" onclick="switchTab('tracking')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      Live Tracking
+      <span class="t-online-badge" id="tOnlineBadge">0</span>
+    </button>
+  </div>
+
+  <!-- PRODUCTS TAB -->
+  <div id="tabProducts">
   <div class="stats-bar">
     <div class="stat">
       <span class="stat-label">Total Products</span>
@@ -352,6 +419,42 @@
       </div>
     </div>
   </div>
+  </div><!-- end tabProducts -->
+
+  <!-- TRACKING TAB -->
+  <div id="tabTracking" style="display:none;">
+    <div class="track-body">
+      <div class="track-sidebar">
+        <div class="track-sb-head">
+          <input type="text" id="trackSearch" placeholder="Search employee…" oninput="renderTrackSidebar()" />
+        </div>
+        <div class="track-sb-info">
+          <div class="t-pulse-dot"></div>
+          <span><strong id="tOnlineCount" style="color:rgba(255,255,255,.8);">0</strong> online · <span id="tTotalCount">13</span> total</span>
+        </div>
+        <div class="track-sb-list" id="trackEmpList"></div>
+      </div>
+      <div class="track-map-wrap">
+        <div id="trackMap"></div>
+        <div class="track-loading" id="trackLoading"><div class="t-spinner"></div></div>
+        <div class="track-route-panel" id="trackRoutePanel">
+          <div class="trp-hdr">
+            <div class="trp-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#065A5A" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <span id="trpName">—</span> — Today's Route
+            </div>
+            <button class="trp-close" onclick="closeTrackRoute()">✕</button>
+          </div>
+          <div class="trp-stats">
+            <div class="trp-stat"><div class="trp-val" id="trpDist">—</div><div class="trp-key">Distance (km)</div></div>
+            <div class="trp-stat"><div class="trp-val" id="trpPts">—</div><div class="trp-key">Tracking Points</div></div>
+            <div class="trp-stat"><div class="trp-val" id="trpStart">—</div><div class="trp-key">First Seen</div></div>
+            <div class="trp-stat"><div class="trp-val" id="trpLast">—</div><div class="trp-key">Last Updated</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end tabTracking -->
 
 </div>
 
@@ -860,6 +963,189 @@
 
   // Run after all variables are declared to avoid TDZ crash on refresh
   if (sessionStorage.getItem(SESSION_KEY) === '1') bootAdmin();
+
+  /* ── TAB SWITCHING ──────────────────────────── */
+  function switchTab(tab) {
+    const isTrack = tab === 'tracking';
+    document.getElementById('tabProducts').style.display = isTrack ? 'none' : 'block';
+    document.getElementById('tabTracking').style.display = isTrack ? 'flex' : 'none';
+    document.getElementById('tabBtnProducts').classList.toggle('active', !isTrack);
+    document.getElementById('tabBtnTracking').classList.toggle('active', isTrack);
+    document.body.style.overflow = isTrack ? 'hidden' : '';
+    if (isTrack) {
+      if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
+      else { setTimeout(() => tMap.invalidateSize(), 100); }
+    }
+  }
+
+  /* ── TRACKING STATE ─────────────────────────── */
+  const TRACK_EMPLOYEES = ['Aravind','Chola','Divya','Ganga','Gokila','Karnan','Lakshmi Priya','MGR','Nagarajan','Santhosh','Selva','Vanitha','Veera'];
+  let tMap = null, tSelectedEmp = null;
+  const tMarkers = {}, tLiveData = {};
+  let tRouteLayer = null, tStartMark = null, tEndMark = null;
+
+  /* ── MAP INIT ───────────────────────────────── */
+  function initTrackingMap() {
+    tMap = L.map('trackMap', { zoomControl: true }).setView([10.7905, 78.7047], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 19
+    }).addTo(tMap);
+    document.getElementById('trackLoading').style.display = 'none';
+  }
+
+  function tMarkerIcon(name, online) {
+    const c = online ? '#22c55e' : '#64748b';
+    const r = online ? '#bbf7d0' : '#cbd5e1';
+    return L.divIcon({
+      className: '',
+      html: `<div style="position:relative;"><div style="width:34px;height:34px;border-radius:50%;background:${r};position:absolute;top:-3px;left:-3px;opacity:.45;"></div><div style="width:28px;height:28px;border-radius:50%;background:${c};border:3px solid white;box-shadow:0 2px 10px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-family:Poppins,sans-serif;font-size:11px;font-weight:800;color:white;position:relative;">${name.charAt(0)}</div></div>`,
+      iconSize: [28, 28], iconAnchor: [14, 14], popupAnchor: [0, -16]
+    });
+  }
+
+  function tPopup(row) {
+    const t = new Date(row.created_at).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+    const online = tIsRecent(row.created_at);
+    const sc = online ? '#22c55e' : '#94a3b8';
+    return `<div style="font-family:Poppins,sans-serif;min-width:160px;line-height:1.7;">
+      <div style="font-size:13px;font-weight:800;color:#044040;margin-bottom:6px;">${row.employee_name}</div>
+      <div style="font-size:11px;color:#555;">📍 ${(+row.latitude).toFixed(5)}, ${(+row.longitude).toFixed(5)}</div>
+      <div style="font-size:11px;color:#555;">🕐 ${t}</div>
+      <div style="margin-top:7px;font-size:11px;font-weight:700;color:${sc};">● ${online ? 'ONLINE' : 'OFFLINE'}</div>
+      <button onclick="tSelectEmp('${row.employee_name}')" style="margin-top:7px;background:#0D7A7A;color:white;border:none;border-radius:6px;padding:5px 12px;font-family:Poppins,sans-serif;font-size:11px;font-weight:600;cursor:pointer;">View Route</button>
+    </div>`;
+  }
+
+  function tUpdateMarker(row) {
+    const name = row.employee_name, lat = +row.latitude, lng = +row.longitude;
+    const online = tIsRecent(row.created_at);
+    tLiveData[name] = row;
+    if (!tMap) return;
+    if (tMarkers[name]) {
+      tMarkers[name].setLatLng([lat, lng]).setIcon(tMarkerIcon(name, online));
+      if (tMarkers[name].getPopup()) tMarkers[name].setPopupContent(tPopup(row));
+    } else {
+      const m = L.marker([lat, lng], { icon: tMarkerIcon(name, online) }).addTo(tMap).bindPopup(tPopup(row));
+      m.on('click', () => tSelectEmp(name));
+      tMarkers[name] = m;
+    }
+  }
+
+  /* ── LOAD LIVE LOCATIONS ────────────────────── */
+  async function loadLiveLocations() {
+    try {
+      const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+      const { data, error } = await sb.from('employee_locations').select('*')
+        .gte('created_at', todayStart.toISOString()).order('created_at', { ascending: false });
+      if (error) throw error;
+      const seen = new Set();
+      (data || []).forEach(row => { if (!seen.has(row.employee_name)) { seen.add(row.employee_name); tUpdateMarker(row); } });
+      renderTrackSidebar();
+      const online = TRACK_EMPLOYEES.filter(n => tLiveData[n] && tIsRecent(tLiveData[n].created_at)).length;
+      document.getElementById('tOnlineCount').textContent = online;
+      document.getElementById('tOnlineBadge').textContent = online;
+    } catch(e) { console.warn('Tracking load error:', e.message); }
+  }
+
+  /* ── SIDEBAR ────────────────────────────────── */
+  function renderTrackSidebar() {
+    const q = (document.getElementById('trackSearch')?.value || '').toLowerCase();
+    const list = TRACK_EMPLOYEES.filter(n => n.toLowerCase().includes(q));
+    document.getElementById('trackEmpList').innerHTML = list.map(name => {
+      const loc = tLiveData[name];
+      const online = loc && tIsRecent(loc.created_at);
+      const ago = loc ? tTimeAgo(loc.created_at) : 'No data';
+      const coords = loc ? `${(+loc.latitude).toFixed(4)}, ${(+loc.longitude).toFixed(4)}` : 'No location';
+      return `<div class="te-item${tSelectedEmp === name ? ' active' : ''}" onclick="tSelectEmp('${name}')">
+        <div class="te-row">
+          <div class="te-avatar">${name.charAt(0)}<div class="te-dot ${online ? 'online' : 'offline'}"></div></div>
+          <div class="te-info">
+            <div class="te-name">${name}</div>
+            <div class="te-meta">${coords}</div>
+          </div>
+          <div class="te-time">${ago}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  /* ── SELECT EMPLOYEE ────────────────────────── */
+  async function tSelectEmp(name) {
+    tSelectedEmp = name;
+    renderTrackSidebar();
+    if (tMarkers[name]) { tMap.flyTo(tMarkers[name].getLatLng(), 15, { duration: 1 }); tMarkers[name].openPopup(); }
+    await tShowRoute(name);
+  }
+
+  /* ── ROUTE ──────────────────────────────────── */
+  async function tShowRoute(name) {
+    document.getElementById('trackRoutePanel').classList.add('open');
+    document.getElementById('trpName').textContent = name;
+    ['trpDist','trpPts','trpStart','trpLast'].forEach(id => document.getElementById(id).textContent = '…');
+    const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+    const { data } = await sb.from('employee_locations').select('*')
+      .eq('employee_name', name).gte('created_at', todayStart.toISOString())
+      .order('created_at', { ascending: true });
+    tClearRoute();
+    if (!data || !data.length) {
+      ['trpDist','trpPts'].forEach(id => document.getElementById(id).textContent = '0');
+      ['trpStart','trpLast'].forEach(id => document.getElementById(id).textContent = '—');
+      return;
+    }
+    const pts = data.map(r => [+r.latitude, +r.longitude]);
+    tRouteLayer = L.polyline(pts, { color: '#0D7A7A', weight: 4, opacity: .85, dashArray: '10 5' }).addTo(tMap);
+    tStartMark = L.circleMarker(pts[0], { radius: 7, fillColor: '#22c55e', fillOpacity: 1, color: 'white', weight: 2 }).addTo(tMap).bindTooltip('▶ Start');
+    if (pts.length > 1) tEndMark = L.circleMarker(pts[pts.length-1], { radius: 7, fillColor: '#ef4444', fillOpacity: 1, color: 'white', weight: 2 }).addTo(tMap).bindTooltip('● Latest');
+    tMap.fitBounds(tRouteLayer.getBounds(), { padding: [60, 80] });
+    document.getElementById('trpDist').textContent = tCalcDist(data);
+    document.getElementById('trpPts').textContent = data.length;
+    document.getElementById('trpStart').textContent = tFmt(data[0].created_at);
+    document.getElementById('trpLast').textContent = tFmt(data[data.length-1].created_at);
+  }
+
+  function tClearRoute() {
+    [tRouteLayer, tStartMark, tEndMark].forEach(l => { if (l && tMap) tMap.removeLayer(l); });
+    tRouteLayer = tStartMark = tEndMark = null;
+  }
+
+  function closeTrackRoute() {
+    document.getElementById('trackRoutePanel').classList.remove('open');
+    tClearRoute(); tSelectedEmp = null; renderTrackSidebar();
+  }
+
+  /* ── UTILS ──────────────────────────────────── */
+  function tHaversine(a, b, c, d) {
+    const R = 6371, r = x => x * Math.PI / 180;
+    const da = r(c-a)/2, db = r(d-b)/2;
+    const x = Math.sin(da)**2 + Math.cos(r(a))*Math.cos(r(c))*Math.sin(db)**2;
+    return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+  }
+  function tCalcDist(rows) {
+    let d = 0;
+    for (let i = 1; i < rows.length; i++) d += tHaversine(rows[i-1].latitude, rows[i-1].longitude, rows[i].latitude, rows[i].longitude);
+    return d.toFixed(1);
+  }
+  function tIsRecent(iso) { return (Date.now() - new Date(iso).getTime()) < 5*60*1000; }
+  function tTimeAgo(iso) {
+    const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+    if (s < 60) return s + 's ago';
+    if (s < 3600) return Math.floor(s/60) + 'm ago';
+    return Math.floor(s/3600) + 'h ago';
+  }
+  function tFmt(iso) { return new Date(iso).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); }
+
+  /* ── REALTIME ───────────────────────────────── */
+  function subscribeTrackRealtime() {
+    sb.channel('admin_track_rt')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'employee_locations' }, payload => {
+        tUpdateMarker(payload.new);
+        renderTrackSidebar();
+        const online = TRACK_EMPLOYEES.filter(n => tLiveData[n] && tIsRecent(tLiveData[n].created_at)).length;
+        document.getElementById('tOnlineCount').textContent = online;
+        document.getElementById('tOnlineBadge').textContent = online;
+        if (tSelectedEmp === payload.new.employee_name) tShowRoute(tSelectedEmp);
+      }).subscribe();
+  }
 </script>
 </body>
 </html>
