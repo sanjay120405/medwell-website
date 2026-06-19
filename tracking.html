@@ -71,16 +71,8 @@
     </div>
     <div class="card-body">
       <div class="field">
-        <label>Your Name</label>
-        <select id="empName">
-          <option value="">— Select your name —</option>
-          <option>Chola</option>
-          <option>Selva</option>
-          <option>Aravind</option>
-          <option>Nagarajan</option>
-          <option>Santhosh</option>
-          <option>Karnan</option>
-        </select>
+        <label>Mobile Number</label>
+        <input type="tel" id="empPhone" placeholder="Enter your mobile number" maxlength="10" inputmode="numeric" pattern="[0-9]*" />
       </div>
       <button class="btn btn-start" id="startBtn" onclick="startTracking()">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
@@ -119,6 +111,15 @@
     const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
     const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
+    const PHONE_MAP = {
+      '9790611559': 'Chola',
+      '9790511559': 'Selva',
+      '7639779121': 'Aravind',
+      '9943945565': 'Nagarajan',
+      '9566811559': 'Santhosh',
+      '9677211559': 'Karnan'
+    };
+
     let trackInterval = null, sendCount = 0;
 
     function showErr(msg) {
@@ -146,8 +147,10 @@
     }
 
     async function startTracking() {
-      const name = document.getElementById('empName').value;
-      if (!name) { showErr('Please select your name before starting.'); return; }
+      const phone = document.getElementById('empPhone').value.trim().replace(/\D/g, '');
+      const name = PHONE_MAP[phone];
+      if (!phone) { showErr('Please enter your mobile number.'); return; }
+      if (!name) { showErr('Number not recognised. Contact admin.'); return; }
       const btn = document.getElementById('startBtn');
       btn.disabled = true; btn.textContent = 'Getting location…';
       document.getElementById('statusCard').classList.add('show');
