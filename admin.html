@@ -1137,7 +1137,6 @@
 
   function openInGoogleMaps() {
     if (!tCurrentRoutePts.length) return;
-    // Google Maps /dir/ URL supports up to 23 waypoints total
     const pts = tSample(tCurrentRoutePts, 23);
     const stops = pts.map(p => `${p[0]},${p[1]}`).join('/');
     window.open(`https://www.google.com/maps/dir/${stops}`, '_blank');
