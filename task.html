@@ -265,8 +265,8 @@
             <input type="date" id="fDate" required />
           </div>
           <button type="submit" class="add-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-            Add Task
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.428a.5.5 0 0 0 .619.612l5.717-1.485A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.518-5.157-1.416l-.371-.22-3.845.999 1.023-3.742-.242-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Assign Task
           </button>
         </div>
       </form>
@@ -427,21 +427,50 @@
     }
   });
 
-  /* ── ADD TASK ────────────────────────────────── */
+  /* ── PHONE MAP ───────────────────────────────── */
+  const PHONE = {
+    'Vanitha':      '919940711559',
+    'Divya':        '917708111559',
+    'Chola':        '919790611559',
+    'Selva':        '919790511559',
+    'Lakshmi Priya':'919940354445',
+    'MGR':          '919171419911',
+    'Ganga':        '919600602079',
+    'Gokila':       '917305111559',
+    'Aravind':      '917639779121',
+    'Nagarajan':    '919943945565',
+    'Santhosh':     '919566811559',
+    'Karnan':       '919677211559',
+    'Veera':        '919042811559'
+  };
+
+  /* ── ASSIGN TASK ─────────────────────────────── */
   document.getElementById('taskForm').addEventListener('submit', e => {
     e.preventDefault();
-    tasks.unshift({
-      id:     Date.now(),
-      name:   document.getElementById('fName').value,
-      task:   document.getElementById('fTask').value.trim(),
-      assign: document.getElementById('fAssign').value,
-      date:   document.getElementById('fDate').value,
-      status: 'pending'
-    });
+    const name   = document.getElementById('fName').value;
+    const task   = document.getElementById('fTask').value.trim();
+    const assign = document.getElementById('fAssign').value;
+    const date   = document.getElementById('fDate').value;
+
+    tasks.unshift({ id: Date.now(), name, task, assign, date, status: 'pending' });
     saveTasks();
     renderTasks();
     e.target.reset();
-    toast('Task added successfully!', 'success');
+    toast('Task assigned via WhatsApp!', 'success');
+
+    // Format date nicely
+    const d = new Date(date + 'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    // Build WhatsApp message
+    const msg = `Hello ${assign} 👋,\n\nYou have been assigned a new task by *${name}*.\n\n📋 *Task:* ${task}\n📅 *Deadline:* ${dateStr}\n\nPlease complete it before the deadline.\n\n– Medwell Logix Team`;
+
+    const phone = PHONE[assign];
+    if (phone) {
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    } else {
+      toast('No WhatsApp number found for ' + assign, 'error');
+    }
   });
 
   /* ── FILTERS ─────────────────────────────────── */
