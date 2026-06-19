@@ -330,18 +330,27 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  /* ── SUPABASE ────────────────────────────────── */
+  const SB_URL = 'https://vogxaylmrzulbdltxrwv.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
+  const sb = window.supabase.createClient(SB_URL, SB_KEY);
+
   /* ── DATA ─────────────────────────────────────── */
-  const TASK_KEY = 'medwell_tasks';
   let tasks = [];
 
-  function loadTasks() {
-    try { tasks = JSON.parse(localStorage.getItem(TASK_KEY)) || []; }
-    catch { tasks = []; }
-  }
-
-  function saveTasks() {
-    localStorage.setItem(TASK_KEY, JSON.stringify(tasks));
+  async function loadTasks() {
+    try {
+      const { data, error } = await sb.from('tasks').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      tasks = data || [];
+    } catch(err) {
+      console.warn('Supabase error:', err.message);
+      tasks = [];
+      toast('Could not load tasks from cloud.', 'error');
+    }
+    renderTasks();
   }
 
   /* ── RENDER ───────────────────────────────────── */
@@ -402,28 +411,32 @@
   }
 
   /* ── TABLE CLICKS ────────────────────────────── */
-  document.getElementById('taskTbody').addEventListener('click', e => {
-    const sBtn  = e.target.closest('.s-btn');
-    const dBtn  = e.target.closest('.del-btn');
+  document.getElementById('taskTbody').addEventListener('click', async e => {
+    const sBtn = e.target.closest('.s-btn');
+    const dBtn = e.target.closest('.del-btn');
 
     if (sBtn) {
       const idx    = parseInt(sBtn.dataset.idx);
       const status = sBtn.dataset.status;
-      // toggle off if already active
-      tasks[idx].status = tasks[idx].status === status ? 'pending' : status;
-      saveTasks();
-      renderTasks();
-      toast(tasks[idx]
-        ? (tasks[idx].status === 'complete' ? 'Marked as complete!' : tasks[idx].status === 'incomplete' ? 'Marked as incomplete!' : 'Status cleared.')
-        : 'Status updated.', tasks[idx]?.status === 'complete' ? 'success' : 'error');
+      const newStatus = tasks[idx].status === status ? 'pending' : status;
+      try {
+        const { error } = await sb.from('tasks').update({ status: newStatus }).eq('id', tasks[idx].id);
+        if (error) throw error;
+        tasks[idx].status = newStatus;
+        renderTasks();
+        toast(newStatus === 'complete' ? 'Marked as complete!' : newStatus === 'incomplete' ? 'Marked as incomplete!' : 'Status cleared.', newStatus === 'complete' ? 'success' : newStatus === 'incomplete' ? 'error' : 'info');
+      } catch(err) { toast('Update failed: ' + err.message, 'error'); }
     }
 
     if (dBtn) {
       const idx = parseInt(dBtn.dataset.idx);
-      tasks.splice(idx, 1);
-      saveTasks();
-      renderTasks();
-      toast('Task deleted.', 'info');
+      try {
+        const { error } = await sb.from('tasks').delete().eq('id', tasks[idx].id);
+        if (error) throw error;
+        tasks.splice(idx, 1);
+        renderTasks();
+        toast('Task deleted.', 'info');
+      } catch(err) { toast('Delete failed: ' + err.message, 'error'); }
     }
   });
 
@@ -445,18 +458,24 @@
   };
 
   /* ── ASSIGN TASK ─────────────────────────────── */
-  document.getElementById('taskForm').addEventListener('submit', e => {
+  document.getElementById('taskForm').addEventListener('submit', async e => {
     e.preventDefault();
     const name   = document.getElementById('fName').value;
     const task   = document.getElementById('fTask').value.trim();
     const assign = document.getElementById('fAssign').value;
     const date   = document.getElementById('fDate').value;
 
-    tasks.unshift({ id: Date.now(), name, task, assign, date, status: 'pending' });
-    saveTasks();
-    renderTasks();
-    e.target.reset();
-    toast('Task assigned via WhatsApp!', 'success');
+    try {
+      const { data, error } = await sb.from('tasks').insert({ name, task, assign, date, status: 'pending' }).select().single();
+      if (error) throw error;
+      tasks.unshift(data);
+      renderTasks();
+      e.target.reset();
+      toast('Task assigned via WhatsApp!', 'success');
+    } catch(err) {
+      toast('Could not save task: ' + err.message, 'error');
+      return;
+    }
 
     // Format date nicely
     const d = new Date(date + 'T00:00:00');
@@ -507,9 +526,15 @@
     document.body.style.overflow = '';
   }
 
+  /* ── REALTIME ────────────────────────────────── */
+  sb.channel('tasks_rt')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+      loadTasks();
+    })
+    .subscribe();
+
   /* ── INIT ────────────────────────────────────── */
   loadTasks();
-  renderTasks();
 </script>
 </body>
 </html>
