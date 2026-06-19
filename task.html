@@ -363,6 +363,10 @@
       if (filterName   && t.name   !== filterName)   return false;
       if (filterStatus && t.status !== filterStatus) return false;
       return true;
+    }).sort((a, b) => {
+      const ac = a.status === 'complete' ? 1 : 0;
+      const bc = b.status === 'complete' ? 1 : 0;
+      return ac - bc;
     });
 
     document.getElementById('tasksCount').textContent = filtered.length;
