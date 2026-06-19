@@ -534,6 +534,7 @@
     .subscribe();
 
   /* ── INIT ────────────────────────────────────── */
+  document.getElementById('fDate').min = new Date().toISOString().split('T')[0];
   loadTasks();
 </script>
 </body>

@@ -108,11 +108,14 @@
       justify-content: space-between;
       box-shadow: 0 2px 14px rgba(4,64,64,.25);
     }
-    .ah-left { display: flex; align-items: center; gap: 14px; }
+    .ah-left { display: flex; align-items: center; gap: 12px; flex: 1; }
     .ah-left img { height: 38px; }
     .ah-left h1 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); }
-    .admin-badge { background: var(--orange); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 0.67rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; letter-spacing: .03em; }
-    .ah-right { display: flex; align-items: center; gap: 10px; }
+    .ah-center { display: flex; align-items: center; gap: 6px; }
+    .ah-tab { display: flex; align-items: center; gap: 8px; padding: 9px 22px; background: transparent; color: rgba(255,255,255,.55); border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all .2s; letter-spacing: .01em; }
+    .ah-tab:hover { background: rgba(255,255,255,.1); color: rgba(255,255,255,.85); }
+    .ah-tab.active { background: rgba(255,255,255,.15); color: var(--white); }
+    .ah-right { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: flex-end; }
     .view-pl-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; background: rgba(255,255,255,.12); color: var(--white); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background .2s; text-decoration: none; }
     .view-pl-btn:hover { background: rgba(255,255,255,.22); }
     .logout-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; background: rgba(255,255,255,.12); color: var(--white); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background .2s; }
@@ -214,16 +217,18 @@
     .toast.error { background: var(--red); }
     .toast.info { background: var(--teal-deeper); }
 
-    @media(max-width:600px) {
+    @media(max-width:700px) {
       .login-card { padding: 36px 24px; }
-      .admin-header { padding: 0 16px; }
+      .admin-header { padding: 0 12px; height: auto; min-height: 62px; flex-wrap: wrap; gap: 8px; padding-top: 8px; padding-bottom: 8px; }
       .ah-left h1 { display: none; }
+      .ah-tab { padding: 7px 14px; font-size: 0.85rem; }
       .stats-bar { padding: 12px 16px; gap: 16px; }
       .toolbar { padding: 14px 16px 0; }
       .table-section { padding: 12px 16px 40px; }
       .modal-hd, .modal-body { padding-left: 20px; padding-right: 20px; }
       .form-grid { grid-template-columns: 1fr; }
       .ff.full { grid-column: 1; }
+      #tabTracking { height: calc(100vh - 90px); }
     }
 
     /* ── TABS ──────────────────────────── */
@@ -234,7 +239,7 @@
     .t-online-badge { background: #22c55e; color: white; border-radius: 99px; padding: 1px 7px; font-size: 0.63rem; font-weight: 700; min-width: 18px; text-align: center; }
 
     /* ── TRACKING VIEW ─────────────────── */
-    #tabTracking { height: calc(100vh - 110px); display: flex; flex-direction: column; position: relative; }
+    #tabTracking { height: calc(100vh - 62px); display: flex; flex-direction: column; position: relative; }
     .track-body { flex: 1; display: flex; overflow: hidden; }
     .track-sidebar { width: 268px; background: #0c1f1f; display: flex; flex-direction: column; border-right: 1px solid rgba(255,255,255,.08); flex-shrink: 0; }
     .track-sb-head { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.08); flex-shrink: 0; }
@@ -321,7 +326,17 @@
     <div class="ah-left">
       <img src="medwell logo.png" alt="Medwell Logix" />
       <h1>Admin Panel</h1>
-      <span class="admin-badge">Price List Manager</span>
+    </div>
+    <div class="ah-center">
+      <button class="ah-tab active" id="tabBtnProducts" onclick="switchTab('products')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Products
+      </button>
+      <button class="ah-tab" id="tabBtnTracking" onclick="switchTab('tracking')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        Live Tracking
+        <span class="t-online-badge" id="tOnlineBadge">0</span>
+      </button>
     </div>
     <div class="ah-right">
       <a href="pricelist.html" class="view-pl-btn" target="_blank">
@@ -334,19 +349,6 @@
       </button>
     </div>
   </header>
-
-  <!-- TAB BAR -->
-  <div class="tab-bar">
-    <button class="tab-btn active" id="tabBtnProducts" onclick="switchTab('products')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      Products
-    </button>
-    <button class="tab-btn" id="tabBtnTracking" onclick="switchTab('tracking')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-      Live Tracking
-      <span class="t-online-badge" id="tOnlineBadge">0</span>
-    </button>
-  </div>
 
   <!-- PRODUCTS TAB -->
   <div id="tabProducts">
@@ -443,7 +445,13 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#065A5A" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
               <span id="trpName">—</span> — Today's Route
             </div>
-            <button class="trp-close" onclick="closeTrackRoute()">✕</button>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button onclick="openInGoogleMaps()" id="gmapBtn" title="Open in Google Maps" style="display:none;align-items:center;gap:6px;padding:6px 12px;background:#1a73e8;color:white;border:none;border-radius:7px;font-family:'Poppins',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;transition:background .2s;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Google Maps
+              </button>
+              <button class="trp-close" onclick="closeTrackRoute()">✕</button>
+            </div>
           </div>
           <div class="trp-stats">
             <div class="trp-stat"><div class="trp-val" id="trpDist">—</div><div class="trp-key">Distance (km)</div></div>
@@ -998,8 +1006,14 @@
     const r = online ? '#bbf7d0' : '#cbd5e1';
     return L.divIcon({
       className: '',
-      html: `<div style="position:relative;"><div style="width:34px;height:34px;border-radius:50%;background:${r};position:absolute;top:-3px;left:-3px;opacity:.45;"></div><div style="width:28px;height:28px;border-radius:50%;background:${c};border:3px solid white;box-shadow:0 2px 10px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-family:Poppins,sans-serif;font-size:11px;font-weight:800;color:white;position:relative;">${name.charAt(0)}</div></div>`,
-      iconSize: [28, 28], iconAnchor: [14, 14], popupAnchor: [0, -16]
+      html: `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="background:rgba(4,64,64,.88);color:white;font-family:Poppins,sans-serif;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.3);">${name}</div>
+        <div style="position:relative;">
+          <div style="width:34px;height:34px;border-radius:50%;background:${r};position:absolute;top:-3px;left:-3px;opacity:.45;"></div>
+          <div style="width:28px;height:28px;border-radius:50%;background:${c};border:3px solid white;box-shadow:0 2px 10px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-family:Poppins,sans-serif;font-size:11px;font-weight:800;color:white;position:relative;">${name.charAt(0)}</div>
+        </div>
+      </div>`,
+      iconSize: [80, 52], iconAnchor: [40, 52], popupAnchor: [0, -54]
     });
   }
 
@@ -1093,19 +1107,66 @@
       return;
     }
     const pts = data.map(r => [+r.latitude, +r.longitude]);
-    tRouteLayer = L.polyline(pts, { color: '#0D7A7A', weight: 4, opacity: .85, dashArray: '10 5' }).addTo(tMap);
-    tStartMark = L.circleMarker(pts[0], { radius: 7, fillColor: '#22c55e', fillOpacity: 1, color: 'white', weight: 2 }).addTo(tMap).bindTooltip('▶ Start');
-    if (pts.length > 1) tEndMark = L.circleMarker(pts[pts.length-1], { radius: 7, fillColor: '#ef4444', fillOpacity: 1, color: 'white', weight: 2 }).addTo(tMap).bindTooltip('● Latest');
+
+    tCurrentRoutePts = pts;
+    document.getElementById('gmapBtn').style.display = 'flex';
+
+    // Draw start/end markers first
+    tStartMark = L.circleMarker(pts[0], { radius: 8, fillColor: '#22c55e', fillOpacity: 1, color: 'white', weight: 2.5 }).addTo(tMap).bindTooltip('▶ Start: ' + tFmt(data[0].created_at));
+    if (pts.length > 1) tEndMark = L.circleMarker(pts[pts.length-1], { radius: 8, fillColor: '#ef4444', fillOpacity: 1, color: 'white', weight: 2.5 }).addTo(tMap).bindTooltip('● Latest: ' + tFmt(data[data.length-1].created_at));
+
+    // Try OSRM road route, fall back to straight line
+    const roadPts = await tFetchRoadRoute(pts);
+    tRouteLayer = L.polyline(roadPts, { color: '#0D7A7A', weight: 5, opacity: .9 }).addTo(tMap);
     tMap.fitBounds(tRouteLayer.getBounds(), { padding: [60, 80] });
+
     document.getElementById('trpDist').textContent = tCalcDist(data);
     document.getElementById('trpPts').textContent = data.length;
     document.getElementById('trpStart').textContent = tFmt(data[0].created_at);
     document.getElementById('trpLast').textContent = tFmt(data[data.length-1].created_at);
   }
 
+  let tCurrentRoutePts = [];
+
   function tClearRoute() {
     [tRouteLayer, tStartMark, tEndMark].forEach(l => { if (l && tMap) tMap.removeLayer(l); });
     tRouteLayer = tStartMark = tEndMark = null;
+    tCurrentRoutePts = [];
+    document.getElementById('gmapBtn').style.display = 'none';
+  }
+
+  function openInGoogleMaps() {
+    if (!tCurrentRoutePts.length) return;
+    // Google Maps /dir/ URL supports up to 23 waypoints total
+    const pts = tSample(tCurrentRoutePts, 23);
+    const stops = pts.map(p => `${p[0]},${p[1]}`).join('/');
+    window.open(`https://www.google.com/maps/dir/${stops}`, '_blank');
+  }
+
+  // Snap GPS points to actual roads using OSRM (free, no API key)
+  async function tFetchRoadRoute(pts) {
+    try {
+      // Sample down to max 25 waypoints for OSRM
+      const sampled = tSample(pts, 25);
+      const coords = sampled.map(p => `${p[1]},${p[0]}`).join(';'); // OSRM uses lng,lat
+      const url = `https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('OSRM error');
+      const json = await res.json();
+      if (json.code === 'Ok' && json.routes[0]) {
+        return json.routes[0].geometry.coordinates.map(c => [c[1], c[0]]); // back to [lat,lng]
+      }
+    } catch(e) { console.warn('Road routing failed, using straight line:', e.message); }
+    return pts; // fallback: straight line between GPS points
+  }
+
+  function tSample(pts, max) {
+    if (pts.length <= max) return pts;
+    const result = [pts[0]];
+    const step = (pts.length - 1) / (max - 2);
+    for (let i = 1; i < max - 1; i++) result.push(pts[Math.round(i * step)]);
+    result.push(pts[pts.length - 1]);
+    return result;
   }
 
   function closeTrackRoute() {
