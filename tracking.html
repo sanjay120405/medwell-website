@@ -4,11 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Track Me – Medwell Logix</title>
-  <link rel="manifest" href="manifest.json" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --teal: #0D7A7A; --teal-dark: #065A5A; --teal-deeper: #044040; --orange: #E87820; --green: #22c55e; --green-dark: #16a34a; --red: #ef4444; --amber: #f59e0b; }
+    :root { --teal: #0D7A7A; --teal-dark: #065A5A; --teal-deeper: #044040; --orange: #E87820; --green: #22c55e; --green-dark: #16a34a; --red: #ef4444; }
     body { min-height: 100vh; background: linear-gradient(135deg, var(--teal-deeper), var(--teal-dark) 55%, #0a2a2a); font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 28px 16px 48px; }
 
     .logo-wrap { margin-bottom: 28px; text-align: center; }
@@ -24,8 +23,9 @@
 
     .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
     .field label { font-size: 0.68rem; font-weight: 700; color: #7a9494; text-transform: uppercase; letter-spacing: .07em; }
-    .field input[type="tel"] { padding: 12px 14px; border: 1.5px solid #dde8e8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #1a2e2e; background: #f8fafa; width: 100%; }
-    .field input[type="tel"]:focus { outline: none; border-color: var(--teal); background-color: white; box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
+    .field select, .field input[type="tel"] { padding: 12px 14px; border: 1.5px solid #dde8e8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #1a2e2e; background: #f8fafa; width: 100%; }
+    .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a9494' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .field select:focus, .field input[type="tel"]:focus { outline: none; border-color: var(--teal); background-color: white; box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
 
     .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s; }
     .btn-start { background: var(--teal); color: white; }
@@ -34,18 +34,14 @@
     .btn-stop { background: #fef2f2; color: var(--red); border: 1.5px solid #fca5a5; }
     .btn-stop:hover { background: #fee2e2; }
 
-    /* Status card */
     .status-card { display: none; margin-top: 18px; background: white; border-radius: 20px; width: 100%; max-width: 400px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
     .status-card.show { display: block; }
     .status-header { padding: 14px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #e0ecec; }
     .pulse-wrap { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
     .pulse-wrap::before { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid var(--green); animation: pring 1.5s infinite; }
     .pulse-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--green); }
-    .pulse-wrap.paused::before { border-color: var(--amber); animation: none; }
-    .pulse-wrap.paused .pulse-dot { background: var(--amber); }
     @keyframes pring { 0%{transform:scale(1);opacity:1;} 100%{transform:scale(2.2);opacity:0;} }
     .status-label { font-size: 0.85rem; font-weight: 700; color: var(--green-dark); }
-    .status-label.paused { color: #92400e; }
     .status-sub { font-size: 0.7rem; color: #7a9494; }
     .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #e0ecec; }
     .sc { background: white; padding: 14px 16px; }
@@ -54,22 +50,9 @@
     .sc-count { grid-column: span 2; background: var(--teal); padding: 11px 16px; text-align: center; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,.8); }
     .sc-count strong { color: white; font-size: 1rem; }
 
-    /* Background warning banner */
-    .bg-warn { display: none; margin-top: 14px; width: 100%; max-width: 400px; background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 14px; padding: 13px 16px; }
-    .bg-warn.show { display: block; }
-    .bg-warn-title { font-size: 0.8rem; font-weight: 700; color: #92400e; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-    .bg-warn-body { font-size: 0.72rem; color: #78350f; line-height: 1.6; }
-
-    /* Tips box */
-    .tips-box { margin-top: 14px; width: 100%; max-width: 400px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px 16px; display: none; }
-    .tips-box.show { display: block; }
-    .tips-title { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
-    .tips-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-    .tips-list li { font-size: 0.73rem; color: rgba(255,255,255,.75); display: flex; gap: 7px; line-height: 1.5; }
-    .tips-list li::before { content: ''; flex-shrink: 0; margin-top: 5px; }
-
     .err-box { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px; padding: 11px 14px; margin-top: 12px; font-size: 0.79rem; color: #dc2626; font-weight: 500; display: none; }
     .err-box.show { display: block; }
+    .footer-tip { text-align: center; color: rgba(255,255,255,.3); font-size: 0.68rem; margin-top: 22px; max-width: 340px; line-height: 1.7; }
   </style>
 </head>
 <body>
@@ -106,9 +89,9 @@
 
   <div class="status-card" id="statusCard">
     <div class="status-header">
-      <div class="pulse-wrap" id="pulseWrap"><div class="pulse-dot"></div></div>
+      <div class="pulse-wrap"><div class="pulse-dot"></div></div>
       <div>
-        <div class="status-label" id="statusLabel">Live Tracking Active</div>
+        <div class="status-label">Live Tracking Active</div>
         <div class="status-sub" id="statusSub">Getting your location…</div>
       </div>
     </div>
@@ -121,20 +104,7 @@
     </div>
   </div>
 
-  <!-- Shows when tab is backgrounded -->
-  <div class="bg-warn" id="bgWarn">
-    <div class="bg-warn-title">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Tracking may have paused
-    </div>
-    <div class="bg-warn-body" id="bgWarnBody">Return to this page regularly to ensure your location is being sent.</div>
-  </div>
-
-  <!-- Tips shown after tracking starts -->
-  <div class="tips-box" id="tipsBox">
-    <div class="tips-title">Keep tracking active</div>
-    <ul class="tips-list" id="tipsList"></ul>
-  </div>
+  <p class="footer-tip">Keep this page open while you are in the field. Your location updates every 30 seconds and is only visible to Medwell admin.</p>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -151,237 +121,68 @@
       '9677211559': 'Karnan'
     };
 
-    const isIOS     = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isAndroid = /Android/.test(navigator.userAgent);
+    let trackInterval = null, sendCount = 0;
 
-    let watchId     = null;
-    let sendCount   = 0;
-    let lastSentAt  = 0;
-    let wakeLock    = null;
-    let audioCtx    = null;
-    let activeName  = null;
-    const SEND_INTERVAL = 30000;
-
-    // ── Error display ────────────────────────────────────────────
     function showErr(msg) {
       const el = document.getElementById('errBox');
       el.textContent = msg; el.classList.add('show');
-      setTimeout(() => el.classList.remove('show'), 7000);
+      setTimeout(() => el.classList.remove('show'), 6000);
     }
 
-    // ── Update status UI ─────────────────────────────────────────
-    function updateStatus(lat, lng) {
-      sendCount++;
-      document.getElementById('dLat').textContent  = lat.toFixed(5);
-      document.getElementById('dLng').textContent  = lng.toFixed(5);
-      document.getElementById('dTime').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      document.getElementById('dCount').innerHTML  = `Locations sent: <strong>${sendCount}</strong>`;
-      document.getElementById('statusSub').textContent = 'Next update in 30 seconds';
-    }
-
-    // ── Silent audio — prevents JS throttle on some browsers ─────
-    function startAudioKeepalive() {
-      try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 1, audioCtx.sampleRate);
-        const gain = audioCtx.createGain();
-        gain.gain.value = 0.00001;
-        gain.connect(audioCtx.destination);
-        function loop() {
-          if (!audioCtx) return;
-          const src = audioCtx.createBufferSource();
-          src.buffer = buf;
-          src.connect(gain);
-          src.onended = loop;
-          src.start();
-        }
-        loop();
-      } catch(e) {}
-    }
-
-    // ── Wake Lock — keeps screen on (Android Chrome) ─────────────
-    async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
-        }
-      } catch(e) {}
-    }
-
-    async function releaseWakeLock() {
-      try { if (wakeLock) { await wakeLock.release(); wakeLock = null; } } catch(e) {}
-    }
-
-    // ── Page Visibility — detect background ──────────────────────
-    document.addEventListener('visibilitychange', async () => {
-      if (!activeName) return;
-      if (document.visibilityState === 'hidden') {
-        // Page went to background
-        setBgWarning(true);
-      } else {
-        // Page came back to foreground
-        setBgWarning(false);
-        await requestWakeLock();
-        // Resume audio context if suspended
-        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-        // Re-send location immediately on return
-        const now = Date.now();
-        if (now - lastSentAt > 10000) {
-          sendLocationOnce(activeName);
-        }
-      }
-    });
-
-    function setBgWarning(show) {
-      const wrap = document.getElementById('pulseWrap');
-      const lbl  = document.getElementById('statusLabel');
-      const warn = document.getElementById('bgWarn');
-      if (show) {
-        wrap.classList.add('paused');
-        lbl.classList.add('paused');
-        lbl.textContent = isIOS ? 'Tracking Paused' : 'Tracking Active';
-        document.getElementById('statusSub').textContent = isIOS ? 'Return to this page to resume' : 'Running in background…';
-        warn.classList.add('show');
-      } else {
-        wrap.classList.remove('paused');
-        lbl.classList.remove('paused');
-        lbl.textContent = 'Live Tracking Active';
-        warn.classList.remove('show');
-      }
-    }
-
-    // ── Send one location point ───────────────────────────────────
-    async function sendLocationOnce(name) {
+    async function sendLocation(name) {
       return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) return reject(new Error('Geolocation not supported.'));
+        if (!navigator.geolocation) return reject(new Error('Geolocation not supported on this device.'));
         navigator.geolocation.getCurrentPosition(async pos => {
           const { latitude, longitude } = pos.coords;
           const { error } = await sb.from('employee_locations').insert({ employee_name: name, latitude, longitude, status: 'online' });
           if (error) return reject(error);
-          lastSentAt = Date.now();
-          updateStatus(latitude, longitude);
-          resolve({ latitude, longitude });
-        }, err => reject(new Error('GPS: ' + err.message)),
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 5000 });
+          sendCount++;
+          document.getElementById('dLat').textContent  = latitude.toFixed(5);
+          document.getElementById('dLng').textContent  = longitude.toFixed(5);
+          document.getElementById('dTime').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          document.getElementById('dCount').innerHTML  = `Locations sent: <strong>${sendCount}</strong>`;
+          document.getElementById('statusSub').textContent = 'Next update in 30 seconds';
+          resolve();
+        }, err => reject(new Error('GPS error: ' + err.message)), { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
       });
     }
 
-    // ── watchPosition callback — throttled to SEND_INTERVAL ──────
-    async function onPositionUpdate(pos) {
-      const now = Date.now();
-      if (now - lastSentAt < SEND_INTERVAL) return;
-      const { latitude, longitude } = pos.coords;
-      try {
-        const { error } = await sb.from('employee_locations').insert({
-          employee_name: activeName, latitude, longitude, status: 'online'
-        });
-        if (!error) { lastSentAt = now; updateStatus(latitude, longitude); }
-      } catch(e) {}
-    }
-
-    // ── Show device-specific tips ─────────────────────────────────
-    function showTips() {
-      const tips = [];
-      if (isIOS) {
-        tips.push('⚠️ iOS Safari pauses tracking when you leave this tab. Keep Safari open and in the foreground.');
-        tips.push('🔒 Enable Location: Settings → Privacy → Location Services → Safari → "While Using App".');
-        tips.push('💡 Increase Auto-Lock time: Settings → Display & Brightness → Auto-Lock → 5 minutes or Never.');
-        tips.push('📌 Tap the Share button → "Add to Home Screen" for a dedicated app that tracks more reliably.');
-      } else if (isAndroid) {
-        tips.push('✅ Android Chrome continues tracking when you switch apps or return to home screen.');
-        tips.push('🔋 If tracking stops, check Battery Optimisation: Settings → Apps → Chrome → Battery → Unrestricted.');
-        tips.push('📌 Tap the ⋮ menu → "Add to Home Screen" to install as an app for best background tracking.');
-        tips.push('💡 Keep your screen on while in the field, or tracking continues automatically in background.');
-      } else {
-        tips.push('Keep this tab open in your browser while you are in the field.');
-        tips.push('Do not close the browser — tracking stops when the page is closed.');
-      }
-
-      const list = document.getElementById('tipsList');
-      list.innerHTML = tips.map(t => `<li><span>${t}</span></li>`).join('');
-      document.getElementById('tipsBox').classList.add('show');
-
-      const warnBody = document.getElementById('bgWarnBody');
-      if (isIOS) {
-        warnBody.textContent = 'iOS has paused this page. Please return to Safari and keep it open to continue tracking.';
-      } else {
-        warnBody.textContent = 'Page is in background. On Android, Chrome may continue tracking — check the status when you return.';
-      }
-    }
-
-    // ── Start Tracking ────────────────────────────────────────────
     async function startTracking() {
       const phone = document.getElementById('empPhone').value.trim().replace(/\D/g, '');
-      const name  = PHONE_MAP[phone];
+      const name = PHONE_MAP[phone];
       if (!phone) { showErr('Please enter your mobile number.'); return; }
-      if (!name)  { showErr('Number not recognised. Contact admin.'); return; }
-
+      if (!name) { showErr('Number not recognised. Contact admin.'); return; }
       const btn = document.getElementById('startBtn');
       btn.disabled = true; btn.textContent = 'Getting location…';
       document.getElementById('statusCard').classList.add('show');
       document.getElementById('dName').textContent = name;
       sendCount = 0;
-      activeName = name;
-
-      // Start silent audio and wake lock on user gesture
-      startAudioKeepalive();
-      await requestWakeLock();
-
       try {
-        // First immediate send
-        await sendLocationOnce(name);
-
+        await sendLocation(name);
         btn.style.display = 'none';
         document.getElementById('stopBtn').style.display = 'flex';
-
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('sw.js').catch(() => {});
-        }
-
-        // watchPosition — continuous stream, fires on every movement
-        // The callback is throttled to only send every 30 seconds
-        if (navigator.geolocation) {
-          watchId = navigator.geolocation.watchPosition(
-            onPositionUpdate,
-            err => { console.warn('Watch position error:', err.message); },
-            { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 }
-          );
-        }
-
-        showTips();
-
+        trackInterval = setInterval(async () => {
+          try { await sendLocation(name); } catch(e) { showErr(e.message); }
+        }, 30000);
       } catch(e) {
         showErr(e.message);
         btn.disabled = false;
         btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
         document.getElementById('statusCard').classList.remove('show');
-        activeName = null;
-        releaseWakeLock();
-        if (audioCtx) { audioCtx.close(); audioCtx = null; }
       }
     }
 
-    // ── Stop Tracking ─────────────────────────────────────────────
     function stopTracking() {
-      if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
-      activeName = null;
-      releaseWakeLock();
-      if (audioCtx) { audioCtx.close(); audioCtx = null; }
-
+      if (trackInterval) { clearInterval(trackInterval); trackInterval = null; }
       const btn = document.getElementById('startBtn');
       btn.style.display = 'flex'; btn.disabled = false;
       btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
       document.getElementById('stopBtn').style.display = 'none';
       document.getElementById('statusCard').classList.remove('show');
-      document.getElementById('tipsBox').classList.remove('show');
-      document.getElementById('bgWarn').classList.remove('show');
       sendCount = 0;
     }
 
-    window.addEventListener('beforeunload', e => {
-      if (activeName) { e.preventDefault(); e.returnValue = ''; }
-    });
+    window.addEventListener('beforeunload', e => { if (trackInterval) { e.preventDefault(); e.returnValue = ''; } });
   </script>
 </body>
 </html>
