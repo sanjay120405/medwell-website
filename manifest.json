@@ -1,0 +1,12 @@
+{
+  "name": "Medwell Field Tracking",
+  "short_name": "MedTrack",
+  "start_url": "/tracking.html",
+  "display": "standalone",
+  "background_color": "#044040",
+  "theme_color": "#0D7A7A",
+  "icons": [
+    { "src": "medwell logo.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "medwell logo.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
