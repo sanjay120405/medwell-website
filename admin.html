@@ -545,8 +545,8 @@
   const LS_KEY = 'medwell_products_v2';
 
   /* ── SUPABASE ───────────────────────────────── */
-  const SB_URL = 'https://vogxaylmrzulbdltxrwv.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
+  const SB_URL = '%%SUPABASE_URL%%';
+  const SB_KEY = '%%SUPABASE_ANON_KEY%%';
   const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
   function rowToArr(r) {
