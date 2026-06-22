@@ -230,9 +230,9 @@
     .table-section { padding: 0 0 60px; }
     .table-wrap { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); background: var(--white); margin-top: 4px; }
     @media(max-width: 899px) { .table-wrap { overflow-x: auto; } }
-    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1100px; }
     thead { background: linear-gradient(90deg, var(--teal-deeper), var(--teal-dark)); position: sticky; top: 0; z-index: 2; }
-    thead th { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: white; text-align: left; padding: 14px 16px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    thead th { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: white; text-align: left; padding: 14px 12px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
     thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
     thead th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
 
@@ -242,7 +242,7 @@
     tbody tr:nth-child(even) { background: #f9fefe; }
     tbody tr:nth-child(even):hover { background: var(--teal-light); }
 
-    tbody td { padding: 12px 16px; font-size: 0.84rem; color: var(--text); vertical-align: middle; }
+    tbody td { padding: 12px; font-size: 0.84rem; color: var(--text); vertical-align: middle; }
     td.name { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--teal); }
     td.institution { font-weight: 500; color: var(--dark); }
     td.contact-num { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--teal-dark); white-space: nowrap; }
@@ -410,7 +410,6 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Logout
       </button>
-      <a href="index.html" class="close-home-btn" title="Go to Home">&#10005;</a>
       <button class="hamburger" id="hamburger" aria-label="Open menu">
         <span></span><span></span><span></span>
       </button>
