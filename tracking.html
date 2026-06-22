@@ -104,7 +104,7 @@
     </div>
   </div>
 
-  <p class="footer-tip">Tracking runs in the background. You can switch apps or lock your screen — your location will still update every 30 seconds.</p>
+  <p class="footer-tip">Tracking runs in the background. You can switch apps or lock your screen — your location will still update every 1 minute.</p>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -173,7 +173,7 @@
           document.getElementById('dLng').textContent  = longitude.toFixed(5);
           document.getElementById('dTime').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
           document.getElementById('dCount').innerHTML  = `Locations sent: <strong>${sendCount}</strong>`;
-          document.getElementById('statusSub').textContent = 'Next update in 30 seconds';
+          document.getElementById('statusSub').textContent = 'Next update in 1 minute';
           resolve();
         }, err => reject(new Error('GPS error: ' + err.message)), { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
       });
@@ -197,7 +197,7 @@
         startSilentAudio();
         trackInterval = setInterval(async () => {
           try { await sendLocation(name); } catch(e) { showErr(e.message); }
-        }, 30000);
+        }, 60000);
       } catch(e) {
         showErr(e.message);
         btn.disabled = false;
