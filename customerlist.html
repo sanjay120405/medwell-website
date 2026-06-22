@@ -218,8 +218,13 @@
     .results-info { padding: 18px 0 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
     .results-count { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--teal); }
     .results-count span { color: var(--text-muted); font-weight: 400; }
-    .add-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 20px; background: var(--teal); color: white; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 600; border: none; cursor: pointer; transition: background .2s, transform .2s; }
+    .add-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 20px; background: var(--teal); color: white; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 600; border: none; cursor: pointer; transition: background .2s, transform .2s; white-space: nowrap; }
     .add-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .add-btn-export { background: var(--orange); }
+    .add-btn-export:hover { background: var(--orange-dark); }
+    .add-btn-import { background: #2563eb; }
+    .add-btn-import:hover { background: #1d4ed8; }
+    .toolbar-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
     /* TABLE */
     .table-section { padding: 0 0 60px; }
@@ -492,16 +497,16 @@
   <div class="container">
     <div class="results-info">
       <div class="results-count" id="resultsCount">Showing <span id="countNum">0</span> customers</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <div class="toolbar-btns">
         <button class="add-btn" id="addBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add Customer
         </button>
-        <button class="add-btn" id="exportBtn" style="background:#E87820;">
+        <button class="add-btn add-btn-export" id="exportBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
           Export
         </button>
-        <button class="add-btn" id="importBtn" style="background:#2563eb;">
+        <button class="add-btn add-btn-import" id="importBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 14l5-5 5 5M12 3v12"/></svg>
           Import
         </button>
