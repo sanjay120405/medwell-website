@@ -227,13 +227,11 @@
     .toolbar-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
     /* STATS BAR */
-    .stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 18px 0; }
-    .stats-inner { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
-    .stat-item { display: flex; flex-direction: column; gap: 2px; padding: 0 32px; }
-    .stat-item:first-child { padding-left: 0; }
-    .stat-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
-    .stat-label { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; }
-    .stat-value { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--teal); line-height: 1; }
+    .stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    .stat { display: flex; flex-direction: column; gap: 1px; }
+    .stat-label { font-size: 0.68rem; font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; }
+    .stat-value { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--teal); }
+    .stat-divider { width: 1px; height: 32px; background: var(--border); flex-shrink: 0; }
 
     /* TABLE */
     .table-section { padding: 0 0 60px; }
@@ -476,6 +474,29 @@
   </div>
 </div>
 
+<!-- ══ STATS BAR ══ -->
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-label">Total Customers</span>
+    <span class="stat-value" id="statTotal">—</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-label">Showing</span>
+    <span class="stat-value" id="statShowing">—</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-label">Executives</span>
+    <span class="stat-value" id="statExecs">—</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-label">Locations</span>
+    <span class="stat-value" id="statLocs">—</span>
+  </div>
+</div>
+
 <!-- ══ SEARCH SECTION ══ -->
 <div class="search-section">
   <div class="container">
@@ -511,21 +532,6 @@
           Clear
         </button>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ STATS BAR ══ -->
-<div class="stats-bar">
-  <div class="container">
-    <div class="stats-inner">
-      <div class="stat-item"><div class="stat-label">Total Customers</div><div class="stat-value" id="statTotal">0</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-label">Showing</div><div class="stat-value" id="statShowing">0</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-label">Executives</div><div class="stat-value" id="statExecs">0</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-label">Locations</div><div class="stat-value" id="statLocs">0</div></div>
     </div>
   </div>
 </div>
