@@ -324,11 +324,6 @@
   </div>
   <div class="stat-divider"></div>
   <div class="stat">
-    <span class="stat-label">Showing</span>
-    <span class="stat-value" id="statShowing">—</span>
-  </div>
-  <div class="stat-divider"></div>
-  <div class="stat">
     <span class="stat-label">Companies</span>
     <span class="stat-value" id="statCompanies">—</span>
   </div>
@@ -336,6 +331,11 @@
   <div class="stat">
     <span class="stat-label">Categories</span>
     <span class="stat-value" id="statCategories">—</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-label">Molecules</span>
+    <span class="stat-value" id="statMolecules">—</span>
   </div>
 </div>
 
@@ -1132,9 +1132,9 @@
 
   function updateStats(showingCount) {
     document.getElementById('statTotal').textContent = PRODUCTS.length;
-    document.getElementById('statShowing').textContent = showingCount;
     document.getElementById('statCompanies').textContent = new Set(PRODUCTS.map(p => p[3])).size;
     document.getElementById('statCategories').textContent = new Set(PRODUCTS.map(p => p[5])).size;
+    document.getElementById('statMolecules').textContent = new Set(PRODUCTS.map(p => p[4]).filter(Boolean)).size;
   }
 
   // Load from Supabase with localStorage fallback
