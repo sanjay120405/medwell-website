@@ -486,10 +486,10 @@
         </div>
       </div>
       <div class="search-field">
-        <label for="searchInstitution">Institution</label>
+        <label for="searchInstitution">Executive</label>
         <div class="search-input-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          <input id="searchInstitution" class="search-input" type="text" placeholder="Search by institution..." autocomplete="off" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input id="searchInstitution" class="search-input" type="text" placeholder="Search by executive..." autocomplete="off" />
         </div>
       </div>
       <div class="btn-group">
@@ -871,7 +871,7 @@
     const filtered = CUSTOMERS.filter(c => {
       const matchName        = !t.name        || String(c[0]).toLowerCase().includes(t.name.toLowerCase());
       const matchLocation    = !t.location    || String(c[6]).toLowerCase().includes(t.location.toLowerCase());
-      const matchInstitution = !t.institution || String(c[3]).toLowerCase().includes(t.institution.toLowerCase());
+      const matchInstitution = !t.institution || String(c[1]).toLowerCase().includes(t.institution.toLowerCase());
       return matchName && matchLocation && matchInstitution;
     });
     renderTable(filtered, t);
