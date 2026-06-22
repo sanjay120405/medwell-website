@@ -104,7 +104,7 @@
     </div>
   </div>
 
-  <p class="footer-tip">Keep this page open while you are in the field. Your location updates every 30 seconds and is only visible to Medwell admin.</p>
+  <p class="footer-tip">Tracking runs in the background. You can switch apps or lock your screen — your location will still update every 30 seconds.</p>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -122,6 +122,38 @@
     };
 
     let trackInterval = null, sendCount = 0;
+    let wakeLock = null, audioCtx = null, silentNode = null;
+
+    /* ── Wake Lock: keeps screen on while tab is visible ── */
+    async function acquireWakeLock() {
+      if (!('wakeLock' in navigator)) return;
+      try { wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
+    }
+    function releaseWakeLock() {
+      if (wakeLock) { wakeLock.release(); wakeLock = null; }
+    }
+    /* Re-acquire after user returns to tab (wake lock releases on hide) */
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && trackInterval) acquireWakeLock();
+    });
+
+    /* ── Silent audio: prevents browser JS throttling in background ── */
+    function startSilentAudio() {
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.001;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        silentNode = osc;
+      } catch(e) {}
+    }
+    function stopSilentAudio() {
+      try { if (silentNode) silentNode.stop(); if (audioCtx) audioCtx.close(); } catch(e) {}
+      audioCtx = null; silentNode = null;
+    }
 
     function showErr(msg) {
       const el = document.getElementById('errBox');
@@ -161,6 +193,8 @@
         await sendLocation(name);
         btn.style.display = 'none';
         document.getElementById('stopBtn').style.display = 'flex';
+        await acquireWakeLock();
+        startSilentAudio();
         trackInterval = setInterval(async () => {
           try { await sendLocation(name); } catch(e) { showErr(e.message); }
         }, 30000);
@@ -174,6 +208,8 @@
 
     function stopTracking() {
       if (trackInterval) { clearInterval(trackInterval); trackInterval = null; }
+      releaseWakeLock();
+      stopSilentAudio();
       const btn = document.getElementById('startBtn');
       btn.style.display = 'flex'; btn.disabled = false;
       btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
