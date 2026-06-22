@@ -228,15 +228,25 @@
 
     /* TABLE */
     .table-section { padding: 0 0 60px; }
-    .table-wrap { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); background: var(--white); margin-top: 4px; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+    .table-wrap { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); background: var(--white); margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    col.col-num     { width: 4%; }
+    col.col-name    { width: 14%; }
+    col.col-exec    { width: 9%; }
+    col.col-type    { width: 9%; }
+    col.col-inst    { width: 11%; }
+    col.col-cname   { width: 9%; }
+    col.col-cnum    { width: 10%; }
+    col.col-loc     { width: 9%; }
+    col.col-addr    { width: 12%; }
+    col.col-act     { width: 13%; }
     thead { background: linear-gradient(90deg, var(--teal-deeper), var(--teal-dark)); position: sticky; top: 0; z-index: 2; }
-    thead th { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: white; text-align: left; padding: 14px 12px; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
-    thead th:first-child { border-radius: var(--radius-sm) 0 0 0; text-align: center; width: 48px; }
-    thead th:last-child { border-radius: 0 var(--radius-sm) 0 0; text-align: center; }
+    thead th { font-family: 'Poppins', sans-serif; font-size: 0.74rem; font-weight: 700; color: white; text-align: left; padding: 13px 8px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    thead th:first-child { border-radius: var(--radius-sm) 0 0 0; text-align: center; }
+    thead th:last-child  { border-radius: 0 var(--radius-sm) 0 0; text-align: center; }
     thead th:nth-child(4) { text-align: center; }
     td.col-center { text-align: center; }
-    td.col-num { text-align: center; width: 48px; color: var(--text-muted); font-size: 0.8rem; }
+    td.col-num { text-align: center; color: var(--text-muted); font-size: 0.8rem; }
     td.col-actions { text-align: center; }
     td.col-actions .row-actions { justify-content: center; }
 
@@ -246,22 +256,22 @@
     tbody tr:nth-child(even) { background: #f9fefe; }
     tbody tr:nth-child(even):hover { background: var(--teal-light); }
 
-    tbody td { padding: 12px; font-size: 0.84rem; color: var(--text); vertical-align: middle; }
+    tbody td { padding: 10px 8px; font-size: 0.82rem; color: var(--text); vertical-align: middle; overflow: hidden; word-break: break-word; }
     td.name { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--teal); }
     td.institution { font-weight: 500; color: var(--dark); }
-    td.contact-num { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--teal-dark); white-space: nowrap; }
-    td.location { color: var(--text-muted); font-size: 0.82rem; }
-    td.address { font-size: 0.82rem; max-width: 200px; }
+    td.contact-num { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--teal-dark); font-size: 0.8rem; }
+    td.location { color: var(--text-muted); font-size: 0.8rem; }
+    td.address { font-size: 0.8rem; }
 
-    .type-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; font-family: 'Poppins', sans-serif; white-space: nowrap; }
+    .type-badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 99px; font-size: 0.68rem; font-weight: 600; font-family: 'Poppins', sans-serif; white-space: nowrap; }
     .type-dealer   { background: #E0F5F5; color: var(--teal); }
     .type-hospital { background: #FFF3E0; color: var(--orange-dark); }
     .type-medical  { background: #EEF5E0; color: #5A7A2A; }
     .type-other    { background: #F0F0F0; color: #5A5A7A; }
 
     /* ROW ACTIONS */
-    .row-actions { display: flex; gap: 6px; }
-    .action-btn { padding: 5px 11px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; font-family: 'Poppins', sans-serif; border: 1.5px solid; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: 4px; background: transparent; white-space: nowrap; }
+    .row-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+    .action-btn { padding: 4px 9px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; font-family: 'Poppins', sans-serif; border: 1.5px solid; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: 3px; background: transparent; white-space: nowrap; }
     .action-btn.edit  { border-color: var(--teal); color: var(--teal); }
     .action-btn.edit:hover  { background: var(--teal); color: white; }
     .action-btn.del   { border-color: #e74c3c; color: #e74c3c; }
@@ -518,6 +528,11 @@
     </div>
     <div class="table-wrap">
       <table id="customerTable">
+        <colgroup>
+          <col class="col-num"><col class="col-name"><col class="col-exec"><col class="col-type">
+          <col class="col-inst"><col class="col-cname"><col class="col-cnum">
+          <col class="col-loc"><col class="col-addr"><col class="col-act">
+        </colgroup>
         <thead>
           <tr>
             <th>#</th>
