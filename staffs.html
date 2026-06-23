@@ -375,6 +375,7 @@
     let lockUntil = 0;
     let countdownTimer = null;
     let FW_CUSTOMERS = [];
+    let fwLoading = false;
     const MAX_ATTEMPTS = 3;
     const LOCK_DURATION = 5 * 60 * 1000;
 
@@ -425,11 +426,14 @@
 
     /* ── Field Work: load customers ── */
     async function loadFWCustomers() {
+      fwLoading = true;
+      document.getElementById('fwList').innerHTML = '<div class="fw-loading">Loading your customers…</div>';
       const { data, error } = await sb.from('customers')
         .select('name,type,institution,contact_name,contact_number,location,address')
         .ilike('executive', staffName)
         .order('name', { ascending: true });
-      if (error) { FW_CUSTOMERS = []; return; }
+      fwLoading = false;
+      if (error) { FW_CUSTOMERS = []; document.getElementById('fwList').innerHTML = '<div class="fw-empty">Failed to load. Pull down to retry.</div>'; return; }
       FW_CUSTOMERS = data || [];
       document.getElementById('fwTotal').textContent = FW_CUSTOMERS.length;
       const locs = new Set(FW_CUSTOMERS.map(c => c.location).filter(Boolean));
@@ -449,6 +453,7 @@
     let currentFWList = [];
 
     function renderFW(list) {
+      if (fwLoading) { document.getElementById('fwList').innerHTML = '<div class="fw-loading">Loading your customers…</div>'; return; }
       currentFWList = list;
       const el = document.getElementById('fwList');
       if (!list.length) { el.innerHTML = '<div class="fw-empty">No customers found.</div>'; return; }

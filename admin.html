@@ -1631,7 +1631,8 @@
     const { error } = clEditId ? await sb.from('customers').update(payload).eq('id', clEditId) : await sb.from('customers').insert(payload);
     btn.disabled = false; btn.textContent = clEditId ? 'Update Customer' : 'Save Customer';
     if (error) { document.getElementById('clModalErr').textContent = 'Failed to save — please try again.'; return; }
-    clCloseModal(); await clLoadCustomers(); toast(clEditId ? 'Customer updated.' : 'Customer added.', 'success');
+    const wasEdit = !!clEditId;
+    clCloseModal(); await clLoadCustomers(); toast(wasEdit ? 'Customer updated.' : 'Customer added.', 'success');
   });
 
   /* export */
