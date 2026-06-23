@@ -90,11 +90,37 @@
     .err-box { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px; padding: 11px 14px; margin-top: 12px; font-size: 0.79rem; color: #dc2626; font-weight: 500; display: none; }
     .err-box.show { display: block; }
 
-    /* ── FIELD WORK CARD ── */
-    .fw-coming { text-align: center; padding: 36px 24px; }
-    .fw-coming .fw-icon { font-size: 3rem; margin-bottom: 14px; }
-    .fw-coming h3 { font-size: 1rem; font-weight: 800; color: #0f2a2a; margin-bottom: 6px; }
-    .fw-coming p { font-size: 0.82rem; color: #5a7a7a; line-height: 1.6; }
+    /* ── FIELD WORK ── */
+    .fw-stats { display: flex; gap: 0; border-bottom: 1px solid #e0ecec; }
+    .fw-stat { flex: 1; padding: 14px 16px; text-align: center; border-right: 1px solid #e0ecec; }
+    .fw-stat:last-child { border-right: none; }
+    .fw-stat-val { font-size: 1.2rem; font-weight: 800; color: var(--orange-dark); }
+    .fw-stat-label { font-size: 0.62rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+
+    .fw-search-wrap { padding: 14px 16px; border-bottom: 1px solid #e0ecec; }
+    .fw-search { width: 100%; padding: 10px 14px 10px 36px; border: 1.5px solid #dde8e8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; color: #1a2e2e; background: #f8fafa; position: relative; }
+    .fw-search:focus { outline: none; border-color: var(--orange); background: white; box-shadow: 0 0 0 3px rgba(232,120,32,.1); }
+    .fw-search-wrap { position: relative; padding: 14px 16px; border-bottom: 1px solid #e0ecec; }
+    .fw-search-wrap svg { position: absolute; left: 28px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+
+    .fw-list { display: flex; flex-direction: column; }
+    .fw-loading { text-align: center; padding: 32px 16px; font-size: 0.82rem; color: #94a3b8; }
+    .fw-empty { text-align: center; padding: 32px 16px; font-size: 0.82rem; color: #94a3b8; }
+
+    .cust-card { padding: 16px; border-bottom: 1px solid #f0f4f4; }
+    .cust-card:last-child { border-bottom: none; }
+    .cust-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .cust-name { font-size: 0.92rem; font-weight: 800; color: #0f2a2a; flex: 1; }
+    .type-badge { font-size: 0.62rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: .05em; flex-shrink: 0; }
+    .type-hospital { background: #e0f2fe; color: #0369a1; }
+    .type-clinic { background: #d1fae5; color: #065f46; }
+    .type-dealer { background: #fef3c7; color: #92400e; }
+    .type-other { background: #f3f4f6; color: #374151; }
+    .cust-rows { display: flex; flex-direction: column; gap: 5px; }
+    .cust-row { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #5a7a7a; }
+    .cust-row svg { flex-shrink: 0; color: #94a3b8; }
+    .call-link { color: var(--orange-dark); font-weight: 700; text-decoration: none; }
+    .call-link:hover { text-decoration: underline; }
 
     .footer-tip { text-align: center; color: rgba(255,255,255,.3); font-size: 0.68rem; margin-top: 22px; max-width: 340px; line-height: 1.7; }
   </style>
@@ -145,12 +171,12 @@
       </div>
     </div>
 
-    <div class="menu-card" onclick="showSection('fieldwork')">
+    <div class="menu-card" id="fieldworkMenuCard" onclick="showSection('fieldwork')" style="display:none;">
       <div class="menu-card-inner">
         <div class="menu-icon orange">💼</div>
         <div>
           <h3>Field Work</h3>
-          <p>Log your daily field activities and visit reports</p>
+          <p>View your assigned customers and visit details</p>
         </div>
         <span class="menu-arrow">›</span>
       </div>
@@ -219,13 +245,25 @@
         <div class="card-icon">💼</div>
         <div>
           <h2>Field Work</h2>
-          <p>Log your daily field activities</p>
+          <p id="fwSubtitle">Your assigned customers</p>
         </div>
       </div>
-      <div class="fw-coming">
-        <div class="fw-icon">🚧</div>
-        <h3>Coming Soon</h3>
-        <p>Field work reporting will be available here.<br>Contact admin for more details.</p>
+      <div class="fw-stats">
+        <div class="fw-stat">
+          <div class="fw-stat-val" id="fwTotal">—</div>
+          <div class="fw-stat-label">Customers</div>
+        </div>
+        <div class="fw-stat">
+          <div class="fw-stat-val" id="fwLocs">—</div>
+          <div class="fw-stat-label">Locations</div>
+        </div>
+      </div>
+      <div class="fw-search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="fw-search" id="fwSearch" type="text" placeholder="Search by name or location…" oninput="filterFW()" />
+      </div>
+      <div class="fw-list" id="fwList">
+        <div class="fw-loading">Loading your customers…</div>
       </div>
     </div>
   </div>
@@ -244,6 +282,7 @@
       '9566811559': 'Santhosh',
       '9677211559': 'Karnan'
     };
+    const FIELD_WORK_EXECS = new Set(['Selva', 'Santhosh', 'Karnan']);
 
     let trackInterval = null, sendCount = 0;
     let wakeLock = null, audioCtx = null, silentNode = null;
@@ -252,18 +291,15 @@
     let wrongAttempts = 0;
     let lockUntil = 0;
     let countdownTimer = null;
+    let FW_CUSTOMERS = [];
     const MAX_ATTEMPTS = 3;
-    const LOCK_DURATION = 5 * 60 * 1000; // 5 minutes
+    const LOCK_DURATION = 5 * 60 * 1000;
 
     function verifyPhone() {
       const errBox = document.getElementById('loginErrBox');
 
-      // Check if still locked
       const remaining = lockUntil - Date.now();
-      if (remaining > 0) {
-        showLockout(remaining);
-        return;
-      }
+      if (remaining > 0) { showLockout(remaining); return; }
 
       const phone = document.getElementById('loginPhone').value.trim().replace(/\D/g, '');
       const name = PHONE_MAP[phone];
@@ -296,8 +332,62 @@
       staffName = name;
       document.getElementById('empPhone').value = phone;
       document.getElementById('menuGreet').textContent = `Welcome, ${name}!`;
+      if (FIELD_WORK_EXECS.has(name)) {
+        document.getElementById('fieldworkMenuCard').style.display = 'block';
+        loadFWCustomers();
+      }
       document.getElementById('numberView').style.display = 'none';
       document.getElementById('menuView').style.display = 'flex';
+    }
+
+    /* ── Field Work: load customers ── */
+    async function loadFWCustomers() {
+      const { data, error } = await sb.from('customers')
+        .select('name,type,institution,contact_name,contact_number,location,address')
+        .ilike('executive', staffName)
+        .order('name', { ascending: true });
+      if (error) { FW_CUSTOMERS = []; return; }
+      FW_CUSTOMERS = data || [];
+      document.getElementById('fwTotal').textContent = FW_CUSTOMERS.length;
+      const locs = new Set(FW_CUSTOMERS.map(c => c.location).filter(Boolean));
+      document.getElementById('fwLocs').textContent = locs.size;
+      renderFW(FW_CUSTOMERS);
+    }
+
+    function typeBadge(type) {
+      const t = (type || '').toLowerCase();
+      if (t.includes('hospital')) return `<span class="type-badge type-hospital">${type}</span>`;
+      if (t.includes('clinic'))   return `<span class="type-badge type-clinic">${type}</span>`;
+      if (t.includes('dealer'))   return `<span class="type-badge type-dealer">${type}</span>`;
+      return `<span class="type-badge type-other">${type || 'Other'}</span>`;
+    }
+
+    function renderFW(list) {
+      const el = document.getElementById('fwList');
+      if (!list.length) { el.innerHTML = '<div class="fw-empty">No customers found.</div>'; return; }
+      el.innerHTML = list.map(c => `
+        <div class="cust-card">
+          <div class="cust-top">
+            <span class="cust-name">${c.name || '—'}</span>
+            ${typeBadge(c.type)}
+          </div>
+          <div class="cust-rows">
+            ${c.institution ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>${c.institution}</div>` : ''}
+            ${c.location ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${c.location}</div>` : ''}
+            ${c.contact_name ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${c.contact_name}</div>` : ''}
+            ${c.contact_number ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17z"/></svg><a class="call-link" href="tel:${c.contact_number}">${c.contact_number}</a></div>` : ''}
+          </div>
+        </div>`).join('');
+    }
+
+    function filterFW() {
+      const q = document.getElementById('fwSearch').value.toLowerCase();
+      if (!q) { renderFW(FW_CUSTOMERS); return; }
+      renderFW(FW_CUSTOMERS.filter(c =>
+        (c.name || '').toLowerCase().includes(q) ||
+        (c.location || '').toLowerCase().includes(q) ||
+        (c.institution || '').toLowerCase().includes(q)
+      ));
     }
 
     function showLockout(remainingMs) {
@@ -328,6 +418,11 @@
       document.getElementById('trackingView').classList.remove('active');
       document.getElementById('fieldworkView').classList.remove('active');
       document.getElementById(name + 'View').classList.add('active');
+      if (name === 'fieldwork') {
+        document.getElementById('fwSubtitle').textContent = `${staffName}'s customers`;
+        document.getElementById('fwSearch').value = '';
+        renderFW(FW_CUSTOMERS);
+      }
     }
 
     function showMenu() {
