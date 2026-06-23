@@ -2005,7 +2005,7 @@
     const wasEdit = !!whEditingId;
     const { error } = wasEdit ? await sb.from('wholesale').update(entry).eq('id', whEditingId) : await sb.from('wholesale').insert(entry);
     btn.disabled = false; btn.textContent = wasEdit ? 'Update Item' : 'Save Item';
-    if (error) { document.getElementById('whModalError').textContent = 'Failed to save — please try again.'; return; }
+    if (error) { document.getElementById('whModalError').textContent = error.message || 'Failed to save — please try again.'; console.error('Wholesale save error:', error); return; }
     whCloseModal(); await whLoadItems(); toast(wasEdit ? 'Item updated.' : 'Item added.', 'success');
   });
 
@@ -2049,9 +2049,9 @@
             contact_no: get(row,  ['Contact No','contact_no']),
             stockist:   get(row,  ['Stockist','stockist'])
           });
-          if (!error) added++; else skipped++;
+          if (!error) added++; else { console.error('Import row error:', error.message, row); skipped++; }
         }
-        await whLoadItems(); toast(`Imported ${added} items${skipped?`, ${skipped} skipped`:''}`, 'success');
+        await whLoadItems(); toast(`Imported ${added} items${skipped?`, ${skipped} skipped`:''}`, added > 0 ? 'success' : 'error');
       } catch(err) { alert('Failed to read file: '+err.message); }
     };
     reader.readAsArrayBuffer(file); this.value='';
