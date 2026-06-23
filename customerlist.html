@@ -604,7 +604,8 @@
   let currentPage = 1;
   let CUSTOMERS = [];
   let filteredRows = [];
-  let currentTerms = { name:'', location:'', institution:'' };
+  let currentTerms = { name:'', location:'', executive:'' };
+
 
   let editId = null;
 
@@ -628,7 +629,7 @@
     document.getElementById('statTotal').textContent = CUSTOMERS.length;
     document.getElementById('statExecs').textContent = execs.size;
     document.getElementById('statLocs').textContent  = locs.size;
-    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
+    renderTable(CUSTOMERS, { name:'', location:'', executive:'' });
   }
 
   // ── PASSWORD TOGGLE ─────────────────────────────────────────
@@ -860,9 +861,9 @@
       <tr>
         <td class="col-num">${start + i + 1}</td>
         <td class="name">${highlight(c[0], terms.name)}</td>
-        <td>${escape(c[1])}</td>
+        <td>${highlight(c[1], terms.executive)}</td>
         <td class="col-center">${typeBadge(c[2])}</td>
-        <td class="institution">${highlight(c[3], terms.institution)}</td>
+        <td class="institution">${escape(c[3])}</td>
         <td>${escape(c[4])}</td>
         <td class="contact-num">${escape(c[5])}</td>
         <td class="location">${highlight(c[6], terms.location)}</td>
@@ -890,9 +891,9 @@
 
   function getTerms() {
     return {
-      name:        document.getElementById('searchName').value.trim(),
-      location:    document.getElementById('searchLocation').value.trim(),
-      institution: document.getElementById('searchInstitution').value.trim()
+      name:      document.getElementById('searchName').value.trim(),
+      location:  document.getElementById('searchLocation').value.trim(),
+      executive: document.getElementById('searchInstitution').value.trim()
     };
   }
 
@@ -900,10 +901,10 @@
     currentPage = 1;
     const t = getTerms();
     const filtered = CUSTOMERS.filter(c => {
-      const matchName        = !t.name        || String(c[0]).toLowerCase().includes(t.name.toLowerCase());
-      const matchLocation    = !t.location    || String(c[6]).toLowerCase().includes(t.location.toLowerCase());
-      const matchInstitution = !t.institution || String(c[1]).toLowerCase().includes(t.institution.toLowerCase());
-      return matchName && matchLocation && matchInstitution;
+      const matchName      = !t.name      || String(c[0]).toLowerCase().includes(t.name.toLowerCase());
+      const matchLocation  = !t.location  || String(c[6]).toLowerCase().includes(t.location.toLowerCase());
+      const matchExecutive = !t.executive || String(c[1]).toLowerCase().includes(t.executive.toLowerCase());
+      return matchName && matchLocation && matchExecutive;
     });
     renderTable(filtered, t);
   }
@@ -913,7 +914,7 @@
     document.getElementById('searchLocation').value = '';
     document.getElementById('searchInstitution').value = '';
     currentPage = 1;
-    renderTable(CUSTOMERS, { name:'', location:'', institution:'' });
+    renderTable(CUSTOMERS, { name:'', location:'', executive:'' });
   }
 
   document.getElementById('prevBtn').addEventListener('click', () => {
