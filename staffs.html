@@ -3,19 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Track Me – Medwell Logix</title>
+  <title>Staff Portal – Medwell Logix</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --teal: #0D7A7A; --teal-dark: #065A5A; --teal-deeper: #044040; --orange: #E87820; --green: #22c55e; --green-dark: #16a34a; --red: #ef4444; }
+    :root { --teal: #0D7A7A; --teal-dark: #065A5A; --teal-deeper: #044040; --orange: #E87820; --orange-dark: #C56010; --green: #22c55e; --green-dark: #16a34a; --red: #ef4444; }
     body { min-height: 100vh; background: linear-gradient(135deg, var(--teal-deeper), var(--teal-dark) 55%, #0a2a2a); font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 28px 16px 48px; }
 
-    .logo-wrap { margin-bottom: 28px; text-align: center; }
+    .logo-wrap { margin-bottom: 32px; text-align: center; }
     .logo-wrap img { height: 54px; }
     .logo-wrap p { color: rgba(255,255,255,.45); font-size: 0.72rem; margin-top: 6px; letter-spacing: .07em; text-transform: uppercase; }
 
-    .card { background: white; border-radius: 20px; width: 100%; max-width: 400px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
-    .card-header { background: linear-gradient(135deg, var(--teal-dark), var(--teal)); padding: 22px 24px; display: flex; align-items: center; gap: 14px; }
+    /* ── MENU (2 boxes) ── */
+    .menu-view { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
+    .menu-title { text-align: center; color: rgba(255,255,255,.6); font-size: 0.78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+    .menu-card {
+      background: white; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      cursor: pointer; transition: transform .2s, box-shadow .2s;
+    }
+    .menu-card:hover { transform: translateY(-3px); box-shadow: 0 28px 70px rgba(0,0,0,.4); }
+    .menu-card:active { transform: translateY(0); }
+    .menu-card-inner { display: flex; align-items: center; gap: 18px; padding: 22px 24px; }
+    .menu-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; flex-shrink: 0;
+    }
+    .menu-icon.teal { background: linear-gradient(135deg, var(--teal-dark), var(--teal)); }
+    .menu-icon.orange { background: linear-gradient(135deg, var(--orange-dark), var(--orange)); }
+    .menu-card h3 { font-size: 1.05rem; font-weight: 800; color: #0f2a2a; }
+    .menu-card p { font-size: 0.75rem; color: #5a7a7a; margin-top: 3px; line-height: 1.5; }
+    .menu-arrow { margin-left: auto; color: #b0c8c8; font-size: 1.3rem; flex-shrink: 0; }
+
+    /* ── SECTION VIEWS ── */
+    .section-view { display: none; width: 100%; max-width: 420px; flex-direction: column; align-items: center; }
+    .section-view.active { display: flex; }
+
+    .back-btn {
+      align-self: flex-start; display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.8); border-radius: 10px; padding: 8px 14px;
+      font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; transition: background .2s; margin-bottom: 20px;
+    }
+    .back-btn:hover { background: rgba(255,255,255,.2); }
+
+    /* ── TRACKING CARD ── */
+    .card { background: white; border-radius: 20px; width: 100%; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+    .card-header { padding: 22px 24px; display: flex; align-items: center; gap: 14px; }
+    .card-header.teal-bg { background: linear-gradient(135deg, var(--teal-dark), var(--teal)); }
+    .card-header.orange-bg { background: linear-gradient(135deg, var(--orange-dark), var(--orange)); }
     .card-icon { width: 46px; height: 46px; background: rgba(255,255,255,.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
     .card-header h2 { font-size: 1.08rem; font-weight: 800; color: white; }
     .card-header p { font-size: 0.74rem; color: rgba(255,255,255,.65); margin-top: 2px; }
@@ -23,9 +61,8 @@
 
     .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
     .field label { font-size: 0.68rem; font-weight: 700; color: #7a9494; text-transform: uppercase; letter-spacing: .07em; }
-    .field select, .field input[type="tel"] { padding: 12px 14px; border: 1.5px solid #dde8e8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #1a2e2e; background: #f8fafa; width: 100%; }
-    .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a9494' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-    .field select:focus, .field input[type="tel"]:focus { outline: none; border-color: var(--teal); background-color: white; box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
+    .field input[type="tel"] { padding: 12px 14px; border: 1.5px solid #dde8e8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #1a2e2e; background: #f8fafa; width: 100%; }
+    .field input[type="tel"]:focus { outline: none; border-color: var(--teal); background-color: white; box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
 
     .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s; }
     .btn-start { background: var(--teal); color: white; }
@@ -34,7 +71,7 @@
     .btn-stop { background: #fef2f2; color: var(--red); border: 1.5px solid #fca5a5; }
     .btn-stop:hover { background: #fee2e2; }
 
-    .status-card { display: none; margin-top: 18px; background: white; border-radius: 20px; width: 100%; max-width: 400px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+    .status-card { display: none; margin-top: 18px; background: white; border-radius: 20px; width: 100%; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
     .status-card.show { display: block; }
     .status-header { padding: 14px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #e0ecec; }
     .pulse-wrap { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
@@ -52,6 +89,13 @@
 
     .err-box { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px; padding: 11px 14px; margin-top: 12px; font-size: 0.79rem; color: #dc2626; font-weight: 500; display: none; }
     .err-box.show { display: block; }
+
+    /* ── FIELD WORK CARD ── */
+    .fw-coming { text-align: center; padding: 36px 24px; }
+    .fw-coming .fw-icon { font-size: 3rem; margin-bottom: 14px; }
+    .fw-coming h3 { font-size: 1rem; font-weight: 800; color: #0f2a2a; margin-bottom: 6px; }
+    .fw-coming p { font-size: 0.82rem; color: #5a7a7a; line-height: 1.6; }
+
     .footer-tip { text-align: center; color: rgba(255,255,255,.3); font-size: 0.68rem; margin-top: 22px; max-width: 340px; line-height: 1.7; }
   </style>
 </head>
@@ -59,52 +103,108 @@
 
   <div class="logo-wrap">
     <img src="medwell logo.png" alt="Medwell Logix" />
-    <p>Field Tracking Portal</p>
+    <p>Staff Portal</p>
   </div>
 
-  <div class="card">
-    <div class="card-header">
-      <div class="card-icon">📡</div>
-      <div>
-        <h2>Location Tracking</h2>
-        <p>Share your live GPS with Medwell admin</p>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="field">
-        <label>Mobile Number</label>
-        <input type="tel" id="empPhone" placeholder="Enter your mobile number" maxlength="10" inputmode="numeric" pattern="[0-9]*" />
-      </div>
-      <button class="btn btn-start" id="startBtn" onclick="startTracking()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        Start Tracking
-      </button>
-      <button class="btn btn-stop" id="stopBtn" style="display:none;" onclick="stopTracking()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
-        Stop Tracking
-      </button>
-      <div class="err-box" id="errBox"></div>
-    </div>
-  </div>
+  <!-- ── MENU VIEW ── -->
+  <div class="menu-view" id="menuView">
+    <p class="menu-title">Select an option</p>
 
-  <div class="status-card" id="statusCard">
-    <div class="status-header">
-      <div class="pulse-wrap"><div class="pulse-dot"></div></div>
-      <div>
-        <div class="status-label">Live Tracking Active</div>
-        <div class="status-sub" id="statusSub">Getting your location…</div>
+    <div class="menu-card" onclick="showSection('tracking')">
+      <div class="menu-card-inner">
+        <div class="menu-icon teal">📡</div>
+        <div>
+          <h3>Live Tracking</h3>
+          <p>Share your real-time GPS location with Medwell admin</p>
+        </div>
+        <span class="menu-arrow">›</span>
       </div>
     </div>
-    <div class="status-grid">
-      <div class="sc"><div class="sc-val" id="dName">—</div><div class="sc-key">Employee</div></div>
-      <div class="sc"><div class="sc-val" id="dTime">—</div><div class="sc-key">Last Sent</div></div>
-      <div class="sc"><div class="sc-val" id="dLat">—</div><div class="sc-key">Latitude</div></div>
-      <div class="sc"><div class="sc-val" id="dLng">—</div><div class="sc-key">Longitude</div></div>
-      <div class="sc-count" id="dCount">Locations sent: <strong>0</strong></div>
+
+    <div class="menu-card" onclick="showSection('fieldwork')">
+      <div class="menu-card-inner">
+        <div class="menu-icon orange">💼</div>
+        <div>
+          <h3>Field Work</h3>
+          <p>Log your daily field activities and visit reports</p>
+        </div>
+        <span class="menu-arrow">›</span>
+      </div>
     </div>
   </div>
 
-  <p class="footer-tip">Tracking runs in the background. You can switch apps or lock your screen — your location will still update every 1 minute.</p>
+  <!-- ── LIVE TRACKING SECTION ── -->
+  <div class="section-view" id="trackingView">
+    <button class="back-btn" onclick="showMenu()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </button>
+    <div class="card">
+      <div class="card-header teal-bg">
+        <div class="card-icon">📡</div>
+        <div>
+          <h2>Live Tracking</h2>
+          <p>Share your live GPS with Medwell admin</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Mobile Number</label>
+          <input type="tel" id="empPhone" placeholder="Enter your mobile number" maxlength="10" inputmode="numeric" pattern="[0-9]*" />
+        </div>
+        <button class="btn btn-start" id="startBtn" onclick="startTracking()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          Start Tracking
+        </button>
+        <button class="btn btn-stop" id="stopBtn" style="display:none;" onclick="stopTracking()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+          Stop Tracking
+        </button>
+        <div class="err-box" id="errBox"></div>
+      </div>
+    </div>
+
+    <div class="status-card" id="statusCard">
+      <div class="status-header">
+        <div class="pulse-wrap"><div class="pulse-dot"></div></div>
+        <div>
+          <div class="status-label">Live Tracking Active</div>
+          <div class="status-sub" id="statusSub">Getting your location…</div>
+        </div>
+      </div>
+      <div class="status-grid">
+        <div class="sc"><div class="sc-val" id="dName">—</div><div class="sc-key">Employee</div></div>
+        <div class="sc"><div class="sc-val" id="dTime">—</div><div class="sc-key">Last Sent</div></div>
+        <div class="sc"><div class="sc-val" id="dLat">—</div><div class="sc-key">Latitude</div></div>
+        <div class="sc"><div class="sc-val" id="dLng">—</div><div class="sc-key">Longitude</div></div>
+        <div class="sc-count" id="dCount">Locations sent: <strong>0</strong></div>
+      </div>
+    </div>
+
+    <p class="footer-tip">Tracking runs in the background. You can switch apps or lock your screen — your location will still update every 1 minute.</p>
+  </div>
+
+  <!-- ── FIELD WORK SECTION ── -->
+  <div class="section-view" id="fieldworkView">
+    <button class="back-btn" onclick="showMenu()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </button>
+    <div class="card">
+      <div class="card-header orange-bg">
+        <div class="card-icon">💼</div>
+        <div>
+          <h2>Field Work</h2>
+          <p>Log your daily field activities</p>
+        </div>
+      </div>
+      <div class="fw-coming">
+        <div class="fw-icon">🚧</div>
+        <h3>Coming Soon</h3>
+        <p>Field work reporting will be available here.<br>Contact admin for more details.</p>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -124,7 +224,19 @@
     let trackInterval = null, sendCount = 0;
     let wakeLock = null, audioCtx = null, silentNode = null;
 
-    /* ── Wake Lock: keeps screen on while tab is visible ── */
+    function showSection(name) {
+      document.getElementById('menuView').style.display = 'none';
+      document.getElementById('trackingView').classList.remove('active');
+      document.getElementById('fieldworkView').classList.remove('active');
+      document.getElementById(name + 'View').classList.add('active');
+    }
+
+    function showMenu() {
+      document.getElementById('menuView').style.display = 'flex';
+      document.getElementById('trackingView').classList.remove('active');
+      document.getElementById('fieldworkView').classList.remove('active');
+    }
+
     async function acquireWakeLock() {
       if (!('wakeLock' in navigator)) return;
       try { wakeLock = await navigator.wakeLock.request('screen'); } catch(e) {}
@@ -132,12 +244,10 @@
     function releaseWakeLock() {
       if (wakeLock) { wakeLock.release(); wakeLock = null; }
     }
-    /* Re-acquire after user returns to tab (wake lock releases on hide) */
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && trackInterval) acquireWakeLock();
     });
 
-    /* ── Silent audio: prevents browser JS throttling in background ── */
     function startSilentAudio() {
       try {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
