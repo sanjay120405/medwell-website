@@ -106,9 +106,33 @@
     <p>Staff Portal</p>
   </div>
 
+  <!-- ── NUMBER ENTRY VIEW ── -->
+  <div class="menu-view" id="numberView">
+    <div class="card">
+      <div class="card-header teal-bg">
+        <div class="card-icon">👤</div>
+        <div>
+          <h2>Staff Login</h2>
+          <p>Enter your mobile number to continue</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label>Mobile Number</label>
+          <input type="tel" id="loginPhone" placeholder="Enter your mobile number" maxlength="10" inputmode="numeric" pattern="[0-9]*" />
+        </div>
+        <button class="btn btn-start" onclick="verifyPhone()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Continue
+        </button>
+        <div class="err-box" id="loginErrBox"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── MENU VIEW ── -->
-  <div class="menu-view" id="menuView">
-    <p class="menu-title">Select an option</p>
+  <div class="menu-view" id="menuView" style="display:none;">
+    <p class="menu-title" id="menuGreet">Hello!</p>
 
     <div class="menu-card" onclick="showSection('tracking')">
       <div class="menu-card-inner">
@@ -223,6 +247,24 @@
 
     let trackInterval = null, sendCount = 0;
     let wakeLock = null, audioCtx = null, silentNode = null;
+
+    let staffName = '';
+
+    function verifyPhone() {
+      const phone = document.getElementById('loginPhone').value.trim().replace(/\D/g, '');
+      const name = PHONE_MAP[phone];
+      const errBox = document.getElementById('loginErrBox');
+      if (!phone) { errBox.textContent = 'Please enter your mobile number.'; errBox.classList.add('show'); return; }
+      if (!name) { errBox.textContent = 'Number not recognised. Contact admin.'; errBox.classList.add('show'); return; }
+      errBox.classList.remove('show');
+      staffName = name;
+      document.getElementById('empPhone').value = phone;
+      document.getElementById('menuGreet').textContent = `Welcome, ${name}!`;
+      document.getElementById('numberView').style.display = 'none';
+      document.getElementById('menuView').style.display = 'flex';
+    }
+
+    document.getElementById('loginPhone').addEventListener('keydown', e => { if (e.key === 'Enter') verifyPhone(); });
 
     function showSection(name) {
       document.getElementById('menuView').style.display = 'none';
