@@ -249,19 +249,76 @@
     let wakeLock = null, audioCtx = null, silentNode = null;
 
     let staffName = '';
+    let wrongAttempts = 0;
+    let lockUntil = 0;
+    let countdownTimer = null;
+    const MAX_ATTEMPTS = 3;
+    const LOCK_DURATION = 5 * 60 * 1000; // 5 minutes
 
     function verifyPhone() {
+      const errBox = document.getElementById('loginErrBox');
+
+      // Check if still locked
+      const remaining = lockUntil - Date.now();
+      if (remaining > 0) {
+        showLockout(remaining);
+        return;
+      }
+
       const phone = document.getElementById('loginPhone').value.trim().replace(/\D/g, '');
       const name = PHONE_MAP[phone];
-      const errBox = document.getElementById('loginErrBox');
-      if (!phone) { errBox.textContent = 'Please enter your mobile number.'; errBox.classList.add('show'); return; }
-      if (!name) { errBox.textContent = 'Number not recognised. Contact admin.'; errBox.classList.add('show'); return; }
+
+      if (!phone) {
+        errBox.textContent = 'Please enter your mobile number.';
+        errBox.classList.add('show');
+        return;
+      }
+
+      if (!name) {
+        wrongAttempts++;
+        const left = MAX_ATTEMPTS - wrongAttempts;
+        if (wrongAttempts >= MAX_ATTEMPTS) {
+          lockUntil = Date.now() + LOCK_DURATION;
+          wrongAttempts = 0;
+          document.getElementById('loginPhone').value = '';
+          document.getElementById('loginPhone').disabled = true;
+          showLockout(LOCK_DURATION);
+        } else {
+          errBox.textContent = `Number not recognised. ${left} attempt${left !== 1 ? 's' : ''} remaining.`;
+          errBox.classList.add('show');
+        }
+        return;
+      }
+
+      // Success
+      wrongAttempts = 0;
       errBox.classList.remove('show');
       staffName = name;
       document.getElementById('empPhone').value = phone;
       document.getElementById('menuGreet').textContent = `Welcome, ${name}!`;
       document.getElementById('numberView').style.display = 'none';
       document.getElementById('menuView').style.display = 'flex';
+    }
+
+    function showLockout(remainingMs) {
+      const errBox = document.getElementById('loginErrBox');
+      if (countdownTimer) clearInterval(countdownTimer);
+      function update() {
+        const ms = lockUntil - Date.now();
+        if (ms <= 0) {
+          clearInterval(countdownTimer);
+          countdownTimer = null;
+          document.getElementById('loginPhone').disabled = false;
+          errBox.textContent = 'You can try again now.';
+          return;
+        }
+        const mins = Math.floor(ms / 60000);
+        const secs = Math.floor((ms % 60000) / 1000);
+        errBox.textContent = `Too many wrong attempts. Try again in ${mins}:${String(secs).padStart(2,'0')}`;
+        errBox.classList.add('show');
+      }
+      update();
+      countdownTimer = setInterval(update, 1000);
     }
 
     document.getElementById('loginPhone').addEventListener('keydown', e => { if (e.key === 'Enter') verifyPhone(); });
