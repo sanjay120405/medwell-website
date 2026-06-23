@@ -896,6 +896,20 @@
   </div>
 </div>
 
+<!-- ── WHOLESALE IMPORT DIALOG ── -->
+<div class="cl-modal-overlay hidden" id="whImportDialog">
+  <div class="cl-modal-card" style="max-width:420px;text-align:center;">
+    <div style="font-size:2.2rem;margin-bottom:10px;">📥</div>
+    <h3 id="whImportDialogTitle" style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:8px;"></h3>
+    <p id="whImportDialogDesc" style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;margin-bottom:24px;"></p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <button class="cl-modal-cancel" id="whImportCancelBtn">Cancel</button>
+      <button class="cl-modal-save" id="whImportAppendBtn" style="background:var(--teal);">Add to Existing</button>
+      <button class="cl-modal-save" id="whImportReplaceBtn" style="background:#ef4444;">Replace All</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── WHOLESALE MODAL ── -->
 <div class="cl-modal-overlay hidden" id="whModal">
   <div class="wh-modal-card">
@@ -2026,54 +2040,103 @@
     XLSX.writeFile(wb, 'wholesale_export.xlsx');
   });
 
+  // Import dialog helpers
+  let _whImportResolve = null;
+  function showWhImportDialog(existingCount, incoming) {
+    return new Promise(resolve => {
+      _whImportResolve = resolve;
+      const title = document.getElementById('whImportDialogTitle');
+      const desc  = document.getElementById('whImportDialogDesc');
+      title.textContent = `Import ${incoming} items`;
+      if (existingCount > 0) {
+        desc.innerHTML = `There are already <strong>${existingCount}</strong> items in the list.<br>Do you want to <strong>replace</strong> them all or <strong>add</strong> to existing?`;
+        document.getElementById('whImportReplaceBtn').style.display = '';
+        document.getElementById('whImportAppendBtn').textContent = 'Add to Existing';
+      } else {
+        desc.innerHTML = `Ready to import <strong>${incoming}</strong> items into the wholesale list.`;
+        document.getElementById('whImportReplaceBtn').style.display = 'none';
+        document.getElementById('whImportAppendBtn').textContent = 'Import';
+      }
+      document.getElementById('whImportDialog').classList.remove('hidden');
+    });
+  }
+  function closeWhImportDialog(result) {
+    document.getElementById('whImportDialog').classList.add('hidden');
+    if (_whImportResolve) { _whImportResolve(result); _whImportResolve = null; }
+  }
+  document.getElementById('whImportCancelBtn').addEventListener('click',  () => closeWhImportDialog(null));
+  document.getElementById('whImportAppendBtn').addEventListener('click',  () => closeWhImportDialog('append'));
+  document.getElementById('whImportReplaceBtn').addEventListener('click', () => closeWhImportDialog('replace'));
+
   document.getElementById('whImportBtn').addEventListener('click', () => document.getElementById('whImportFile').click());
   document.getElementById('whImportFile').addEventListener('change', async function() {
     const file = this.files[0]; if (!file) return;
+    this.value = '';
     const btn = document.getElementById('whImportBtn');
-    btn.disabled = true; btn.textContent = 'Importing…';
+
     const reader = new FileReader();
     reader.onload = async e => {
       try {
         const wb   = XLSX.read(e.target.result, { type:'array' });
         const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:'' });
-        const get  = (row, keys) => { for (const k of keys) if (row[k]!==undefined && row[k]!=='') return String(row[k]); return ''; };
-        const getN = (row, keys) => { for (const k of keys) if (row[k]!==undefined && row[k]!=='') return +row[k]||null; return null; };
+        const get  = (row, keys) => { for (const k of keys) if (row[k]!==undefined && String(row[k]).trim()!=='') return String(row[k]).trim(); return ''; };
+        const getN = (row, keys) => { for (const k of keys) { const v = row[k]; if (v!==undefined && v!=='') { const n = parseFloat(v); if (!isNaN(n)) return n; } } return null; };
 
-        // Build all valid entries first
-        const entries = [];
-        let skipped = 0;
+        // Build valid entries
+        const entries = []; let preSkipped = 0;
         for (const row of rows) {
           const product = get(row, ['Product*','Product','product','PRODUCT']);
-          if (!product) { skipped++; continue; }
+          if (!product) { preSkipped++; continue; }
           entries.push({
-            item:       get(row,  ['Item Code','item']),
-            hsn_code:   get(row,  ['HSN Code','HSN/SAC Code*','hsn_code']),
+            item:       get(row,  ['Item Code','item','ITEM CODE']),
+            hsn_code:   get(row,  ['HSN Code','HSN/SAC Code*','hsn_code','HSN CODE']),
             product,
-            molecule:   get(row,  ['Molecule','molecule']),
-            category:   get(row,  ['Category','category']),
-            type:       get(row,  ['Type','type']),
-            size:       get(row,  ['Size','size']),
-            colour:     get(row,  ['Colour','colour']),
-            pack:       getN(row, ['Pack','pack']),
-            purchase:   getN(row, ['Purchase','purchase']),
-            sales:      getN(row, ['Sales','sales']),
-            customer:   getN(row, ['Customer','customer']),
-            tax:        getN(row, ['Tax','tax']),
-            mrp:        getN(row, ['MRP','mrp','M.R.P.']),
-            company:    get(row,  ['Company*','Company','company']),
-            contact_no: get(row,  ['Contact No','contact_no']),
-            stockist:   get(row,  ['Stockist','stockist'])
+            molecule:   get(row,  ['Molecule','molecule','MOLECULE']),
+            category:   get(row,  ['Category','category','CATEGORY']),
+            type:       get(row,  ['Type','type','TYPE']),
+            size:       get(row,  ['Size','size','SIZE']),
+            colour:     get(row,  ['Colour','colour','COLOUR','Color','color']),
+            pack:       getN(row, ['Pack','pack','PACK']),
+            purchase:   getN(row, ['Purchase','purchase','PURCHASE']),
+            sales:      getN(row, ['Sales','sales','SALES']),
+            customer:   getN(row, ['Customer','customer','CUSTOMER']),
+            tax:        getN(row, ['Tax','tax','TAX','Tax%','TAX%']),
+            mrp:        getN(row, ['MRP','mrp','M.R.P.','MRP (₹)']),
+            company:    get(row,  ['Company*','Company','company','COMPANY']),
+            contact_no: get(row,  ['Contact No','contact_no','CONTACT NO','Contact Number']),
+            stockist:   get(row,  ['Stockist','stockist','STOCKIST'])
           });
         }
 
-        // Insert in chunks of 100 — one request per chunk instead of one per row
+        if (!entries.length) { alert('No valid rows found — make sure the file has a "Product" column.'); return; }
+
+        // Ask replace or append
+        const choice = await showWhImportDialog(WH_ITEMS.length, entries.length);
+        if (!choice) return;
+
+        btn.disabled = true; btn.textContent = 'Importing…';
+
+        if (choice === 'replace') {
+          const { error } = await sb.from('wholesale').delete().gte('id', 1);
+          if (error) { alert('Failed to clear existing items: ' + error.message); btn.disabled = false; btn.textContent = 'Import'; return; }
+        }
+
+        // Batch insert (100 per chunk); fall back to row-by-row if a chunk fails
         const CHUNK = 100;
-        let added = 0;
+        let added = 0, skipped = preSkipped;
         for (let i = 0; i < entries.length; i += CHUNK) {
           const chunk = entries.slice(i, i + CHUNK);
           const { error } = await sb.from('wholesale').insert(chunk);
-          if (!error) { added += chunk.length; }
-          else { console.error('Batch insert error:', error.message); skipped += chunk.length; }
+          if (!error) {
+            added += chunk.length;
+          } else {
+            console.warn('Batch failed, retrying row-by-row:', error.message);
+            for (const entry of chunk) {
+              const { error: rowErr } = await sb.from('wholesale').insert(entry);
+              if (!rowErr) added++;
+              else { console.error('Row skipped:', rowErr.message, entry.product); skipped++; }
+            }
+          }
         }
 
         await whLoadItems();
@@ -2081,7 +2144,7 @@
       } catch(err) { alert('Failed to read file: ' + err.message); }
       btn.disabled = false; btn.textContent = 'Import';
     };
-    reader.readAsArrayBuffer(file); this.value = '';
+    reader.readAsArrayBuffer(file);
   });
 
   /* report popup */
