@@ -1478,6 +1478,7 @@
   let tMap = null, tSelectedEmp = null;
   const tMarkers = {}, tLiveData = {};
   let tRouteLayer = null, tStartMark = null, tEndMark = null;
+  let tCurrentRoutePts = [];
 
   /* ── MAP INIT ───────────────────────────────── */
   function initTrackingMap() {
@@ -1612,8 +1613,6 @@
     document.getElementById('trpStart').textContent = tFmt(data[0].created_at);
     document.getElementById('trpLast').textContent = tFmt(data[data.length-1].created_at);
   }
-
-  let tCurrentRoutePts = [];
 
   function tClearRoute() {
     [tRouteLayer, tStartMark, tEndMark].forEach(l => { if (l && tMap) tMap.removeLayer(l); });
@@ -1823,9 +1822,10 @@
       await clLoadCustomers(); toast('Customer deleted.', 'info');
     });
   }
-  document.getElementById('clAddBtn').addEventListener('click', () => document.getElementById('clModal').classList.remove('hidden'));
+  document.getElementById('clAddBtn').addEventListener('click', () => { clCloseModal(); document.getElementById('clModal').classList.remove('hidden'); });
   document.getElementById('clModalClose').addEventListener('click', clCloseModal);
   document.getElementById('clModalCancel').addEventListener('click', clCloseModal);
+  document.getElementById('clModal').addEventListener('click', e => { if (e.target === document.getElementById('clModal')) clCloseModal(); });
   document.getElementById('clModalSave').addEventListener('click', async () => {
     const name = document.getElementById('clFName').value.trim();
     if (!name) { document.getElementById('clModalErr').textContent = 'Name is required.'; return; }
@@ -2067,6 +2067,7 @@
   document.getElementById('whImportCancelBtn').addEventListener('click',  () => closeWhImportDialog(null));
   document.getElementById('whImportAppendBtn').addEventListener('click',  () => closeWhImportDialog('append'));
   document.getElementById('whImportReplaceBtn').addEventListener('click', () => closeWhImportDialog('replace'));
+  document.getElementById('whImportDialog').addEventListener('click', e => { if (e.target === document.getElementById('whImportDialog')) closeWhImportDialog(null); });
 
   document.getElementById('whImportBtn').addEventListener('click', () => document.getElementById('whImportFile').click());
   document.getElementById('whImportFile').addEventListener('change', async function() {
@@ -2160,7 +2161,16 @@
 
   function closeRptOverlay() { document.getElementById('rptOverlay').classList.remove('show'); }
   document.getElementById('rptOverlay').addEventListener('click', e => { if (e.target === document.getElementById('rptOverlay')) closeRptOverlay(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRptOverlay(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (document.getElementById('rptOverlay').classList.contains('show'))         { closeRptOverlay(); return; }
+    if (!document.getElementById('confirmOverlay').classList.contains('open') === false) { closeConfirm(); return; }
+    if (!document.getElementById('clModal').classList.contains('hidden'))         { clCloseModal(); return; }
+    if (!document.getElementById('whModal').classList.contains('hidden'))         { whCloseModal(); return; }
+    if (!document.getElementById('whImportDialog').classList.contains('hidden'))  { closeWhImportDialog(null); return; }
+    if (document.getElementById('editOverlay').classList.contains('open'))        { closeModal(); return; }
+    if (document.getElementById('confirmOverlay').classList.contains('open'))     { closeConfirm(); return; }
+  });
 
   async function fetchReport() {
     const exec  = document.getElementById('rptExec').value;

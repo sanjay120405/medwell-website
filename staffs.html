@@ -432,12 +432,12 @@
         .select('name,type,institution,contact_name,contact_number,location,address')
         .ilike('executive', staffName)
         .order('name', { ascending: true });
-      fwLoading = false;
-      if (error) { FW_CUSTOMERS = []; document.getElementById('fwList').innerHTML = '<div class="fw-empty">Failed to load. Pull down to retry.</div>'; return; }
+      if (error) { fwLoading = false; FW_CUSTOMERS = []; document.getElementById('fwList').innerHTML = '<div class="fw-empty">Failed to load. Pull down to retry.</div>'; return; }
       FW_CUSTOMERS = data || [];
       document.getElementById('fwTotal').textContent = FW_CUSTOMERS.length;
       const locs = new Set(FW_CUSTOMERS.map(c => c.location).filter(Boolean));
       document.getElementById('fwLocs').textContent = locs.size;
+      fwLoading = false;
       renderFW(FW_CUSTOMERS);
     }
 
