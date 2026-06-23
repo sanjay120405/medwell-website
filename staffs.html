@@ -446,12 +446,14 @@
     }
 
     let activeCustomer = null;
+    let currentFWList = [];
 
     function renderFW(list) {
+      currentFWList = list;
       const el = document.getElementById('fwList');
       if (!list.length) { el.innerHTML = '<div class="fw-empty">No customers found.</div>'; return; }
-      el.innerHTML = list.map((c) => `
-        <div class="cust-card" data-cname="${(c.name||'').replace(/"/g,'&quot;')}">
+      el.innerHTML = list.map((c, i) => `
+        <div class="cust-card" data-idx="${i}">
           <div class="cust-top">
             <span class="cust-name">${c.name || '—'}</span>
             ${typeBadge(c.type)}
@@ -469,11 +471,11 @@
     document.getElementById('fwList').addEventListener('click', function(e) {
       if (e.target.closest('.call-link')) return;
       const card = e.target.closest('.cust-card');
-      if (card) openReport(card.dataset.cname);
+      if (card) openReport(parseInt(card.dataset.idx));
     });
 
-    function openReport(custName) {
-      activeCustomer = FW_CUSTOMERS.find(c => c.name === custName) || null;
+    function openReport(idx) {
+      activeCustomer = currentFWList[idx] || null;
       if (!activeCustomer) return;
 
       document.getElementById('sheetCustName').textContent = activeCustomer.name;
