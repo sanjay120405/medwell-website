@@ -231,6 +231,94 @@
       #tabTracking { height: calc(100vh - 90px); }
     }
 
+    /* ── CUSTOMER LIST TAB ── */
+    #tabCustomers .cl-stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    #tabCustomers .cl-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
+    #tabCustomers .cl-search-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+    @media(max-width:900px){ #tabCustomers .cl-search-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:600px){ #tabCustomers .cl-search-grid { grid-template-columns: 1fr; } }
+    #tabCustomers .cl-search-field { display: flex; flex-direction: column; gap: 5px; }
+    #tabCustomers .cl-search-field label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    #tabCustomers .cl-search-input { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabCustomers .cl-search-input:focus { outline: none; border-color: var(--teal); background: var(--white); box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
+    #tabCustomers .cl-btn-group { display: flex; gap: 8px; }
+    #tabCustomers .cl-search-btn { padding: 9px 20px; background: var(--teal); color: white; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    #tabCustomers .cl-search-btn:hover { background: var(--teal-dark); }
+    #tabCustomers .cl-clear-btn { padding: 9px 16px; background: transparent; color: var(--text-muted); border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all .2s; white-space: nowrap; }
+    #tabCustomers .cl-clear-btn:hover { border-color: var(--orange); color: var(--orange); }
+    #tabCustomers .cl-results-info { padding: 14px 24px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    #tabCustomers .cl-results-count { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--teal); }
+    #tabCustomers .cl-toolbar-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    #tabCustomers .cl-add-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 600; border: none; cursor: pointer; transition: all .2s; white-space: nowrap; }
+    #tabCustomers .cl-add-btn.primary { background: var(--teal); color: white; }
+    #tabCustomers .cl-add-btn.primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    #tabCustomers .cl-add-btn.export  { background: var(--orange); color: white; }
+    #tabCustomers .cl-add-btn.export:hover  { background: var(--orange-dark); }
+    #tabCustomers .cl-add-btn.import  { background: #2563eb; color: white; }
+    #tabCustomers .cl-add-btn.import:hover  { background: #1d4ed8; }
+    #tabCustomers .cl-table-section { padding: 0 24px 60px; }
+    #tabCustomers .cl-table-wrap { border-radius: var(--radius-md); box-shadow: 0 2px 12px rgba(13,122,122,.08); border: 1px solid var(--border); background: var(--white); margin-top: 12px; overflow-x: auto; }
+    #tabCustomers table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 900px; }
+    #tabCustomers col.col-num  { width: 4%; }
+    #tabCustomers col.col-name { width: 14%; }
+    #tabCustomers col.col-exec { width: 9%; }
+    #tabCustomers col.col-type { width: 8%; }
+    #tabCustomers col.col-inst { width: 11%; }
+    #tabCustomers col.col-cname{ width: 9%; }
+    #tabCustomers col.col-cnum { width: 10%; }
+    #tabCustomers col.col-loc  { width: 9%; }
+    #tabCustomers col.col-addr { width: 13%; }
+    #tabCustomers col.col-act  { width: 13%; }
+    #tabCustomers th { padding: 11px 12px; font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; background: var(--off-white); border-bottom: 2px solid var(--border); text-align: left; }
+    #tabCustomers td { padding: 10px 12px; font-size: 0.84rem; border-bottom: 1px solid var(--border); vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #tabCustomers tr:last-child td { border-bottom: none; }
+    #tabCustomers tr:hover td { background: #f8fcfc; }
+    #tabCustomers td.col-center { text-align: center; }
+    #tabCustomers .row-actions { display: flex; gap: 6px; align-items: center; justify-content: center; }
+    #tabCustomers .action-btn { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 6px; font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600; border: 1.5px solid; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    #tabCustomers .action-btn.edit { background: var(--teal-light); color: var(--teal-dark); border-color: var(--border); }
+    #tabCustomers .action-btn.edit:hover { background: var(--teal); color: white; border-color: var(--teal); }
+    #tabCustomers .action-btn.del  { background: var(--red-light); color: var(--red); border-color: #fca5a5; }
+    #tabCustomers .action-btn.del:hover  { background: var(--red); color: white; }
+    #tabCustomers .loading-row td { text-align: center; padding: 32px; color: var(--text-muted); font-size: 0.88rem; }
+    #tabCustomers .no-results-cl { display: none; text-align: center; padding: 48px 24px; }
+    #tabCustomers .no-results-cl.show { display: block; }
+    #tabCustomers .no-results-cl h3 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    #tabCustomers .no-results-cl p { font-size: 0.84rem; color: var(--text-muted); }
+    #tabCustomers .cl-pagination { display: none; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-top: 1px solid var(--border); }
+    #tabCustomers .cl-pagination.show { display: flex; }
+    #tabCustomers .cl-pg-btn { padding: 8px 18px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--border); background: var(--white); color: var(--text-muted); cursor: pointer; transition: all .2s; }
+    #tabCustomers .cl-pg-btn:hover:not(:disabled) { border-color: var(--teal); color: var(--teal); }
+    #tabCustomers .cl-pg-btn:disabled { opacity: .4; cursor: not-allowed; }
+    #tabCustomers .cl-pg-info { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); }
+    #tabCustomers mark { background: #FFF3CD; color: var(--dark); border-radius: 2px; padding: 0 2px; }
+    .type-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; font-family: 'Poppins', sans-serif; letter-spacing: .03em; }
+    .type-dealer   { background: #FFF3E0; color: var(--orange-dark); border: 1px solid #FFD180; }
+    .type-hospital { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
+    .type-medical  { background: #E3F2FD; color: #1565C0; border: 1px solid #90CAF9; }
+    .type-other    { background: var(--teal-light); color: var(--teal-dark); border: 1px solid var(--border); }
+    /* customer modal */
+    .cl-modal-overlay { position: fixed; inset: 0; z-index: 5000; background: rgba(4,64,64,.55); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .cl-modal-overlay.hidden { display: none; }
+    .cl-modal-card { background: var(--white); border-radius: 18px; padding: 32px 28px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(4,64,64,.28); }
+    .cl-modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+    .cl-modal-header h3 { font-family: 'Poppins', sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--dark); }
+    .cl-modal-close { width: 30px; height: 30px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; border: none; }
+    .cl-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width:500px){ .cl-modal-grid { grid-template-columns: 1fr; } }
+    .cl-mf { display: flex; flex-direction: column; gap: 5px; }
+    .cl-mf.full { grid-column: 1 / -1; }
+    .cl-mf label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    .cl-mf input, .cl-mf select { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); width: 100%; transition: border-color .2s; }
+    .cl-mf input:focus, .cl-mf select:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    .cl-modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; }
+    .cl-modal-err { font-size: 0.82rem; color: var(--red); min-height: 18px; font-family: 'Poppins', sans-serif; font-weight: 500; margin-top: 8px; }
+    .cl-modal-cancel { padding: 10px 22px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; border: 1.5px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: all .2s; }
+    .cl-modal-cancel:hover { border-color: var(--orange); color: var(--orange); }
+    .cl-modal-save { padding: 10px 26px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 700; background: var(--teal); color: white; border: none; cursor: pointer; transition: background .2s; }
+    .cl-modal-save:hover { background: var(--teal-dark); }
+    .cl-modal-save:disabled { opacity: .6; cursor: not-allowed; }
+
     /* ── TABS ──────────────────────────── */
     .tab-bar { background: var(--white); border-bottom: 2px solid var(--border); padding: 0 24px; display: flex; gap: 2px; flex-shrink: 0; }
     .tab-btn { padding: 11px 20px; background: none; border: none; border-bottom: 3px solid transparent; font-family: 'Poppins',sans-serif; font-size: 0.83rem; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; margin-bottom: -2px; white-space: nowrap; }
@@ -332,6 +420,10 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Products
       </button>
+      <button class="ah-tab" id="tabBtnCustomers" onclick="switchTab('customers')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Customers
+      </button>
       <button class="ah-tab" id="tabBtnTracking" onclick="switchTab('tracking')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
         Live Tracking
@@ -422,6 +514,86 @@
     </div>
   </div>
   </div><!-- end tabProducts -->
+
+  <!-- CUSTOMERS TAB -->
+  <div id="tabCustomers" style="display:none;">
+    <div class="cl-stats-bar stats-bar">
+      <div class="stat"><span class="stat-label">Total Customers</span><span class="stat-value" id="clStatTotal">—</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-label">Executives</span><span class="stat-value" id="clStatExecs">—</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-label">Locations</span><span class="stat-value" id="clStatLocs">—</span></div>
+    </div>
+    <div class="cl-search-section">
+      <div class="cl-search-grid">
+        <div class="cl-search-field">
+          <label for="clSearchName">Customer Name</label>
+          <input id="clSearchName" class="cl-search-input" type="text" placeholder="Search by name…" autocomplete="off" />
+        </div>
+        <div class="cl-search-field">
+          <label for="clSearchExec">Executive</label>
+          <input id="clSearchExec" class="cl-search-input" type="text" placeholder="Search by executive…" autocomplete="off" list="clExecList" />
+          <datalist id="clExecList"></datalist>
+        </div>
+        <div class="cl-search-field">
+          <label for="clSearchLocation">Location</label>
+          <input id="clSearchLocation" class="cl-search-input" type="text" placeholder="Search by location…" autocomplete="off" />
+        </div>
+        <div class="cl-btn-group">
+          <button class="cl-search-btn" onclick="clApplyFilter()">Search</button>
+          <button class="cl-clear-btn" onclick="clClearAll()">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="cl-results-info">
+      <div class="cl-results-count">Showing <span id="clCountNum">0</span> customers</div>
+      <div class="cl-toolbar-btns">
+        <button class="cl-add-btn primary" id="clAddBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add Customer
+        </button>
+        <button class="cl-add-btn export" id="clExportBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export
+        </button>
+        <button class="cl-add-btn import" id="clImportBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 14l5-5 5 5M12 3v12"/></svg>
+          Import
+        </button>
+        <input type="file" id="clImportFile" accept=".xlsx,.xls,.csv" style="display:none;" />
+      </div>
+    </div>
+    <div class="cl-table-section">
+      <div class="cl-table-wrap">
+        <table id="clTable">
+          <colgroup>
+            <col class="col-num"><col class="col-name"><col class="col-exec"><col class="col-type">
+            <col class="col-inst"><col class="col-cname"><col class="col-cnum"><col class="col-loc">
+            <col class="col-addr"><col class="col-act">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th><th>Executive</th><th style="text-align:center">Type</th>
+              <th>Institution</th><th>Contact Name</th><th>Contact No.</th><th>Location</th>
+              <th>Address</th><th style="text-align:center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="clTableBody">
+            <tr class="loading-row"><td colspan="10">Loading customers…</td></tr>
+          </tbody>
+        </table>
+        <div class="no-results-cl" id="clNoResults">
+          <h3>No customers found</h3>
+          <p>Try a different search term or clear filters.</p>
+        </div>
+        <div class="cl-pagination" id="clPagination">
+          <button class="cl-pg-btn" id="clPrevBtn">← Prev</button>
+          <span class="cl-pg-info" id="clPageInfo">Page 1 of 1</span>
+          <button class="cl-pg-btn" id="clNextBtn">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- end tabCustomers -->
 
   <!-- TRACKING TAB -->
   <div id="tabTracking" style="display:none;">
@@ -534,6 +706,39 @@
   </div>
 </div>
 
+<!-- ── CUSTOMER MODAL ── -->
+<div class="cl-modal-overlay hidden" id="clModal">
+  <div class="cl-modal-card">
+    <div class="cl-modal-header">
+      <h3 id="clModalTitle">Add New Customer</h3>
+      <button class="cl-modal-close" id="clModalClose">✕</button>
+    </div>
+    <div class="cl-modal-grid">
+      <div class="cl-mf full"><label>Customer Name *</label><input type="text" id="clFName" placeholder="Full name" /></div>
+      <div class="cl-mf"><label>Executive</label><input type="text" id="clFExec" placeholder="Assigned executive" /></div>
+      <div class="cl-mf"><label>Type</label>
+        <select id="clFType">
+          <option value="Dealer">Dealer</option>
+          <option value="Hospital">Hospital</option>
+          <option value="Medical Shop">Medical Shop</option>
+          <option value="Clinic">Clinic</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="cl-mf full"><label>Institution Name</label><input type="text" id="clFInst" placeholder="Institution / shop name" /></div>
+      <div class="cl-mf"><label>Contact Name</label><input type="text" id="clFContactName" placeholder="Contact person" /></div>
+      <div class="cl-mf"><label>Contact Number</label><input type="tel" id="clFContactNum" placeholder="Phone number" /></div>
+      <div class="cl-mf"><label>Location</label><input type="text" id="clFLocation" placeholder="City / area" /></div>
+      <div class="cl-mf full"><label>Address</label><input type="text" id="clFAddress" placeholder="Full address" /></div>
+    </div>
+    <div class="cl-modal-err" id="clModalErr"></div>
+    <div class="cl-modal-footer">
+      <button class="cl-modal-cancel" id="clModalCancel">Cancel</button>
+      <button class="cl-modal-save" id="clModalSave">Save Customer</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── TOAST ── -->
 <div class="toast" id="toast"></div>
 
@@ -593,6 +798,7 @@
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminWrap').style.display = 'block';
     await initProducts();
+    clLoadCustomers();
   }
 
   /* ── PRODUCTS STATE ─────────────────────────── */
@@ -974,13 +1180,14 @@
 
   /* ── TAB SWITCHING ──────────────────────────── */
   function switchTab(tab) {
-    const isTrack = tab === 'tracking';
-    document.getElementById('tabProducts').style.display = isTrack ? 'none' : 'block';
-    document.getElementById('tabTracking').style.display = isTrack ? 'flex' : 'none';
-    document.getElementById('tabBtnProducts').classList.toggle('active', !isTrack);
-    document.getElementById('tabBtnTracking').classList.toggle('active', isTrack);
-    document.body.style.overflow = isTrack ? 'hidden' : '';
-    if (isTrack) {
+    document.getElementById('tabProducts').style.display  = tab === 'products'  ? 'block' : 'none';
+    document.getElementById('tabCustomers').style.display = tab === 'customers' ? 'block' : 'none';
+    document.getElementById('tabTracking').style.display  = tab === 'tracking'  ? 'flex'  : 'none';
+    document.getElementById('tabBtnProducts').classList.toggle('active',  tab === 'products');
+    document.getElementById('tabBtnCustomers').classList.toggle('active', tab === 'customers');
+    document.getElementById('tabBtnTracking').classList.toggle('active',  tab === 'tracking');
+    document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
+    if (tab === 'tracking') {
       if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
       else { setTimeout(() => tMap.invalidateSize(), 100); }
     }
@@ -1206,6 +1413,180 @@
         if (tSelectedEmp === payload.new.employee_name) tShowRoute(tSelectedEmp);
       }).subscribe();
   }
+
+  /* ── CUSTOMER LIST ─────────────────────────── */
+  let CL_CUSTOMERS = [], clFiltered = [], clCurrentPage = 1, clEditId = null;
+  let clCurrentTerms = { name:'', executive:'', location:'' };
+  const CL_PAGE_SIZE = 20;
+
+  function clRowToArr(r) {
+    return [r.name||'', r.executive||'', r.type||'Dealer', r.institution||'',
+            r.contact_name||'', r.contact_number||'', r.location||'', r.address||'', r.id];
+  }
+
+  async function clLoadCustomers() {
+    document.getElementById('clTableBody').innerHTML = '<tr class="loading-row"><td colspan="10">Loading customers…</td></tr>';
+    const { data, error } = await sb.from('customers').select('*').order('name', { ascending: true });
+    if (error) { document.getElementById('clTableBody').innerHTML = '<tr class="loading-row"><td colspan="10">Error loading — please refresh.</td></tr>'; return; }
+    CL_CUSTOMERS = (data || []).map(clRowToArr);
+    const execs = new Set(CL_CUSTOMERS.map(c => c[1]).filter(Boolean));
+    const locs  = new Set(CL_CUSTOMERS.map(c => c[6]).filter(Boolean));
+    document.getElementById('clStatTotal').textContent = CL_CUSTOMERS.length;
+    document.getElementById('clStatExecs').textContent = execs.size;
+    document.getElementById('clStatLocs').textContent  = locs.size;
+    document.getElementById('clExecList').innerHTML = [...execs].sort().map(e => `<option value="${e}">`).join('');
+    clRenderTable(CL_CUSTOMERS, { name:'', executive:'', location:'' });
+  }
+
+  function clEsc(s) { return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function clHi(text, term) {
+    if (!term) return clEsc(text);
+    return clEsc(text).replace(new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');
+  }
+  function clBadge(type) {
+    const t = String(type).toLowerCase();
+    let cls = t.includes('dealer')?'type-dealer':t.includes('hospital')?'type-hospital':t.includes('medical')?'type-medical':'type-other';
+    return `<span class="type-badge ${cls}">${clEsc(type)}</span>`;
+  }
+
+  function clRenderTable(rows, terms) {
+    clFiltered = rows; clCurrentTerms = terms;
+    const tbody = document.getElementById('clTableBody');
+    const noRes = document.getElementById('clNoResults');
+    const pg    = document.getElementById('clPagination');
+    document.getElementById('clCountNum').textContent = rows.length;
+    if (!rows.length) { tbody.innerHTML = ''; noRes.classList.add('show'); pg.classList.remove('show'); return; }
+    noRes.classList.remove('show');
+    const totalPages = Math.ceil(rows.length / CL_PAGE_SIZE);
+    if (clCurrentPage > totalPages) clCurrentPage = totalPages;
+    const start = (clCurrentPage - 1) * CL_PAGE_SIZE;
+    tbody.innerHTML = rows.slice(start, start + CL_PAGE_SIZE).map((c, i) => `
+      <tr>
+        <td>${start+i+1}</td>
+        <td>${clHi(c[0], terms.name)}</td>
+        <td>${clHi(c[1], terms.executive)}</td>
+        <td class="col-center">${clBadge(c[2])}</td>
+        <td>${clEsc(c[3])}</td>
+        <td>${clEsc(c[4])}</td>
+        <td>${clEsc(c[5])}</td>
+        <td>${clHi(c[6], terms.location)}</td>
+        <td>${clEsc(c[7])}</td>
+        <td><div class="row-actions">
+          <button class="action-btn edit" onclick="clOpenEdit('${c[8]}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit
+          </button>
+          <button class="action-btn del" onclick="clDeleteCustomer('${c[8]}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>Delete
+          </button>
+        </div></td>
+      </tr>`).join('');
+    document.getElementById('clPageInfo').textContent = `Page ${clCurrentPage} of ${totalPages}`;
+    document.getElementById('clPrevBtn').disabled = clCurrentPage === 1;
+    document.getElementById('clNextBtn').disabled = clCurrentPage === totalPages;
+    pg.classList.toggle('show', rows.length > CL_PAGE_SIZE);
+  }
+
+  function clGetTerms() {
+    return { name: document.getElementById('clSearchName').value.trim(), executive: document.getElementById('clSearchExec').value.trim(), location: document.getElementById('clSearchLocation').value.trim() };
+  }
+  function clApplyFilter() {
+    clCurrentPage = 1;
+    const t = clGetTerms();
+    clRenderTable(CL_CUSTOMERS.filter(c =>
+      (!t.name      || c[0].toLowerCase().includes(t.name.toLowerCase())) &&
+      (!t.executive || c[1].toLowerCase().includes(t.executive.toLowerCase())) &&
+      (!t.location  || c[6].toLowerCase().includes(t.location.toLowerCase()))
+    ), t);
+  }
+  function clClearAll() {
+    ['clSearchName','clSearchExec','clSearchLocation'].forEach(id => document.getElementById(id).value = '');
+    clCurrentPage = 1; clRenderTable(CL_CUSTOMERS, { name:'', executive:'', location:'' });
+  }
+  ['clSearchName','clSearchExec','clSearchLocation'].forEach(id => {
+    document.getElementById(id).addEventListener('input', clApplyFilter);
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key==='Enter') clApplyFilter(); });
+  });
+  document.getElementById('clPrevBtn').addEventListener('click', () => { if (clCurrentPage>1){clCurrentPage--;clRenderTable(clFiltered,clCurrentTerms);} });
+  document.getElementById('clNextBtn').addEventListener('click', () => { const tp=Math.ceil(clFiltered.length/CL_PAGE_SIZE);if(clCurrentPage<tp){clCurrentPage++;clRenderTable(clFiltered,clCurrentTerms);} });
+
+  /* modal */
+  function clCloseModal() {
+    clEditId = null;
+    document.getElementById('clModal').classList.add('hidden');
+    document.getElementById('clModalErr').textContent = '';
+    document.getElementById('clModalTitle').textContent = 'Add New Customer';
+    document.getElementById('clModalSave').textContent = 'Save Customer';
+    ['clFName','clFExec','clFInst','clFContactName','clFContactNum','clFLocation','clFAddress'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('clFType').value = 'Dealer';
+  }
+  function clOpenEdit(id) {
+    const c = CL_CUSTOMERS.find(r => String(r[8])===String(id)); if (!c) return;
+    clEditId = id;
+    document.getElementById('clFName').value        = c[0];
+    document.getElementById('clFExec').value        = c[1];
+    document.getElementById('clFType').value        = c[2];
+    document.getElementById('clFInst').value        = c[3];
+    document.getElementById('clFContactName').value = c[4];
+    document.getElementById('clFContactNum').value  = c[5];
+    document.getElementById('clFLocation').value    = c[6];
+    document.getElementById('clFAddress').value     = c[7];
+    document.getElementById('clModalTitle').textContent = 'Edit Customer';
+    document.getElementById('clModalSave').textContent  = 'Update Customer';
+    document.getElementById('clModal').classList.remove('hidden');
+  }
+  async function clDeleteCustomer(id) {
+    if (!confirm('Delete this customer? This cannot be undone.')) return;
+    const { error } = await sb.from('customers').delete().eq('id', id);
+    if (error) { alert('Failed to delete.'); return; }
+    await clLoadCustomers(); toast('Customer deleted.', 'info');
+  }
+  document.getElementById('clAddBtn').addEventListener('click', () => document.getElementById('clModal').classList.remove('hidden'));
+  document.getElementById('clModalClose').addEventListener('click', clCloseModal);
+  document.getElementById('clModalCancel').addEventListener('click', clCloseModal);
+  document.getElementById('clModalSave').addEventListener('click', async () => {
+    const name = document.getElementById('clFName').value.trim();
+    if (!name) { document.getElementById('clModalErr').textContent = 'Name is required.'; return; }
+    const btn = document.getElementById('clModalSave');
+    btn.disabled = true; btn.textContent = clEditId ? 'Updating…' : 'Saving…';
+    const payload = { name, executive: document.getElementById('clFExec').value.trim(), type: document.getElementById('clFType').value, institution: document.getElementById('clFInst').value.trim(), contact_name: document.getElementById('clFContactName').value.trim(), contact_number: document.getElementById('clFContactNum').value.trim(), location: document.getElementById('clFLocation').value.trim(), address: document.getElementById('clFAddress').value.trim() };
+    const { error } = clEditId ? await sb.from('customers').update(payload).eq('id', clEditId) : await sb.from('customers').insert(payload);
+    btn.disabled = false; btn.textContent = clEditId ? 'Update Customer' : 'Save Customer';
+    if (error) { document.getElementById('clModalErr').textContent = 'Failed to save — please try again.'; return; }
+    clCloseModal(); await clLoadCustomers(); toast(clEditId ? 'Customer updated.' : 'Customer added.', 'success');
+  });
+
+  /* export */
+  document.getElementById('clExportBtn').addEventListener('click', () => {
+    const headers = ['Name','Executive','Type','Institution Name','Contact Name','Contact Number','Location','Address'];
+    const rows = CL_CUSTOMERS.map(c => ({ 'Name':c[0],'Executive':c[1],'Type':c[2],'Institution Name':c[3],'Contact Name':c[4],'Contact Number':c[5],'Location':c[6],'Address':c[7] }));
+    const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
+    ws['!cols'] = [20,16,12,26,18,16,16,30].map(w=>({wch:w}));
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Customers');
+    XLSX.writeFile(wb, 'Medwell_CustomerList.xlsx');
+  });
+
+  /* import */
+  document.getElementById('clImportBtn').addEventListener('click', () => document.getElementById('clImportFile').click());
+  document.getElementById('clImportFile').addEventListener('change', async function() {
+    const file = this.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async e => {
+      try {
+        const wb = XLSX.read(e.target.result, { type:'array' });
+        const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:'' });
+        if (!rows.length) { alert('No data found.'); return; }
+        const get = (row, keys) => { for (const k of keys) if (row[k]!==undefined && row[k]!=='') return String(row[k]); return ''; };
+        let added=0, skipped=0;
+        for (const row of rows) {
+          const name = get(row, ['Name','name','NAME']); if (!name){skipped++;continue;}
+          const { error } = await sb.from('customers').insert({ name, executive:get(row,['Executive','executive']), type:get(row,['Type','type'])||'Dealer', institution:get(row,['Institution Name','institution']), contact_name:get(row,['Contact Name','contact_name']), contact_number:get(row,['Contact Number','contact_number']), location:get(row,['Location','location']), address:get(row,['Address','address']) });
+          if (!error) added++; else skipped++;
+        }
+        await clLoadCustomers(); toast(`Imported ${added} customers${skipped?`, ${skipped} skipped`:''}`, 'success');
+      } catch(err) { alert('Failed to read file: '+err.message); }
+    };
+    reader.readAsArrayBuffer(file); this.value='';
+  });
 </script>
 </body>
 </html>
