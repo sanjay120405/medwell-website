@@ -887,7 +887,7 @@
 <div class="overlay" id="confirmOverlay">
   <div class="confirm-card">
     <div class="confirm-icon">🗑️</div>
-    <h3>Delete Product?</h3>
+    <h3 id="confirmTitle">Delete?</h3>
     <p>Are you sure you want to delete<br /><strong id="confirmName"></strong>?<br />This cannot be undone.</p>
     <div class="confirm-ft">
       <button class="confirm-cancel" id="confirmCancelBtn">Cancel</button>
@@ -1170,7 +1170,21 @@
     const eb = e.target.closest('.edit-btn');
     const db = e.target.closest('.del-btn');
     if (eb) openEdit(Number(eb.dataset.ri));
-    if (db) openConfirm(Number(db.dataset.ri), db.dataset.name);
+    if (db) {
+      const ri = Number(db.dataset.ri);
+      const pName = db.dataset.name;
+      openConfirm('Delete Product?', pName, async () => {
+        deleteIdx = ri;
+        const name = products[ri][1];
+        const id   = products[ri][9];
+        if (id) {
+          try { const { error } = await sb.from('products').delete().eq('id', id); if (error) throw error; }
+          catch(e) { toast('Cloud delete failed — removed locally.', 'error'); }
+        }
+        products.splice(ri, 1); persist(); refreshStats(); runSearch();
+        toast(`"${name}" deleted.`, 'success');
+      });
+    }
   });
 
   /* ── EDIT / ADD MODAL ───────────────────────── */
@@ -1267,12 +1281,14 @@
 
   document.getElementById('addBtn').addEventListener('click', openAdd);
 
-  /* ── DELETE CONFIRM ─────────────────────────── */
+  /* ── DELETE CONFIRM (shared) ────────────────── */
   const confirmOverlay = document.getElementById('confirmOverlay');
+  let _pendingDeleteFn = null;
 
-  function openConfirm(ri, name) {
-    deleteIdx = ri;
-    document.getElementById('confirmName').textContent = name;
+  function openConfirm(title, name, fn) {
+    _pendingDeleteFn = fn;
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmName').textContent  = name;
     confirmOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -1280,6 +1296,7 @@
   function closeConfirm() {
     confirmOverlay.classList.remove('open');
     document.body.style.overflow = '';
+    _pendingDeleteFn = null;
     deleteIdx = null;
   }
 
@@ -1287,21 +1304,7 @@
   confirmOverlay.addEventListener('click', e => { if (e.target === confirmOverlay) closeConfirm(); });
 
   document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-    if (deleteIdx === null) return;
-    const name = products[deleteIdx][1];
-    const id = products[deleteIdx][9];
-    if (id) {
-      try {
-        const { error } = await sb.from('products').delete().eq('id', id);
-        if (error) throw error;
-      } catch(e) { toast('Cloud delete failed — removed locally.', 'error'); }
-    }
-    products.splice(deleteIdx, 1);
-    persist();
-    refreshStats();
-    runSearch();
-    closeConfirm();
-    toast(`"${name}" deleted.`, 'success');
+    if (_pendingDeleteFn) { await _pendingDeleteFn(); closeConfirm(); }
   });
 
   /* ── EXPORT ─────────────────────────────────── */
@@ -1797,11 +1800,14 @@
     document.getElementById('clModalSave').textContent  = 'Update Customer';
     document.getElementById('clModal').classList.remove('hidden');
   }
-  async function clDeleteCustomer(id) {
-    if (!confirm('Delete this customer? This cannot be undone.')) return;
-    const { error } = await sb.from('customers').delete().eq('id', id);
-    if (error) { alert('Failed to delete.'); return; }
-    await clLoadCustomers(); toast('Customer deleted.', 'info');
+  function clDeleteCustomer(id) {
+    const c = CL_CUSTOMERS.find(r => String(r[8])===String(id));
+    const name = c ? c[0] : 'this customer';
+    openConfirm('Delete Customer?', name, async () => {
+      const { error } = await sb.from('customers').delete().eq('id', id);
+      if (error) { toast('Failed to delete.', 'error'); return; }
+      await clLoadCustomers(); toast('Customer deleted.', 'info');
+    });
   }
   document.getElementById('clAddBtn').addEventListener('click', () => document.getElementById('clModal').classList.remove('hidden'));
   document.getElementById('clModalClose').addEventListener('click', clCloseModal);
@@ -1985,11 +1991,14 @@
       stockist:   document.getElementById('whFStockist').value.trim()
     };
   }
-  async function whDeleteItem(id) {
-    if (!confirm('Delete this wholesale item?')) return;
-    const { error } = await sb.from('wholesale').delete().eq('id', id);
-    if (!error) { await whLoadItems(); toast('Item deleted.', 'info'); }
-    else alert('Delete failed — please try again.');
+  function whDeleteItem(id) {
+    const w = WH_ITEMS.find(r => String(r[17])===String(id));
+    const name = w ? w[2] : 'this item';
+    openConfirm('Delete Wholesale Item?', name, async () => {
+      const { error } = await sb.from('wholesale').delete().eq('id', id);
+      if (!error) { await whLoadItems(); toast('Item deleted.', 'info'); }
+      else toast('Delete failed — please try again.', 'error');
+    });
   }
 
   document.getElementById('whAddBtn').addEventListener('click', () => { whEditingId = null; document.getElementById('whModal').classList.remove('hidden'); });
