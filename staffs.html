@@ -524,7 +524,8 @@
       btn.textContent = 'Submit Report';
       if (error) {
         btn.disabled = false;
-        showSubmitMsg('Failed to submit. Please try again.', false);
+        showSubmitMsg('Error: ' + (error.message || 'Failed to submit. Please try again.'), false);
+        console.error('Supabase insert error:', error);
       } else {
         showSubmitMsg('Report submitted successfully!', true);
         setTimeout(() => closeReportDirect(), 1800);
