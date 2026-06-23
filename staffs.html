@@ -121,6 +121,51 @@
     .cust-row svg { flex-shrink: 0; color: #94a3b8; }
     .call-link { color: var(--orange-dark); font-weight: 700; text-decoration: none; }
     .call-link:hover { text-decoration: underline; }
+    .cust-card { cursor: pointer; transition: background .15s; }
+    .cust-card:hover { background: #fdf8f4; }
+    .cust-tap-hint { font-size: 0.62rem; color: #b0c0c0; margin-top: 7px; }
+
+    /* ── REPORT POPUP (bottom sheet) ── */
+    .report-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(4,64,64,.5); backdrop-filter: blur(3px);
+      display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .report-overlay.show { opacity: 1; pointer-events: all; }
+    .report-sheet {
+      background: white; border-radius: 24px 24px 0 0;
+      width: 100%; max-width: 480px; padding: 0 0 32px;
+      transform: translateY(100%); transition: transform .3s cubic-bezier(.4,0,.2,1);
+      max-height: 92vh; overflow-y: auto;
+    }
+    .report-overlay.show .report-sheet { transform: translateY(0); }
+    .sheet-handle { width: 40px; height: 4px; background: #e0ecec; border-radius: 99px; margin: 14px auto 0; }
+    .sheet-header { padding: 18px 20px 14px; border-bottom: 1px solid #f0f4f4; }
+    .sheet-header h3 { font-size: 1rem; font-weight: 800; color: #0f2a2a; }
+    .sheet-header p { font-size: 0.74rem; color: #5a7a7a; margin-top: 2px; }
+    .sheet-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; }
+    .rfield { display: flex; flex-direction: column; gap: 6px; }
+    .rfield label { font-size: 0.68rem; font-weight: 700; color: #7a9494; text-transform: uppercase; letter-spacing: .07em; }
+    .rfield input, .rfield select, .rfield textarea {
+      padding: 11px 13px; border: 1.5px solid #dde8e8; border-radius: 10px;
+      font-family: 'Poppins', sans-serif; font-size: 0.88rem; color: #1a2e2e;
+      background: #f8fafa; width: 100%;
+    }
+    .rfield input:focus, .rfield select:focus, .rfield textarea:focus {
+      outline: none; border-color: var(--orange); background: white;
+      box-shadow: 0 0 0 3px rgba(232,120,32,.1);
+    }
+    .rfield select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a9494' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 12px; padding-right: 36px; }
+    .rfield textarea { resize: vertical; min-height: 80px; }
+    .sheet-footer { padding: 0 20px; display: flex; gap: 10px; }
+    .btn-cancel { flex: 1; padding: 13px; background: #f0f4f4; color: #5a7a7a; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; }
+    .btn-submit { flex: 2; padding: 13px; background: var(--orange); color: white; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background .2s; }
+    .btn-submit:hover { background: var(--orange-dark); }
+    .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
+    .submit-msg { text-align: center; padding: 10px 20px 0; font-size: 0.8rem; font-weight: 600; display: none; }
+    .submit-msg.ok { color: var(--green-dark); display: block; }
+    .submit-msg.err { color: var(--red); display: block; }
 
     .footer-tip { text-align: center; color: rgba(255,255,255,.3); font-size: 0.68rem; margin-top: 22px; max-width: 340px; line-height: 1.7; }
   </style>
@@ -268,6 +313,44 @@
     </div>
   </div>
 
+  <!-- ── REPORT BOTTOM SHEET ── -->
+  <div class="report-overlay" id="reportOverlay" onclick="closeReport(event)">
+    <div class="report-sheet" id="reportSheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3 id="sheetCustName">Customer</h3>
+        <p id="sheetCustSub">Submit visit report</p>
+      </div>
+      <div class="sheet-body">
+        <div class="rfield">
+          <label>Report Date</label>
+          <input type="date" id="rDate" />
+        </div>
+        <div class="rfield">
+          <label>Visit</label>
+          <select id="rVisit">
+            <option value="">— Select —</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="rfield">
+          <label>Feedback</label>
+          <textarea id="rFeedback" placeholder="Write your feedback here…"></textarea>
+        </div>
+        <div class="rfield">
+          <label>Order Value (₹)</label>
+          <input type="number" id="rOrderValue" placeholder="0" min="0" />
+        </div>
+      </div>
+      <p class="submit-msg" id="submitMsg"></p>
+      <div class="sheet-footer">
+        <button class="btn-cancel" onclick="closeReportDirect()">Cancel</button>
+        <button class="btn-submit" id="submitBtn" onclick="submitReport()">Submit Report</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SB_URL = 'https://vogxaylmrzulbdltxrwv.supabase.co';
@@ -362,11 +445,13 @@
       return `<span class="type-badge type-other">${type || 'Other'}</span>`;
     }
 
+    let activeCustomer = null;
+
     function renderFW(list) {
       const el = document.getElementById('fwList');
       if (!list.length) { el.innerHTML = '<div class="fw-empty">No customers found.</div>'; return; }
-      el.innerHTML = list.map(c => `
-        <div class="cust-card">
+      el.innerHTML = list.map((c) => `
+        <div class="cust-card" onclick="openReport(${JSON.stringify(c.name)}, event)">
           <div class="cust-top">
             <span class="cust-name">${c.name || '—'}</span>
             ${typeBadge(c.type)}
@@ -375,9 +460,73 @@
             ${c.institution ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>${c.institution}</div>` : ''}
             ${c.location ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${c.location}</div>` : ''}
             ${c.contact_name ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${c.contact_name}</div>` : ''}
-            ${c.contact_number ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17z"/></svg><a class="call-link" href="tel:${c.contact_number}">${c.contact_number}</a></div>` : ''}
+            ${c.contact_number ? `<div class="cust-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17z"/></svg><a class="call-link" href="tel:${c.contact_number}" onclick="event.stopPropagation()">${c.contact_number}</a></div>` : ''}
           </div>
+          <p class="cust-tap-hint">Tap to add visit report</p>
         </div>`).join('');
+    }
+
+    function openReport(custName, event) {
+      activeCustomer = FW_CUSTOMERS.find(c => c.name === custName) || null;
+      if (!activeCustomer) return;
+
+      document.getElementById('sheetCustName').textContent = activeCustomer.name;
+      document.getElementById('sheetCustSub').textContent = activeCustomer.location || 'Submit visit report';
+      document.getElementById('rDate').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('rVisit').value = '';
+      document.getElementById('rFeedback').value = '';
+      document.getElementById('rOrderValue').value = '';
+      document.getElementById('submitMsg').className = 'submit-msg';
+      document.getElementById('submitMsg').textContent = '';
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('reportOverlay').classList.add('show');
+    }
+
+    function closeReport(event) {
+      if (event.target === document.getElementById('reportOverlay')) closeReportDirect();
+    }
+    function closeReportDirect() {
+      document.getElementById('reportOverlay').classList.remove('show');
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReportDirect(); });
+
+    async function submitReport() {
+      if (!activeCustomer) return;
+      const date = document.getElementById('rDate').value;
+      const visit = document.getElementById('rVisit').value;
+      const feedback = document.getElementById('rFeedback').value.trim();
+      const orderVal = document.getElementById('rOrderValue').value;
+
+      if (!date) { showSubmitMsg('Please select a report date.', false); return; }
+      if (!visit) { showSubmitMsg('Please select Visit (Yes or No).', false); return; }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true; btn.textContent = 'Submitting…';
+
+      const { error } = await sb.from('field_reports').insert({
+        executive: staffName,
+        customer_name: activeCustomer.name,
+        location: activeCustomer.location || '',
+        report_date: date,
+        visited: visit === 'yes',
+        feedback: feedback || null,
+        order_value: orderVal ? parseFloat(orderVal) : null
+      });
+
+      btn.textContent = 'Submit Report';
+      if (error) {
+        btn.disabled = false;
+        showSubmitMsg('Failed to submit. Please try again.', false);
+      } else {
+        showSubmitMsg('Report submitted successfully!', true);
+        setTimeout(() => closeReportDirect(), 1800);
+      }
+    }
+
+    function showSubmitMsg(msg, ok) {
+      const el = document.getElementById('submitMsg');
+      el.textContent = msg;
+      el.className = 'submit-msg ' + (ok ? 'ok' : 'err');
     }
 
     function filterFW() {
