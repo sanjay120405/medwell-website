@@ -358,6 +358,65 @@
     .cl-modal-save:hover { background: var(--teal-dark); }
     .cl-modal-save:disabled { opacity: .6; cursor: not-allowed; }
 
+    /* ── WHOLESALE TAB ── */
+    #tabWholesale .wh-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
+    #tabWholesale .wh-search-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+    @media(max-width:900px){ #tabWholesale .wh-search-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:600px){ #tabWholesale .wh-search-grid { grid-template-columns: 1fr; } }
+    #tabWholesale .wh-sf { display: flex; flex-direction: column; gap: 5px; }
+    #tabWholesale .wh-sf label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    #tabWholesale .wh-search-input { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabWholesale .wh-search-input:focus { outline: none; border-color: var(--teal); background: var(--white); box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
+    #tabWholesale .wh-btn-group { display: flex; gap: 8px; }
+    #tabWholesale .wh-search-btn { padding: 9px 20px; background: var(--teal); color: white; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; border: none; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    #tabWholesale .wh-search-btn:hover { background: var(--teal-dark); }
+    #tabWholesale .wh-clear-btn { padding: 9px 16px; background: transparent; color: var(--text-muted); border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all .2s; white-space: nowrap; }
+    #tabWholesale .wh-clear-btn:hover { border-color: var(--orange); color: var(--orange); }
+    #tabWholesale .wh-results-info { padding: 14px 24px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    #tabWholesale .wh-results-count { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--teal); }
+    #tabWholesale .wh-toolbar-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    #tabWholesale .wh-add-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 600; border: none; cursor: pointer; transition: all .2s; white-space: nowrap; }
+    #tabWholesale .wh-add-btn.primary { background: var(--teal); color: white; }
+    #tabWholesale .wh-add-btn.primary:hover { background: var(--teal-dark); }
+    #tabWholesale .wh-add-btn.export  { background: var(--orange); color: white; }
+    #tabWholesale .wh-add-btn.export:hover  { background: var(--orange-dark); }
+    #tabWholesale .wh-add-btn.import  { background: #2563eb; color: white; }
+    #tabWholesale .wh-add-btn.import:hover  { background: #1d4ed8; }
+    #tabWholesale .wh-table-section { padding: 0 24px 60px; }
+    #tabWholesale .wh-table-wrap { border-radius: var(--radius-md); box-shadow: 0 2px 12px rgba(13,122,122,.08); border: 1px solid var(--border); background: var(--white); margin-top: 12px; overflow-x: auto; }
+    #tabWholesale table { width: 100%; border-collapse: collapse; min-width: 1800px; }
+    #tabWholesale td { padding: 10px; font-size: 0.82rem; color: var(--text); vertical-align: middle; white-space: nowrap; border-bottom: 1px solid var(--border); }
+    #tabWholesale tr:last-child td { border-bottom: none; }
+    #tabWholesale tr:hover td { background: var(--teal-light); }
+    #tabWholesale tr:nth-child(even) td { background: #f9fefe; }
+    #tabWholesale tr:nth-child(even):hover td { background: var(--teal-light); }
+    #tabWholesale td.wh-num { text-align: center; color: var(--text-muted); font-size: 0.78rem; }
+    #tabWholesale td.wh-product { font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--teal); white-space: normal; max-width: 220px; }
+    #tabWholesale td.wh-numval { text-align: right; font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--teal-dark); }
+    #tabWholesale td.wh-actions { text-align: center; }
+    #tabWholesale .wh-row-actions { display: flex; gap: 4px; justify-content: center; }
+    #tabWholesale .wh-action-btn { padding: 4px 9px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; font-family: 'Poppins', sans-serif; border: 1.5px solid; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; background: transparent; white-space: nowrap; transition: all .2s; }
+    #tabWholesale .wh-action-btn.edit { border-color: var(--teal); color: var(--teal); }
+    #tabWholesale .wh-action-btn.edit:hover { background: var(--teal); color: white; }
+    #tabWholesale .wh-action-btn.del { border-color: var(--red); color: var(--red); }
+    #tabWholesale .wh-action-btn.del:hover { background: var(--red); color: white; }
+    #tabWholesale .wh-no-results { display: none; text-align: center; padding: 60px 20px; }
+    #tabWholesale .wh-no-results.show { display: block; }
+    #tabWholesale .wh-no-results h3 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    #tabWholesale .wh-no-results p { font-size: 0.85rem; color: var(--text-muted); }
+    #tabWholesale .wh-pagination { display: none; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-top: 1px solid var(--border); }
+    #tabWholesale .wh-pagination.show { display: flex; }
+    #tabWholesale .wh-pg-btn { padding: 8px 18px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--border); background: var(--white); color: var(--text-muted); cursor: pointer; transition: all .2s; }
+    #tabWholesale .wh-pg-btn:hover:not(:disabled) { border-color: var(--teal); color: var(--teal); }
+    #tabWholesale .wh-pg-btn:disabled { opacity: .4; cursor: not-allowed; }
+    #tabWholesale .wh-pg-info { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); }
+    #tabWholesale mark { background: #FFF176; color: inherit; border-radius: 2px; padding: 0 1px; }
+    /* wholesale modal (3-col grid, wider) */
+    .wh-modal-card { background: var(--white); border-radius: 18px; padding: 32px 28px; width: 100%; max-width: 780px; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(4,64,64,.28); }
+    .wh-modal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    @media(max-width:700px){ .wh-modal-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:440px){ .wh-modal-grid { grid-template-columns: 1fr; } }
+
     /* ── TABS ──────────────────────────── */
     .tab-bar { background: var(--white); border-bottom: 2px solid var(--border); padding: 0 24px; display: flex; gap: 2px; flex-shrink: 0; }
     .tab-btn { padding: 11px 20px; background: none; border: none; border-bottom: 3px solid transparent; font-family: 'Poppins',sans-serif; font-size: 0.83rem; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all .2s; margin-bottom: -2px; white-space: nowrap; }
@@ -462,6 +521,10 @@
       <button class="ah-tab" id="tabBtnCustomers" onclick="switchTab('customers')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Customers
+      </button>
+      <button class="ah-tab" id="tabBtnWholesale" onclick="switchTab('wholesale')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h5l2 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Wholesale
       </button>
       <button class="ah-tab" id="tabBtnTracking" onclick="switchTab('tracking')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
@@ -638,6 +701,90 @@
     </div>
   </div><!-- end tabCustomers -->
 
+  <!-- WHOLESALE TAB -->
+  <div id="tabWholesale" style="display:none;">
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-label">Total Items</span><span class="stat-value" id="whStatTotal">—</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-label">Companies</span><span class="stat-value" id="whStatCompanies">—</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-label">Categories</span><span class="stat-value" id="whStatCategories">—</span></div>
+    </div>
+    <div class="wh-search-section">
+      <div class="wh-search-grid">
+        <div class="wh-sf">
+          <label for="whSearchProduct">Product</label>
+          <input id="whSearchProduct" class="wh-search-input" type="text" placeholder="Search by product…" autocomplete="off" />
+        </div>
+        <div class="wh-sf">
+          <label for="whSearchCompany">Company</label>
+          <input id="whSearchCompany" class="wh-search-input" type="text" placeholder="Search by company…" autocomplete="off" list="whCompanyList" />
+          <datalist id="whCompanyList"></datalist>
+        </div>
+        <div class="wh-sf">
+          <label for="whSearchCategory">Category</label>
+          <input id="whSearchCategory" class="wh-search-input" type="text" placeholder="Search by category…" autocomplete="off" list="whCategoryList" />
+          <datalist id="whCategoryList"></datalist>
+        </div>
+        <div class="wh-btn-group">
+          <button class="wh-search-btn" onclick="whApplyFilter()">Search</button>
+          <button class="wh-clear-btn" onclick="whClearAll()">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="wh-results-info">
+      <div class="wh-results-count">Showing <span id="whCountNum">0</span> items</div>
+      <div class="wh-toolbar-btns">
+        <button class="wh-add-btn primary" id="whAddBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Add Item
+        </button>
+        <button class="wh-add-btn export" id="whExportBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export
+        </button>
+        <button class="wh-add-btn import" id="whImportBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 14l5-5 5 5M12 3v12"/></svg>
+          Import
+        </button>
+        <input type="file" id="whImportFile" accept=".xlsx,.xls,.csv" style="display:none;" />
+      </div>
+    </div>
+    <div class="wh-table-section">
+      <div class="wh-table-wrap">
+        <table id="whTable">
+          <thead>
+            <tr>
+              <th style="text-align:center;width:44px">#</th>
+              <th>Item Code</th><th>HSN Code</th><th>Product</th><th>Molecule</th>
+              <th>Category</th><th>Type</th><th>Size</th><th>Colour</th>
+              <th style="text-align:right">Pack</th>
+              <th style="text-align:right">Purchase (₹)</th>
+              <th style="text-align:right">Sales (₹)</th>
+              <th style="text-align:right">Customer (₹)</th>
+              <th style="text-align:right">Tax (%)</th>
+              <th style="text-align:right">MRP (₹)</th>
+              <th>Company</th><th>Contact No</th><th>Stockist</th>
+              <th style="text-align:center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="whTableBody">
+            <tr><td colspan="19" style="text-align:center;padding:40px;color:var(--text-muted);">Loading…</td></tr>
+          </tbody>
+        </table>
+        <div class="wh-no-results" id="whNoResults">
+          <h3>No items found</h3>
+          <p>Try adjusting your search filters.</p>
+        </div>
+        <div class="wh-pagination" id="whPagination">
+          <button class="wh-pg-btn" id="whPrevBtn">← Prev</button>
+          <span class="wh-pg-info" id="whPageInfo">Page 1 of 1</span>
+          <button class="wh-pg-btn" id="whNextBtn">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- end tabWholesale -->
+
   <!-- TRACKING TAB -->
   <div id="tabTracking" style="display:none;">
     <div class="track-body">
@@ -745,6 +892,40 @@
     <div class="confirm-ft">
       <button class="confirm-cancel" id="confirmCancelBtn">Cancel</button>
       <button class="confirm-delete-btn" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHOLESALE MODAL ── -->
+<div class="cl-modal-overlay hidden" id="whModal">
+  <div class="wh-modal-card">
+    <div class="cl-modal-header">
+      <h3 id="whModalTitle">Add Wholesale Item</h3>
+      <button class="cl-modal-close" id="whModalClose">✕</button>
+    </div>
+    <div class="wh-modal-grid">
+      <div class="cl-mf"><label>Item Code</label><input type="text" id="whFItem" placeholder="Item code" /></div>
+      <div class="cl-mf"><label>HSN/SAC Code</label><input type="text" id="whFHsn" placeholder="HSN code" /></div>
+      <div class="cl-mf"><label>Company</label><input type="text" id="whFCompany" placeholder="Company name" /></div>
+      <div class="cl-mf full"><label>Product Name *</label><input type="text" id="whFProduct" placeholder="Product name" /></div>
+      <div class="cl-mf"><label>Molecule</label><input type="text" id="whFMolecule" placeholder="Molecule" /></div>
+      <div class="cl-mf"><label>Category</label><input type="text" id="whFCategory" placeholder="Category" /></div>
+      <div class="cl-mf"><label>Type</label><input type="text" id="whFType" placeholder="Type" /></div>
+      <div class="cl-mf"><label>Size</label><input type="text" id="whFSize" placeholder="Size" /></div>
+      <div class="cl-mf"><label>Colour</label><input type="text" id="whFColour" placeholder="Colour" /></div>
+      <div class="cl-mf"><label>Pack</label><input type="number" id="whFPack" placeholder="Pack qty" /></div>
+      <div class="cl-mf"><label>Purchase (₹)</label><input type="number" step="0.01" id="whFPurchase" placeholder="0.00" /></div>
+      <div class="cl-mf"><label>Sales (₹)</label><input type="number" step="0.01" id="whFSales" placeholder="0.00" /></div>
+      <div class="cl-mf"><label>Customer (₹)</label><input type="number" step="0.01" id="whFCustomer" placeholder="0.00" /></div>
+      <div class="cl-mf"><label>Tax (%)</label><input type="number" step="0.01" id="whFTax" placeholder="0" /></div>
+      <div class="cl-mf"><label>MRP (₹)</label><input type="number" step="0.01" id="whFMrp" placeholder="0.00" /></div>
+      <div class="cl-mf"><label>Contact No</label><input type="text" id="whFContact" placeholder="Contact number" /></div>
+      <div class="cl-mf"><label>Stockist</label><input type="text" id="whFStockist" placeholder="Stockist" /></div>
+    </div>
+    <div class="cl-modal-err" id="whModalError"></div>
+    <div class="cl-modal-footer">
+      <button class="cl-modal-cancel" id="whModalCancel">Cancel</button>
+      <button class="cl-modal-save" id="whModalSave">Save Item</button>
     </div>
   </div>
 </div>
@@ -878,6 +1059,7 @@
     document.getElementById('adminWrap').style.display = 'block';
     await initProducts();
     clLoadCustomers();
+    whLoadItems();
   }
 
   /* ── PRODUCTS STATE ─────────────────────────── */
@@ -1261,9 +1443,11 @@
   function switchTab(tab) {
     document.getElementById('tabProducts').style.display  = tab === 'products'  ? 'block' : 'none';
     document.getElementById('tabCustomers').style.display = tab === 'customers' ? 'block' : 'none';
+    document.getElementById('tabWholesale').style.display = tab === 'wholesale' ? 'block' : 'none';
     document.getElementById('tabTracking').style.display  = tab === 'tracking'  ? 'flex'  : 'none';
     document.getElementById('tabBtnProducts').classList.toggle('active',  tab === 'products');
     document.getElementById('tabBtnCustomers').classList.toggle('active', tab === 'customers');
+    document.getElementById('tabBtnWholesale').classList.toggle('active', tab === 'wholesale');
     document.getElementById('tabBtnTracking').classList.toggle('active',  tab === 'tracking');
     document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
     if (tab === 'tracking') {
@@ -1643,6 +1827,234 @@
     ws['!cols'] = [20,16,12,26,18,16,16,30].map(w=>({wch:w}));
     const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Customers');
     XLSX.writeFile(wb, 'Medwell_CustomerList.xlsx');
+  });
+
+  /* ── WHOLESALE ─────────────────────────── */
+  let WH_ITEMS = [], whFiltered = [], whCurrentTerms = { product:'', company:'', category:'' };
+  let whCurrentPage = 1, whEditingId = null;
+  const WH_PAGE_SIZE = 50;
+
+  function whRowToArr(r) {
+    return [r.item||'', r.hsn_code||'', r.product||'', r.molecule||'', r.category||'',
+            r.type||'', r.size||'', r.colour||'', +r.pack||0, +r.purchase||0,
+            +r.sales||0, +r.customer||0, +r.tax||0, +r.mrp||0,
+            r.company||'', r.contact_no||'', r.stockist||'', r.id];
+  }
+  function whFmt(n) { return n ? Number(n).toFixed(2) : '—'; }
+  function whEsc(t) { return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function whHl(text, term) {
+    const e = whEsc(text); if (!term) return e;
+    return e.replace(new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');
+  }
+
+  async function whLoadItems() {
+    document.getElementById('whTableBody').innerHTML = '<tr><td colspan="19" style="text-align:center;padding:40px;color:var(--text-muted);">Loading…</td></tr>';
+    const { data, error } = await sb.from('wholesale').select('*').order('id');
+    if (error) { document.getElementById('whTableBody').innerHTML = '<tr><td colspan="19" style="text-align:center;padding:40px;color:var(--red);">Error loading data — please refresh.</td></tr>'; return; }
+    WH_ITEMS = (data || []).map(whRowToArr);
+    const companies  = new Set(WH_ITEMS.map(c => c[14]).filter(Boolean));
+    const categories = new Set(WH_ITEMS.map(c => c[4]).filter(Boolean));
+    document.getElementById('whStatTotal').textContent      = WH_ITEMS.length;
+    document.getElementById('whStatCompanies').textContent  = companies.size;
+    document.getElementById('whStatCategories').textContent = categories.size;
+    document.getElementById('whCompanyList').innerHTML  = [...companies].sort().map(v => `<option value="${v}">`).join('');
+    document.getElementById('whCategoryList').innerHTML = [...categories].sort().map(v => `<option value="${v}">`).join('');
+    whRenderTable(WH_ITEMS, { product:'', company:'', category:'' });
+  }
+
+  function whRenderTable(rows, terms) {
+    whFiltered = rows; whCurrentTerms = terms;
+    const tbody   = document.getElementById('whTableBody');
+    const noRes   = document.getElementById('whNoResults');
+    const pg      = document.getElementById('whPagination');
+    document.getElementById('whCountNum').textContent = rows.length;
+    if (!rows.length) { tbody.innerHTML = ''; noRes.classList.add('show'); pg.classList.remove('show'); return; }
+    noRes.classList.remove('show');
+    const totalPages = Math.ceil(rows.length / WH_PAGE_SIZE);
+    if (whCurrentPage > totalPages) whCurrentPage = totalPages;
+    const start = (whCurrentPage - 1) * WH_PAGE_SIZE;
+    tbody.innerHTML = rows.slice(start, start + WH_PAGE_SIZE).map((c, i) => `
+      <tr>
+        <td class="wh-num">${start+i+1}</td>
+        <td>${whEsc(c[0])}</td>
+        <td>${whEsc(c[1])}</td>
+        <td class="wh-product">${whHl(c[2], terms.product)}</td>
+        <td>${whEsc(c[3])}</td>
+        <td>${whEsc(c[4])}</td>
+        <td>${whEsc(c[5])}</td>
+        <td>${whEsc(c[6])}</td>
+        <td>${whEsc(c[7])}</td>
+        <td style="text-align:right">${c[8]||'—'}</td>
+        <td class="wh-numval">${whFmt(c[9])}</td>
+        <td class="wh-numval">${whFmt(c[10])}</td>
+        <td class="wh-numval">${whFmt(c[11])}</td>
+        <td style="text-align:right">${c[12]||'—'}%</td>
+        <td class="wh-numval">${whFmt(c[13])}</td>
+        <td>${whHl(c[14], terms.company)}</td>
+        <td>${whEsc(c[15])}</td>
+        <td>${whEsc(c[16])}</td>
+        <td class="wh-actions"><div class="wh-row-actions">
+          <button class="wh-action-btn edit" onclick="whOpenEdit('${c[17]}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit
+          </button>
+          <button class="wh-action-btn del" onclick="whDeleteItem('${c[17]}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>Delete
+          </button>
+        </div></td>
+      </tr>`).join('');
+    document.getElementById('whPageInfo').textContent = `Page ${whCurrentPage} of ${totalPages}`;
+    document.getElementById('whPrevBtn').disabled = whCurrentPage === 1;
+    document.getElementById('whNextBtn').disabled = whCurrentPage === totalPages;
+    pg.classList.toggle('show', rows.length > WH_PAGE_SIZE);
+  }
+
+  function whGetTerms() {
+    return { product: document.getElementById('whSearchProduct').value.trim(), company: document.getElementById('whSearchCompany').value.trim(), category: document.getElementById('whSearchCategory').value.trim() };
+  }
+  function whApplyFilter() {
+    whCurrentPage = 1; const t = whGetTerms();
+    whRenderTable(WH_ITEMS.filter(c =>
+      (!t.product  || c[2].toLowerCase().includes(t.product.toLowerCase())) &&
+      (!t.company  || c[14].toLowerCase().includes(t.company.toLowerCase())) &&
+      (!t.category || c[4].toLowerCase().includes(t.category.toLowerCase()))
+    ), t);
+  }
+  function whClearAll() {
+    ['whSearchProduct','whSearchCompany','whSearchCategory'].forEach(id => document.getElementById(id).value='');
+    whCurrentPage = 1; whRenderTable(WH_ITEMS, { product:'', company:'', category:'' });
+  }
+  ['whSearchProduct','whSearchCompany','whSearchCategory'].forEach(id => {
+    document.getElementById(id).addEventListener('input', whApplyFilter);
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key==='Enter') whApplyFilter(); });
+  });
+  document.getElementById('whPrevBtn').addEventListener('click', () => { if (whCurrentPage>1){whCurrentPage--;whRenderTable(whFiltered,whCurrentTerms);} });
+  document.getElementById('whNextBtn').addEventListener('click', () => { const tp=Math.ceil(whFiltered.length/WH_PAGE_SIZE);if(whCurrentPage<tp){whCurrentPage++;whRenderTable(whFiltered,whCurrentTerms);} });
+
+  const WH_FIELDS = ['whFItem','whFHsn','whFCompany','whFProduct','whFMolecule','whFCategory','whFType','whFSize','whFColour','whFPack','whFPurchase','whFSales','whFCustomer','whFTax','whFMrp','whFContact','whFStockist'];
+
+  function whCloseModal() {
+    whEditingId = null;
+    document.getElementById('whModal').classList.add('hidden');
+    document.getElementById('whModalError').textContent = '';
+    document.getElementById('whModalTitle').textContent = 'Add Wholesale Item';
+    document.getElementById('whModalSave').textContent  = 'Save Item';
+    WH_FIELDS.forEach(id => document.getElementById(id).value = '');
+  }
+  function whOpenEdit(id) {
+    const c = WH_ITEMS.find(r => String(r[17])===String(id)); if (!c) return;
+    whEditingId = id;
+    document.getElementById('whFItem').value     = c[0];
+    document.getElementById('whFHsn').value      = c[1];
+    document.getElementById('whFProduct').value  = c[2];
+    document.getElementById('whFMolecule').value = c[3];
+    document.getElementById('whFCategory').value = c[4];
+    document.getElementById('whFType').value     = c[5];
+    document.getElementById('whFSize').value     = c[6];
+    document.getElementById('whFColour').value   = c[7];
+    document.getElementById('whFPack').value     = c[8];
+    document.getElementById('whFPurchase').value = c[9];
+    document.getElementById('whFSales').value    = c[10];
+    document.getElementById('whFCustomer').value = c[11];
+    document.getElementById('whFTax').value      = c[12];
+    document.getElementById('whFMrp').value      = c[13];
+    document.getElementById('whFCompany').value  = c[14];
+    document.getElementById('whFContact').value  = c[15];
+    document.getElementById('whFStockist').value = c[16];
+    document.getElementById('whModalTitle').textContent = 'Edit Wholesale Item';
+    document.getElementById('whModalSave').textContent  = 'Update Item';
+    document.getElementById('whModal').classList.remove('hidden');
+  }
+  function whBuildEntry() {
+    return {
+      item:       document.getElementById('whFItem').value.trim(),
+      hsn_code:   document.getElementById('whFHsn').value.trim(),
+      product:    document.getElementById('whFProduct').value.trim(),
+      molecule:   document.getElementById('whFMolecule').value.trim(),
+      category:   document.getElementById('whFCategory').value.trim(),
+      type:       document.getElementById('whFType').value.trim(),
+      size:       document.getElementById('whFSize').value.trim(),
+      colour:     document.getElementById('whFColour').value.trim(),
+      pack:       +document.getElementById('whFPack').value || null,
+      purchase:   +document.getElementById('whFPurchase').value || null,
+      sales:      +document.getElementById('whFSales').value || null,
+      customer:   +document.getElementById('whFCustomer').value || null,
+      tax:        +document.getElementById('whFTax').value || null,
+      mrp:        +document.getElementById('whFMrp').value || null,
+      company:    document.getElementById('whFCompany').value.trim(),
+      contact_no: document.getElementById('whFContact').value.trim(),
+      stockist:   document.getElementById('whFStockist').value.trim()
+    };
+  }
+  async function whDeleteItem(id) {
+    if (!confirm('Delete this wholesale item?')) return;
+    const { error } = await sb.from('wholesale').delete().eq('id', id);
+    if (!error) { await whLoadItems(); toast('Item deleted.', 'info'); }
+    else alert('Delete failed — please try again.');
+  }
+
+  document.getElementById('whAddBtn').addEventListener('click', () => { whEditingId = null; document.getElementById('whModal').classList.remove('hidden'); });
+  document.getElementById('whModalClose').addEventListener('click', whCloseModal);
+  document.getElementById('whModalCancel').addEventListener('click', whCloseModal);
+  document.getElementById('whModal').addEventListener('click', e => { if (e.target===document.getElementById('whModal')) whCloseModal(); });
+  document.getElementById('whModalSave').addEventListener('click', async () => {
+    const product = document.getElementById('whFProduct').value.trim();
+    if (!product) { document.getElementById('whModalError').textContent = 'Product name is required.'; return; }
+    const btn = document.getElementById('whModalSave');
+    btn.disabled = true; btn.textContent = whEditingId ? 'Updating…' : 'Saving…';
+    const entry = whBuildEntry();
+    const wasEdit = !!whEditingId;
+    const { error } = wasEdit ? await sb.from('wholesale').update(entry).eq('id', whEditingId) : await sb.from('wholesale').insert(entry);
+    btn.disabled = false; btn.textContent = wasEdit ? 'Update Item' : 'Save Item';
+    if (error) { document.getElementById('whModalError').textContent = 'Failed to save — please try again.'; return; }
+    whCloseModal(); await whLoadItems(); toast(wasEdit ? 'Item updated.' : 'Item added.', 'success');
+  });
+
+  document.getElementById('whExportBtn').addEventListener('click', () => {
+    const headers = ['Item Code','HSN Code','Product','Molecule','Category','Type','Size','Colour','Pack','Purchase','Sales','Customer','Tax','MRP','Company','Contact No','Stockist'];
+    const rows = WH_ITEMS.map(c => ({'Item Code':c[0],'HSN Code':c[1],'Product':c[2],'Molecule':c[3],'Category':c[4],'Type':c[5],'Size':c[6],'Colour':c[7],'Pack':c[8],'Purchase':c[9],'Sales':c[10],'Customer':c[11],'Tax':c[12],'MRP':c[13],'Company':c[14],'Contact No':c[15],'Stockist':c[16]}));
+    const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Wholesale');
+    XLSX.writeFile(wb, 'wholesale_export.xlsx');
+  });
+
+  document.getElementById('whImportBtn').addEventListener('click', () => document.getElementById('whImportFile').click());
+  document.getElementById('whImportFile').addEventListener('change', async function() {
+    const file = this.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async e => {
+      try {
+        const wb = XLSX.read(e.target.result, { type:'array' });
+        const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval:'' });
+        const get  = (row, keys) => { for (const k of keys) if (row[k]!==undefined && row[k]!=='') return String(row[k]); return ''; };
+        const getN = (row, keys) => { for (const k of keys) if (row[k]!==undefined && row[k]!=='') return +row[k]||null; return null; };
+        let added=0, skipped=0;
+        for (const row of rows) {
+          const product = get(row, ['Product*','Product','product','PRODUCT']); if (!product){skipped++;continue;}
+          const { error } = await sb.from('wholesale').insert({
+            item:       get(row,  ['Item Code','item']),
+            hsn_code:   get(row,  ['HSN Code','HSN/SAC Code*','hsn_code']),
+            product,
+            molecule:   get(row,  ['Molecule','molecule']),
+            category:   get(row,  ['Category','category']),
+            type:       get(row,  ['Type','type']),
+            size:       get(row,  ['Size','size']),
+            colour:     get(row,  ['Colour','colour']),
+            pack:       getN(row, ['Pack','pack']),
+            purchase:   getN(row, ['Purchase','purchase']),
+            sales:      getN(row, ['Sales','sales']),
+            customer:   getN(row, ['Customer','customer']),
+            tax:        getN(row, ['Tax','tax']),
+            mrp:        getN(row, ['MRP','mrp','M.R.P.']),
+            company:    get(row,  ['Company*','Company','company']),
+            contact_no: get(row,  ['Contact No','contact_no']),
+            stockist:   get(row,  ['Stockist','stockist'])
+          });
+          if (!error) added++; else skipped++;
+        }
+        await whLoadItems(); toast(`Imported ${added} items${skipped?`, ${skipped} skipped`:''}`, 'success');
+      } catch(err) { alert('Failed to read file: '+err.message); }
+    };
+    reader.readAsArrayBuffer(file); this.value='';
   });
 
   /* report popup */
