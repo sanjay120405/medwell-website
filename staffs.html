@@ -529,7 +529,7 @@
     };
     const FIELD_WORK_EXECS = new Set(['Selva', 'Santhosh', 'Karnan']);
 
-    let trackInterval = null, watchId = null, sendCount = 0, lastSentAt = 0;
+    let trackInterval = null, watchId = null, sendCount = 0, lastSentAt = 0, gotFix = false;
     let wakeLock = null, audioCtx = null, silentNode = null;
     const MIN_SEND_MS = 55000;
 
@@ -769,7 +769,7 @@
       if (wakeLock) { wakeLock.release(); wakeLock = null; }
     }
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && trackInterval) acquireWakeLock();
+      if (document.visibilityState === 'visible' && watchId !== null) acquireWakeLock();
     });
 
     function startSilentAudio() {
@@ -820,24 +820,25 @@
       btn.disabled = true; btn.textContent = 'Getting location…';
       document.getElementById('statusCard').classList.add('show');
       document.getElementById('dName').textContent = name;
-      sendCount = 0; lastSentAt = 0;
+      sendCount = 0; lastSentAt = 0; gotFix = false;
 
       watchId = navigator.geolocation.watchPosition(
         async pos => {
           const { latitude, longitude } = pos.coords;
-          await saveLocation(name, latitude, longitude);
-          // Switch to Stop button on first successful fix
-          if (sendCount === 1) {
+          // Switch to Stop button on first GPS position — independent of insert success
+          if (!gotFix) {
+            gotFix = true;
             btn.style.display = 'none';
             document.getElementById('stopBtn').style.display = 'flex';
             acquireWakeLock();
             startSilentAudio();
           }
+          await saveLocation(name, latitude, longitude);
         },
         err => {
           showErr('GPS: ' + err.message);
           // If we never got a fix, reset UI so user can retry
-          if (sendCount === 0) {
+          if (!gotFix) {
             navigator.geolocation.clearWatch(watchId); watchId = null;
             btn.disabled = false;
             btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
@@ -854,7 +855,7 @@
       if (trackInterval)    { clearInterval(trackInterval); trackInterval = null; }
       releaseWakeLock();
       stopSilentAudio();
-      lastSentAt = 0; sendCount = 0;
+      lastSentAt = 0; sendCount = 0; gotFix = false;
       const btn = document.getElementById('startBtn');
       btn.style.display = 'flex'; btn.disabled = false;
       btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
