@@ -168,6 +168,47 @@
     .submit-msg.err { color: var(--red); display: block; }
 
     .footer-tip { text-align: center; color: rgba(255,255,255,.3); font-size: 0.68rem; margin-top: 22px; max-width: 340px; line-height: 1.7; }
+
+    /* ── TASK MASTER ── */
+    .menu-icon.purple { background: linear-gradient(135deg, #4338ca, #6366f1); }
+    .card-header.purple-bg { background: linear-gradient(135deg, #4338ca, #6366f1); }
+    .tm-tabs { display: flex; border-bottom: 1px solid #e0ecec; }
+    .tm-tab { flex: 1; padding: 12px; text-align: center; font-size: 0.78rem; font-weight: 700; color: #7a9494; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all .2s; }
+    .tm-tab.active { color: #4338ca; border-bottom-color: #6366f1; }
+    .tm-toolbar { padding: 12px 16px; border-bottom: 1px solid #e0ecec; display: flex; align-items: center; justify-content: space-between; }
+    .tm-count { font-size: 0.78rem; font-weight: 700; color: #7a9494; }
+    .tm-new-btn { display: flex; align-items: center; gap: 5px; padding: 8px 14px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+    .tm-add-form { padding: 16px; border-bottom: 1px solid #e0ecec; display: none; }
+    .tm-add-form.show { display: block; }
+    .tm-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .tm-field label { font-size: 0.65rem; font-weight: 700; color: #7a9494; text-transform: uppercase; letter-spacing: .07em; }
+    .tm-field input, .tm-field select { padding: 10px 12px; border: 1.5px solid #dde8e8; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; color: #1a2e2e; background: #f8fafa; width: 100%; }
+    .tm-field input:focus, .tm-field select:focus { outline: none; border-color: #6366f1; background: white; box-shadow: 0 0 0 3px rgba(99,102,241,.1); }
+    .tm-assign-btn { width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background .2s; }
+    .tm-assign-btn:hover { background: #4338ca; }
+    .tm-assign-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+    .tm-task-item { padding: 14px 16px; border-bottom: 1px solid #f0f4f4; }
+    .tm-task-item:last-child { border-bottom: none; }
+    .tm-task-item.row-complete { background: #f0fdf4; }
+    .tm-task-item.row-incomplete { background: #fff5f5; }
+    .tm-task-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+    .tm-task-by { font-size: 0.7rem; font-weight: 700; color: #4338ca; }
+    .tm-task-date { font-size: 0.7rem; color: #7a9494; }
+    .tm-task-date.overdue { color: #dc2626; font-weight: 700; }
+    .tm-task-text { font-size: 0.88rem; font-weight: 700; color: #0f2a2a; line-height: 1.4; margin-bottom: 6px; }
+    .tm-assign-pill { display: inline-flex; padding: 2px 8px; background: #eef2ff; color: #4338ca; border-radius: 99px; font-size: 0.69rem; font-weight: 700; margin-bottom: 10px; }
+    .tm-status-row { display: flex; align-items: center; gap: 6px; }
+    .tm-s-btn { display: inline-flex; align-items: center; gap: 4px; padding: 5px 11px; border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; border: 2px solid; cursor: pointer; transition: all .18s; white-space: nowrap; }
+    .tm-s-btn.s-complete { border-color: #16a34a; color: #16a34a; background: transparent; }
+    .tm-s-btn.s-complete.active, .tm-s-btn.s-complete:hover { background: #16a34a; color: white; }
+    .tm-s-btn.s-incomplete { border-color: #dc2626; color: #dc2626; background: transparent; }
+    .tm-s-btn.s-incomplete.active, .tm-s-btn.s-incomplete:hover { background: #dc2626; color: white; }
+    .tm-del-btn { margin-left: auto; background: none; border: none; cursor: pointer; color: #c0d0d0; padding: 4px; display: flex; }
+    .tm-del-btn:hover { color: #dc2626; }
+    .tm-empty { text-align: center; padding: 36px 16px; font-size: 0.82rem; color: #94a3b8; }
+    .tm-form-msg { text-align: center; padding: 8px 16px 0; font-size: 0.8rem; font-weight: 600; display: none; }
+    .tm-form-msg.ok { color: #16a34a; display: block; }
+    .tm-form-msg.err { color: #dc2626; display: block; }
   </style>
 </head>
 <body>
@@ -222,6 +263,17 @@
         <div>
           <h3>Field Work</h3>
           <p>View your assigned customers and visit details</p>
+        </div>
+        <span class="menu-arrow">›</span>
+      </div>
+    </div>
+
+    <div class="menu-card" id="taskmasterMenuCard" onclick="showSection('taskmaster')" style="display:none;">
+      <div class="menu-card-inner">
+        <div class="menu-icon purple">📋</div>
+        <div>
+          <h3>Task Master</h3>
+          <p>View your tasks and assign new ones to the team</p>
         </div>
         <span class="menu-arrow">›</span>
       </div>
@@ -313,6 +365,58 @@
     </div>
   </div>
 
+  <!-- ── TASK MASTER SECTION ── -->
+  <div class="section-view" id="taskmasterView">
+    <button class="back-btn" onclick="showMenu()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back
+    </button>
+    <div class="card">
+      <div class="card-header purple-bg">
+        <div class="card-icon">📋</div>
+        <div>
+          <h2>Task Master</h2>
+          <p id="tmSubtitle">Your tasks</p>
+        </div>
+      </div>
+      <div class="tm-tabs">
+        <div class="tm-tab active" id="tmTabMy" onclick="tmSwitchTab('my')">My Tasks</div>
+        <div class="tm-tab" id="tmTabAll" onclick="tmSwitchTab('all')">All Tasks</div>
+      </div>
+      <div class="tm-toolbar">
+        <span class="tm-count" id="tmCount">0 tasks</span>
+        <button class="tm-new-btn" onclick="tmToggleForm()">+ New Task</button>
+      </div>
+      <div class="tm-add-form" id="tmAddForm">
+        <div class="tm-field">
+          <label>Task Description</label>
+          <input type="text" id="tmFTask" placeholder="Describe the task…" />
+        </div>
+        <div class="tm-field">
+          <label>Assign To</label>
+          <select id="tmFAssign">
+            <option value="">Select person</option>
+            <option>Aravind</option><option>Chola</option><option>Divya</option>
+            <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+            <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
+            <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
+            <option>Veera</option>
+          </select>
+        </div>
+        <div class="tm-field">
+          <label>Final Date</label>
+          <input type="date" id="tmFDate" />
+        </div>
+        <button class="tm-assign-btn" id="tmAssignBtn" onclick="tmAddTask()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:4px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+          Assign via WhatsApp
+        </button>
+        <div class="tm-form-msg" id="tmFormMsg"></div>
+      </div>
+      <div id="tmList"><div class="tm-empty">Loading tasks…</div></div>
+    </div>
+  </div>
+
   <!-- ── REPORT BOTTOM SHEET ── -->
   <div class="report-overlay" id="reportOverlay" onclick="closeReport(event)">
     <div class="report-sheet" id="reportSheet">
@@ -358,12 +462,19 @@
     const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
     const PHONE_MAP = {
+      '9940711559': 'Vanitha',
+      '7708111559': 'Divya',
       '9790611559': 'Chola',
       '9790511559': 'Selva',
+      '9940354445': 'Lakshmi Priya',
+      '9171419911': 'MGR',
+      '9600602079': 'Ganga',
+      '7305111559': 'Gokila',
       '7639779121': 'Aravind',
       '9943945565': 'Nagarajan',
       '9566811559': 'Santhosh',
-      '9677211559': 'Karnan'
+      '9677211559': 'Karnan',
+      '9042811559': 'Veera'
     };
     const FIELD_WORK_EXECS = new Set(['Selva', 'Santhosh', 'Karnan']);
 
@@ -420,6 +531,8 @@
         document.getElementById('fieldworkMenuCard').style.display = 'block';
         loadFWCustomers();
       }
+      document.getElementById('taskmasterMenuCard').style.display = 'block';
+      tmLoadTasks();
       document.getElementById('numberView').style.display = 'none';
       document.getElementById('menuView').style.display = 'flex';
     }
@@ -578,20 +691,22 @@
 
     function showSection(name) {
       document.getElementById('menuView').style.display = 'none';
-      document.getElementById('trackingView').classList.remove('active');
-      document.getElementById('fieldworkView').classList.remove('active');
+      ['trackingView','fieldworkView','taskmasterView'].forEach(id => document.getElementById(id).classList.remove('active'));
       document.getElementById(name + 'View').classList.add('active');
       if (name === 'fieldwork') {
         document.getElementById('fwSubtitle').textContent = `${staffName}'s customers`;
         document.getElementById('fwSearch').value = '';
         renderFW(FW_CUSTOMERS);
       }
+      if (name === 'taskmaster') {
+        document.getElementById('tmSubtitle').textContent = `${staffName}`;
+        tmSwitchTab('my');
+      }
     }
 
     function showMenu() {
       document.getElementById('menuView').style.display = 'flex';
-      document.getElementById('trackingView').classList.remove('active');
-      document.getElementById('fieldworkView').classList.remove('active');
+      ['trackingView','fieldworkView','taskmasterView'].forEach(id => document.getElementById(id).classList.remove('active'));
     }
 
     async function acquireWakeLock() {
@@ -686,6 +801,142 @@
     }
 
     window.addEventListener('beforeunload', e => { if (trackInterval) { e.preventDefault(); e.returnValue = ''; } });
+
+    /* ── TASK MASTER ─────────────────────────────── */
+    let TM_TASKS = [], tmCurrentTab = 'my', tmFormOpen = false;
+
+    const TM_PHONE = {
+      'Vanitha':       '919940711559',
+      'Divya':         '917708111559',
+      'Chola':         '919790611559',
+      'Selva':         '919790511559',
+      'Lakshmi Priya': '919940354445',
+      'MGR':           '919171419911',
+      'Ganga':         '919600602079',
+      'Gokila':        '917305111559',
+      'Aravind':       '917639779121',
+      'Nagarajan':     '919943945565',
+      'Santhosh':      '919566811559',
+      'Karnan':        '919677211559',
+      'Veera':         '919042811559'
+    };
+
+    function tmEsc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    async function tmLoadTasks() {
+      const { data, error } = await sb.from('tasks').select('*').order('created_at', { ascending: false });
+      if (error) { console.error('Task load error:', error.message); return; }
+      TM_TASKS = data || [];
+      tmRenderList();
+    }
+
+    function tmSwitchTab(tab) {
+      tmCurrentTab = tab;
+      document.getElementById('tmTabMy').classList.toggle('active', tab === 'my');
+      document.getElementById('tmTabAll').classList.toggle('active', tab === 'all');
+      tmRenderList();
+    }
+
+    function tmToggleForm() {
+      tmFormOpen = !tmFormOpen;
+      document.getElementById('tmAddForm').classList.toggle('show', tmFormOpen);
+      if (tmFormOpen) {
+        document.getElementById('tmFDate').min = new Date().toISOString().split('T')[0];
+        document.getElementById('tmFTask').focus();
+      }
+    }
+
+    function tmRenderList() {
+      const today = new Date(); today.setHours(0,0,0,0);
+      let list = tmCurrentTab === 'my'
+        ? TM_TASKS.filter(t => t.assign === staffName || t.name === staffName)
+        : TM_TASKS;
+      list = [...list].sort((a,b) => (a.status==='complete'?1:0) - (b.status==='complete'?1:0));
+      const el = document.getElementById('tmList');
+      document.getElementById('tmCount').textContent = `${list.length} task${list.length!==1?'s':''}`;
+      if (!list.length) {
+        el.innerHTML = `<div class="tm-empty">${tmCurrentTab==='my'?'No tasks for you yet.':'No tasks yet.'}</div>`;
+        return;
+      }
+      el.innerHTML = list.map(t => {
+        const date = new Date(t.date+'T00:00:00');
+        const isOverdue = date < today && t.status !== 'complete';
+        const dateStr = date.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+        const rowClass = t.status==='complete'?'row-complete':t.status==='incomplete'?'row-incomplete':'';
+        return `<div class="tm-task-item ${rowClass}">
+          <div class="tm-task-meta">
+            <span class="tm-task-by">From: ${tmEsc(t.name)}</span>
+            <span class="tm-task-date${isOverdue?' overdue':''}">📅 ${dateStr}${isOverdue?' ⚠':''}</span>
+          </div>
+          <div class="tm-task-text">${tmEsc(t.task)}</div>
+          <div class="tm-assign-pill">→ ${tmEsc(t.assign)}</div>
+          <div class="tm-status-row">
+            <button class="tm-s-btn s-complete${t.status==='complete'?' active':''}" data-id="${t.id}" data-status="complete">✓ Done</button>
+            <button class="tm-s-btn s-incomplete${t.status==='incomplete'?' active':''}" data-id="${t.id}" data-status="incomplete">✗ Pending</button>
+            <button class="tm-del-btn" data-del="${t.id}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    document.getElementById('tmList').addEventListener('click', async e => {
+      const sBtn = e.target.closest('.tm-s-btn');
+      const dBtn = e.target.closest('.tm-del-btn');
+      if (sBtn) {
+        const id = sBtn.dataset.id;
+        const task = TM_TASKS.find(t => String(t.id) === String(id));
+        if (!task) return;
+        const newStatus = task.status === sBtn.dataset.status ? 'pending' : sBtn.dataset.status;
+        const { error } = await sb.from('tasks').update({ status: newStatus }).eq('id', id);
+        if (!error) { task.status = newStatus; tmRenderList(); }
+      }
+      if (dBtn) {
+        if (!confirm('Delete this task?')) return;
+        const id = dBtn.dataset.del;
+        const { error } = await sb.from('tasks').delete().eq('id', id);
+        if (!error) { TM_TASKS = TM_TASKS.filter(t => String(t.id) !== String(id)); tmRenderList(); }
+      }
+    });
+
+    async function tmAddTask() {
+      const task   = document.getElementById('tmFTask').value.trim();
+      const assign = document.getElementById('tmFAssign').value;
+      const date   = document.getElementById('tmFDate').value;
+      const msgEl  = document.getElementById('tmFormMsg');
+      if (!task)   { tmShowMsg('Please enter a task description.', false); return; }
+      if (!assign) { tmShowMsg('Please select who to assign to.', false); return; }
+      if (!date)   { tmShowMsg('Please select a final date.', false); return; }
+      const btn = document.getElementById('tmAssignBtn');
+      btn.disabled = true; btn.textContent = 'Assigning…';
+      const { data, error } = await sb.from('tasks').insert({ name: staffName, task, assign, date, status: 'pending' }).select().single();
+      btn.disabled = false; btn.textContent = 'Assign via WhatsApp';
+      if (error) { tmShowMsg('Failed: ' + error.message, false); return; }
+      TM_TASKS.unshift(data);
+      tmRenderList();
+      document.getElementById('tmFTask').value = '';
+      document.getElementById('tmFAssign').value = '';
+      document.getElementById('tmFDate').value = '';
+      tmShowMsg('Task assigned!', true);
+      setTimeout(() => { msgEl.className = 'tm-form-msg'; msgEl.style.display = 'none'; }, 2500);
+      const d = new Date(date+'T00:00:00');
+      const dateStr = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+      const msg = `Hello ${assign} 👋,\n\nYou have been assigned a new task by *${staffName}*.\n\n📋 *Task:* ${task}\n📅 *Deadline:* ${dateStr}\n\nPlease complete it before the deadline.\n\n– Medwell Logix Team`;
+      const phone = TM_PHONE[assign];
+      if (phone) window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function tmShowMsg(msg, ok) {
+      const el = document.getElementById('tmFormMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
+      el.className = 'tm-form-msg ' + (ok ? 'ok' : 'err');
+    }
+
+    sb.channel('tasks_rt_staff')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => tmLoadTasks())
+      .subscribe();
   </script>
 </body>
 </html>
