@@ -529,8 +529,9 @@
     };
     const FIELD_WORK_EXECS = new Set(['Selva', 'Santhosh', 'Karnan']);
 
-    let trackInterval = null, sendCount = 0;
+    let trackInterval = null, watchId = null, sendCount = 0, lastSentAt = 0;
     let wakeLock = null, audioCtx = null, silentNode = null;
+    const MIN_SEND_MS = 55000;
 
     let staffName = '';
     let wrongAttempts = 0;
@@ -794,64 +795,74 @@
       setTimeout(() => el.classList.remove('show'), 6000);
     }
 
-    async function sendLocation(name) {
-      return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) return reject(new Error('Geolocation not supported on this device.'));
-        navigator.geolocation.getCurrentPosition(async pos => {
-          const { latitude, longitude } = pos.coords;
-          const { error } = await sb.from('employee_locations').insert({ employee_name: name, latitude, longitude, status: 'online' });
-          if (error) return reject(error);
-          sendCount++;
-          document.getElementById('dLat').textContent  = latitude.toFixed(5);
-          document.getElementById('dLng').textContent  = longitude.toFixed(5);
-          document.getElementById('dTime').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-          document.getElementById('dCount').innerHTML  = `Locations sent: <strong>${sendCount}</strong>`;
-          document.getElementById('statusSub').textContent = 'Next update in 1 minute';
-          resolve();
-        }, err => reject(new Error('GPS error: ' + err.message)), { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
-      });
+    async function saveLocation(name, latitude, longitude) {
+      const now = Date.now();
+      if (now - lastSentAt < MIN_SEND_MS) return; // rate-limit to ~1 per minute
+      lastSentAt = now;
+      const { error } = await sb.from('employee_locations').insert({ employee_name: name, latitude, longitude, status: 'online' });
+      if (error) { console.error('Location save error:', error.message); return; }
+      sendCount++;
+      document.getElementById('dLat').textContent  = latitude.toFixed(5);
+      document.getElementById('dLng').textContent  = longitude.toFixed(5);
+      document.getElementById('dTime').textContent = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      document.getElementById('dCount').innerHTML  = `Locations sent: <strong>${sendCount}</strong>`;
+      document.getElementById('statusSub').textContent = 'Tracking active — updates every ~1 min';
     }
 
-    async function startTracking() {
+    function startTracking() {
       const phone = document.getElementById('empPhone').value.trim().replace(/\D/g, '');
       const name = PHONE_MAP[phone];
       if (!phone) { showErr('Please enter your mobile number.'); return; }
-      if (!name) { showErr('Number not recognised. Contact admin.'); return; }
+      if (!name)  { showErr('Number not recognised. Contact admin.'); return; }
+      if (!navigator.geolocation) { showErr('Geolocation not supported on this device.'); return; }
+
       const btn = document.getElementById('startBtn');
       btn.disabled = true; btn.textContent = 'Getting location…';
       document.getElementById('statusCard').classList.add('show');
       document.getElementById('dName').textContent = name;
-      sendCount = 0;
-      try {
-        await sendLocation(name);
-        btn.style.display = 'none';
-        document.getElementById('stopBtn').style.display = 'flex';
-        await acquireWakeLock();
-        startSilentAudio();
-        trackInterval = setInterval(async () => {
-          try { await sendLocation(name); } catch(e) { showErr(e.message); }
-        }, 60000);
-      } catch(e) {
-        showErr(e.message);
-        btn.disabled = false;
-        btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
-        document.getElementById('statusCard').classList.remove('show');
-      }
+      sendCount = 0; lastSentAt = 0;
+
+      watchId = navigator.geolocation.watchPosition(
+        async pos => {
+          const { latitude, longitude } = pos.coords;
+          await saveLocation(name, latitude, longitude);
+          // Switch to Stop button on first successful fix
+          if (sendCount === 1) {
+            btn.style.display = 'none';
+            document.getElementById('stopBtn').style.display = 'flex';
+            acquireWakeLock();
+            startSilentAudio();
+          }
+        },
+        err => {
+          showErr('GPS: ' + err.message);
+          // If we never got a fix, reset UI so user can retry
+          if (sendCount === 0) {
+            navigator.geolocation.clearWatch(watchId); watchId = null;
+            btn.disabled = false;
+            btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
+            document.getElementById('statusCard').classList.remove('show');
+          }
+          // If already tracking, keep watching — GPS errors are often temporary
+        },
+        { enableHighAccuracy: true, timeout: 30000, maximumAge: 30000 }
+      );
     }
 
     function stopTracking() {
-      if (trackInterval) { clearInterval(trackInterval); trackInterval = null; }
+      if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+      if (trackInterval)    { clearInterval(trackInterval); trackInterval = null; }
       releaseWakeLock();
       stopSilentAudio();
+      lastSentAt = 0; sendCount = 0;
       const btn = document.getElementById('startBtn');
       btn.style.display = 'flex'; btn.disabled = false;
       btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
       document.getElementById('stopBtn').style.display = 'none';
       document.getElementById('statusCard').classList.remove('show');
-      sendCount = 0;
     }
 
-    window.addEventListener('beforeunload', e => { if (trackInterval) { e.preventDefault(); e.returnValue = ''; } });
+    window.addEventListener('beforeunload', e => { if (watchId !== null || trackInterval) { e.preventDefault(); e.returnValue = ''; } });
 
     /* ── TASK MASTER ─────────────────────────────── */
     let TM_TASKS = [];
