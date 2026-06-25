@@ -794,7 +794,7 @@
         </div>
         <div class="track-sb-info">
           <div class="t-pulse-dot"></div>
-          <span><strong id="tOnlineCount" style="color:rgba(255,255,255,.8);">0</strong> online · <span id="tTotalCount">13</span> total</span>
+          <span><strong id="tOnlineCount" style="color:rgba(255,255,255,.8);">0</strong> online · <span id="tTotalCount">6</span> total</span>
         </div>
         <div class="track-sb-list" id="trackEmpList"></div>
       </div>
@@ -1475,6 +1475,7 @@
 
   /* ── TRACKING STATE ─────────────────────────── */
   const TRACK_EMPLOYEES = ['Chola','Selva','Aravind','Nagarajan','Santhosh','Karnan'];
+  document.getElementById('tTotalCount').textContent = TRACK_EMPLOYEES.length;
   let tMap = null, tSelectedEmp = null;
   const tMarkers = {}, tLiveData = {};
   let tRouteLayer = null, tStartMark = null, tEndMark = null;
@@ -2015,7 +2016,7 @@
     });
   }
 
-  document.getElementById('whAddBtn').addEventListener('click', () => { whEditingId = null; document.getElementById('whModal').classList.remove('hidden'); });
+  document.getElementById('whAddBtn').addEventListener('click', () => { whCloseModal(); document.getElementById('whModal').classList.remove('hidden'); });
   document.getElementById('whModalClose').addEventListener('click', whCloseModal);
   document.getElementById('whModalCancel').addEventListener('click', whCloseModal);
   document.getElementById('whModal').addEventListener('click', e => { if (e.target===document.getElementById('whModal')) whCloseModal(); });
@@ -2164,11 +2165,10 @@
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     if (document.getElementById('rptOverlay').classList.contains('show'))         { closeRptOverlay(); return; }
-    if (!document.getElementById('confirmOverlay').classList.contains('open') === false) { closeConfirm(); return; }
     if (!document.getElementById('clModal').classList.contains('hidden'))         { clCloseModal(); return; }
     if (!document.getElementById('whModal').classList.contains('hidden'))         { whCloseModal(); return; }
     if (!document.getElementById('whImportDialog').classList.contains('hidden'))  { closeWhImportDialog(null); return; }
-    if (document.getElementById('editOverlay').classList.contains('open'))        { closeModal(); return; }
+    if (document.getElementById('editOverlay').classList.contains('open'))        { closeEdit(); return; }
     if (document.getElementById('confirmOverlay').classList.contains('open'))     { closeConfirm(); return; }
   });
 
