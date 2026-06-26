@@ -871,12 +871,13 @@
       );
     }
 
-    function startTracking() {
+    async function startTracking() {
       const phone = document.getElementById('empPhone').value.trim().replace(/\D/g, '');
-      const name = PHONE_MAP[phone];
       if (!phone) { showErr('Please enter your mobile number.'); return; }
-      if (!name)  { showErr('Number not recognised. Contact admin.'); return; }
       if (!navigator.geolocation) { showErr('Geolocation not supported on this device.'); return; }
+      const hash = await sha256(phone);
+      const name = PHONE_MAP[hash];
+      if (!name)  { showErr('Number not recognised. Contact admin.'); return; }
 
       trackingBtn  = document.getElementById('startBtn');
       trackingName = name;
