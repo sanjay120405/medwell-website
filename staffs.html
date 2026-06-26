@@ -780,6 +780,7 @@
       }
     });
 
+    let audioKeepAlive = null;
     function startSilentAudio() {
       try {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -790,9 +791,14 @@
         gain.connect(audioCtx.destination);
         osc.start();
         silentNode = osc;
+        // Resume AudioContext if iOS suspends it — keeps the background session alive
+        audioKeepAlive = setInterval(() => {
+          if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        }, 30000);
       } catch(e) {}
     }
     function stopSilentAudio() {
+      if (audioKeepAlive) { clearInterval(audioKeepAlive); audioKeepAlive = null; }
       try { if (silentNode) silentNode.stop(); if (audioCtx) audioCtx.close(); } catch(e) {}
       audioCtx = null; silentNode = null;
     }
