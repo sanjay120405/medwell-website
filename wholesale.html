@@ -503,7 +503,11 @@
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
   const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
-  const CREDS = { user: 'medwelladmin', pass: 'Medwell@2024' };
+  const CREDS_HASH = 'd7d7aadbab9bcf93e029c216c8822cdd2d9279ac51bdd111eebb0555613c93ae';
+  async function sha256(s) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
   const PAGE_SIZE = 50;
   let ITEMS = [], filteredRows = [], currentTerms = { product:'', company:'', category:'' };
   let currentPage = 1, editingId = null;
@@ -802,11 +806,12 @@
   });
 
   // LOGIN
-  document.getElementById('loginForm').addEventListener('submit', e => {
+  document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
     const u = document.getElementById('loginUser').value.trim();
     const p = document.getElementById('loginPass').value;
-    if (u === CREDS.user && p === CREDS.pass) {
+    const hash = await sha256(u + ':' + p);
+    if (hash === CREDS_HASH) {
       document.getElementById('loginOverlay').classList.add('hidden');
       loadItems();
     } else {

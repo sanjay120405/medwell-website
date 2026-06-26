@@ -446,19 +446,13 @@
 
   /* ── PHONE MAP ───────────────────────────────── */
   const PHONE = {
-    'Vanitha':      '919940711559',
-    'Divya':        '917708111559',
-    'Chola':        '919790611559',
-    'Selva':        '919790511559',
-    'Lakshmi Priya':'919940354445',
-    'MGR':          '919171419911',
-    'Ganga':        '919600602079',
-    'Gokila':       '917305111559',
-    'Aravind':      '917639779121',
-    'Nagarajan':    '919943945565',
-    'Santhosh':     '919566811559',
-    'Karnan':       '919677211559',
-    'Veera':        '919042811559'
+    'Vanitha':'OTE5OTQwNzExNTU5','Divya':'OTE3NzA4MTExNTU5',
+    'Chola':'OTE5NzkwNjExNTU5','Selva':'OTE5NzkwNTExNTU5',
+    'Lakshmi Priya':'OTE5OTQwMzU0NDQ1','MGR':'OTE5MTcxNDE5OTEx',
+    'Ganga':'OTE5NjAwNjAyMDc5','Gokila':'OTE3MzA1MTExNTU5',
+    'Aravind':'OTE3NjM5Nzc5MTIx','Nagarajan':'OTE5OTQzOTQ1NTY1',
+    'Santhosh':'OTE5NTY2ODExNTU5','Karnan':'OTE5Njc3MjExNTU5',
+    'Veera':'OTE5MDQyODExNTU5'
   };
 
   /* ── ASSIGN TASK ─────────────────────────────── */
@@ -488,7 +482,7 @@
     // Build WhatsApp message
     const msg = `Hello ${assign} 👋,\n\nYou have been assigned a new task by *${name}*.\n\n📋 *Task:* ${task}\n📅 *Deadline:* ${dateStr}\n\nPlease complete it before the deadline.\n\n– Medwell Logix Team`;
 
-    const phone = PHONE[assign];
+    const phone = PHONE[assign] ? atob(PHONE[assign]) : null;
     if (phone) {
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
     } else {

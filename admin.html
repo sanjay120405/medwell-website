@@ -1018,9 +1018,12 @@
 
 <script>
   /* ── AUTH ───────────────────────────────────── */
-  const ADMIN_USER = 'medwelladmin';
-  const ADMIN_PWD  = 'Medwell@2024';
+  const ADMIN_HASH  = 'd7d7aadbab9bcf93e029c216c8822cdd2d9279ac51bdd111eebb0555613c93ae';
   const SESSION_KEY = 'mw_admin_auth';
+  async function sha256(s) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
   const LS_KEY = 'medwell_products_v2';
 
   /* ── SUPABASE ───────────────────────────────── */
@@ -1048,11 +1051,12 @@
     }
   });
 
-  document.getElementById('loginForm').addEventListener('submit', e => {
+  document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
     const user = document.getElementById('userInput').value.trim();
     const pwd  = document.getElementById('pwdInput').value;
-    if (user === ADMIN_USER && pwd === ADMIN_PWD) {
+    const hash = await sha256(user + ':' + pwd);
+    if (hash === ADMIN_HASH) {
       sessionStorage.setItem(SESSION_KEY, '1');
       bootAdmin();
     } else {
