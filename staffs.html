@@ -806,7 +806,12 @@
       document.getElementById('fwCFLocation').value = '';
       document.getElementById('fwCFAddress').value = '';
       document.getElementById('fwCFType').value = 'Dealer';
-      document.getElementById('fwCFExec').value = FIELD_WORK_EXECS.has(staffName) ? staffName : '';
+      const execSel = document.getElementById('fwCFExec');
+      if (FIELD_WORK_EXECS.has(staffName)) {
+        execSel.innerHTML = `<option value="${staffName}">${staffName}</option>`;
+      } else {
+        execSel.innerHTML = '<option value="">— Select —</option><option>Chola</option><option>Karnan</option><option>Santhosh</option><option>Selva</option>';
+      }
       document.getElementById('fwCustErr').textContent = '';
       document.getElementById('fwCustSave').disabled = false;
       document.getElementById('fwCustOverlay').classList.add('show');
