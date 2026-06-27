@@ -1363,6 +1363,9 @@
   document.getElementById('importFile').addEventListener('change', function() {
     const file = this.files[0];
     if (!file) return;
+    this.value = '';
+    const btn = document.getElementById('importBtn');
+    btn.disabled = true; btn.textContent = 'Importing…';
     const reader = new FileReader();
     reader.onload = async function(e) {
       try {
@@ -1373,14 +1376,14 @@
 
         const colMap = {
           code:     ['Code','CODE','code'],
-          product:  ['Product','PRODUCT','product','Name','name'],
-          pkg:      ['Pkg','PKG','pkg','Packing','packing','Pack'],
+          product:  ['Product','PRODUCT','product','Name','name','Product Name'],
+          pkg:      ['Pkg','PKG','pkg','Packing','packing','Pack','pack','PACK'],
           company:  ['Company','COMPANY','company'],
           molecule: ['Molecule','MOLECULE','molecule'],
           category: ['Category','CATEGORY','category'],
           rate:     ['Sales Rate','SALES RATE','sales rate','Rate','rate','Price','price'],
           tax:      ['Tax%','TAX%','tax%','Tax','tax','GST','gst'],
-          mrp:      ['MRP','mrp','M.R.P']
+          mrp:      ['MRP','mrp','M.R.P','M.R.P.']
         };
 
         function getVal(row, keys) {
@@ -1388,7 +1391,7 @@
           return '';
         }
 
-        let added = 0, skipped = 0;
+        let added = 0, updated = 0, skipped = 0;
         const existingCodes = new Set(products.map(p => String(p[0]).trim().toLowerCase()));
         const toInsert = [];
         const toUpdate = [];
@@ -1413,17 +1416,21 @@
               entry[9] = products[idx][9];
               products[idx] = entry;
               toUpdate.push({ id: entry[9], row: arrToRow(entry) });
+              updated++;
             }
           } else {
             toInsert.push(entry);
             if (code) existingCodes.add(code.toLowerCase());
+            added++;
           }
-          added++;
         });
 
-        // Sync updates to Supabase
+        // Sync updates to Supabase — with error handling
         for (const { id, row } of toUpdate) {
-          if (id) await sb.from('products').update(row).eq('id', id);
+          if (id) {
+            const { error } = await sb.from('products').update(row).eq('id', id);
+            if (error) console.warn('Update failed for id', id, error.message);
+          }
         }
 
         // Batch insert new rows to Supabase
@@ -1431,10 +1438,7 @@
           const chunk = toInsert.slice(i, i + 100);
           const { data, error } = await sb.from('products').insert(chunk.map(arrToRow)).select();
           if (!error && data) {
-            data.forEach((r, j) => {
-              chunk[j][9] = r.id;
-              products.push(chunk[j]);
-            });
+            data.forEach((r, j) => { chunk[j][9] = r.id; products.push(chunk[j]); });
           } else {
             chunk.forEach(e => products.push(e));
           }
@@ -1443,13 +1447,17 @@
         persist();
         refreshStats();
         runSearch();
-        toast(`Imported ${added} products${skipped ? `, ${skipped} skipped` : ''}.`, 'success');
+        const parts = [];
+        if (added)   parts.push(`${added} added`);
+        if (updated) parts.push(`${updated} updated`);
+        if (skipped) parts.push(`${skipped} skipped`);
+        toast(`Import complete: ${parts.join(', ')}.`, 'success');
       } catch(err) {
         toast('Failed to read file: ' + err.message, 'error');
       }
+      btn.disabled = false; btn.textContent = 'Import';
     };
     reader.readAsArrayBuffer(file);
-    this.value = '';
   });
 
   /* ── RESET ──────────────────────────────────── */
@@ -2100,7 +2108,7 @@
         // Build valid entries
         const entries = []; let preSkipped = 0;
         for (const row of rows) {
-          const product = get(row, ['Product*','Product','product','PRODUCT']);
+          const product = get(row, ['Product*','Product','product','PRODUCT','Product Name','PRODUCT NAME','product name']);
           if (!product) { preSkipped++; continue; }
           entries.push({
             item:       get(row,  ['Item Code','item','ITEM CODE']),
@@ -2132,7 +2140,7 @@
         btn.disabled = true; btn.textContent = 'Importing…';
 
         if (choice === 'replace') {
-          const { error } = await sb.from('wholesale').delete().gte('id', 1);
+          const { error } = await sb.from('wholesale').delete().not('id', 'is', null);
           if (error) { alert('Failed to clear existing items: ' + error.message); btn.disabled = false; btn.textContent = 'Import'; return; }
         }
 
@@ -2276,6 +2284,18 @@
         }
 
         if (!entries.length) { toast('No valid rows found — make sure the file has a "Name" column.', 'error'); btn.disabled=false; btn.textContent='Import'; return; }
+
+        // Ask replace or append (same pattern as wholesale)
+        const existing = CL_CUSTOMERS.length;
+        let replaceAll = false;
+        if (existing > 0) {
+          const choice = confirm(`${existing} customers already exist.\n\nOK = Replace All (delete existing first)\nCancel = Add to Existing`);
+          replaceAll = choice;
+        }
+        if (replaceAll) {
+          const { error: delErr } = await sb.from('customers').delete().not('id', 'is', null);
+          if (delErr) { toast('Failed to clear existing customers: ' + delErr.message, 'error'); btn.disabled=false; btn.textContent='Import'; return; }
+        }
 
         // Batch insert in chunks of 100
         let added = 0, skipped = preSkipped;
