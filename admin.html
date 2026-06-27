@@ -989,7 +989,15 @@
     </div>
     <div class="cl-modal-grid">
       <div class="cl-mf full"><label>Customer Name *</label><input type="text" id="clFName" placeholder="Full name" /></div>
-      <div class="cl-mf"><label>Executive</label><input type="text" id="clFExec" placeholder="Assigned executive" /></div>
+      <div class="cl-mf"><label>Executive</label>
+        <select id="clFExec">
+          <option value="">— Select Executive —</option>
+          <option>Chola</option>
+          <option>Karnan</option>
+          <option>Santhosh</option>
+          <option>Selva</option>
+        </select>
+      </div>
       <div class="cl-mf"><label>Type</label>
         <select id="clFType">
           <option value="Dealer">Dealer</option>
@@ -1800,8 +1808,9 @@
     document.getElementById('clModalErr').textContent = '';
     document.getElementById('clModalTitle').textContent = 'Add New Customer';
     document.getElementById('clModalSave').textContent = 'Save Customer';
-    ['clFName','clFExec','clFInst','clFContactName','clFContactNum','clFLocation','clFAddress'].forEach(id => document.getElementById(id).value='');
+    ['clFName','clFInst','clFContactName','clFContactNum','clFLocation','clFAddress'].forEach(id => document.getElementById(id).value='');
     document.getElementById('clFType').value = 'Dealer';
+    document.getElementById('clFExec').value = '';
   }
   function clOpenEdit(id) {
     const c = CL_CUSTOMERS.find(r => String(r[8])===String(id)); if (!c) return;
