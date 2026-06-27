@@ -221,6 +221,29 @@
     #taskmasterView .tm-del-btn:hover { color: #ef4444; }
     #taskmasterView .tm-empty { text-align: center; padding: 60px 24px; color: #6B8A8A; }
     #taskmasterView .tm-empty p { font-family: 'Poppins',sans-serif; font-size: 0.9rem; margin-top: 12px; }
+
+    /* ── ADD CUSTOMER MODAL ── */
+    .fw-add-cust-btn { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 12px 16px; padding: 10px 16px; background: var(--orange); color: white; border: none; border-radius: 10px; font-family: 'Poppins',sans-serif; font-size: 0.83rem; font-weight: 700; cursor: pointer; width: calc(100% - 32px); }
+    .fw-add-cust-btn:active { opacity: .85; }
+    .fw-cust-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(4,64,64,.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .fw-cust-overlay.show { opacity: 1; pointer-events: all; }
+    .fw-cust-card { background: white; border-radius: 18px; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+    .fw-cust-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid #e0ecec; }
+    .fw-cust-header h3 { font-size: 1rem; font-weight: 800; color: #0f2a2a; margin: 0; }
+    .fw-cust-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #7a9e9e; padding: 4px 8px; line-height: 1; }
+    .fw-cust-body { padding: 18px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fw-cust-mf { display: flex; flex-direction: column; gap: 5px; }
+    .fw-cust-mf.full { grid-column: 1/-1; }
+    .fw-cust-mf label { font-size: 0.7rem; font-weight: 700; color: #5a7a7a; text-transform: uppercase; letter-spacing: .05em; }
+    .fw-cust-mf input, .fw-cust-mf select { padding: 9px 12px; border: 1.5px solid #dde8e8; border-radius: 9px; font-family: 'Poppins',sans-serif; font-size: 0.82rem; color: #1a2e2e; background: #f8fafa; width: 100%; box-sizing: border-box; }
+    .fw-cust-mf input:focus, .fw-cust-mf select:focus { outline: none; border-color: var(--orange); background: white; }
+    .fw-cust-err { color: #dc2626; font-size: 0.75rem; padding: 0 20px 8px; min-height: 20px; }
+    .fw-cust-footer { display: flex; gap: 10px; padding: 12px 20px 20px; }
+    .fw-cust-cancel { flex: 1; padding: 11px; border: 1.5px solid #dde8e8; border-radius: 10px; background: white; font-family: 'Poppins',sans-serif; font-size: 0.85rem; font-weight: 600; color: #5a7a7a; cursor: pointer; }
+    .fw-cust-save { flex: 2; padding: 11px; background: var(--orange); border: none; border-radius: 10px; font-family: 'Poppins',sans-serif; font-size: 0.85rem; font-weight: 700; color: white; cursor: pointer; }
+    .fw-cust-save:disabled { opacity: .6; cursor: not-allowed; }
+    .fw-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: #0f2a2a; color: white; padding: 12px 22px; border-radius: 12px; font-size: 0.82rem; font-weight: 600; opacity: 0; transition: all .3s; z-index: 10000; pointer-events: none; white-space: nowrap; }
+    .fw-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -371,11 +394,58 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input class="fw-search" id="fwSearch" type="text" placeholder="Search by name or location…" oninput="filterFW()" />
       </div>
+      <button class="fw-add-cust-btn" onclick="openFWCustModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add Customer
+      </button>
       <div class="fw-list" id="fwList">
         <div class="fw-loading">Loading your customers…</div>
       </div>
     </div>
   </div>
+
+  <!-- ── ADD CUSTOMER MODAL ── -->
+  <div class="fw-cust-overlay" id="fwCustOverlay">
+    <div class="fw-cust-card">
+      <div class="fw-cust-header">
+        <h3>Add New Customer</h3>
+        <button class="fw-cust-close" onclick="closeFWCustModal()">✕</button>
+      </div>
+      <div class="fw-cust-body">
+        <div class="fw-cust-mf full"><label>Customer Name *</label><input type="text" id="fwCFName" placeholder="Full name" /></div>
+        <div class="fw-cust-mf">
+          <label>Executive</label>
+          <select id="fwCFExec">
+            <option value="">— Select —</option>
+            <option>Chola</option><option>Karnan</option><option>Santhosh</option><option>Selva</option>
+          </select>
+        </div>
+        <div class="fw-cust-mf">
+          <label>Type</label>
+          <select id="fwCFType">
+            <option value="Dealer">Dealer</option>
+            <option value="Hospital">Hospital</option>
+            <option value="Medical Shop">Medical Shop</option>
+            <option value="Clinic">Clinic</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="fw-cust-mf full"><label>Institution Name</label><input type="text" id="fwCFInst" placeholder="Institution / shop name" /></div>
+        <div class="fw-cust-mf"><label>Contact Name</label><input type="text" id="fwCFContactName" placeholder="Contact person" /></div>
+        <div class="fw-cust-mf"><label>Contact Number</label><input type="tel" id="fwCFContactNum" placeholder="Phone number" inputmode="numeric" /></div>
+        <div class="fw-cust-mf"><label>Location</label><input type="text" id="fwCFLocation" placeholder="City / area" /></div>
+        <div class="fw-cust-mf full"><label>Address</label><input type="text" id="fwCFAddress" placeholder="Full address" /></div>
+      </div>
+      <div class="fw-cust-err" id="fwCustErr"></div>
+      <div class="fw-cust-footer">
+        <button class="fw-cust-cancel" onclick="closeFWCustModal()">Cancel</button>
+        <button class="fw-cust-save" id="fwCustSave" onclick="saveFWCustomer()">Save Customer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div class="fw-toast" id="fwToast"></div>
 
   <!-- ── TASK MASTER SECTION ── -->
   <div class="section-view" id="taskmasterView">
@@ -725,6 +795,61 @@
         (c.location || '').toLowerCase().includes(q) ||
         (c.institution || '').toLowerCase().includes(q)
       ));
+    }
+
+    /* ── Add Customer Modal ── */
+    function openFWCustModal() {
+      document.getElementById('fwCFName').value = '';
+      document.getElementById('fwCFInst').value = '';
+      document.getElementById('fwCFContactName').value = '';
+      document.getElementById('fwCFContactNum').value = '';
+      document.getElementById('fwCFLocation').value = '';
+      document.getElementById('fwCFAddress').value = '';
+      document.getElementById('fwCFType').value = 'Dealer';
+      document.getElementById('fwCFExec').value = FIELD_WORK_EXECS.has(staffName) ? staffName : '';
+      document.getElementById('fwCustErr').textContent = '';
+      document.getElementById('fwCustSave').disabled = false;
+      document.getElementById('fwCustOverlay').classList.add('show');
+      setTimeout(() => document.getElementById('fwCFName').focus(), 100);
+    }
+
+    function closeFWCustModal() {
+      document.getElementById('fwCustOverlay').classList.remove('show');
+    }
+
+    async function saveFWCustomer() {
+      const name = document.getElementById('fwCFName').value.trim();
+      if (!name) { document.getElementById('fwCustErr').textContent = 'Customer name is required.'; return; }
+      const payload = {
+        name,
+        executive: document.getElementById('fwCFExec').value.trim(),
+        type: document.getElementById('fwCFType').value,
+        institution: document.getElementById('fwCFInst').value.trim(),
+        contact_name: document.getElementById('fwCFContactName').value.trim(),
+        contact_number: document.getElementById('fwCFContactNum').value.trim(),
+        location: document.getElementById('fwCFLocation').value.trim(),
+        address: document.getElementById('fwCFAddress').value.trim()
+      };
+      document.getElementById('fwCustSave').disabled = true;
+      document.getElementById('fwCustErr').textContent = '';
+      const { error } = await sb.from('customers').insert([payload]);
+      if (error) {
+        document.getElementById('fwCustErr').textContent = 'Save failed: ' + error.message;
+        document.getElementById('fwCustSave').disabled = false;
+        return;
+      }
+      closeFWCustModal();
+      fwShowToast('Customer added ✓');
+      loadFWCustomers();
+    }
+
+    let fwToastTimer = null;
+    function fwShowToast(msg) {
+      const t = document.getElementById('fwToast');
+      t.textContent = msg;
+      t.classList.add('show');
+      if (fwToastTimer) clearTimeout(fwToastTimer);
+      fwToastTimer = setTimeout(() => t.classList.remove('show'), 3000);
     }
 
     function showLockout(remainingMs) {
