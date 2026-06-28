@@ -913,6 +913,8 @@
         // watchPosition may have been killed while backgrounded — restart it
         if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
         attachWatchPosition();
+        // AudioContext may have been closed (not just suspended) by iOS — restart if so
+        if (audioCtx && audioCtx.state === 'closed') { stopSilentAudio(); startSilentAudio(); }
       }
     });
 
