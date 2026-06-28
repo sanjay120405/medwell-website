@@ -532,9 +532,15 @@
 
   async function loadItems() {
     document.getElementById('tableBody').innerHTML = '<tr><td colspan="19" style="text-align:center;padding:40px;color:var(--text-muted);">Loading…</td></tr>';
-    const { data, error } = await sb.from('wholesale').select('*').order('id');
-    if (error) { document.getElementById('tableBody').innerHTML = '<tr><td colspan="19" style="text-align:center;padding:40px;color:#e74c3c;">Error loading data — please refresh.</td></tr>'; return; }
-    ITEMS = (data || []).map(rowToArr);
+    const PAGE_W = 1000; let allW = [], fromW = 0;
+    while (true) {
+      const { data: wd, error } = await sb.from('wholesale').select('*').order('id').range(fromW, fromW + PAGE_W - 1);
+      if (error) { document.getElementById('tableBody').innerHTML = '<tr><td colspan="19" style="text-align:center;padding:40px;color:#e74c3c;">Error loading data — please refresh.</td></tr>'; return; }
+      allW = allW.concat(wd || []);
+      if (!wd || wd.length < PAGE_W) break;
+      fromW += PAGE_W;
+    }
+    ITEMS = allW.map(rowToArr);
     const companies  = new Set(ITEMS.map(c => c[14]).filter(Boolean));
     const categories = new Set(ITEMS.map(c => c[4]).filter(Boolean));
     document.getElementById('statTotal').textContent     = ITEMS.length;

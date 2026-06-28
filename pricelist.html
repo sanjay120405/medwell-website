@@ -1177,8 +1177,15 @@
   // Load from Supabase with localStorage fallback
   async function loadProducts() {
     try {
-      const { data, error } = await sb_pl.from('products').select('*').order('id');
-      if (error) throw error;
+      const PAGE_PL = 1000; let allPL = [], fromPL = 0;
+      while (true) {
+        const { data: pld, error } = await sb_pl.from('products').select('*').order('id').range(fromPL, fromPL + PAGE_PL - 1);
+        if (error) throw error;
+        allPL = allPL.concat(pld || []);
+        if (!pld || pld.length < PAGE_PL) break;
+        fromPL += PAGE_PL;
+      }
+      const data = allPL;
       if (data && data.length > 0) {
         PRODUCTS = data.map(r => [r.code||'', r.product||'', r.packing||'', r.company||'', r.molecule||'', r.category||'', +r.sales_rate||0, +r.tax||0, +r.mrp||0, r.id]);
         TOTAL = PRODUCTS.length;
