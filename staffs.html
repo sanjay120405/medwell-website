@@ -169,6 +169,7 @@
     .submit-msg.err { color: var(--red); display: block; }
 
     .footer-tip { text-align: center; color: rgba(255,255,255,.3); font-size: 0.68rem; margin-top: 22px; max-width: 340px; line-height: 1.7; }
+    .track-warn { background: #fff3cd; color: #7a5a00; font-size: 0.78rem; font-weight: 600; padding: 10px 14px; border-radius: 10px; margin: 12px 0 4px; line-height: 1.5; border: 1px solid #f0d070; }
 
     /* ── TASK MASTER ── */
     .menu-icon.purple { background: linear-gradient(135deg, #4338ca, #6366f1); }
@@ -363,7 +364,10 @@
       </div>
     </div>
 
-    <p class="footer-tip">Tracking runs in the background. You can switch apps or lock your screen — your location will still update every 1 minute.</p>
+    <div class="track-warn" id="trackWarn" style="display:none;">
+      ⚠️ Keep this browser tab open. Locking the screen is fine — but switching to another app will pause tracking on iPhone.
+    </div>
+    <p class="footer-tip">Lock screen: tracking continues. Switch apps on iPhone: tracking pauses until you return.</p>
   </div>
 
   <!-- ── FIELD WORK SECTION ── -->
@@ -909,6 +913,14 @@
       if (wakeLock) { wakeLock.release(); wakeLock = null; }
     }
     document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' && trackingName && watchId !== null) {
+        // Going to background — push last known position immediately before JS gets paused
+        navigator.geolocation.getCurrentPosition(
+          pos => saveLocation(pos.coords.latitude, pos.coords.longitude),
+          () => {},
+          { enableHighAccuracy: false, timeout: 4000, maximumAge: 60000 }
+        );
+      }
       if (document.visibilityState === 'visible' && trackingName) {
         acquireWakeLock();
         // watchPosition may have been killed while backgrounded — restart it
@@ -918,6 +930,7 @@
         resetWatchdog(); // re-arm watchdog so it doesn't race with the new watch
         // AudioContext may have been closed (not just suspended) by iOS — restart if so
         if (audioCtx && audioCtx.state === 'closed') { stopSilentAudio(); startSilentAudio(); }
+        else if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
       }
     });
 
@@ -925,23 +938,38 @@
     function startSilentAudio() {
       try {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        gain.gain.value = 0.001;
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        silentNode = osc;
-        // Resume AudioContext if iOS suspends it — keeps the background session alive
+        // Repeating buffer chain — iOS recognises each play event and keeps the audio session alive.
+        // A continuous oscillator at 0.001 gain gets detected as silence and killed.
+        function playNextBuffer() {
+          if (!audioCtx || audioCtx.state === 'closed' || !trackingName) return;
+          if (audioCtx.state === 'suspended') { audioCtx.resume().then(playNextBuffer); return; }
+          const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.2, audioCtx.sampleRate);
+          const src = audioCtx.createBufferSource();
+          const gain = audioCtx.createGain();
+          gain.gain.value = 0.01; // barely audible, not detectable as silence
+          src.buffer = buf;
+          src.connect(gain);
+          gain.connect(audioCtx.destination);
+          src.onended = () => setTimeout(playNextBuffer, 5000); // chain next buffer every 5s
+          src.start();
+          silentNode = src;
+        }
+        playNextBuffer();
+        // Tell iOS this is active media — prevents audio session from being killed in background
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({ title: 'Location Tracking Active', artist: 'Medwell Logix' });
+          navigator.mediaSession.playbackState = 'playing';
+        }
         audioKeepAlive = setInterval(() => {
           if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        }, 30000);
+        }, 5000);
       } catch(e) {}
     }
     function stopSilentAudio() {
       if (audioKeepAlive) { clearInterval(audioKeepAlive); audioKeepAlive = null; }
-      try { if (silentNode) silentNode.stop(); if (audioCtx) audioCtx.close(); } catch(e) {}
+      try { if (silentNode) { silentNode.onended = null; silentNode.stop(); } if (audioCtx) audioCtx.close(); } catch(e) {}
       audioCtx = null; silentNode = null;
+      if ('mediaSession' in navigator) { try { navigator.mediaSession.playbackState = 'none'; } catch(e) {} }
     }
 
     function showErr(msg) {
@@ -1029,6 +1057,7 @@
       trackingName = name;
       trackingBtn.disabled = true; trackingBtn.textContent = 'Getting location…';
       document.getElementById('statusCard').classList.add('show');
+      document.getElementById('trackWarn').style.display = 'block';
       document.getElementById('dName').textContent = name;
       sendCount = 0; lastSentAt = 0; gotFix = false; gpsRetries = 0;
 
@@ -1048,6 +1077,7 @@
       btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
       document.getElementById('stopBtn').style.display = 'none';
       document.getElementById('statusCard').classList.remove('show');
+      document.getElementById('trackWarn').style.display = 'none';
     }
 
     window.addEventListener('beforeunload', e => { if (trackingName) { e.preventDefault(); e.returnValue = ''; } });
