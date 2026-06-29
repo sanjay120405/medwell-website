@@ -609,8 +609,7 @@
     const FIELD_WORK_EXECS = new Set(['Selva', 'Santhosh', 'Karnan', 'Chola']);
 
     let trackInterval = null, watchId = null, watchdogTimer = null;
-    let sendCount = 0, lastSentAt = 0, gotFix = false, gpsRetries = 0;
-    const MAX_GPS_RETRIES = 5;
+    let sendCount = 0, lastSentAt = 0, gotFix = false;
     let trackingName = null, trackingBtn = null;
     let wakeLock = null, audioCtx = null, silentNode = null;
     const MIN_SEND_MS = 55000;
@@ -1010,34 +1009,23 @@
     function attachWatchPosition() {
       watchId = navigator.geolocation.watchPosition(
         async pos => {
-          gpsRetries = 0;
-          resetWatchdog(); // GPS is alive — reset the 90-second timer
+          if (!trackingName) return; // tracking was stopped while waiting
+          resetWatchdog();
           const { latitude, longitude } = pos.coords;
           if (!gotFix) {
             gotFix = true;
-            trackingBtn.style.display = 'none';
-            document.getElementById('stopBtn').style.display = 'flex';
-            acquireWakeLock();
-            startSilentAudio();
+            document.getElementById('statusSub').textContent = 'Tracking active — updates every ~1 min';
           }
           await saveLocation(latitude, longitude);
         },
         err => {
-          showErr('GPS: ' + err.message);
+          if (!trackingName) return; // tracking was stopped while waiting
+          showErr(err.code === 1 ? 'Allow location in browser settings' : 'GPS: ' + err.message);
           if (!gotFix) {
-            // Before first fix: retry a few times before giving up
-            gpsRetries++;
+            // Haven't gotten first fix — clear this watch and retry in 5s
+            // NEVER auto-cancel: only the Stop button can stop tracking
             navigator.geolocation.clearWatch(watchId); watchId = null;
-            if (gpsRetries <= MAX_GPS_RETRIES) {
-              setTimeout(attachWatchPosition, 4000);
-            } else {
-              gpsRetries = 0;
-              clearWatchdog();
-              trackingBtn.disabled = false;
-              trackingBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Start Tracking';
-              document.getElementById('statusCard').classList.remove('show');
-              trackingName = null; trackingBtn = null;
-            }
+            setTimeout(() => { if (trackingName) attachWatchPosition(); }, 5000);
           }
           // After first fix, errors are non-fatal — watchdog handles restarts
         },
@@ -1055,12 +1043,20 @@
 
       trackingBtn  = document.getElementById('startBtn');
       trackingName = name;
-      trackingBtn.disabled = true; trackingBtn.textContent = 'Getting location…';
+      sendCount = 0; lastSentAt = 0; gotFix = false;
+
+      // Show Stop button immediately — user can always stop, even before first GPS fix
+      trackingBtn.style.display = 'none';
+      document.getElementById('stopBtn').style.display = 'flex';
       document.getElementById('statusCard').classList.add('show');
       document.getElementById('trackWarn').style.display = 'block';
       document.getElementById('dName').textContent = name;
-      sendCount = 0; lastSentAt = 0; gotFix = false; gpsRetries = 0;
+      document.getElementById('statusSub').textContent = 'Getting your location…';
 
+      // Start audio + wake lock immediately (don't wait for first fix)
+      // This keeps iOS browser alive even before GPS acquires signal
+      acquireWakeLock();
+      startSilentAudio();
       attachWatchPosition();
     }
 
@@ -1070,7 +1066,7 @@
       if (trackInterval)    { clearInterval(trackInterval); trackInterval = null; }
       releaseWakeLock();
       stopSilentAudio();
-      lastSentAt = 0; sendCount = 0; gotFix = false; gpsRetries = 0;
+      lastSentAt = 0; sendCount = 0; gotFix = false;
       trackingName = null; trackingBtn = null;
       const btn = document.getElementById('startBtn');
       btn.style.display = 'flex'; btn.disabled = false;
