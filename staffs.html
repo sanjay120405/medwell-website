@@ -924,7 +924,6 @@
         acquireWakeLock();
         // watchPosition may have been killed while backgrounded — restart it
         if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
-        gpsRetries = 0;
         attachWatchPosition();
         resetWatchdog(); // re-arm watchdog so it doesn't race with the new watch
         // AudioContext may have been closed (not just suspended) by iOS — restart if so
@@ -980,8 +979,10 @@
     async function saveLocation(latitude, longitude) {
       const now = Date.now();
       if (now - lastSentAt < MIN_SEND_MS) return;
+      const employeeName = trackingName; // capture before async gap — stopTracking() could null it
+      if (!employeeName) return;
       lastSentAt = now;
-      const { error } = await sb.from('employee_locations').insert({ employee_name: trackingName, latitude, longitude, status: 'online' });
+      const { error } = await sb.from('employee_locations').insert({ employee_name: employeeName, latitude, longitude, status: 'online' });
       if (error) { console.error('Location save error:', error.message); return; }
       sendCount++;
       document.getElementById('dLat').textContent  = latitude.toFixed(5);
@@ -1058,6 +1059,7 @@
       acquireWakeLock();
       startSilentAudio();
       attachWatchPosition();
+      resetWatchdog(); // arm watchdog from start — covers devices that fire no GPS callbacks at all
     }
 
     function stopTracking() {
