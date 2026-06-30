@@ -263,6 +263,13 @@
     #tabCustomers .cl-add-btn.import:hover  { background: #1d4ed8; }
     #tabCustomers .cl-add-btn.report  { background: #7c3aed; color: white; }
     #tabCustomers .cl-add-btn.report:hover  { background: #6d28d9; }
+    #tabCustomers .cl-add-btn.tvrpt  { background: #0d9488; color: white; }
+    #tabCustomers .cl-add-btn.tvrpt:hover   { background: #0f766e; }
+    .tv-badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+    .tv-missed { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .tv-1x { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .tv-2x { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+    .tv-3x { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
     /* Report popup */
     .rpt-overlay { position: fixed; inset: 0; z-index: 7000; background: rgba(4,64,64,.55); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
     .rpt-overlay.show { opacity: 1; pointer-events: all; }
@@ -667,6 +674,10 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Report
         </button>
+        <button class="cl-add-btn tvrpt" id="clTVReportBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Visit Report
+        </button>
       </div>
     </div>
     <div class="cl-table-section">
@@ -977,6 +988,50 @@
     </div>
     <div class="rpt-body" id="rptBody">
       <div class="rpt-empty">Select an executive and date range, then click <strong>Get Report</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOTAL VISIT REPORT OVERLAY ── -->
+<div class="rpt-overlay" id="tvOverlay">
+  <div class="rpt-card">
+    <div class="rpt-head">
+      <h3>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Total Visit Report
+      </h3>
+      <button class="rpt-close" onclick="closeTVReport()">✕</button>
+    </div>
+    <div class="rpt-filters">
+      <div class="rpt-ff">
+        <label>Executive</label>
+        <select id="tvExec">
+          <option value="">— Select Executive —</option>
+          <option value="Chola">Chola</option>
+          <option value="Selva">Selva</option>
+          <option value="Santhosh">Santhosh</option>
+          <option value="Karnan">Karnan</option>
+        </select>
+      </div>
+      <div class="rpt-ff">
+        <label>Month</label>
+        <select id="tvMonth">
+          <option value="1">January</option><option value="2">February</option>
+          <option value="3">March</option><option value="4">April</option>
+          <option value="5">May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option>
+          <option value="9">September</option><option value="10">October</option>
+          <option value="11">November</option><option value="12">December</option>
+        </select>
+      </div>
+      <div class="rpt-ff" style="max-width:100px;">
+        <label>Year</label>
+        <input type="number" id="tvYear" min="2024" max="2035" style="padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.86rem;color:var(--text);background:var(--off-white);width:100%;" />
+      </div>
+      <button class="rpt-get-btn" id="tvGetBtn" onclick="fetchTVReport()" style="background:#0d9488;">Get Report</button>
+    </div>
+    <div class="rpt-body" id="tvBody">
+      <div class="rpt-empty">Select an executive and month, then click <strong>Get Report</strong>.</div>
     </div>
   </div>
 </div>
@@ -2203,8 +2258,106 @@
 
   function closeRptOverlay() { document.getElementById('rptOverlay').classList.remove('show'); }
   document.getElementById('rptOverlay').addEventListener('click', e => { if (e.target === document.getElementById('rptOverlay')) closeRptOverlay(); });
+
+  /* ── Total Visit Report ── */
+  document.getElementById('clTVReportBtn').addEventListener('click', () => {
+    const now = new Date();
+    document.getElementById('tvExec').value  = '';
+    document.getElementById('tvMonth').value = now.getMonth() + 1;
+    document.getElementById('tvYear').value  = now.getFullYear();
+    document.getElementById('tvBody').innerHTML = '<div class="rpt-empty">Select an executive and month, then click <strong>Get Report</strong>.</div>';
+    document.getElementById('tvOverlay').classList.add('show');
+  });
+  function closeTVReport() { document.getElementById('tvOverlay').classList.remove('show'); }
+  document.getElementById('tvOverlay').addEventListener('click', e => { if (e.target === document.getElementById('tvOverlay')) closeTVReport(); });
+
+  async function fetchTVReport() {
+    const exec  = document.getElementById('tvExec').value;
+    const month = parseInt(document.getElementById('tvMonth').value);
+    const year  = parseInt(document.getElementById('tvYear').value);
+    const body  = document.getElementById('tvBody');
+    if (!exec)  { body.innerHTML = '<div class="rpt-empty">Please select an executive.</div>'; return; }
+    if (!year)  { body.innerHTML = '<div class="rpt-empty">Please enter a valid year.</div>'; return; }
+
+    const from    = `${year}-${String(month).padStart(2,'0')}-01`;
+    const lastDay = new Date(year, month, 0).getDate();
+    const to      = `${year}-${String(month).padStart(2,'0')}-${String(lastDay).padStart(2,'0')}`;
+
+    const btn = document.getElementById('tvGetBtn');
+    btn.disabled = true; btn.textContent = 'Loading…';
+    body.innerHTML = '<div class="rpt-loading">Fetching report…</div>';
+
+    const [custsRes, reportsRes] = await Promise.all([
+      sb.from('customers').select('name,location').ilike('executive', exec).order('name', { ascending: true }),
+      sb.from('field_reports').select('customer_name,visited').eq('executive', exec).gte('report_date', from).lte('report_date', to)
+    ]);
+
+    btn.disabled = false; btn.textContent = 'Get Report';
+    if (custsRes.error)   { body.innerHTML = `<div class="rpt-empty">Error: ${custsRes.error.message}</div>`; return; }
+    if (reportsRes.error) { body.innerHTML = `<div class="rpt-empty">Error: ${reportsRes.error.message}</div>`; return; }
+
+    // Build map from assigned customers, then overlay visit data
+    const map = {};
+    (custsRes.data || []).forEach(c => { map[c.name] = { name: c.name, loc: c.location || '', calls: 0, visited: 0 }; });
+    (reportsRes.data || []).forEach(r => {
+      const n = r.customer_name || 'Unknown';
+      if (!map[n]) map[n] = { name: n, loc: '', calls: 0, visited: 0 };
+      map[n].calls++;
+      if (r.visited) map[n].visited++;
+    });
+
+    const rows = Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
+    const totalCalls   = rows.reduce((s, r) => s + r.calls, 0);
+    const totalVisited = rows.reduce((s, r) => s + r.visited, 0);
+    const cMissed = rows.filter(r => r.visited === 0).length;
+    const c1x     = rows.filter(r => r.visited === 1).length;
+    const c2x     = rows.filter(r => r.visited === 2).length;
+    const c3x     = rows.filter(r => r.visited >= 3).length;
+    const MONTHS  = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    body.innerHTML = `
+      <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">${exec} &mdash; ${MONTHS[month]} ${year}</div>
+      <div class="rpt-summary" style="flex-wrap:wrap;">
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">${rows.length}</div><div class="rpt-sum-key">Customers</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">${totalCalls}</div><div class="rpt-sum-key">Total Calls</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">${totalVisited}</div><div class="rpt-sum-key">Total Visited</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">${cMissed}</div><div class="rpt-sum-key">Missed</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">${c1x}</div><div class="rpt-sum-key">1× Visited</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">${c2x}</div><div class="rpt-sum-key">2× Visited</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">${c3x}</div><div class="rpt-sum-key">3×+ Visited</div></div>
+      </div>
+      <div class="rpt-table-wrap">
+        <table class="rpt-table">
+          <thead><tr>
+            <th>#</th><th>Customer Name</th><th>Location</th>
+            <th style="text-align:center">Total Calls</th>
+            <th style="text-align:center">Visited</th>
+            <th style="text-align:center">Missed</th>
+            <th style="text-align:center">Status</th>
+          </tr></thead>
+          <tbody>${rows.map((r, i) => {
+            const missed = r.calls - r.visited;
+            const badge  = r.visited === 0 ? '<span class="tv-badge tv-missed">Missed</span>'
+                         : r.visited === 1 ? '<span class="tv-badge tv-1x">1× Visited</span>'
+                         : r.visited === 2 ? '<span class="tv-badge tv-2x">2× Visited</span>'
+                         :                   '<span class="tv-badge tv-3x">3×+ Visited</span>';
+            return `<tr>
+              <td style="color:var(--text-muted);font-size:0.78rem">${i+1}</td>
+              <td style="font-weight:600;color:var(--dark)">${r.name}</td>
+              <td style="color:var(--text-muted);font-size:0.8rem">${r.loc || '—'}</td>
+              <td style="text-align:center">${r.calls}</td>
+              <td style="text-align:center;color:#065f46;font-weight:700">${r.visited}</td>
+              <td style="text-align:center;color:#991b1b;font-weight:700">${missed}</td>
+              <td style="text-align:center">${badge}</td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>`;
+  }
+
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
+    if (document.getElementById('tvOverlay').classList.contains('show'))          { closeTVReport(); return; }
     if (document.getElementById('rptOverlay').classList.contains('show'))         { closeRptOverlay(); return; }
     if (!document.getElementById('clModal').classList.contains('hidden'))         { clCloseModal(); return; }
     if (!document.getElementById('whModal').classList.contains('hidden'))         { whCloseModal(); return; }
