@@ -2383,7 +2383,7 @@
     body.innerHTML = '<div class="rpt-loading">Fetching report…</div>';
 
     const [custsRes, reportsRes] = await Promise.all([
-      sb.from('customers').select('name,location').ilike('executive', exec).order('name', { ascending: true }),
+      sb.from('customers').select('id,name,location').ilike('executive', exec).order('name', { ascending: true }),
       sb.from('field_reports').select('customer_name,visited,order_value').ilike('executive', exec).gte('report_date', from).lte('report_date', to)
     ]);
 
@@ -2391,14 +2391,30 @@
     if (custsRes.error)   { body.innerHTML = `<div class="rpt-empty">Error: ${custsRes.error.message}</div>`; return; }
     if (reportsRes.error) { body.innerHTML = `<div class="rpt-empty">Error: ${reportsRes.error.message}</div>`; return; }
 
+    // Key by id to preserve duplicate-named customers; build name→ids index for field_report matching
     const map = {};
-    (custsRes.data || []).forEach(c => { map[c.name] = { name: c.name, loc: c.location || '', calls: 0, visited: 0, orderVal: 0 }; });
+    const nameToIds = {};
+    (custsRes.data || []).forEach(c => {
+      map[c.id] = { name: c.name, loc: c.location || '', calls: 0, visited: 0, orderVal: 0 };
+      if (!nameToIds[c.name]) nameToIds[c.name] = [];
+      nameToIds[c.name].push(c.id);
+    });
     (reportsRes.data || []).forEach(r => {
       const n = r.customer_name || 'Unknown';
-      if (!map[n]) map[n] = { name: n, loc: '', calls: 0, visited: 0, orderVal: 0 };
-      map[n].calls++;
-      if (r.visited) map[n].visited++;
-      map[n].orderVal += (+r.order_value || 0);
+      const ids = nameToIds[n];
+      if (ids) {
+        // attribute the visit to the first matching customer (can't distinguish duplicates from report data)
+        const id = ids[0];
+        map[id].calls++;
+        if (r.visited) map[id].visited++;
+        map[id].orderVal += (+r.order_value || 0);
+      } else {
+        const key = 'ext_' + n;
+        if (!map[key]) { map[key] = { name: n, loc: '', calls: 0, visited: 0, orderVal: 0 }; nameToIds[n] = [key]; }
+        map[key].calls++;
+        if (r.visited) map[key].visited++;
+        map[key].orderVal += (+r.order_value || 0);
+      }
     });
 
     const rows = Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
