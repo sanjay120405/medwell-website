@@ -236,6 +236,28 @@
       #tabTracking { height: calc(100vh - 90px); }
     }
 
+    /* ── ATTENDANCE TAB ── */
+    .att-toolbar { padding: 16px 24px; background: var(--white); border-bottom: 1px solid var(--border); display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+    .att-ff { display: flex; flex-direction: column; gap: 5px; }
+    .att-ff label { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+    .att-ff input[type="date"], .att-ff select { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); }
+    .att-ff input:focus, .att-ff select:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    .att-load-btn { padding: 9px 22px; background: #16a34a; color: white; border: none; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    .att-load-btn:hover { background: #15803d; }
+    .att-export-btn { padding: 9px 22px; background: var(--orange); color: white; border: none; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    .att-export-btn:hover { background: var(--orange-dark); }
+    .att-summary { display: flex; background: var(--white); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .att-sum-stat { flex: 1; min-width: 100px; padding: 16px; text-align: center; border-right: 1px solid var(--border); }
+    .att-sum-stat:last-child { border-right: none; }
+    .att-sum-val { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; }
+    .att-sum-key { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-top: 3px; }
+    .att-val-total   { color: var(--dark); }
+    .att-val-present { color: #16a34a; }
+    .att-val-done    { color: var(--teal); }
+    .att-val-absent  { color: #ef4444; }
+    .att-badge-in     { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.7rem; font-weight:700; background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
+    .att-badge-done   { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.7rem; font-weight:700; background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
+    .att-badge-absent { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.7rem; font-weight:700; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
     /* ── CUSTOMER LIST TAB ── */
     #tabCustomers .cl-stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
     #tabCustomers .cl-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
@@ -544,6 +566,10 @@
         Live Tracking
         <span class="t-online-badge" id="tOnlineBadge">0</span>
       </button>
+      <button class="ah-tab" id="tabBtnAttendance" onclick="switchTab('attendance')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+        Attendance
+      </button>
     </div>
     <div class="ah-right">
       <a href="pricelist.html" class="view-pl-btn" target="_blank">
@@ -842,6 +868,49 @@
       </div>
     </div>
   </div><!-- end tabTracking -->
+
+  <!-- ── ATTENDANCE TAB ── -->
+  <div id="tabAttendance" style="display:none;">
+    <div class="att-toolbar">
+      <div class="att-ff">
+        <label>Date</label>
+        <input type="date" id="attAdminDate" />
+      </div>
+      <div class="att-ff">
+        <label>Employee</label>
+        <select id="attAdminEmp">
+          <option value="">All Staff</option>
+          <option>Vanitha</option><option>Divya</option><option>Chola</option>
+          <option>Selva</option><option>Lakshmi Priya</option><option>MGR</option>
+          <option>Ganga</option><option>Gokila</option><option>Aravind</option>
+          <option>Nagarajan</option><option>Santhosh</option><option>Karnan</option>
+          <option>Veera</option>
+        </select>
+      </div>
+      <button class="att-load-btn" onclick="loadAdminAttendance()">Load</button>
+      <button class="att-export-btn" id="attExportBtn" onclick="exportAttendance()" style="margin-left:auto;" disabled>&#8595; Export</button>
+    </div>
+    <div class="att-summary" id="attAdminSummary"></div>
+    <div class="table-section">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Employee</th>
+              <th>Check-In</th>
+              <th>Check-Out</th>
+              <th>Duration</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="attAdminBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Select a date and click Load.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -1548,18 +1617,26 @@
 
   /* ── TAB SWITCHING ──────────────────────────── */
   function switchTab(tab) {
-    document.getElementById('tabProducts').style.display  = tab === 'products'  ? 'block' : 'none';
-    document.getElementById('tabCustomers').style.display = tab === 'customers' ? 'block' : 'none';
-    document.getElementById('tabWholesale').style.display = tab === 'wholesale' ? 'block' : 'none';
-    document.getElementById('tabTracking').style.display  = tab === 'tracking'  ? 'flex'  : 'none';
-    document.getElementById('tabBtnProducts').classList.toggle('active',  tab === 'products');
-    document.getElementById('tabBtnCustomers').classList.toggle('active', tab === 'customers');
-    document.getElementById('tabBtnWholesale').classList.toggle('active', tab === 'wholesale');
-    document.getElementById('tabBtnTracking').classList.toggle('active',  tab === 'tracking');
+    document.getElementById('tabProducts').style.display    = tab === 'products'   ? 'block' : 'none';
+    document.getElementById('tabCustomers').style.display   = tab === 'customers'  ? 'block' : 'none';
+    document.getElementById('tabWholesale').style.display   = tab === 'wholesale'  ? 'block' : 'none';
+    document.getElementById('tabTracking').style.display    = tab === 'tracking'   ? 'flex'  : 'none';
+    document.getElementById('tabAttendance').style.display  = tab === 'attendance' ? 'block' : 'none';
+    document.getElementById('tabBtnProducts').classList.toggle('active',   tab === 'products');
+    document.getElementById('tabBtnCustomers').classList.toggle('active',  tab === 'customers');
+    document.getElementById('tabBtnWholesale').classList.toggle('active',  tab === 'wholesale');
+    document.getElementById('tabBtnTracking').classList.toggle('active',   tab === 'tracking');
+    document.getElementById('tabBtnAttendance').classList.toggle('active', tab === 'attendance');
     document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
     if (tab === 'tracking') {
       if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
       else { setTimeout(() => tMap.invalidateSize(), 100); }
+    }
+    if (tab === 'attendance') {
+      if (!document.getElementById('attAdminDate').value) {
+        document.getElementById('attAdminDate').value = new Date().toISOString().slice(0,10);
+      }
+      loadAdminAttendance();
     }
   }
 
@@ -2586,6 +2663,87 @@
     };
     reader.readAsArrayBuffer(file);
   });
+
+  /* ── ADMIN ATTENDANCE ── */
+  const ATT_ALL_STAFF = ['Vanitha','Divya','Chola','Selva','Lakshmi Priya','MGR','Ganga','Gokila','Aravind','Nagarajan','Santhosh','Karnan','Veera'];
+  let attAdminData = [];
+
+  async function loadAdminAttendance() {
+    const date  = document.getElementById('attAdminDate').value;
+    const emp   = document.getElementById('attAdminEmp').value;
+    const tbody = document.getElementById('attAdminBody');
+    const summary = document.getElementById('attAdminSummary');
+    if (!date) { toast('Please select a date', 'error'); return; }
+
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">Loading…</td></tr>';
+    summary.innerHTML = '';
+    document.getElementById('attExportBtn').disabled = true;
+
+    let q = sb.from('attendance').select('*').eq('date', date);
+    if (emp) q = q.ilike('employee_name', emp);
+    const { data, error } = await q.order('employee_name');
+    if (error) { tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:#ef4444;">Error: ${error.message}</td></tr>`; return; }
+
+    const recMap = {};
+    (data || []).forEach(r => { recMap[r.employee_name.toLowerCase()] = r; });
+
+    const staffList = emp ? [emp] : ATT_ALL_STAFF;
+    const rows = staffList.map(name => ({ name, rec: recMap[name.toLowerCase()] || null }));
+    attAdminData = rows;
+
+    const present  = rows.filter(r => r.rec && r.rec.check_in && !r.rec.check_out).length;
+    const done     = rows.filter(r => r.rec && r.rec.check_in &&  r.rec.check_out).length;
+    const absent   = rows.filter(r => !r.rec || !r.rec.check_in).length;
+
+    summary.innerHTML = `
+      <div class="att-sum-stat"><div class="att-sum-val att-val-total">${rows.length}</div><div class="att-sum-key">Total Staff</div></div>
+      <div class="att-sum-stat"><div class="att-sum-val att-val-present">${present + done}</div><div class="att-sum-key">Present</div></div>
+      <div class="att-sum-stat"><div class="att-sum-val att-val-done">${done}</div><div class="att-sum-key">Checked Out</div></div>
+      <div class="att-sum-stat"><div class="att-sum-val att-val-absent">${absent}</div><div class="att-sum-key">Not Marked</div></div>`;
+
+    const fmt = ts => new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    const durStr = (ci, co) => { const m = Math.round((new Date(co)-new Date(ci))/60000); return `${Math.floor(m/60)}h ${m%60}m`; };
+
+    tbody.innerHTML = rows.map((r, i) => {
+      let badge, ci, co, dur;
+      if (!r.rec || !r.rec.check_in) {
+        badge = '<span class="att-badge-absent">Not Marked</span>'; ci = '—'; co = '—'; dur = '—';
+      } else if (!r.rec.check_out) {
+        badge = '<span class="att-badge-in">Checked In</span>'; ci = fmt(r.rec.check_in); co = '—'; dur = '—';
+      } else {
+        badge = '<span class="att-badge-done">Done ✓</span>'; ci = fmt(r.rec.check_in); co = fmt(r.rec.check_out); dur = durStr(r.rec.check_in, r.rec.check_out);
+      }
+      return `<tr>
+        <td style="color:var(--text-muted);font-size:0.78rem">${i+1}</td>
+        <td style="font-weight:600;font-family:'Poppins',sans-serif;color:var(--dark)">${r.name}</td>
+        <td style="color:#065f46;font-weight:600">${ci}</td>
+        <td style="color:#991b1b;font-weight:600">${co}</td>
+        <td>${dur}</td>
+        <td>${badge}</td>
+      </tr>`;
+    }).join('');
+    document.getElementById('attExportBtn').disabled = false;
+  }
+
+  function exportAttendance() {
+    if (!attAdminData.length) return;
+    const date = document.getElementById('attAdminDate').value;
+    const fmt = ts => new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    const durStr = (ci, co) => { const m = Math.round((new Date(co)-new Date(ci))/60000); return `${Math.floor(m/60)}h ${m%60}m`; };
+    const rows = attAdminData.map((r, i) => ({
+      '#': i+1,
+      'Employee': r.name,
+      'Date': date,
+      'Check-In': r.rec && r.rec.check_in ? fmt(r.rec.check_in) : '',
+      'Check-Out': r.rec && r.rec.check_out ? fmt(r.rec.check_out) : '',
+      'Duration': r.rec && r.rec.check_in && r.rec.check_out ? durStr(r.rec.check_in, r.rec.check_out) : '',
+      'Status': !r.rec || !r.rec.check_in ? 'Not Marked' : !r.rec.check_out ? 'Checked In' : 'Done'
+    }));
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Attendance');
+    XLSX.writeFile(wb, `Attendance_${date}.xlsx`);
+  }
 </script>
 </body>
 </html>
