@@ -59,24 +59,17 @@
     .card-header.orange-bg { background: linear-gradient(135deg, var(--orange-dark), var(--orange)); }
     .card-header.green-bg { background: linear-gradient(135deg, #15803d, #16a34a); }
     /* ── ATTENDANCE ── */
-    .att-status-box { text-align: center; padding: 28px 16px 18px; }
-    .att-status-icon { font-size: 3rem; margin-bottom: 10px; }
-    .att-status-text { font-size: 1.08rem; font-weight: 800; color: #0f2a2a; }
-    .att-status-sub { font-size: 0.78rem; color: #7a9494; margin-top: 6px; line-height: 1.5; }
-    .btn-att-in  { background: #16a34a; color: white; margin-top: 6px; }
-    .btn-att-in:hover  { background: #15803d; transform: translateY(-1px); }
-    .btn-att-in:disabled  { background: #94a3b8; cursor: not-allowed; transform: none; }
-    .btn-att-out { background: #d97706; color: white; margin-top: 6px; }
-    .btn-att-out:hover { background: #b45309; transform: translateY(-1px); }
-    .btn-att-out:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
-    .att-times { margin: 14px 0 8px; border: 1px solid #e0ecec; border-radius: 12px; overflow: hidden; }
-    .att-time-row { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid #f0f4f4; }
-    .att-time-row:last-child { border-bottom: none; }
-    .att-duration { background: #f0fdf4; }
-    .att-time-label { font-size: 0.7rem; font-weight: 700; color: #7a9494; text-transform: uppercase; letter-spacing: .07em; }
-    .att-time-val { font-size: 0.9rem; font-weight: 700; color: #0f2a2a; }
-    .att-duration .att-time-val { color: #15803d; }
-    .att-err { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px; padding: 11px 14px; margin-top: 12px; font-size: 0.79rem; color: #dc2626; font-weight: 500; }
+    .att-box-wrap { display: flex; flex-direction: column; gap: 20px; padding: 28px 20px 20px; }
+    .att-punch-box { width: 100%; border-radius: 20px; padding: 44px 24px; text-align: center; cursor: pointer; border: 3px solid transparent; user-select: none; transition: background .2s, border-color .2s, color .2s, transform .1s; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; background: none; }
+    .att-punch-box:active:not(:disabled) { transform: scale(0.97); }
+    .att-box-label { font-size: 1.7rem; font-weight: 800; letter-spacing: 0.02em; }
+    .att-box-time  { font-size: 0.95rem; font-weight: 600; margin-top: 10px; }
+    .att-box-in  { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+    .att-box-out { background: #fff1f2; border-color: #fca5a5; color: #dc2626; }
+    .att-box-in.att-pressed  { background: #16a34a; border-color: #15803d; color: white; }
+    .att-box-out.att-pressed { background: #dc2626; border-color: #b91c1c; color: white; }
+    .att-punch-box:disabled  { opacity: 0.55; cursor: default; }
+    .att-err { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px; padding: 11px 14px; margin: 0 20px 16px; font-size: 0.79rem; color: #dc2626; font-weight: 500; }
     .card-icon { width: 46px; height: 46px; background: rgba(255,255,255,.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
     .card-header h2 { font-size: 1.08rem; font-weight: 800; color: white; }
     .card-header p { font-size: 0.74rem; color: rgba(255,255,255,.65); margin-top: 2px; }
@@ -455,10 +448,18 @@
           <p id="attDate">—</p>
         </div>
       </div>
-      <div class="card-body" style="padding-bottom:28px;">
-        <div id="attStatusArea">
-          <div style="text-align:center;padding:32px 16px;color:#94a3b8;font-size:0.85rem;">Loading…</div>
+      <div class="card-body" style="padding:0 0 8px;">
+        <div class="att-box-wrap">
+          <button class="att-punch-box att-box-in" id="attInBox" onclick="markCheckIn()" disabled>
+            <div class="att-box-label">In-Time</div>
+            <div class="att-box-time" id="attInTime">Loading…</div>
+          </button>
+          <button class="att-punch-box att-box-out" id="attOutBox" onclick="markCheckOut()" disabled>
+            <div class="att-box-label">Out-Time</div>
+            <div class="att-box-time" id="attOutTime">—</div>
+          </button>
         </div>
+        <div id="attErrArea"></div>
       </div>
     </div>
   </div>
@@ -1260,100 +1261,87 @@
       const DAYS  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
       const MONS  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
       document.getElementById('attDate').textContent = `${DAYS[now.getDay()]}, ${now.getDate()} ${MONS[now.getMonth()]} ${now.getFullYear()}`;
-      document.getElementById('attStatusArea').innerHTML = '<div style="text-align:center;padding:32px 16px;color:#94a3b8;font-size:0.85rem;">Checking…</div>';
+      document.getElementById('attErrArea').innerHTML = '';
+      document.getElementById('attInBox').disabled = true;
+      document.getElementById('attOutBox').disabled = true;
+      document.getElementById('attInTime').textContent = 'Loading…';
+      document.getElementById('attOutTime').textContent = '—';
 
       const { data, error } = await sb.from('attendance').select('*').eq('employee_name', staffName).eq('date', today).limit(1);
-      if (error) { document.getElementById('attStatusArea').innerHTML = `<div class="att-err">Error: ${error.message}</div>`; return; }
+      if (error) {
+        document.getElementById('attErrArea').innerHTML = `<div class="att-err">Error: ${error.message}</div>`;
+        document.getElementById('attInBox').disabled = false;
+        document.getElementById('attInTime').textContent = 'Tap to mark';
+        return;
+      }
       attRecord = data && data.length ? data[0] : null;
-      renderAttendance(today);
+      renderAttendance();
     }
 
-    function renderAttendance(today) {
-      const area = document.getElementById('attStatusArea');
-      const fmt  = ts => new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    function renderAttendance() {
+      const fmt    = ts => new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      const inBox  = document.getElementById('attInBox');
+      const outBox = document.getElementById('attOutBox');
+      const inTime = document.getElementById('attInTime');
+      const outTime= document.getElementById('attOutTime');
 
-      if (!attRecord) {
-        area.innerHTML = `
-          <div class="att-status-box">
-            <div class="att-status-icon">⏰</div>
-            <div class="att-status-text">Not Marked Yet</div>
-            <div class="att-status-sub">Tap below to mark your attendance for today</div>
-          </div>
-          <button class="btn btn-att-in" onclick="markCheckIn()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Mark Check-In
-          </button>`;
-        return;
+      if (attRecord && attRecord.check_in) {
+        inBox.classList.add('att-pressed');
+        inBox.disabled = true;
+        inTime.textContent = fmt(attRecord.check_in);
+      } else {
+        inBox.classList.remove('att-pressed');
+        inBox.disabled = false;
+        inTime.textContent = 'Tap to mark';
       }
-      if (attRecord.check_in && !attRecord.check_out) {
-        area.innerHTML = `
-          <div class="att-status-box">
-            <div class="att-status-icon">✅</div>
-            <div class="att-status-text">Checked In</div>
-            <div class="att-status-sub">at ${fmt(attRecord.check_in)}</div>
-          </div>
-          <div class="att-times">
-            <div class="att-time-row">
-              <span class="att-time-label">Check-In Time</span>
-              <span class="att-time-val">${fmt(attRecord.check_in)}</span>
-            </div>
-          </div>
-          <button class="btn btn-att-out" onclick="markCheckOut()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Mark Check-Out
-          </button>`;
-        return;
+
+      if (attRecord && attRecord.check_out) {
+        outBox.classList.add('att-pressed');
+        outBox.disabled = true;
+        outTime.textContent = fmt(attRecord.check_out);
+      } else if (attRecord && attRecord.check_in) {
+        outBox.classList.remove('att-pressed');
+        outBox.disabled = false;
+        outTime.textContent = 'Tap to mark';
+      } else {
+        outBox.classList.remove('att-pressed');
+        outBox.disabled = true;
+        outTime.textContent = '—';
       }
-      const dur = Math.round((new Date(attRecord.check_out) - new Date(attRecord.check_in)) / 60000);
-      const h = Math.floor(dur / 60), m = dur % 60;
-      area.innerHTML = `
-        <div class="att-status-box">
-          <div class="att-status-icon">🎉</div>
-          <div class="att-status-text">Attendance Complete</div>
-          <div class="att-status-sub">Great work today, ${staffName}!</div>
-        </div>
-        <div class="att-times">
-          <div class="att-time-row">
-            <span class="att-time-label">Check-In</span>
-            <span class="att-time-val">${fmt(attRecord.check_in)}</span>
-          </div>
-          <div class="att-time-row">
-            <span class="att-time-label">Check-Out</span>
-            <span class="att-time-val">${fmt(attRecord.check_out)}</span>
-          </div>
-          <div class="att-time-row att-duration">
-            <span class="att-time-label">Total Duration</span>
-            <span class="att-time-val">${h}h ${m}m</span>
-          </div>
-        </div>`;
     }
 
     async function markCheckIn() {
-      const today = new Date().toISOString().slice(0,10);
-      const btn = document.querySelector('.btn-att-in');
-      if (btn) { btn.disabled = true; btn.textContent = 'Marking…'; }
+      const today  = new Date().toISOString().slice(0,10);
+      const inBox  = document.getElementById('attInBox');
+      inBox.disabled = true;
+      document.getElementById('attInTime').textContent = 'Saving…';
+      document.getElementById('attErrArea').innerHTML = '';
       const { data, error } = await sb.from('attendance').insert({ employee_name: staffName, date: today, check_in: new Date().toISOString() }).select().single();
       if (error) {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Mark Check-In'; }
-        document.getElementById('attStatusArea').insertAdjacentHTML('beforeend', `<div class="att-err">Error: ${error.message}</div>`);
+        document.getElementById('attErrArea').innerHTML = `<div class="att-err">Error: ${error.message}</div>`;
+        inBox.disabled = false;
+        document.getElementById('attInTime').textContent = 'Tap to mark';
         return;
       }
       attRecord = data;
-      renderAttendance(today);
+      renderAttendance();
     }
 
     async function markCheckOut() {
-      const today = new Date().toISOString().slice(0,10);
-      const btn = document.querySelector('.btn-att-out');
-      if (btn) { btn.disabled = true; btn.textContent = 'Marking…'; }
+      const today  = new Date().toISOString().slice(0,10);
+      const outBox = document.getElementById('attOutBox');
+      outBox.disabled = true;
+      document.getElementById('attOutTime').textContent = 'Saving…';
+      document.getElementById('attErrArea').innerHTML = '';
       const { data, error } = await sb.from('attendance').update({ check_out: new Date().toISOString() }).eq('employee_name', staffName).eq('date', today).select().single();
       if (error) {
-        if (btn) { btn.disabled = false; btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Mark Check-Out'; }
-        document.getElementById('attStatusArea').insertAdjacentHTML('beforeend', `<div class="att-err">Error: ${error.message}</div>`);
+        document.getElementById('attErrArea').innerHTML = `<div class="att-err">Error: ${error.message}</div>`;
+        outBox.disabled = false;
+        document.getElementById('attOutTime').textContent = 'Tap to mark';
         return;
       }
       attRecord = data;
-      renderAttendance(today);
+      renderAttendance();
     }
   </script>
 </body>

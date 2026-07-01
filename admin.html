@@ -896,16 +896,14 @@
         <table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>Employee</th>
-              <th>Check-In</th>
-              <th>Check-Out</th>
-              <th>Duration</th>
-              <th>Status</th>
+              <th>Date</th>
+              <th>Name</th>
+              <th>In Time</th>
+              <th>Out Time</th>
             </tr>
           </thead>
           <tbody id="attAdminBody">
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Select a date and click Load.</td></tr>
+            <tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text-muted);">Select a date and click Load.</td></tr>
           </tbody>
         </table>
       </div>
@@ -2702,24 +2700,15 @@
       <div class="att-sum-stat"><div class="att-sum-val att-val-absent">${absent}</div><div class="att-sum-key">Not Marked</div></div>`;
 
     const fmt = ts => new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
-    const durStr = (ci, co) => { const m = Math.round((new Date(co)-new Date(ci))/60000); return `${Math.floor(m/60)}h ${m%60}m`; };
 
-    tbody.innerHTML = rows.map((r, i) => {
-      let badge, ci, co, dur;
-      if (!r.rec || !r.rec.check_in) {
-        badge = '<span class="att-badge-absent">Not Marked</span>'; ci = '—'; co = '—'; dur = '—';
-      } else if (!r.rec.check_out) {
-        badge = '<span class="att-badge-in">Checked In</span>'; ci = fmt(r.rec.check_in); co = '—'; dur = '—';
-      } else {
-        badge = '<span class="att-badge-done">Done ✓</span>'; ci = fmt(r.rec.check_in); co = fmt(r.rec.check_out); dur = durStr(r.rec.check_in, r.rec.check_out);
-      }
+    tbody.innerHTML = rows.map(r => {
+      const ci = r.rec && r.rec.check_in  ? fmt(r.rec.check_in)  : '—';
+      const co = r.rec && r.rec.check_out ? fmt(r.rec.check_out) : '—';
       return `<tr>
-        <td style="color:var(--text-muted);font-size:0.78rem">${i+1}</td>
+        <td style="color:var(--text-muted);font-size:0.82rem">${date}</td>
         <td style="font-weight:600;font-family:'Poppins',sans-serif;color:var(--dark)">${r.name}</td>
         <td style="color:#065f46;font-weight:600">${ci}</td>
         <td style="color:#991b1b;font-weight:600">${co}</td>
-        <td>${dur}</td>
-        <td>${badge}</td>
       </tr>`;
     }).join('');
     document.getElementById('attExportBtn').disabled = false;
@@ -2729,15 +2718,11 @@
     if (!attAdminData.length) return;
     const date = document.getElementById('attAdminDate').value;
     const fmt = ts => new Date(ts).toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
-    const durStr = (ci, co) => { const m = Math.round((new Date(co)-new Date(ci))/60000); return `${Math.floor(m/60)}h ${m%60}m`; };
-    const rows = attAdminData.map((r, i) => ({
-      '#': i+1,
-      'Employee': r.name,
+    const rows = attAdminData.map(r => ({
       'Date': date,
-      'Check-In': r.rec && r.rec.check_in ? fmt(r.rec.check_in) : '',
-      'Check-Out': r.rec && r.rec.check_out ? fmt(r.rec.check_out) : '',
-      'Duration': r.rec && r.rec.check_in && r.rec.check_out ? durStr(r.rec.check_in, r.rec.check_out) : '',
-      'Status': !r.rec || !r.rec.check_in ? 'Not Marked' : !r.rec.check_out ? 'Checked In' : 'Done'
+      'Name': r.name,
+      'In Time':  r.rec && r.rec.check_in  ? fmt(r.rec.check_in)  : '',
+      'Out Time': r.rec && r.rec.check_out ? fmt(r.rec.check_out) : ''
     }));
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
