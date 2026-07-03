@@ -133,6 +133,20 @@
     .stat-value { font-family: 'Poppins', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--teal); }
     .stat-divider { width: 1px; height: 34px; background: var(--border); }
 
+    /* ── PRODUCTS INDIVIDUAL SEARCH ── */
+    #tabProducts .prod-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
+    #tabProducts .prod-search-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+    @media(max-width:900px){ #tabProducts .prod-search-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:600px){ #tabProducts .prod-search-grid { grid-template-columns: 1fr; } }
+    #tabProducts .prod-search-field { display: flex; flex-direction: column; gap: 5px; }
+    #tabProducts .prod-search-field label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    #tabProducts .prod-search-wrap { position: relative; }
+    #tabProducts .prod-search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 14px; height: 14px; pointer-events: none; }
+    #tabProducts .prod-search-input { width: 100%; padding: 9px 12px 9px 32px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; box-sizing: border-box; }
+    #tabProducts .prod-search-input:focus { outline: none; border-color: var(--teal); background: var(--white); box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
+    #tabProducts .prod-clear-btn { padding: 9px 16px; background: transparent; color: var(--text-muted); border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all .2s; white-space: nowrap; }
+    #tabProducts .prod-clear-btn:hover { border-color: var(--orange); color: var(--orange); }
+
     /* TOOLBAR */
     .toolbar { padding: 18px 24px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .search-box { flex: 1; min-width: 200px; position: relative; }
@@ -607,11 +621,36 @@
     </div>
   </div>
 
-  <div class="toolbar">
-    <div class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="adminSearch" placeholder="Search product, company, molecule, code, category..." autocomplete="off" />
+  <div class="prod-search-section">
+    <div class="prod-search-grid">
+      <div class="prod-search-field">
+        <label>Product</label>
+        <div class="prod-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="searchProdName" class="prod-search-input" type="text" placeholder="Search by product name…" autocomplete="off" />
+        </div>
+      </div>
+      <div class="prod-search-field">
+        <label>Company</label>
+        <div class="prod-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <input id="searchProdComp" class="prod-search-input" type="text" placeholder="Search by company…" autocomplete="off" />
+        </div>
+      </div>
+      <div class="prod-search-field">
+        <label>Molecule</label>
+        <div class="prod-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          <input id="searchProdMol" class="prod-search-input" type="text" placeholder="Search by molecule…" autocomplete="off" />
+        </div>
+      </div>
+      <div>
+        <button class="prod-clear-btn" onclick="prodClearSearch()">Clear</button>
+      </div>
     </div>
+  </div>
+
+  <div class="toolbar">
     <button class="tb-btn add" id="addBtn">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
       Add Product
@@ -1275,22 +1314,29 @@
   }
 
   /* ── SEARCH ─────────────────────────────────── */
-  document.getElementById('adminSearch').addEventListener('input', runSearch);
+  ['searchProdName','searchProdComp','searchProdMol'].forEach(id => {
+    document.getElementById(id).addEventListener('input', runSearch);
+  });
 
   function runSearch() {
-    const q = document.getElementById('adminSearch').value.trim().toLowerCase();
-    filtered = q
-      ? products.filter(p =>
-          String(p[0]).toLowerCase().includes(q) ||
-          String(p[1]).toLowerCase().includes(q) ||
-          String(p[3]).toLowerCase().includes(q) ||
-          String(p[4]).toLowerCase().includes(q) ||
-          String(p[5]).toLowerCase().includes(q)
-        )
-      : products.slice();
+    const qName = document.getElementById('searchProdName').value.trim().toLowerCase();
+    const qComp = document.getElementById('searchProdComp').value.trim().toLowerCase();
+    const qMol  = document.getElementById('searchProdMol').value.trim().toLowerCase();
+    filtered = products.filter(p =>
+      (!qName || String(p[1]).toLowerCase().includes(qName)) &&
+      (!qComp || String(p[3]).toLowerCase().includes(qComp)) &&
+      (!qMol  || String(p[4]).toLowerCase().includes(qMol))
+    );
     document.getElementById('statShowing').textContent = filtered.length;
     document.getElementById('showingCount').textContent = filtered.length;
     renderTable();
+  }
+
+  function prodClearSearch() {
+    document.getElementById('searchProdName').value = '';
+    document.getElementById('searchProdComp').value = '';
+    document.getElementById('searchProdMol').value = '';
+    runSearch();
   }
 
   /* ── TABLE ──────────────────────────────────── */
