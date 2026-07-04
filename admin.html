@@ -272,6 +272,53 @@
     .att-badge-in     { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.7rem; font-weight:700; background:#fef3c7; color:#92400e; border:1px solid #fcd34d; }
     .att-badge-done   { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.7rem; font-weight:700; background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
     .att-badge-absent { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.7rem; font-weight:700; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+    /* ── TASK MASTER TAB ── */
+    #tabTaskmaster { padding: 24px; }
+    #tabTaskmaster .tm-form-card { background: var(--white); border-radius: 12px; box-shadow: 0 4px 20px rgba(13,122,122,.08); padding: 24px 28px; margin-bottom: 24px; border: 1px solid var(--border); }
+    #tabTaskmaster .tm-form-title { font-family: 'Poppins',sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--dark); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    #tabTaskmaster .tm-form-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media(min-width:600px){ #tabTaskmaster .tm-form-grid { grid-template-columns: 1fr 1fr; } }
+    @media(min-width:900px){ #tabTaskmaster .tm-form-grid { grid-template-columns: 160px 1fr 160px 150px auto; align-items: end; } }
+    #tabTaskmaster .tm-form-field { display: flex; flex-direction: column; gap: 5px; }
+    #tabTaskmaster .tm-form-field label { font-family: 'Poppins',sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+    #tabTaskmaster .tm-form-field select, #tabTaskmaster .tm-form-field input[type="text"], #tabTaskmaster .tm-form-field input[type="date"] { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter',sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabTaskmaster .tm-form-field select:focus, #tabTaskmaster .tm-form-field input:focus { outline: none; border-color: var(--teal); background: var(--white); box-shadow: 0 0 0 3px rgba(13,122,122,.1); }
+    #tabTaskmaster .tm-add-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; height: 40px; }
+    #tabTaskmaster .tm-add-btn:hover { background: var(--teal-dark); }
+    #tabTaskmaster .tm-tasks-card { background: var(--white); border-radius: 12px; box-shadow: 0 4px 20px rgba(13,122,122,.08); border: 1px solid var(--border); overflow: hidden; }
+    #tabTaskmaster .tm-tasks-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+    #tabTaskmaster .tm-tasks-title { font-family: 'Poppins',sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 8px; }
+    #tabTaskmaster .tm-badge { background: var(--teal-light); color: var(--teal); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+    #tabTaskmaster .tm-filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    #tabTaskmaster .tm-filter-sel { padding: 7px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.78rem; color: var(--text); background: var(--off-white); cursor: pointer; }
+    #tabTaskmaster .tm-filter-sel:focus { outline: none; border-color: var(--teal); }
+    #tabTaskmaster .tm-table-wrap { overflow-x: auto; }
+    #tabTaskmaster table { width: 100%; border-collapse: collapse; min-width: 700px; }
+    #tabTaskmaster thead th { background: #044040; color: #fff; font-family: 'Poppins',sans-serif; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 12px 16px; text-align: left; white-space: nowrap; }
+    #tabTaskmaster tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    #tabTaskmaster tbody tr:last-child { border-bottom: none; }
+    #tabTaskmaster tbody tr:hover { background: #f4fafa; }
+    #tabTaskmaster td { padding: 12px 16px; font-size: 0.84rem; color: var(--text); vertical-align: middle; }
+    #tabTaskmaster .td-num { color: var(--text-muted); font-size: 0.75rem; width: 36px; }
+    #tabTaskmaster .td-name { font-family: 'Poppins',sans-serif; font-weight: 700; color: var(--teal-dark); white-space: nowrap; }
+    #tabTaskmaster .td-task { max-width: 260px; line-height: 1.4; }
+    #tabTaskmaster .assignee-pill { display: inline-flex; align-items: center; padding: 3px 10px; background: var(--teal-light); color: var(--teal-dark); border-radius: 99px; font-size: 0.74rem; font-weight: 600; font-family: 'Poppins',sans-serif; white-space: nowrap; }
+    #tabTaskmaster .td-date { white-space: nowrap; font-size: 0.82rem; }
+    #tabTaskmaster .td-date.overdue { color: #ef4444; font-weight: 600; }
+    #tabTaskmaster .status-wrap { display: flex; align-items: center; gap: 7px; }
+    #tabTaskmaster .s-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 13px; border-radius: 99px; font-family: 'Poppins',sans-serif; font-size: 0.73rem; font-weight: 700; border: 2px solid; cursor: pointer; transition: all .18s; white-space: nowrap; }
+    #tabTaskmaster .s-btn.s-complete { border-color: #22c55e; color: #22c55e; background: transparent; }
+    #tabTaskmaster .s-btn.s-complete.active, #tabTaskmaster .s-btn.s-complete:hover { background: #22c55e; color: #fff; }
+    #tabTaskmaster .s-btn.s-incomplete { border-color: #ef4444; color: #ef4444; background: transparent; }
+    #tabTaskmaster .s-btn.s-incomplete.active, #tabTaskmaster .s-btn.s-incomplete:hover { background: #ef4444; color: #fff; }
+    #tabTaskmaster tbody tr.row-complete { background: #f0fdf4; }
+    #tabTaskmaster tbody tr.row-complete:hover { background: #dcfce7; }
+    #tabTaskmaster tbody tr.row-incomplete { background: #fff5f5; }
+    #tabTaskmaster tbody tr.row-incomplete:hover { background: #fee2e2; }
+    #tabTaskmaster .tm-del-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 5px; border-radius: 6px; transition: color .2s; display: flex; }
+    #tabTaskmaster .tm-del-btn:hover { color: #ef4444; }
+    #tabTaskmaster .tm-empty { text-align: center; padding: 60px 24px; color: var(--text-muted); }
+    #tabTaskmaster .tm-empty p { font-family: 'Poppins',sans-serif; font-size: 0.9rem; margin-top: 12px; }
     /* ── CUSTOMER LIST TAB ── */
     #tabCustomers .cl-stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
     #tabCustomers .cl-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
@@ -583,6 +630,10 @@
       <button class="ah-tab" id="tabBtnAttendance" onclick="switchTab('attendance')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
         Attendance
+      </button>
+      <button class="ah-tab" id="tabBtnTaskmaster" onclick="switchTab('taskmaster')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+        Task Master
       </button>
     </div>
     <div class="ah-right">
@@ -949,6 +1000,87 @@
     </div>
   </div>
 
+</div>
+
+<!-- ── TASK MASTER TAB ── -->
+<div id="tabTaskmaster" style="display:none;">
+  <div class="tm-form-card">
+    <div class="tm-form-title">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Add New Task
+    </div>
+    <form id="admTmTaskForm" autocomplete="off">
+      <div class="tm-form-grid">
+        <div class="tm-form-field">
+          <label>Name</label>
+          <select id="admTmFName" required>
+            <option value="">Select Name</option>
+            <option>Aravind</option><option>Chola</option><option>Divya</option>
+            <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+            <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
+            <option>Santhosh</option><option>Selva</option><option>Vanitha</option><option>Veera</option>
+          </select>
+        </div>
+        <div class="tm-form-field">
+          <label>Task</label>
+          <input type="text" id="admTmFTask" placeholder="Describe the task…" required />
+        </div>
+        <div class="tm-form-field">
+          <label>Assign To</label>
+          <select id="admTmFAssign" required>
+            <option value="">Select Person</option>
+            <option>Aravind</option><option>Chola</option><option>Divya</option>
+            <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+            <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
+            <option>Santhosh</option><option>Selva</option><option>Vanitha</option><option>Veera</option>
+          </select>
+        </div>
+        <div class="tm-form-field">
+          <label>Final Date</label>
+          <input type="date" id="admTmFDate" required />
+        </div>
+        <button type="submit" class="tm-add-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+          Assign Task
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="tm-tasks-card">
+    <div class="tm-tasks-toolbar">
+      <div class="tm-tasks-title">
+        All Tasks
+        <span class="tm-badge" id="admTmCount">0</span>
+      </div>
+      <div class="tm-filter-row">
+        <select class="tm-filter-sel" id="admTmFilterName">
+          <option value="">All Names</option>
+          <option>Aravind</option><option>Chola</option><option>Divya</option>
+          <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+          <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
+          <option>Santhosh</option><option>Selva</option><option>Vanitha</option><option>Veera</option>
+        </select>
+        <select class="tm-filter-sel" id="admTmFilterStatus">
+          <option value="">All Status</option>
+          <option value="complete">Complete</option>
+          <option value="incomplete">Incomplete</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+    </div>
+    <div class="tm-table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Name</th><th>Task</th><th>Assign To</th><th>Final Date</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="admTmTbody"></tbody>
+      </table>
+      <div class="tm-empty" id="admTmEmpty" style="display:none;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+        <p>No tasks yet. Add one above!</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ── EDIT / ADD MODAL ── -->
@@ -1669,11 +1801,14 @@
     document.getElementById('tabWholesale').style.display   = tab === 'wholesale'  ? 'block' : 'none';
     document.getElementById('tabTracking').style.display    = tab === 'tracking'   ? 'flex'  : 'none';
     document.getElementById('tabAttendance').style.display  = tab === 'attendance' ? 'block' : 'none';
-    document.getElementById('tabBtnProducts').classList.toggle('active',   tab === 'products');
-    document.getElementById('tabBtnCustomers').classList.toggle('active',  tab === 'customers');
-    document.getElementById('tabBtnWholesale').classList.toggle('active',  tab === 'wholesale');
-    document.getElementById('tabBtnTracking').classList.toggle('active',   tab === 'tracking');
-    document.getElementById('tabBtnAttendance').classList.toggle('active', tab === 'attendance');
+    document.getElementById('tabTaskmaster').style.display  = tab === 'taskmaster' ? 'block' : 'none';
+    document.getElementById('tabBtnProducts').classList.toggle('active',    tab === 'products');
+    document.getElementById('tabBtnCustomers').classList.toggle('active',   tab === 'customers');
+    document.getElementById('tabBtnWholesale').classList.toggle('active',   tab === 'wholesale');
+    document.getElementById('tabBtnTracking').classList.toggle('active',    tab === 'tracking');
+    document.getElementById('tabBtnAttendance').classList.toggle('active',  tab === 'attendance');
+    document.getElementById('tabBtnTaskmaster').classList.toggle('active',  tab === 'taskmaster');
+    if (tab === 'taskmaster') admTmLoadTasks();
     document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
     if (tab === 'tracking') {
       if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
@@ -2825,6 +2960,117 @@
     XLSX.utils.book_append_sheet(wb, ws, 'Attendance');
     XLSX.writeFile(wb, `Attendance_${date}.xlsx`);
   }
+
+  /* ── ADMIN TASK MASTER ── */
+  let ADM_TM_TASKS = [];
+
+  const ADM_TM_PHONE = {
+    'Vanitha':'OTE5OTQwNzExNTU5','Divya':'OTE3NzA4MTExNTU5',
+    'Chola':'OTE5NzkwNjExNTU5','Selva':'OTE5NzkwNTExNTU5',
+    'Lakshmi Priya':'OTE5OTQwMzU0NDQ1','MGR':'OTE5MTcxNDE5OTEx',
+    'Ganga':'OTE5NjAwNjAyMDc5','Gokila':'OTE3MzA1MTExNTU5',
+    'Aravind':'OTE3NjM5Nzc5MTIx','Nagarajan':'OTE5OTQzOTQ1NTY1',
+    'Santhosh':'OTE5NTY2ODExNTU5','Karnan':'OTE5Njc3MjExNTU5',
+    'Veera':'OTE5MDQyODExNTU5'
+  };
+
+  function admTmEsc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  async function admTmLoadTasks() {
+    const { data, error } = await sb.from('tasks').select('*').order('created_at', { ascending: false });
+    if (error) { console.error('Task load error:', error.message); return; }
+    ADM_TM_TASKS = data || [];
+    admTmRender();
+  }
+
+  function admTmRender() {
+    const filterName   = document.getElementById('admTmFilterName').value;
+    const filterStatus = document.getElementById('admTmFilterStatus').value;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const filtered = ADM_TM_TASKS.filter(t => {
+      if (filterName   && t.name   !== filterName)   return false;
+      if (filterStatus && t.status !== filterStatus) return false;
+      return true;
+    }).sort((a,b) => (a.status==='complete'?1:0) - (b.status==='complete'?1:0));
+    document.getElementById('admTmCount').textContent = filtered.length;
+    const tbody = document.getElementById('admTmTbody');
+    const empty = document.getElementById('admTmEmpty');
+    if (!filtered.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    tbody.innerHTML = filtered.map((t, i) => {
+      const idx = ADM_TM_TASKS.indexOf(t);
+      const date = new Date(t.date+'T00:00:00');
+      const isOverdue = date < today && t.status !== 'complete';
+      const dateStr = date.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+      const rowClass = t.status==='complete'?'row-complete':t.status==='incomplete'?'row-incomplete':'';
+      return `<tr class="${rowClass}">
+        <td class="td-num">${i+1}</td>
+        <td class="td-name">${admTmEsc(t.name)}</td>
+        <td class="td-task">${admTmEsc(t.task)}</td>
+        <td><span class="assignee-pill">${admTmEsc(t.assign)}</span></td>
+        <td class="td-date${isOverdue?' overdue':''}">${dateStr}${isOverdue?' ⚠':''}</td>
+        <td>
+          <div class="status-wrap">
+            <button class="s-btn s-complete${t.status==='complete'?' active':''}" data-idx="${idx}" data-status="complete">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>Complete
+            </button>
+            <button class="s-btn s-incomplete${t.status==='incomplete'?' active':''}" data-idx="${idx}" data-status="incomplete">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Incomplete
+            </button>
+          </div>
+        </td>
+        <td>
+          <button class="tm-del-btn" data-idx="${idx}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          </button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('admTmTbody').addEventListener('click', async e => {
+    const sBtn = e.target.closest('.s-btn');
+    const dBtn = e.target.closest('.tm-del-btn');
+    if (sBtn) {
+      const idx = parseInt(sBtn.dataset.idx);
+      const status = sBtn.dataset.status;
+      const newStatus = ADM_TM_TASKS[idx].status === status ? 'pending' : status;
+      const { error } = await sb.from('tasks').update({ status: newStatus }).eq('id', ADM_TM_TASKS[idx].id);
+      if (!error) { ADM_TM_TASKS[idx].status = newStatus; admTmRender(); }
+    }
+    if (dBtn) {
+      const idx = parseInt(dBtn.dataset.idx);
+      if (!confirm('Delete this task?')) return;
+      const { error } = await sb.from('tasks').delete().eq('id', ADM_TM_TASKS[idx].id);
+      if (!error) { ADM_TM_TASKS.splice(idx, 1); admTmRender(); }
+    }
+  });
+
+  document.getElementById('admTmFilterName').addEventListener('change', admTmRender);
+  document.getElementById('admTmFilterStatus').addEventListener('change', admTmRender);
+
+  document.getElementById('admTmTaskForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name   = document.getElementById('admTmFName').value;
+    const task   = document.getElementById('admTmFTask').value.trim();
+    const assign = document.getElementById('admTmFAssign').value;
+    const date   = document.getElementById('admTmFDate').value;
+    const { data, error } = await sb.from('tasks').insert({ name, task, assign, date, status: 'pending' }).select().single();
+    if (error) { alert('Could not save task: ' + error.message); return; }
+    ADM_TM_TASKS.unshift(data);
+    admTmRender();
+    e.target.reset();
+    const d = new Date(date+'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+    const msg = `Hello ${assign} 👋,\n\nYou have been assigned a new task by *${name}*.\n\n📋 *Task:* ${task}\n📅 *Deadline:* ${dateStr}\n\nPlease complete it before the deadline.\n\n– Medwell Logix Team`;
+    const phone = ADM_TM_PHONE[assign] ? atob(ADM_TM_PHONE[assign]) : null;
+    if (phone) window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  });
+
+  sb.channel('tasks_rt_admin')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => admTmLoadTasks())
+    .subscribe();
+
 </script>
 </body>
 </html>
