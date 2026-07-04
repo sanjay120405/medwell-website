@@ -1075,7 +1075,10 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         Field Work Report
       </h3>
-      <button class="rpt-close" onclick="closeRptOverlay()">✕</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button id="rptExportBtn" onclick="exportFieldReport()" style="display:none;padding:7px 16px;background:var(--orange);color:white;border:none;border-radius:8px;font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;">&#8595; Export</button>
+        <button class="rpt-close" onclick="closeRptOverlay()">✕</button>
+      </div>
     </div>
     <div class="rpt-filters">
       <div class="rpt-ff">
@@ -2579,6 +2582,8 @@
     if (document.getElementById('confirmOverlay').classList.contains('open'))     { closeConfirm(); return; }
   });
 
+  let rptCurrentData = null;
+
   async function fetchReport() {
     const exec  = document.getElementById('rptExec').value;
     const from  = document.getElementById('rptFrom').value;
@@ -2589,52 +2594,97 @@
 
     const btn = document.getElementById('rptGetBtn');
     btn.disabled = true; btn.textContent = 'Loading…';
+    document.getElementById('rptExportBtn').style.display = 'none';
     body.innerHTML = '<div class="rpt-loading">Fetching report…</div>';
 
-    const { data, error } = await sb.from('field_reports')
-      .select('*')
-      .ilike('executive', exec)
-      .gte('report_date', from)
-      .lte('report_date', to)
-      .order('report_date', { ascending: false });
+    const [reportsRes, petrolRes] = await Promise.all([
+      sb.from('field_reports').select('*').ilike('executive', exec).gte('report_date', from).lte('report_date', to).order('report_date', { ascending: false }),
+      sb.from('petrol_entries').select('*').ilike('executive', exec).gte('date', from).lte('date', to).order('date', { ascending: false })
+    ]);
 
     btn.disabled = false; btn.textContent = 'Get Report';
 
-    if (error) { body.innerHTML = `<div class="rpt-empty">Error: ${error.message}</div>`; return; }
-    if (!data || !data.length) { body.innerHTML = '<div class="rpt-empty">No field reports found for this executive in the selected date range.</div>'; return; }
+    if (reportsRes.error) { body.innerHTML = `<div class="rpt-empty">Error: ${reportsRes.error.message}</div>`; return; }
 
-    const totalVisited  = data.filter(r => r.visited).length;
-    const totalOrder    = data.reduce((s, r) => s + (+r.order_value || 0), 0);
+    const data   = reportsRes.data || [];
+    const petrol = petrolRes.data  || [];
+    rptCurrentData = { exec, from, to, reports: data, petrol };
+
+    const totalVisited = data.filter(r => r.visited).length;
+    const totalOrder   = data.reduce((s, r) => s + (+r.order_value || 0), 0);
+    const totalPetrol  = petrol.reduce((s, p) => s + (+p.petrol_amount || 0), 0);
+
+    const reportsHtml = data.length ? `
+      <div class="rpt-table-wrap">
+        <table class="rpt-table">
+          <thead><tr><th>#</th><th>Date</th><th>Customer</th><th>Location</th><th>Visited</th><th>Order Value</th><th>Feedback</th></tr></thead>
+          <tbody>
+            ${data.map((r, i) => `<tr>
+              <td>${i+1}</td>
+              <td>${r.report_date || '—'}</td>
+              <td style="font-weight:600">${r.customer_name || '—'}</td>
+              <td>${r.location || '—'}</td>
+              <td><span class="${r.visited ? 'rpt-visited-yes' : 'rpt-visited-no'}">${r.visited ? 'Yes' : 'No'}</span></td>
+              <td>${r.order_value ? '₹' + (+r.order_value).toLocaleString('en-IN') : '—'}</td>
+              <td style="color:var(--text-muted);font-size:0.8rem">${r.feedback || '—'}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>` : '<div class="rpt-empty" style="padding:20px 0">No field reports for this range.</div>';
+
+    const petrolHtml = petrol.length ? `
+      <div class="rpt-table-wrap">
+        <table class="rpt-table">
+          <thead><tr><th>#</th><th>Date</th><th>Location</th><th>Petrol (₹)</th></tr></thead>
+          <tbody>
+            ${petrol.map((p, i) => `<tr>
+              <td>${i+1}</td>
+              <td>${p.date || '—'}</td>
+              <td style="font-weight:600">${p.location || '—'}</td>
+              <td style="color:#7c3aed;font-weight:700">₹${(+p.petrol_amount || 0).toLocaleString('en-IN')}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align:right;margin-top:6px;font-size:0.83rem;font-weight:700;color:#7c3aed;">Total Petrol: ₹${totalPetrol.toLocaleString('en-IN')}</div>` :
+      '<div class="rpt-empty" style="padding:16px 0">No petrol entries for this range.</div>';
 
     body.innerHTML = `
       <div class="rpt-summary">
         <div class="rpt-sum-stat"><div class="rpt-sum-val">${data.length}</div><div class="rpt-sum-key">Total Visits</div></div>
         <div class="rpt-sum-stat"><div class="rpt-sum-val">${totalVisited}</div><div class="rpt-sum-key">Visited</div></div>
         <div class="rpt-sum-stat"><div class="rpt-sum-val">${data.length - totalVisited}</div><div class="rpt-sum-key">Not Visited</div></div>
-        <div class="rpt-sum-stat"><div class="rpt-sum-val">₹${totalOrder.toLocaleString('en-IN')}</div><div class="rpt-sum-key">Total Order Value</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val">₹${totalOrder.toLocaleString('en-IN')}</div><div class="rpt-sum-key">Order Value</div></div>
+        <div class="rpt-sum-stat"><div class="rpt-sum-val" style="color:#7c3aed">₹${totalPetrol.toLocaleString('en-IN')}</div><div class="rpt-sum-key">Petrol</div></div>
       </div>
-      <div class="rpt-table-wrap">
-        <table class="rpt-table">
-          <thead>
-            <tr>
-              <th>#</th><th>Date</th><th>Customer</th><th>Location</th>
-              <th>Visited</th><th>Order Value</th><th>Feedback</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${data.map((r, i) => `
-              <tr>
-                <td>${i+1}</td>
-                <td>${r.report_date || '—'}</td>
-                <td style="font-weight:600">${r.customer_name || '—'}</td>
-                <td>${r.location || '—'}</td>
-                <td><span class="${r.visited ? 'rpt-visited-yes' : 'rpt-visited-no'}">${r.visited ? 'Yes' : 'No'}</span></td>
-                <td>${r.order_value ? '₹' + (+r.order_value).toLocaleString('en-IN') : '—'}</td>
-                <td style="color:var(--text-muted);font-size:0.8rem">${r.feedback || '—'}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
+      ${reportsHtml}
+      <div style="margin-top:20px;padding-top:16px;border-top:2px solid var(--border);">
+        <div style="font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:800;color:#7c3aed;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 22V8l7-6 7 6v14"/><path d="M9 22V12h4v10"/><path d="M16 8h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1"/><path d="M18 22V14"/></svg>
+          Location &amp; Petrol Entries
+        </div>
+        ${petrolHtml}
       </div>`;
+
+    document.getElementById('rptExportBtn').style.display = 'inline-block';
+  }
+
+  function exportFieldReport() {
+    if (!rptCurrentData) return;
+    const { exec, from, to, reports, petrol } = rptCurrentData;
+    const rows1 = reports.map((r, i) => ({
+      '#': i+1, 'Date': r.report_date || '', 'Customer': r.customer_name || '',
+      'Location': r.location || '', 'Visited': r.visited ? 'Yes' : 'No',
+      'Order Value': +r.order_value || 0, 'Feedback': r.feedback || ''
+    }));
+    const rows2 = petrol.map((p, i) => ({
+      '#': i+1, 'Date': p.date || '', 'Location': p.location || '',
+      'Petrol Amount (₹)': +p.petrol_amount || 0
+    }));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows1.length ? rows1 : [{}]), 'Field Reports');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows2.length ? rows2 : [{}]), 'Petrol Entries');
+    XLSX.writeFile(wb, `FieldReport_${exec}_${from}_${to}.xlsx`);
   }
 
   /* import */

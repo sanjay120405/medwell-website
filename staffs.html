@@ -241,6 +241,8 @@
     /* ── ADD CUSTOMER MODAL ── */
     .fw-add-cust-btn { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 12px 16px; padding: 10px 16px; background: var(--orange); color: white; border: none; border-radius: 10px; font-family: 'Poppins',sans-serif; font-size: 0.83rem; font-weight: 700; cursor: pointer; width: calc(100% - 32px); }
     .fw-add-cust-btn:active { opacity: .85; }
+    .fw-petrol-btn { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 12px 16px 0; padding: 10px 16px; background: #7c3aed; color: white; border: none; border-radius: 10px; font-family: 'Poppins',sans-serif; font-size: 0.83rem; font-weight: 700; cursor: pointer; width: calc(100% - 32px); }
+    .fw-petrol-btn:active { opacity: .85; }
     .fw-cust-overlay { position: fixed; inset: 0; z-index: 9000; background: rgba(4,64,64,.55); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .2s; }
     .fw-cust-overlay.show { opacity: 1; pointer-events: all; }
     .fw-cust-card { background: white; border-radius: 18px; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
@@ -424,6 +426,10 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input class="fw-search" id="fwSearch" type="text" placeholder="Search by name or location…" oninput="filterFW()" />
       </div>
+      <button class="fw-petrol-btn" onclick="openPetrolModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 22V8l7-6 7 6v14"/><path d="M9 22V12h4v10"/><path d="M16 8h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1"/><path d="M18 22V14"/></svg>
+        Location &amp; Petrol
+      </button>
       <button class="fw-add-cust-btn" onclick="openFWCustModal()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Add Customer
@@ -500,6 +506,31 @@
       <div class="fw-cust-footer">
         <button class="fw-cust-cancel" onclick="closeFWCustModal()">Cancel</button>
         <button class="fw-cust-save" id="fwCustSave" onclick="saveFWCustomer()">Save Customer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOCATION & PETROL MODAL ── -->
+  <div class="fw-cust-overlay" id="petrolOverlay">
+    <div class="fw-cust-card">
+      <div class="fw-cust-header">
+        <h3>Location &amp; Petrol</h3>
+        <button class="fw-cust-close" onclick="closePetrolModal()">✕</button>
+      </div>
+      <div class="fw-cust-body">
+        <div class="fw-cust-mf full">
+          <label>Location *</label>
+          <input type="text" id="petrolLocation" placeholder="Enter location visited" />
+        </div>
+        <div class="fw-cust-mf full">
+          <label>Petrol Amount (₹) *</label>
+          <input type="number" id="petrolAmount" placeholder="Amount spent on petrol" min="0" step="0.01" />
+        </div>
+      </div>
+      <div class="fw-cust-err" id="petrolErr"></div>
+      <div class="fw-cust-footer">
+        <button class="fw-cust-cancel" onclick="closePetrolModal()">Cancel</button>
+        <button class="fw-cust-save" id="petrolSave" onclick="savePetrolEntry()" style="background:#7c3aed;">Save Entry</button>
       </div>
     </div>
   </div>
@@ -906,6 +937,36 @@
       closeFWCustModal();
       fwShowToast('Customer added ✓');
       loadFWCustomers();
+    }
+
+    /* ── Location & Petrol ── */
+    function openPetrolModal() {
+      document.getElementById('petrolLocation').value = '';
+      document.getElementById('petrolAmount').value = '';
+      document.getElementById('petrolErr').textContent = '';
+      document.getElementById('petrolSave').disabled = false;
+      document.getElementById('petrolOverlay').classList.add('show');
+      setTimeout(() => document.getElementById('petrolLocation').focus(), 100);
+    }
+    function closePetrolModal() {
+      document.getElementById('petrolOverlay').classList.remove('show');
+    }
+    async function savePetrolEntry() {
+      const location = document.getElementById('petrolLocation').value.trim();
+      const amount   = parseFloat(document.getElementById('petrolAmount').value);
+      if (!location) { document.getElementById('petrolErr').textContent = 'Location is required.'; return; }
+      if (isNaN(amount) || amount <= 0) { document.getElementById('petrolErr').textContent = 'Please enter a valid petrol amount.'; return; }
+      document.getElementById('petrolSave').disabled = true;
+      document.getElementById('petrolErr').textContent = '';
+      const today = new Date().toISOString().slice(0,10);
+      const { error } = await sb.from('petrol_entries').insert({ executive: staffName, date: today, location, petrol_amount: amount });
+      if (error) {
+        document.getElementById('petrolErr').textContent = 'Save failed: ' + error.message;
+        document.getElementById('petrolSave').disabled = false;
+        return;
+      }
+      closePetrolModal();
+      fwShowToast('Entry saved ✓');
     }
 
     let fwToastTimer = null;
