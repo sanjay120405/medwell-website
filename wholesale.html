@@ -405,16 +405,14 @@
         <label>Company</label>
         <div class="search-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          <input id="searchCompany" class="search-input" type="text" placeholder="Search by company..." autocomplete="off" list="companyList" />
-          <datalist id="companyList"></datalist>
+          <input id="searchCompany" class="search-input" type="text" placeholder="Search by company..." autocomplete="off" />
         </div>
       </div>
       <div class="search-field">
         <label>Category</label>
         <div class="search-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-          <input id="searchCategory" class="search-input" type="text" placeholder="Search by category..." autocomplete="off" list="categoryList" />
-          <datalist id="categoryList"></datalist>
+          <input id="searchCategory" class="search-input" type="text" placeholder="Search by category..." autocomplete="off" />
         </div>
       </div>
       <div class="btn-group">
@@ -546,8 +544,7 @@
     document.getElementById('statTotal').textContent     = ITEMS.length;
     document.getElementById('statCompanies').textContent = companies.size;
     document.getElementById('statCategories').textContent = categories.size;
-    document.getElementById('companyList').innerHTML  = [...companies].sort().map(v => `<option value="${v}">`).join('');
-    document.getElementById('categoryList').innerHTML = [...categories].sort().map(v => `<option value="${v}">`).join('');
+
     renderTable(ITEMS, currentTerms);
   }
 
