@@ -763,8 +763,7 @@
         </div>
         <div class="cl-search-field">
           <label for="clSearchExec">Executive</label>
-          <input id="clSearchExec" class="cl-search-input" type="text" placeholder="Search by executive…" autocomplete="off" list="clExecList" />
-          <datalist id="clExecList"></datalist>
+          <input id="clSearchExec" class="cl-search-input" type="text" placeholder="Search by executive…" autocomplete="off" />
         </div>
         <div class="cl-search-field">
           <label for="clSearchLocation">Location</label>
@@ -851,13 +850,11 @@
         </div>
         <div class="wh-sf">
           <label for="whSearchCompany">Company</label>
-          <input id="whSearchCompany" class="wh-search-input" type="text" placeholder="Search by company…" autocomplete="off" list="whCompanyList" />
-          <datalist id="whCompanyList"></datalist>
+          <input id="whSearchCompany" class="wh-search-input" type="text" placeholder="Search by company…" autocomplete="off" />
         </div>
         <div class="wh-sf">
           <label for="whSearchMolecule">Molecule</label>
-          <input id="whSearchMolecule" class="wh-search-input" type="text" placeholder="Search by molecule…" autocomplete="off" list="whMoleculeList" />
-          <datalist id="whMoleculeList"></datalist>
+          <input id="whSearchMolecule" class="wh-search-input" type="text" placeholder="Search by molecule…" autocomplete="off" />
         </div>
         <div class="wh-btn-group">
           <button class="wh-search-btn" onclick="whApplyFilter()">Search</button>
@@ -2241,8 +2238,6 @@
     document.getElementById('whStatTotal').textContent      = WH_ITEMS.length;
     document.getElementById('whStatCompanies').textContent  = companies.size;
     document.getElementById('whStatCategories').textContent = categories.size;
-    document.getElementById('whCompanyList').innerHTML  = [...companies].sort().map(v => `<option value="${v}">`).join('');
-    document.getElementById('whMoleculeList').innerHTML = [...molecules].sort().map(v => `<option value="${v}">`).join('');
     whRenderTable(WH_ITEMS, { product:'', company:'', molecule:'' });
   }
 
