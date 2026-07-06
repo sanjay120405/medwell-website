@@ -2066,7 +2066,6 @@
     document.getElementById('clStatTotal').textContent = CL_CUSTOMERS.length;
     document.getElementById('clStatExecs').textContent = execs.size;
     document.getElementById('clStatLocs').textContent  = locs.size;
-    document.getElementById('clExecList').innerHTML = [...execs].sort().map(e => `<option value="${e}">`).join('');
     clRenderTable(CL_CUSTOMERS, { name:'', executive:'', location:'' });
   }
 
