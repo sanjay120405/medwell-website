@@ -855,9 +855,9 @@
           <datalist id="whCompanyList"></datalist>
         </div>
         <div class="wh-sf">
-          <label for="whSearchCategory">Category</label>
-          <input id="whSearchCategory" class="wh-search-input" type="text" placeholder="Search by category…" autocomplete="off" list="whCategoryList" />
-          <datalist id="whCategoryList"></datalist>
+          <label for="whSearchMolecule">Molecule</label>
+          <input id="whSearchMolecule" class="wh-search-input" type="text" placeholder="Search by molecule…" autocomplete="off" list="whMoleculeList" />
+          <datalist id="whMoleculeList"></datalist>
         </div>
         <div class="wh-btn-group">
           <button class="wh-search-btn" onclick="whApplyFilter()">Search</button>
@@ -2207,7 +2207,7 @@
   });
 
   /* ── WHOLESALE ─────────────────────────── */
-  let WH_ITEMS = [], whFiltered = [], whCurrentTerms = { product:'', company:'', category:'' };
+  let WH_ITEMS = [], whFiltered = [], whCurrentTerms = { product:'', company:'', molecule:'' };
   let whCurrentPage = 1, whEditingId = null;
   const WH_PAGE_SIZE = 50;
 
@@ -2237,12 +2237,13 @@
     WH_ITEMS = allData.map(whRowToArr);
     const companies  = new Set(WH_ITEMS.map(c => c[14]).filter(Boolean));
     const categories = new Set(WH_ITEMS.map(c => c[4]).filter(Boolean));
+    const molecules  = new Set(WH_ITEMS.map(c => c[3]).filter(Boolean));
     document.getElementById('whStatTotal').textContent      = WH_ITEMS.length;
     document.getElementById('whStatCompanies').textContent  = companies.size;
     document.getElementById('whStatCategories').textContent = categories.size;
     document.getElementById('whCompanyList').innerHTML  = [...companies].sort().map(v => `<option value="${v}">`).join('');
-    document.getElementById('whCategoryList').innerHTML = [...categories].sort().map(v => `<option value="${v}">`).join('');
-    whRenderTable(WH_ITEMS, { product:'', company:'', category:'' });
+    document.getElementById('whMoleculeList').innerHTML = [...molecules].sort().map(v => `<option value="${v}">`).join('');
+    whRenderTable(WH_ITEMS, { product:'', company:'', molecule:'' });
   }
 
   function whRenderTable(rows, terms) {
@@ -2262,7 +2263,7 @@
         <td>${whEsc(c[0])}</td>
         <td>${whEsc(c[1])}</td>
         <td class="wh-product">${whHl(c[2], terms.product)}</td>
-        <td>${whEsc(c[3])}</td>
+        <td>${whHl(c[3], terms.molecule)}</td>
         <td>${whEsc(c[4])}</td>
         <td>${whEsc(c[5])}</td>
         <td>${whEsc(c[6])}</td>
@@ -2292,21 +2293,21 @@
   }
 
   function whGetTerms() {
-    return { product: document.getElementById('whSearchProduct').value.trim(), company: document.getElementById('whSearchCompany').value.trim(), category: document.getElementById('whSearchCategory').value.trim() };
+    return { product: document.getElementById('whSearchProduct').value.trim(), company: document.getElementById('whSearchCompany').value.trim(), molecule: document.getElementById('whSearchMolecule').value.trim() };
   }
   function whApplyFilter() {
     whCurrentPage = 1; const t = whGetTerms();
     whRenderTable(WH_ITEMS.filter(c =>
       (!t.product  || c[2].toLowerCase().includes(t.product.toLowerCase())) &&
       (!t.company  || c[14].toLowerCase().includes(t.company.toLowerCase())) &&
-      (!t.category || c[4].toLowerCase().includes(t.category.toLowerCase()))
+      (!t.molecule || c[3].toLowerCase().includes(t.molecule.toLowerCase()))
     ), t);
   }
   function whClearAll() {
-    ['whSearchProduct','whSearchCompany','whSearchCategory'].forEach(id => document.getElementById(id).value='');
-    whCurrentPage = 1; whRenderTable(WH_ITEMS, { product:'', company:'', category:'' });
+    ['whSearchProduct','whSearchCompany','whSearchMolecule'].forEach(id => document.getElementById(id).value='');
+    whCurrentPage = 1; whRenderTable(WH_ITEMS, { product:'', company:'', molecule:'' });
   }
-  ['whSearchProduct','whSearchCompany','whSearchCategory'].forEach(id => {
+  ['whSearchProduct','whSearchCompany','whSearchMolecule'].forEach(id => {
     document.getElementById(id).addEventListener('input', whApplyFilter);
     document.getElementById(id).addEventListener('keydown', e => { if (e.key==='Enter') whApplyFilter(); });
   });
