@@ -131,6 +131,9 @@
     .stat { display: flex; flex-direction: column; gap: 1px; }
     .stat-label { font-size: 0.7rem; font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
     .stat-value { font-family: 'Poppins', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--teal); }
+    .stat-clickable { cursor: pointer; padding: 6px 10px; border-radius: 10px; transition: background .15s; }
+    .stat-clickable:hover { background: var(--teal-light); }
+    .stat-clickable:hover .stat-value { color: var(--teal-dark); }
     .stat-divider { width: 1px; height: 34px; background: var(--border); }
 
     /* ── PRODUCTS INDIVIDUAL SEARCH ── */
@@ -836,11 +839,11 @@
   <!-- WHOLESALE TAB -->
   <div id="tabWholesale" style="display:none;">
     <div class="stats-bar">
-      <div class="stat"><span class="stat-label">Total Items</span><span class="stat-value" id="whStatTotal">—</span></div>
+      <div class="stat stat-clickable" onclick="whClearAll()" title="Show all items"><span class="stat-label">Total Items</span><span class="stat-value" id="whStatTotal">—</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-label">Companies</span><span class="stat-value" id="whStatCompanies">—</span></div>
+      <div class="stat stat-clickable" onclick="whFilterByStat('company')" title="Filter by company"><span class="stat-label">Companies</span><span class="stat-value" id="whStatCompanies">—</span></div>
       <div class="stat-divider"></div>
-      <div class="stat"><span class="stat-label">Categories</span><span class="stat-value" id="whStatCategories">—</span></div>
+      <div class="stat stat-clickable" onclick="whFilterByStat('molecule')" title="Filter by molecule"><span class="stat-label">Categories</span><span class="stat-value" id="whStatCategories">—</span></div>
     </div>
     <div class="wh-search-section">
       <div class="wh-search-grid">
@@ -2300,6 +2303,12 @@
   function whClearAll() {
     ['whSearchProduct','whSearchCompany','whSearchMolecule'].forEach(id => document.getElementById(id).value='');
     whCurrentPage = 1; whRenderTable(WH_ITEMS, { product:'', company:'', molecule:'' });
+  }
+  function whFilterByStat(field) {
+    const inputId = field === 'company' ? 'whSearchCompany' : 'whSearchMolecule';
+    ['whSearchProduct','whSearchCompany','whSearchMolecule'].forEach(id => document.getElementById(id).value='');
+    document.getElementById(inputId).focus();
+    document.getElementById(inputId).scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
   ['whSearchProduct','whSearchCompany','whSearchMolecule'].forEach(id => {
     document.getElementById(id).addEventListener('input', whApplyFilter);
