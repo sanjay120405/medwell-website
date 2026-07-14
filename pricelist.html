@@ -1177,7 +1177,7 @@
   // Load from Supabase with localStorage fallback
   async function loadProducts() {
     try {
-      const PAGE_PL = 1000; let allPL = [], fromPL = 0;
+      const PAGE_PL = 10000; let allPL = [], fromPL = 0;
       while (true) {
         const { data: pld, error } = await sb_pl.from('products').select('*').order('id').range(fromPL, fromPL + PAGE_PL - 1);
         if (error) throw error;
