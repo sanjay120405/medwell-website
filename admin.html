@@ -457,20 +457,6 @@
     .cl-modal-save:hover { background: var(--teal-dark); }
     .cl-modal-save:disabled { opacity: .6; cursor: not-allowed; }
 
-    /* ── INVOICE TAB ── */
-    .inv-upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 700; border: none; color: white; cursor: pointer; transition: opacity .2s; }
-    .inv-upload-btn:hover { opacity: .9; }
-    .inv-upload-btn:disabled { opacity: .5; cursor: not-allowed; }
-    .inv-scan-msg { font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--teal-dark); padding: 12px 24px 0; display: none; }
-    .inv-items-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    .inv-items-table th { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; text-align: left; padding: 6px 8px; }
-    .inv-items-table td { padding: 4px 8px; }
-    .inv-item-input { width: 100%; padding: 6px 8px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.82rem; background: var(--off-white); }
-    .inv-item-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
-    .inv-del-item { background: none; border: none; color: var(--red); cursor: pointer; font-size: 0.9rem; }
-    .inv-add-row-btn { margin-top: 10px; padding: 7px 16px; border-radius: 8px; border: 1.5px dashed var(--border); background: transparent; color: var(--teal-dark); font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
-    .inv-view-row { padding: 8px 10px; font-size: 0.85rem; }
-
     /* ── WHOLESALE TAB ── */
     #tabWholesale .wh-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
     #tabWholesale .wh-search-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
@@ -667,10 +653,6 @@
       <button class="ah-tab" id="tabBtnTaskmaster" onclick="switchTab('taskmaster')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
         Task Master
-      </button>
-      <button class="ah-tab" id="tabBtnInvoice" onclick="switchTab('invoice')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
-        Invoice
       </button>
     </div>
     <div class="ah-right">
@@ -1129,71 +1111,6 @@
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
         <p>No tasks yet. Add one above!</p>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- INVOICE TAB -->
-<div id="tabInvoice" style="display:none;">
-  <div class="toolbar">
-    <input type="file" id="invFileInput" accept="image/*" style="display:none;" onchange="invHandleFile(event)" />
-    <input type="file" id="invCameraInput" accept="image/*" capture="environment" style="display:none;" onchange="invHandleFile(event)" />
-    <button class="inv-upload-btn" id="invUploadBtn" style="background:var(--teal);" onclick="document.getElementById('invFileInput').click()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      Upload Image
-    </button>
-    <button class="inv-upload-btn" id="invCameraBtn" style="background:var(--orange);" onclick="document.getElementById('invCameraInput').click()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      Take Photo
-    </button>
-  </div>
-  <p class="inv-scan-msg" id="invScanMsg">Scanning invoice…</p>
-  <div class="table-section">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Date</th><th>Vendor</th><th>Invoice #</th><th>Items</th><th>Total</th><th></th></tr>
-        </thead>
-        <tbody id="invTbody">
-          <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">No invoices yet. Upload or capture one above.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- ── INVOICE REVIEW MODAL ── -->
-<div class="cl-modal-overlay hidden" id="invReviewOverlay">
-  <div class="cl-modal-card" style="max-width:760px;">
-    <div class="cl-modal-header">
-      <h3>Review Scanned Invoice</h3>
-      <button class="cl-modal-close" onclick="invCloseReview()">✕</button>
-    </div>
-    <div id="invHeaderFieldsWrap"></div>
-    <button type="button" class="inv-add-row-btn" onclick="invAddHeaderField()">+ Add Field</button>
-    <div id="invItemsWrap" style="margin-top:18px;"></div>
-    <div style="display:flex;gap:8px;margin-top:10px;">
-      <button type="button" class="inv-add-row-btn" onclick="invAddItemRow()">+ Add Item</button>
-      <button type="button" class="inv-add-row-btn" onclick="invAddItemColumn()">+ Add Column</button>
-    </div>
-    <p class="cl-modal-err" id="invReviewErr"></p>
-    <div class="cl-modal-footer">
-      <button class="cl-modal-cancel" onclick="invCloseReview()">Cancel</button>
-      <button class="cl-modal-save" id="invSaveBtn" onclick="invSaveInvoice()">Save Invoice</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── INVOICE VIEW MODAL ── -->
-<div class="cl-modal-overlay hidden" id="invViewOverlay">
-  <div class="cl-modal-card" style="max-width:760px;">
-    <div class="cl-modal-header">
-      <h3>Invoice Details</h3>
-      <button class="cl-modal-close" onclick="invCloseView()">✕</button>
-    </div>
-    <div id="invViewBody"></div>
-    <div class="cl-modal-footer">
-      <button class="cl-modal-cancel" onclick="invCloseView()">Close</button>
     </div>
   </div>
 </div>
@@ -1917,16 +1834,13 @@
     document.getElementById('tabTracking').style.display    = tab === 'tracking'   ? 'flex'  : 'none';
     document.getElementById('tabAttendance').style.display  = tab === 'attendance' ? 'block' : 'none';
     document.getElementById('tabTaskmaster').style.display  = tab === 'taskmaster' ? 'block' : 'none';
-    document.getElementById('tabInvoice').style.display     = tab === 'invoice'    ? 'block' : 'none';
     document.getElementById('tabBtnProducts').classList.toggle('active',    tab === 'products');
     document.getElementById('tabBtnCustomers').classList.toggle('active',   tab === 'customers');
     document.getElementById('tabBtnWholesale').classList.toggle('active',   tab === 'wholesale');
     document.getElementById('tabBtnTracking').classList.toggle('active',    tab === 'tracking');
     document.getElementById('tabBtnAttendance').classList.toggle('active',  tab === 'attendance');
     document.getElementById('tabBtnTaskmaster').classList.toggle('active',  tab === 'taskmaster');
-    document.getElementById('tabBtnInvoice').classList.toggle('active',     tab === 'invoice');
     if (tab === 'taskmaster') admTmLoadTasks();
-    if (tab === 'invoice') invLoadInvoices();
     document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
     if (tab === 'tracking') {
       if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
@@ -3224,201 +3138,6 @@
     .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => admTmLoadTasks())
     .subscribe();
 
-  /* ── INVOICE SCANNING (flexible JSON-document storage) ─── */
-  // Points at the Node backend (server.js) that holds the NVIDIA key server-side.
-  const INVOICE_BACKEND_URL = 'https://medwell-website.onrender.com/api/scan-invoice';
-  let INV_INVOICES = [];
-  let invPendingData = { items: [] }; // whatever fields/columns THIS invoice has — no fixed shape
-
-  function invEsc(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-  function invPick(obj, keys) { for (const k of keys) { if (obj[k] != null && obj[k] !== '') return obj[k]; } return null; }
-  function invItemColumns(items) { const seen = []; (items || []).forEach(it => Object.keys(it).forEach(k => { if (!seen.includes(k)) seen.push(k); })); return seen; }
-
-  function invFileToDataUri(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  async function invHandleFile(e) {
-    const file = e.target.files[0];
-    e.target.value = '';
-    if (!file) return;
-    const dataUri = await invFileToDataUri(file);
-    await invScanImage(dataUri);
-  }
-
-  async function invScanImage(dataUri) {
-    document.getElementById('invUploadBtn').disabled = true;
-    document.getElementById('invCameraBtn').disabled = true;
-    document.getElementById('invScanMsg').style.display = 'block';
-    try {
-      const res = await fetch(INVOICE_BACKEND_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: dataUri })
-      });
-      const result = await res.json();
-      if (!res.ok || result.error) throw new Error(result.error || 'Scan failed');
-      invOpenReview(result);
-    } catch (err) {
-      alert('Could not scan invoice: ' + err.message);
-    } finally {
-      document.getElementById('invUploadBtn').disabled = false;
-      document.getElementById('invCameraBtn').disabled = false;
-      document.getElementById('invScanMsg').style.display = 'none';
-    }
-  }
-
-  function invOpenReview(data) {
-    invPendingData = (data && typeof data === 'object') ? JSON.parse(JSON.stringify(data)) : {};
-    if (!Array.isArray(invPendingData.items)) invPendingData.items = [];
-    invRenderReview();
-    document.getElementById('invReviewErr').textContent = '';
-    document.getElementById('invSaveBtn').disabled = false;
-    document.getElementById('invReviewOverlay').classList.remove('hidden');
-  }
-
-  function invRenderReview() {
-    const keys = Object.keys(invPendingData).filter(k => k !== 'items');
-    document.getElementById('invHeaderFieldsWrap').innerHTML = keys.length ? `
-      <div class="cl-modal-grid">
-        ${keys.map(k => `
-          <div class="ff">
-            <label>${invEsc(k)} <button type="button" class="inv-del-item inv-del-field" data-key="${invEsc(k)}" style="float:right;">✕</button></label>
-            <input class="inv-item-input inv-field-input" type="text" data-key="${invEsc(k)}" value="${invEsc(invPendingData[k])}" />
-          </div>`).join('')}
-      </div>` : '<p style="font-size:0.82rem;color:var(--text-muted);">No header fields detected — click "+ Add Field" to add one.</p>';
-
-    const cols = invItemColumns(invPendingData.items);
-    document.getElementById('invItemsWrap').innerHTML = (invPendingData.items.length && cols.length) ? `
-      <table class="inv-items-table">
-        <thead><tr>
-          ${cols.map(c => `<th>${invEsc(c)} <button type="button" class="inv-del-item inv-del-col" data-col="${invEsc(c)}">✕</button></th>`).join('')}
-          <th></th>
-        </tr></thead>
-        <tbody>
-          ${invPendingData.items.map((it, i) => `
-            <tr>
-              ${cols.map(c => `<td><input class="inv-item-input inv-cell-input" type="text" data-idx="${i}" data-col="${invEsc(c)}" value="${invEsc(it[c])}" /></td>`).join('')}
-              <td><button type="button" class="inv-del-item inv-del-row" data-idx="${i}">✕</button></td>
-            </tr>`).join('')}
-        </tbody>
-      </table>` : '<p style="font-size:0.82rem;color:var(--text-muted);">No line items yet — click "+ Add Item".</p>';
-  }
-
-  document.getElementById('invHeaderFieldsWrap').addEventListener('input', e => {
-    if (e.target.classList.contains('inv-field-input')) invPendingData[e.target.dataset.key] = e.target.value;
-  });
-  document.getElementById('invHeaderFieldsWrap').addEventListener('click', e => {
-    const btn = e.target.closest('.inv-del-field');
-    if (btn) { delete invPendingData[btn.dataset.key]; invRenderReview(); }
-  });
-  document.getElementById('invItemsWrap').addEventListener('input', e => {
-    if (e.target.classList.contains('inv-cell-input')) invPendingData.items[e.target.dataset.idx][e.target.dataset.col] = e.target.value;
-  });
-  document.getElementById('invItemsWrap').addEventListener('click', e => {
-    const delRow = e.target.closest('.inv-del-row');
-    const delCol = e.target.closest('.inv-del-col');
-    if (delRow) { invPendingData.items.splice(+delRow.dataset.idx, 1); invRenderReview(); }
-    if (delCol) { invPendingData.items.forEach(it => delete it[delCol.dataset.col]); invRenderReview(); }
-  });
-
-  function invAddHeaderField() {
-    const key = (prompt('Field name (e.g. "tax", "po_number", "shipping"):') || '').trim();
-    if (!key || key === 'items') return;
-    invPendingData[key] = '';
-    invRenderReview();
-  }
-  function invAddItemRow() {
-    const cols = invItemColumns(invPendingData.items);
-    const newItem = {};
-    (cols.length ? cols : ['description']).forEach(c => newItem[c] = '');
-    invPendingData.items.push(newItem);
-    invRenderReview();
-  }
-  function invAddItemColumn() {
-    const key = (prompt('Column name (e.g. "batch_no", "hsn_code", "discount_pct"):') || '').trim();
-    if (!key) return;
-    if (!invPendingData.items.length) invPendingData.items.push({});
-    invPendingData.items.forEach(it => { if (!(key in it)) it[key] = ''; });
-    invRenderReview();
-  }
-  function invCloseReview() { document.getElementById('invReviewOverlay').classList.add('hidden'); }
-
-  async function invSaveInvoice() {
-    const hasHeaderField = Object.keys(invPendingData).some(k => k !== 'items' && invPendingData[k] !== '');
-    const hasItems = (invPendingData.items || []).some(it => Object.values(it).some(v => v !== ''));
-    if (!hasHeaderField && !hasItems) { document.getElementById('invReviewErr').textContent = 'Add at least one field or item before saving.'; return; }
-
-    document.getElementById('invSaveBtn').disabled = true;
-    document.getElementById('invReviewErr').textContent = '';
-    const { error } = await sb.from('invoices').insert({ data: invPendingData });
-    if (error) {
-      document.getElementById('invReviewErr').textContent = 'Save failed: ' + error.message;
-      document.getElementById('invSaveBtn').disabled = false;
-      return;
-    }
-    invCloseReview();
-    invLoadInvoices();
-  }
-
-  async function invLoadInvoices() {
-    const tbody = document.getElementById('invTbody');
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Loading…</td></tr>';
-    const { data, error } = await sb.from('invoices').select('*').order('created_at', { ascending: false });
-    if (error) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--red);">Failed to load invoices.</td></tr>'; return; }
-    INV_INVOICES = data || [];
-    if (!INV_INVOICES.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">No invoices yet. Upload or capture one above.</td></tr>'; return; }
-    tbody.innerHTML = INV_INVOICES.map((inv, i) => {
-      const d = inv.data || {};
-      const date   = invPick(d, ['invoice_date', 'date']);
-      const vendor = invPick(d, ['vendor', 'supplier', 'company']);
-      const number = invPick(d, ['invoice_number', 'invoice_no', 'bill_number']);
-      const total  = invPick(d, ['total', 'grand_total', 'amount']);
-      const itemCount = Array.isArray(d.items) ? d.items.length : 0;
-      return `
-        <tr style="cursor:pointer;" onclick="invViewInvoice(${i})">
-          <td>${invEsc(date) || '—'}</td>
-          <td>${invEsc(vendor) || '—'}</td>
-          <td>${invEsc(number) || '—'}</td>
-          <td>${itemCount}</td>
-          <td>${total != null ? '₹' + invEsc(total) : '—'}</td>
-          <td style="text-align:center;"><button type="button" class="inv-del-item" onclick="event.stopPropagation(); invDeleteInvoice(${i})">🗑️</button></td>
-        </tr>`;
-    }).join('');
-  }
-
-  function invViewInvoice(i) {
-    const d = INV_INVOICES[i].data || {};
-    const keys = Object.keys(d).filter(k => k !== 'items');
-    const fieldsHtml = keys.length ? `
-      <div class="cl-modal-grid">
-        ${keys.map(k => `<div class="ff"><label>${invEsc(k)}</label><p class="inv-view-row" style="padding:9px 0;margin:0;">${invEsc(d[k]) || '—'}</p></div>`).join('')}
-      </div>` : '<p style="font-size:0.82rem;color:var(--text-muted);">No header fields.</p>';
-
-    const items = Array.isArray(d.items) ? d.items : [];
-    const cols = invItemColumns(items);
-    const itemsHtml = items.length ? `
-      <table class="inv-items-table" style="margin-top:14px;">
-        <thead><tr>${cols.map(c => `<th>${invEsc(c)}</th>`).join('')}</tr></thead>
-        <tbody>${items.map(it => `<tr>${cols.map(c => `<td>${invEsc(it[c]) || '—'}</td>`).join('')}</tr>`).join('')}</tbody>
-      </table>` : '<p style="font-size:0.82rem;color:var(--text-muted);margin-top:14px;">No items.</p>';
-
-    document.getElementById('invViewBody').innerHTML = fieldsHtml + itemsHtml;
-    document.getElementById('invViewOverlay').classList.remove('hidden');
-  }
-  function invCloseView() { document.getElementById('invViewOverlay').classList.add('hidden'); }
-
-  async function invDeleteInvoice(i) {
-    const inv = INV_INVOICES[i];
-    if (!confirm('Delete this invoice?')) return;
-    const { error } = await sb.from('invoices').delete().eq('id', inv.id);
-    if (!error) invLoadInvoices();
-  }
 </script>
 </body>
 </html>

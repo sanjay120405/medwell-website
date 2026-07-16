@@ -1,14 +1,4 @@
 {
-  "name": "medwell-invoice-backend",
-  "private": true,
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2"
-  },
   "devDependencies": {
     "xlsx": "^0.18.5"
   }
