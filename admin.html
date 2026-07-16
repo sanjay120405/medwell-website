@@ -3226,9 +3226,7 @@
 
   /* ── INVOICE SCANNING (flexible JSON-document storage) ─── */
   // Points at the Node backend (server.js) that holds the NVIDIA key server-side.
-  // Local dev: http://localhost:3000/api/scan-invoice
-  // After deploying to Render/Railway/etc., replace with that host's URL.
-  const INVOICE_BACKEND_URL = 'http://localhost:3000/api/scan-invoice';
+  const INVOICE_BACKEND_URL = 'https://medwell-website.onrender.com/api/scan-invoice';
   let INV_INVOICES = [];
   let invPendingData = { items: [] }; // whatever fields/columns THIS invoice has — no fixed shape
 
