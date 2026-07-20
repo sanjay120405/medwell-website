@@ -338,7 +338,7 @@
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
   const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
-  const PAGE_SIZE = 50;
+  const PAGE_SIZE = 100;
   let ITEMS = [], filteredRows = [], currentTerms = { product:'', company:'', category:'', molecule:'' };
   let currentPage = 1;
 
