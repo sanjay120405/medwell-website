@@ -347,6 +347,7 @@
   }
 
   function fmt(n) { return n ? Number(n).toFixed(2) : '—'; }
+  function titleCase(t) { return String(t||'').replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()); }
   function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function hl(text, term) {
     const e = esc(text);
@@ -395,7 +396,7 @@
       <tr>
         <td class="td-num">${start + i + 1}</td>
         <td class="td-product">${hl(c[0], terms.product)}</td>
-        <td>${hl(c[1], terms.molecule)}</td>
+        <td>${hl(titleCase(c[1]), terms.molecule)}</td>
         <td>${hl(c[2], terms.category)}</td>
         <td>${hl(c[6], terms.company)}</td>
         <td class="td-num-val">${fmt(c[3])}</td>
@@ -472,7 +473,7 @@
     document.getElementById('statModalTitle').textContent = `${cfg.title} (${entries.length})`;
     document.getElementById('statModalList').innerHTML = entries.map(([name, count]) => `
       <div class="stat-modal-row" data-name="${esc(name)}" data-search-id="${cfg.searchId}">
-        <span class="stat-modal-row-name">${esc(name)}</span>
+        <span class="stat-modal-row-name">${esc(kind === 'molecules' ? titleCase(name) : name)}</span>
         <span class="stat-modal-row-count">${count} item${count === 1 ? '' : 's'}</span>
       </div>`).join('');
     document.getElementById('statModalOverlay').classList.add('show');
