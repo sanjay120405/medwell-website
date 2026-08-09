@@ -654,6 +654,10 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
         Task Master
       </button>
+      <a class="ah-tab" href="https://medwelldashboard.vercel.app/" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </a>
     </div>
     <div class="ah-right">
       <a href="pricelist.html" class="view-pl-btn" target="_blank">
@@ -1006,7 +1010,7 @@
           <option>Selva</option><option>Lakshmi Priya</option><option>MGR</option>
           <option>Ganga</option><option>Gokila</option>
           <option>Nagarajan</option><option>Santhosh</option><option>Karnan</option>
-          <option>Veera</option>
+          <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
         </select>
       </div>
       <button class="att-load-btn" onclick="loadAdminAttendance()">Load</button>
@@ -1050,7 +1054,8 @@
             <option>Chola</option>
             <option>Ganga</option><option>Gokila</option><option>Karnan</option>
             <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
-            <option>Santhosh</option><option>Selva</option><option>Vanitha</option><option>Veera</option>
+            <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
+            <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
           </select>
         </div>
         <div class="tm-form-field">
@@ -1064,7 +1069,8 @@
             <option>Chola</option>
             <option>Ganga</option><option>Gokila</option><option>Karnan</option>
             <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
-            <option>Santhosh</option><option>Selva</option><option>Vanitha</option><option>Veera</option>
+            <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
+            <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
           </select>
         </div>
         <div class="tm-form-field">
@@ -1090,7 +1096,8 @@
           <option>Chola</option>
           <option>Ganga</option><option>Gokila</option><option>Karnan</option>
           <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
-          <option>Santhosh</option><option>Selva</option><option>Vanitha</option><option>Veera</option>
+          <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
+            <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
         </select>
         <select class="tm-filter-sel" id="admTmFilterStatus">
           <option value="">All Status</option>
@@ -2961,7 +2968,7 @@
   });
 
   /* ── ADMIN ATTENDANCE ── */
-  const ATT_ALL_STAFF = ['Vanitha','Chola','Selva','Lakshmi Priya','MGR','Ganga','Gokila','Nagarajan','Santhosh','Karnan','Veera'];
+  const ATT_ALL_STAFF = ['Vanitha','Chola','Selva','Lakshmi Priya','MGR','Ganga','Gokila','Nagarajan','Santhosh','Karnan','Christy','Mohamed Thah','Reena'];
   let attAdminData = [];
 
   async function loadAdminAttendance() {
@@ -3038,7 +3045,7 @@
     'Ganga':'OTE5NjAwNjAyMDc5','Gokila':'OTE3MzA1MTExNTU5',
     'Nagarajan':'OTE5OTQzOTQ1NTY1',
     'Santhosh':'OTE5NTY2ODExNTU5','Karnan':'OTE5Njc3MjExNTU5',
-    'Veera':'OTE5MDQyODExNTU5'
+    'Christy':'OTE5MTU5NzkyODEw','Mohamed Thah':'OTE5MzYzMzA2NTA3','Reena':'OTE4NjgyOTkwMjMx'
   };
 
   function admTmEsc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
