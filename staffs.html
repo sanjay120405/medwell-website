@@ -483,7 +483,7 @@
           <label>Executive</label>
           <select id="fwCFExec">
             <option value="">— Select —</option>
-            <option>Chola</option><option>Karnan</option><option>Santhosh</option><option>Selva</option>
+            <option>Chola</option><option>Dinesh</option><option>Santhosh</option><option>Selva</option>
           </select>
         </div>
         <div class="fw-cust-mf">
@@ -558,7 +558,7 @@
             <select id="tmFName" required>
               <option value="">Select Name</option>
               <option>Chola</option>
-              <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+              <option>Ganga</option><option>Gokila</option><option>Dinesh</option>
               <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
               <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
               <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
@@ -573,7 +573,7 @@
             <select id="tmFAssign" required>
               <option value="">Select Person</option>
               <option>Chola</option>
-              <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+              <option>Ganga</option><option>Gokila</option><option>Dinesh</option>
               <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
               <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
               <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
@@ -602,7 +602,7 @@
           <select class="tm-filter-sel" id="tmFilterName">
             <option value="">All Names</option>
             <option>Chola</option>
-            <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+            <option>Ganga</option><option>Gokila</option><option>Dinesh</option>
             <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
             <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
             <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
@@ -680,7 +680,7 @@
     }
     const PHONE_MAP = {
       '19e2d989b692cc6ed2210686ef979f924dd5ae08c5a0dce5eb8748b7871461c4': 'Vanitha',
-      '56c103be23bba25e5ed5331c8f14f931cbf810e91c1938db7daef8d4679b9561': 'Chola',
+      '3bea1142878af85240e1d9c182f27e4555d0b70fca1c07b85d070d586562eb39': 'Chola',
       '32e23d86adc3cd8631381d60a03fbf7ac8c60711ad9cf21681b9db149ecbffb5': 'Selva',
       'ecfc844a57b3a6eed38ae8ec95ed42ef5847600f838068b3b99b900bacc3aadb': 'Lakshmi Priya',
       '7742ddbdbc8993f925a17596edf638a92fb4c20ba7f3fdfd4103b6af13a04339': 'MGR',
@@ -688,12 +688,12 @@
       'dbf9a3a1a1905cd8cb688239a60cdaf25e4aaa022130ffae52447bc45bcc5bdf': 'Gokila',
       '77e4deab69cb555a4be0749d85074693e487dfeb84aa83ceea46081495efe28d': 'Nagarajan',
       'c3480d8ee0905c274df829483804fb1bbc3975a7fdbd722e9bc9110269c0a94c': 'Santhosh',
-      '020b0d96480c30340781e1bc239ec6b9f0e9ede08bc271568bc8cb761848e598': 'Karnan',
+      '020b0d96480c30340781e1bc239ec6b9f0e9ede08bc271568bc8cb761848e598': 'Dinesh',
       '2cca580ae5c08e716ee815f8d930f802e51a38603b33782e28841f2c1df3c68d': 'Christy',
       '4e5beacae6396c062e1a4950b3e083d053308b36e7c4a2686696847f63f1b982': 'Mohamed Thah',
       '272ec6e1153eddd95a059ac01f23c194c35e844bee73d067f60480247c78f471': 'Reena'
     };
-    const FIELD_WORK_EXECS = new Set(['Selva', 'Santhosh', 'Karnan', 'Chola']);
+    const FIELD_WORK_EXECS = new Set(['Selva', 'Santhosh', 'Dinesh', 'Chola']);
 
     let trackInterval = null, watchId = null, watchdogTimer = null;
     let sendCount = 0, lastSentAt = 0, gotFix = false;
@@ -901,7 +901,7 @@
       if (FIELD_WORK_EXECS.has(staffName)) {
         execSel.innerHTML = `<option value="${staffName}">${staffName}</option>`;
       } else {
-        execSel.innerHTML = '<option value="">— Select —</option><option>Chola</option><option>Karnan</option><option>Santhosh</option><option>Selva</option>';
+        execSel.innerHTML = '<option value="">— Select —</option><option>Chola</option><option>Dinesh</option><option>Santhosh</option><option>Selva</option>';
       }
       document.getElementById('fwCustErr').textContent = '';
       document.getElementById('fwCustSave').disabled = false;
@@ -1203,11 +1203,11 @@
 
     const TM_PHONE = {
       'Vanitha':'OTE5OTQwNzExNTU5',
-      'Chola':'OTE5NzkwNjExNTU5','Selva':'OTE5NzkwNTExNTU5',
+      'Chola':'OTE4MDU2NTg0MDQx','Selva':'OTE5NzkwNTExNTU5',
       'Lakshmi Priya':'OTE5OTQwMzU0NDQ1','MGR':'OTE5MTcxNDE5OTEx',
       'Ganga':'OTE5NjAwNjAyMDc5','Gokila':'OTE3MzA1MTExNTU5',
       'Nagarajan':'OTE5OTQzOTQ1NTY1',
-      'Santhosh':'OTE5NTY2ODExNTU5','Karnan':'OTE5Njc3MjExNTU5',
+      'Santhosh':'OTE5NTY2ODExNTU5','Dinesh':'OTE5Njc3MjExNTU5',
       'Christy':'OTE5MTU5NzkyODEw','Mohamed Thah':'OTE5MzYzMzA2NTA3','Reena':'OTE4NjgyOTkwMjMx'
     };
 

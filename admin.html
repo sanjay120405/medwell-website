@@ -1009,7 +1009,7 @@
           <option>Vanitha</option><option>Chola</option>
           <option>Selva</option><option>Lakshmi Priya</option><option>MGR</option>
           <option>Ganga</option><option>Gokila</option>
-          <option>Nagarajan</option><option>Santhosh</option><option>Karnan</option>
+          <option>Nagarajan</option><option>Santhosh</option><option>Dinesh</option>
           <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
         </select>
       </div>
@@ -1052,7 +1052,7 @@
           <select id="admTmFName" required>
             <option value="">Select Name</option>
             <option>Chola</option>
-            <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+            <option>Ganga</option><option>Gokila</option><option>Dinesh</option>
             <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
             <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
             <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
@@ -1067,7 +1067,7 @@
           <select id="admTmFAssign" required>
             <option value="">Select Person</option>
             <option>Chola</option>
-            <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+            <option>Ganga</option><option>Gokila</option><option>Dinesh</option>
             <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
             <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
             <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
@@ -1094,7 +1094,7 @@
         <select class="tm-filter-sel" id="admTmFilterName">
           <option value="">All Names</option>
           <option>Chola</option>
-          <option>Ganga</option><option>Gokila</option><option>Karnan</option>
+          <option>Ganga</option><option>Gokila</option><option>Dinesh</option>
           <option>Lakshmi Priya</option><option>MGR</option><option>Nagarajan</option>
           <option>Santhosh</option><option>Selva</option><option>Vanitha</option>
             <option>Christy</option><option>Mohamed Thah</option><option>Reena</option>
@@ -1259,7 +1259,7 @@
           <option value="Chola">Chola</option>
           <option value="Selva">Selva</option>
           <option value="Santhosh">Santhosh</option>
-          <option value="Karnan">Karnan</option>
+          <option value="Dinesh">Dinesh</option>
         </select>
       </div>
       <div class="rpt-ff">
@@ -1296,7 +1296,7 @@
           <option value="Chola">Chola</option>
           <option value="Selva">Selva</option>
           <option value="SANTHOSH">Santhosh</option>
-          <option value="Karnan">Karnan</option>
+          <option value="Dinesh">Dinesh</option>
         </select>
       </div>
       <div class="rpt-ff">
@@ -1336,7 +1336,7 @@
         <select id="clFExec">
           <option value="">— Select Executive —</option>
           <option>Chola</option>
-          <option>Karnan</option>
+          <option>Dinesh</option>
           <option>Santhosh</option>
           <option>Selva</option>
         </select>
@@ -1862,7 +1862,7 @@
   }
 
   /* ── TRACKING STATE ─────────────────────────── */
-  const TRACK_EMPLOYEES = ['Chola','Selva','Nagarajan','Santhosh','Karnan'];
+  const TRACK_EMPLOYEES = ['Chola','Selva','Nagarajan','Santhosh','Dinesh'];
   document.getElementById('tTotalCount').textContent = TRACK_EMPLOYEES.length;
   let tMap = null, tSelectedEmp = null;
   const tMarkers = {}, tLiveData = {};
@@ -2968,7 +2968,7 @@
   });
 
   /* ── ADMIN ATTENDANCE ── */
-  const ATT_ALL_STAFF = ['Vanitha','Chola','Selva','Lakshmi Priya','MGR','Ganga','Gokila','Nagarajan','Santhosh','Karnan','Christy','Mohamed Thah','Reena'];
+  const ATT_ALL_STAFF = ['Vanitha','Chola','Selva','Lakshmi Priya','MGR','Ganga','Gokila','Nagarajan','Santhosh','Dinesh','Christy','Mohamed Thah','Reena'];
   let attAdminData = [];
 
   async function loadAdminAttendance() {
@@ -3040,11 +3040,11 @@
 
   const ADM_TM_PHONE = {
     'Vanitha':'OTE5OTQwNzExNTU5',
-    'Chola':'OTE5NzkwNjExNTU5','Selva':'OTE5NzkwNTExNTU5',
+    'Chola':'OTE4MDU2NTg0MDQx','Selva':'OTE5NzkwNTExNTU5',
     'Lakshmi Priya':'OTE5OTQwMzU0NDQ1','MGR':'OTE5MTcxNDE5OTEx',
     'Ganga':'OTE5NjAwNjAyMDc5','Gokila':'OTE3MzA1MTExNTU5',
     'Nagarajan':'OTE5OTQzOTQ1NTY1',
-    'Santhosh':'OTE5NTY2ODExNTU5','Karnan':'OTE5Njc3MjExNTU5',
+    'Santhosh':'OTE5NTY2ODExNTU5','Dinesh':'OTE5Njc3MjExNTU5',
     'Christy':'OTE5MTU5NzkyODEw','Mohamed Thah':'OTE5MzYzMzA2NTA3','Reena':'OTE4NjgyOTkwMjMx'
   };
 
