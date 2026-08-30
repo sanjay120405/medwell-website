@@ -1405,6 +1405,7 @@
     if (!document.getElementById('rptDay').value) document.getElementById('rptDay').value = new Date().toISOString().slice(0, 10);
     if (!document.getElementById('rptYear').value) document.getElementById('rptYear').value = new Date().getFullYear();
     loadReportStats();
+    searchCustomerBills();
   }
   function closeReport() { document.getElementById('reportOverlay').classList.remove('open'); }
 
@@ -1472,16 +1473,11 @@
     const box     = document.getElementById('rptResultsBox');
     const summary = document.getElementById('rptCustSummary');
 
-    if (!name && !phone) {
-      box.innerHTML = '<div class="order-empty">Enter a customer name or phone number to search.</div>';
-      summary.style.display = 'none';
-      return;
-    }
-
-    box.innerHTML = '<div class="order-empty">Searching…</div>';
+    box.innerHTML = '<div class="order-empty">Loading…</div>';
     let query = sb_pl.from('bills').select('*').order('created_at', { ascending: false });
     if (phone) query = query.eq('customer_phone', phone);
     if (name)  query = query.ilike('customer_name', `%${name}%`);
+    if (!name && !phone) query = query.limit(200); // unfiltered: show recent bills, capped
     const { data, error } = await query;
 
     if (error) {
@@ -1492,7 +1488,7 @@
 
     const bills = data || [];
     if (!bills.length) {
-      box.innerHTML = '<div class="order-empty">No previous purchases found.</div>';
+      box.innerHTML = '<div class="order-empty">No bills yet.</div>';
       summary.style.display = 'none';
       return;
     }
