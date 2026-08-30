@@ -1231,7 +1231,7 @@
       const total = c.salesRate * c.qty;
       return `${i + 1}. ${c.name}\n   ${c.company} | ${c.molecule}\n   Price: ₹${c.salesRate > 0 ? c.salesRate.toFixed(2) : 'N/A'} | Qty: ${c.qty} | Total: ₹${total > 0 ? total.toFixed(2) : 'N/A'}`;
     }).join('\n\n');
-    const msg = `*Bill from Medwell Logix*\n\n*Billed To:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n${itemLines}\n\n*Total Amount: ₹${grandTotal.toFixed(2)}*\n\nThank you, visit us again!`;
+    const msg = `*Bill from Medwell Logix*\n\n*Billed To:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n${itemLines}\n\n*Total Amount: ₹${grandTotal.toFixed(2)}*\n\nThank you, visit us again!\n\nReview us with ⭐⭐⭐⭐⭐: https://g.page/r/CfP-1UMaGDyOEBM/review`;
 
     btn.disabled = true;
     const billItems = cart.map(c => ({ name: c.name, company: c.company, molecule: c.molecule, price: c.salesRate, qty: c.qty, total: c.salesRate * c.qty }));
