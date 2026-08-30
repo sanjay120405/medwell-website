@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web Order – Medwell Logix Medical &amp; Surgical Equipment</title>
+  <title>Customer Billing – Medwell Logix Medical &amp; Surgical Equipment</title>
   <link rel="icon" type="image/png" href="medwell logo.png" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3VNPYNZYLS"></script>
   <script>
@@ -326,8 +326,8 @@
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="products.html">Products</a>
-        <a href="pricelist.html" class="active">Web Order</a>
-        <a href="billing.html">Billing</a>
+        <a href="pricelist.html">Web Order</a>
+        <a href="billing.html" class="active">Billing</a>
 
         <a href="index.html#contact">Contact Us</a>
       </nav>
@@ -458,7 +458,7 @@
       <div class="results-count" id="resultsCount">Showing <span id="countNum">0</span> of <span id="totalNum">0</span> products</div>
       <button class="checkout-btn" id="checkoutBtn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        Checkout
+        Generate Bill
         <span class="cart-badge" id="cartBadge">0</span>
       </button>
     </div>
@@ -503,29 +503,29 @@
 <div class="order-overlay" id="orderOverlay">
   <div class="order-card">
     <div class="order-header">
-      <h3>Order Summary</h3>
+      <h3>Bill Summary</h3>
       <button class="order-close" id="orderClose">&#10005;</button>
     </div>
     <div class="order-body">
       <div>
-        <div class="order-section-label">Your Details</div>
+        <div class="order-section-label">Customer Details</div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div class="order-field">
-            <label>Name *</label>
-            <input class="order-input" id="orderName" type="text" placeholder="Your full name" />
+            <label>Customer Name *</label>
+            <input class="order-input" id="orderName" type="text" placeholder="Customer's full name" />
           </div>
           <div class="order-field">
             <label>Phone Number *</label>
-            <input class="order-input" id="orderPhone" type="tel" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" />
+            <input class="order-input" id="orderPhone" type="tel" placeholder="10-digit mobile number — the bill is sent here" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" />
           </div>
           <div class="order-field">
             <label>Address *</label>
-            <input class="order-input" id="orderAddress" type="text" placeholder="Your delivery address" />
+            <input class="order-input" id="orderAddress" type="text" placeholder="Customer's address" />
           </div>
         </div>
       </div>
       <div>
-        <div class="order-section-label">Selected Products</div>
+        <div class="order-section-label">Billed Items</div>
         <div class="order-items-box" id="orderItemsList"></div>
       </div>
       <div class="order-error" id="orderError"></div>
@@ -533,7 +533,7 @@
         <button class="order-cancel-btn" id="orderCancelBtn">Cancel</button>
         <button class="order-place-btn" id="orderPlaceBtn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.428a.5.5 0 0 0 .619.612l5.717-1.485A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.518-5.157-1.416l-.371-.22-3.845.999 1.023-3.742-.242-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-          Place Order on WhatsApp
+          Send Bill on WhatsApp
         </button>
       </div>
     </div>
@@ -1141,9 +1141,10 @@
       const total = c.salesRate * c.qty;
       return `${i + 1}. ${c.name}\n   ${c.company} | ${c.molecule}\n   Price: ₹${c.salesRate > 0 ? c.salesRate.toFixed(2) : 'N/A'} | Qty: ${c.qty} | Total: ₹${total > 0 ? total.toFixed(2) : 'N/A'}`;
     }).join('\n\n');
-    const msg = `*Order To Medwell Logix *\n\n*Customer Details:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Order Summary:*\n${itemLines}\n\n*Total Amount: ₹${grandTotal.toFixed(2)}*`;
+    const msg = `*Bill from Medwell Logix*\n\n*Billed To:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n${itemLines}\n\n*Total Amount: ₹${grandTotal.toFixed(2)}*\n\nThank you for your business!`;
 
-    const waUrl = `https://wa.me/919790611559?text=${encodeURIComponent(msg)}`;
+    // Bill goes to the customer's own number entered above, not a staff number.
+    const waUrl = `https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
     closeOrder();
   });
