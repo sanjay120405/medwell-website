@@ -752,7 +752,7 @@
             <th>Company</th>
             <th>Molecule</th>
             <th>Category</th>
-            <th style="text-align:right">Sales Rate</th>
+            <th style="text-align:right">Purchase Rate</th>
             <th style="text-align:right">Deal Rate</th>
             <th style="text-align:right">S. Rate</th>
             <th style="text-align:right">New Sales Rate</th>
@@ -1160,7 +1160,7 @@
           <input type="text" id="fCategory" placeholder="e.g. SURGICALS" />
         </div>
         <div class="ff">
-          <label>Sales Rate (₹) *</label>
+          <label>Purchase Rate (₹) *</label>
           <input type="number" id="fSalesRate" placeholder="0.00" step="0.01" min="0" />
         </div>
         <div class="ff">
@@ -1626,7 +1626,7 @@
     const salesRate = parseFloat(document.getElementById('fSalesRate').value);
 
     if (!code || !product || !company || isNaN(salesRate)) {
-      toast('Please fill in Code, Product Name, Company and Sales Rate.', 'error');
+      toast('Please fill in Code, Product Name, Company and Purchase Rate.', 'error');
       return;
     }
 
@@ -1698,17 +1698,17 @@
 
   /* ── EXPORT ─────────────────────────────────── */
   document.getElementById('exportBtn').addEventListener('click', () => {
-    const headers = ['Code','Product','Pkg','Company','Molecule','Category','Sales Rate','Tax%','MRP'];
+    const headers = ['Code','Product','Pkg','Company','Molecule','Category','Purchase Rate','Tax%','MRP'];
     const rows = products.map(p => ({
-      'Code':        p[0],
-      'Product':     p[1],
-      'Pkg':         p[2],
-      'Company':     p[3],
-      'Molecule':    p[4],
-      'Category':    p[5],
-      'Sales Rate':  p[6],
-      'Tax%':        p[7],
-      'MRP':         p[8]
+      'Code':           p[0],
+      'Product':        p[1],
+      'Pkg':            p[2],
+      'Company':        p[3],
+      'Molecule':       p[4],
+      'Category':       p[5],
+      'Purchase Rate':  p[6],
+      'Tax%':           p[7],
+      'MRP':            p[8]
     }));
     const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
     ws['!cols'] = [8,40,8,18,20,14,12,7,12].map(w => ({ wch: w }));
@@ -1744,7 +1744,7 @@
           company:  ['Company','COMPANY','company'],
           molecule: ['Molecule','MOLECULE','molecule'],
           category: ['Category','CATEGORY','category'],
-          rate:     ['Sales Rate','SALES RATE','sales rate','Rate','rate','Price','price'],
+          rate:     ['Purchase Rate','PURCHASE RATE','purchase rate','Sales Rate','SALES RATE','sales rate','Rate','rate','Price','price'],
           tax:      ['Tax%','TAX%','tax%','Tax','tax','GST','gst'],
           mrp:      ['MRP','mrp','M.R.P','M.R.P.']
         };
