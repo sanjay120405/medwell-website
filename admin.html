@@ -753,6 +753,9 @@
             <th>Molecule</th>
             <th>Category</th>
             <th style="text-align:right">Sales Rate</th>
+            <th style="text-align:right">Deal Rate</th>
+            <th style="text-align:right">S. Rate</th>
+            <th style="text-align:right">New Sales Rate</th>
             <th style="text-align:center">Tax %</th>
             <th style="text-align:right">MRP</th>
             <th>Actions</th>
@@ -1537,6 +1540,9 @@
         <td style="color:var(--teal-dark);font-size:.8rem">${esc(p[4])}</td>
         <td><span class="cat-badge">${esc(p[5])}</span></td>
         <td class="t-price">${Number(p[6]) > 0 ? '₹' + Number(p[6]).toFixed(2) : '—'}</td>
+        <td class="t-price">${Number(p[6]) > 0 ? '₹' + (Number(p[6]) * 1.05).toFixed(2) : '—'}</td>
+        <td class="t-price">${Number(p[6]) > 0 ? '₹' + (Number(p[6]) * 1.17).toFixed(2) : '—'}</td>
+        <td class="t-price">${Number(p[6]) > 0 ? '₹' + (Number(p[6]) * 1.30).toFixed(2) : '—'}</td>
         <td class="t-tax">${p[7]}%</td>
         <td class="t-mrp">${Number(p[8]) > 0 ? '₹' + Number(p[8]).toFixed(2) : '—'}</td>
         <td>
