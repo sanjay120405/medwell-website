@@ -229,7 +229,9 @@
     .order-qty-wrap { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; flex-shrink: 0; }
     .order-qty-btn { width: 26px; height: 26px; border: none; background: var(--off-white); color: var(--text); font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; }
     .order-qty-btn:hover { background: var(--teal-light); color: var(--teal); }
-    .order-qty-num { width: 28px; text-align: center; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--dark); border-left: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 26px; }
+    .order-qty-num { width: 34px; text-align: center; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--dark); border: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); background: var(--white); height: 26px; padding: 0; }
+    .order-qty-num:focus { outline: none; background: var(--teal-light); }
+    .order-qty-num::-webkit-inner-spin-button, .order-qty-num::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
     /* CHECKOUT BUTTON */
     .checkout-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--orange); color: white; border-radius: var(--radius-sm); font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; border: none; cursor: pointer; transition: all .2s; }
@@ -1182,10 +1184,10 @@
             <div class="order-item-price">&#8377;<input class="order-price-input" type="number" step="0.01" min="0" value="${c.salesRate || 0}" data-code="${escape(c.code)}" /></div>
             <div class="order-qty-wrap" style="justify-self:center;">
               <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="-1">−</button>
-              <span class="order-qty-num">${c.qty}</span>
+              <input class="order-qty-num" type="number" min="1" step="1" value="${c.qty}" data-code="${escape(c.code)}" />
               <button class="order-qty-btn" data-code="${escape(c.code)}" data-delta="1">+</button>
             </div>
-            <div class="order-item-total">&#8377;${total > 0 ? total.toFixed(2) : '—'}</div>
+            <div class="order-item-total" data-code="${escape(c.code)}">&#8377;${total > 0 ? total.toFixed(2) : '—'}</div>
             <button class="order-item-remove" data-code="${escape(c.code)}" title="Remove">&#10005;</button>
           </div>`;
         }).join('')}
@@ -1204,15 +1206,11 @@
       </div>`;
   }
 
-  document.getElementById('orderItemsList').addEventListener('input', e => {
-    const priceInput = e.target.closest('.order-price-input');
-    if (!priceInput) return;
-    const item = cart.find(c => String(c.code) === String(priceInput.dataset.code));
-    if (!item) return;
-    const val = parseFloat(priceInput.value);
-    item.salesRate = isNaN(val) || val < 0 ? 0 : val;
+  function refreshOrderTotals(item) {
     const total = itemTotal(item);
-    priceInput.closest('.order-item').querySelector('.order-item-total').textContent = total > 0 ? '₹' + total.toFixed(2) : '—';
+    const row = document.querySelector(`.order-item-total[data-code="${item.code}"]`) ||
+                document.querySelector(`.order-price-input[data-code="${item.code}"]`)?.closest('.order-item')?.querySelector('.order-item-total');
+    if (row) row.textContent = total > 0 ? '₹' + total.toFixed(2) : '—';
 
     const subtotal = cart.reduce((sum, c) => sum + itemBase(c), 0);
     const taxTotal = cart.reduce((sum, c) => sum + itemTax(c), 0);
@@ -1220,6 +1218,41 @@
     amounts[0].textContent = '₹' + subtotal.toFixed(2);
     amounts[1].textContent = '₹' + taxTotal.toFixed(2);
     amounts[2].textContent = '₹' + (subtotal + taxTotal).toFixed(2);
+  }
+
+  document.getElementById('orderItemsList').addEventListener('input', e => {
+    const priceInput = e.target.closest('.order-price-input');
+    if (priceInput) {
+      const item = cart.find(c => String(c.code) === String(priceInput.dataset.code));
+      if (!item) return;
+      const val = parseFloat(priceInput.value);
+      item.salesRate = isNaN(val) || val < 0 ? 0 : val;
+      refreshOrderTotals(item);
+      return;
+    }
+    const qtyInput = e.target.closest('.order-qty-num');
+    if (qtyInput) {
+      const item = cart.find(c => String(c.code) === String(qtyInput.dataset.code));
+      if (!item) return;
+      const val = parseInt(qtyInput.value, 10);
+      item.qty = isNaN(val) || val < 1 ? item.qty : val; // keep last valid qty while the field is mid-edit (e.g. cleared to type a new number)
+      refreshOrderTotals(item);
+      updateCartBadge();
+    }
+  });
+
+  document.getElementById('orderItemsList').addEventListener('change', e => {
+    const qtyInput = e.target.closest('.order-qty-num');
+    if (!qtyInput) return;
+    const item = cart.find(c => String(c.code) === String(qtyInput.dataset.code));
+    if (!item) return;
+    const val = parseInt(qtyInput.value, 10);
+    if (isNaN(val) || val < 1) { removeFromCart(item.code); return; }
+    item.qty = val;
+    qtyInput.value = val;
+    refreshOrderTotals(item);
+    updateCartBadge();
+    renderTable(filteredRows, currentTerms);
   });
 
   document.getElementById('orderItemsList').addEventListener('click', e => {
