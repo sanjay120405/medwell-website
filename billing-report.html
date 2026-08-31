@@ -100,6 +100,7 @@
     .rpt-bill-date { font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 700; color: var(--dark); }
     .rpt-bill-total { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--teal-dark); white-space: nowrap; }
     .rpt-bill-items { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+    .rpt-bill-contact { font-size: 0.8rem; color: var(--teal-dark); margin-bottom: 5px; }
     .rpt-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.88rem; }
   </style>
 </head>
@@ -331,12 +332,14 @@
       const date = new Date(b.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       const items = Array.isArray(b.items) ? b.items : [];
       const itemsText = items.map(it => `${it.name} × ${it.qty}`).join(', ') || 'No items recorded';
+      const contactBits = [b.customer_phone, b.customer_address].filter(Boolean).map(escape).join(' · ');
       return `
         <div class="rpt-bill-card">
           <div class="rpt-bill-head">
             <span class="rpt-bill-date">${date} — ${escape(b.customer_name)}</span>
             <span class="rpt-bill-total">₹${(+b.total || 0).toFixed(2)}</span>
           </div>
+          ${contactBits ? `<div class="rpt-bill-contact">${contactBits}</div>` : ''}
           <div class="rpt-bill-items">${escape(itemsText)}</div>
         </div>`;
     }).join('');
