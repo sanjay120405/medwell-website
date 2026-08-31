@@ -225,7 +225,9 @@
     .qty-wrap { display: inline-flex; align-items: center; border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; width: fit-content; }
     .qty-btn { width: 28px; height: 28px; border: none; background: var(--off-white); color: var(--text); font-size: 0.95rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; flex-shrink: 0; }
     .qty-btn:hover { background: var(--teal-light); color: var(--teal); }
-    .qty-num { width: 28px; text-align: center; font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--dark); border-left: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 28px; }
+    .qty-num { width: 34px; text-align: center; font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--dark); border: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); background: var(--white); height: 28px; padding: 0; }
+    .qty-num:focus { outline: none; background: var(--teal-light); }
+    .qty-num::-webkit-inner-spin-button, .qty-num::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     .order-qty-wrap { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 6px; overflow: hidden; flex-shrink: 0; }
     .order-qty-btn { width: 26px; height: 26px; border: none; background: var(--off-white); color: var(--text); font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; }
     .order-qty-btn:hover { background: var(--teal-light); color: var(--teal); }
@@ -1021,7 +1023,7 @@
         <td class="center">
           <div class="qty-wrap">
             <button class="qty-btn" data-code="${String(p[0])}" data-delta="-1">−</button>
-            <span class="qty-num">${qty}</span>
+            <input class="qty-num" type="number" min="1" step="1" value="${qty}" data-code="${String(p[0])}" />
             <button class="qty-btn" data-code="${String(p[0])}" data-delta="1">+</button>
           </div>
         </td>
@@ -1094,6 +1096,39 @@
     const qtyBtn = e.target.closest('.qty-btn');
     if (qtyBtn) changeQty(qtyBtn.dataset.code, Number(qtyBtn.dataset.delta));
   });
+
+  document.getElementById('tableBody').addEventListener('input', e => {
+    const qtyInput = e.target.closest('.qty-num');
+    if (!qtyInput) return;
+    const item = cart.find(c => c.code === String(qtyInput.dataset.code));
+    if (!item) return; // not in cart yet — wait for blur/Enter to add it
+    const val = parseInt(qtyInput.value, 10);
+    if (!isNaN(val) && val >= 1) { item.qty = val; updateCartBadge(); }
+  });
+
+  document.getElementById('tableBody').addEventListener('change', e => {
+    const qtyInput = e.target.closest('.qty-num');
+    if (!qtyInput) return;
+    setMainQty(qtyInput.dataset.code, parseInt(qtyInput.value, 10));
+  });
+
+  function setMainQty(code, val) {
+    code = String(code);
+    const item = cart.find(c => c.code === code);
+    if (isNaN(val) || val < 1) {
+      if (item) removeFromCart(code); else renderTable(filteredRows, currentTerms);
+      return;
+    }
+    if (item) {
+      item.qty = val;
+    } else {
+      const prod = PRODUCTS.find(p => String(p[0]) === code);
+      if (!prod) return;
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6], tax: +prod[7] || 0, qty: val });
+    }
+    updateCartBadge();
+    renderTable(filteredRows, currentTerms);
+  }
 
   function updateCartBadge() {
     const total = cart.reduce((sum, c) => sum + c.qty, 0);
