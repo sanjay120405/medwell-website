@@ -1105,7 +1105,7 @@
     if (cart.some(c => c.code === code)) {
       cart = cart.filter(c => c.code !== code);
     } else {
-      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6], qty: 1 });
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6], tax: +prod[7] || 0, qty: 1 });
     }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
@@ -1149,29 +1149,35 @@
     document.body.style.overflow = '';
   }
 
+  function itemBase(c)  { return c.salesRate * c.qty; }
+  function itemTax(c)   { return itemBase(c) * ((c.tax || 0) / 100); }
+  function itemTotal(c) { return itemBase(c) + itemTax(c); }
+
   function renderOrderItems() {
     const box = document.getElementById('orderItemsList');
     if (cart.length === 0) {
       box.innerHTML = '<div class="order-empty">No products selected.</div>';
       return;
     }
-    const subtotal = cart.reduce((sum, c) => sum + c.salesRate * c.qty, 0);
+    const subtotal = cart.reduce((sum, c) => sum + itemBase(c), 0);
+    const taxTotal = cart.reduce((sum, c) => sum + itemTax(c), 0);
+    const grandTotal = subtotal + taxTotal;
     box.innerHTML = `
       <div class="order-tbl-head">
         <span>Product</span>
         <span>Price</span>
         <span>Quantity</span>
-        <span>Total</span>
+        <span>Total (Incl. Tax)</span>
         <span></span>
       </div>
       <div class="order-tbl-rows">
         ${cart.map(c => {
-          const total = c.salesRate * c.qty;
+          const total = itemTotal(c);
           return `
           <div class="order-item">
             <div class="order-item-info">
               <div class="order-item-name">${escape(c.name)}</div>
-              <div class="order-item-sub">${escape(c.company)} · ${escape(c.molecule)}</div>
+              <div class="order-item-sub">${escape(c.company)} · ${escape(c.molecule)}${c.tax ? ` · Tax ${c.tax}%` : ''}</div>
             </div>
             <div class="order-item-price">&#8377;<input class="order-price-input" type="number" step="0.01" min="0" value="${c.salesRate || 0}" data-code="${escape(c.code)}" /></div>
             <div class="order-qty-wrap" style="justify-self:center;">
@@ -1186,7 +1192,15 @@
       </div>
       <div class="order-subtotal-row">
         <span class="order-subtotal-label">Subtotal:</span>
-        <span class="order-subtotal-amount">&#8377;${subtotal.toFixed(2)}</span>
+        <span class="order-subtotal-amount" style="font-size:0.9rem;color:var(--text-muted);">&#8377;${subtotal.toFixed(2)}</span>
+      </div>
+      <div class="order-subtotal-row">
+        <span class="order-subtotal-label">Tax:</span>
+        <span class="order-subtotal-amount" style="font-size:0.9rem;color:var(--text-muted);">&#8377;${taxTotal.toFixed(2)}</span>
+      </div>
+      <div class="order-subtotal-row">
+        <span class="order-subtotal-label">Grand Total:</span>
+        <span class="order-subtotal-amount">&#8377;${grandTotal.toFixed(2)}</span>
       </div>`;
   }
 
@@ -1197,10 +1211,15 @@
     if (!item) return;
     const val = parseFloat(priceInput.value);
     item.salesRate = isNaN(val) || val < 0 ? 0 : val;
-    const total = item.salesRate * item.qty;
+    const total = itemTotal(item);
     priceInput.closest('.order-item').querySelector('.order-item-total').textContent = total > 0 ? '₹' + total.toFixed(2) : '—';
-    const subtotal = cart.reduce((sum, c) => sum + c.salesRate * c.qty, 0);
-    document.querySelector('.order-subtotal-amount').textContent = '₹' + subtotal.toFixed(2);
+
+    const subtotal = cart.reduce((sum, c) => sum + itemBase(c), 0);
+    const taxTotal = cart.reduce((sum, c) => sum + itemTax(c), 0);
+    const amounts = document.querySelectorAll('.order-subtotal-amount');
+    amounts[0].textContent = '₹' + subtotal.toFixed(2);
+    amounts[1].textContent = '₹' + taxTotal.toFixed(2);
+    amounts[2].textContent = '₹' + (subtotal + taxTotal).toFixed(2);
   });
 
   document.getElementById('orderItemsList').addEventListener('click', e => {
@@ -1226,15 +1245,18 @@
     if (!/^[0-9]{10}$/.test(phone)) { errEl.textContent = 'Phone number must be exactly 10 digits.'; return; }
     errEl.textContent = '';
 
-    const grandTotal = cart.reduce((sum, c) => sum + c.salesRate * c.qty, 0);
+    const subtotal   = cart.reduce((sum, c) => sum + itemBase(c), 0);
+    const taxTotal   = cart.reduce((sum, c) => sum + itemTax(c), 0);
+    const grandTotal = subtotal + taxTotal;
     const itemLines = cart.map((c, i) => {
-      const total = c.salesRate * c.qty;
-      return `${i + 1}. ${c.name}\n   ${c.company} | ${c.molecule}\n   Price: ₹${c.salesRate > 0 ? c.salesRate.toFixed(2) : 'N/A'} | Qty: ${c.qty} | Total: ₹${total > 0 ? total.toFixed(2) : 'N/A'}`;
+      const total = itemTotal(c);
+      const taxNote = c.tax ? ` (incl. ${c.tax}% tax)` : '';
+      return `${i + 1}. ${c.name}\n   ${c.company} | ${c.molecule}\n   Price: ₹${c.salesRate > 0 ? c.salesRate.toFixed(2) : 'N/A'} | Qty: ${c.qty} | Total: ₹${total > 0 ? total.toFixed(2) : 'N/A'}${taxNote}`;
     }).join('\n\n');
-    const msg = `*Bill from Medwell Logix*\n\n*Billed To:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n${itemLines}\n\n*Total Amount: ₹${grandTotal.toFixed(2)}*\n\nThank you, visit us again!\n\nReview us with ⭐⭐⭐⭐⭐: https://g.page/r/CfP-1UMaGDyOEBM/review`;
+    const msg = `*Bill from Medwell Logix*\n\n*Billed To:*\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n*Items:*\n${itemLines}\n\nSubtotal: ₹${subtotal.toFixed(2)}\nTax: ₹${taxTotal.toFixed(2)}\n*Total Amount: ₹${grandTotal.toFixed(2)}*\n\nThank you, visit us again!\n\nReview us with ⭐⭐⭐⭐⭐: https://g.page/r/CfP-1UMaGDyOEBM/review`;
 
     btn.disabled = true;
-    const billItems = cart.map(c => ({ name: c.name, company: c.company, molecule: c.molecule, price: c.salesRate, qty: c.qty, total: c.salesRate * c.qty }));
+    const billItems = cart.map(c => ({ name: c.name, company: c.company, molecule: c.molecule, price: c.salesRate, tax: c.tax || 0, qty: c.qty, total: itemTotal(c) }));
     const { error } = await sb_pl.from('bills').insert({
       customer_name: name,
       customer_phone: phone,
