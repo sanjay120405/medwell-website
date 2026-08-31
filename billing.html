@@ -275,21 +275,6 @@
 
     .order-empty { text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.86rem; }
 
-    /* REPORT MODAL */
-    .rpt-filter-row, .rpt-search-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
-    .rpt-filter-row select, .rpt-filter-row input, .rpt-search-row input { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); }
-    .rpt-filter-row select:focus, .rpt-filter-row input:focus, .rpt-search-row input:focus { outline: none; border-color: var(--teal); background: var(--white); }
-    .rpt-search-row input { flex: 1; min-width: 160px; }
-    .rpt-stats-row { display: flex; gap: 24px; flex-wrap: wrap; padding: 14px 16px; background: var(--off-white); border-radius: var(--radius-sm); margin-bottom: 14px; }
-    .rpt-stat { display: flex; flex-direction: column; gap: 2px; }
-    .rpt-stat-label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
-    .rpt-stat-value { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--teal); }
-    .rpt-bill-card { padding: 12px 14px; border-bottom: 1px solid var(--border); }
-    .rpt-bill-card:last-child { border-bottom: none; }
-    .rpt-bill-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 5px; }
-    .rpt-bill-date { font-family: 'Poppins', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--dark); }
-    .rpt-bill-total { font-family: 'Poppins', sans-serif; font-size: 0.86rem; font-weight: 800; color: var(--teal-dark); white-space: nowrap; }
-    .rpt-bill-items { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
     .order-field { display: flex; flex-direction: column; gap: 6px; }
     .order-field label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
     .order-input { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--off-white); transition: border-color .2s; width: 100%; -webkit-user-select: text; user-select: text; }
@@ -479,10 +464,10 @@
     <div class="results-info">
       <div class="results-count" id="resultsCount">Showing <span id="countNum">0</span> of <span id="totalNum">0</span> products</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="checkout-btn" id="reportBtn" style="background:#2563eb;">
+        <a class="checkout-btn" href="billing-report.html" style="background:#2563eb;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
           Report
-        </button>
+        </a>
         <button class="checkout-btn" id="checkoutBtn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
           Generate Bill
@@ -563,58 +548,6 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.428a.5.5 0 0 0 .619.612l5.717-1.485A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.518-5.157-1.416l-.371-.22-3.845.999 1.023-3.742-.242-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
           Send Bill on WhatsApp
         </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- REPORT MODAL -->
-<div class="order-overlay" id="reportOverlay">
-  <div class="order-card" style="max-width:960px;">
-    <div class="order-header">
-      <h3>Sales Report</h3>
-      <button class="order-close" id="reportClose">&#10005;</button>
-    </div>
-    <div class="order-body">
-      <div>
-        <div class="order-section-label">Overview</div>
-        <div class="rpt-filter-row">
-          <select id="rptFilterType">
-            <option value="day">Day</option>
-            <option value="month">Month</option>
-            <option value="year">Year</option>
-            <option value="all">All Time</option>
-          </select>
-          <input type="date" id="rptDay" />
-          <select id="rptMonth" style="display:none;">
-            <option value="1">January</option><option value="2">February</option><option value="3">March</option>
-            <option value="4">April</option><option value="5">May</option><option value="6">June</option>
-            <option value="7">July</option><option value="8">August</option><option value="9">September</option>
-            <option value="10">October</option><option value="11">November</option><option value="12">December</option>
-          </select>
-          <input type="number" id="rptYear" min="2020" max="2035" placeholder="Year" style="display:none;width:90px;" />
-          <button class="search-btn" id="rptApplyBtn" type="button">Apply</button>
-        </div>
-        <div class="rpt-stats-row">
-          <div class="rpt-stat"><span class="rpt-stat-label">Total Sales</span><span class="rpt-stat-value" id="rptTotalSales">—</span></div>
-          <div class="rpt-stat"><span class="rpt-stat-label">Total Customers</span><span class="rpt-stat-value" id="rptTotalCustomers">—</span></div>
-          <div class="rpt-stat"><span class="rpt-stat-label">Total Bills</span><span class="rpt-stat-value" id="rptTotalBills">—</span></div>
-        </div>
-      </div>
-      <div>
-        <div class="order-section-label">Customer Purchase History</div>
-        <div class="rpt-search-row">
-          <input type="text" id="rptSearchName" placeholder="Search by customer name..." />
-          <input type="tel" id="rptSearchPhone" placeholder="Search by phone number..." maxlength="10" inputmode="numeric" />
-          <button class="search-btn" id="rptSearchBtn" type="button">Search</button>
-        </div>
-        <div class="rpt-stats-row" id="rptCustSummary" style="display:none;">
-          <div class="rpt-stat"><span class="rpt-stat-label">Total Purchases</span><span class="rpt-stat-value" id="rptCustCount">—</span></div>
-          <div class="rpt-stat"><span class="rpt-stat-label">Total Purchase Value</span><span class="rpt-stat-value" id="rptCustValue">—</span></div>
-        </div>
-        <div class="order-items-box" id="rptResultsBox">
-          <div class="order-empty">Enter a customer name or phone number to search.</div>
-        </div>
       </div>
     </div>
   </div>
@@ -1482,126 +1415,6 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeStatPopup(); });
 
-  // ── REPORT MODAL ──────────────────────────────────────────────
-  document.getElementById('reportBtn').addEventListener('click', openReport);
-  document.getElementById('reportClose').addEventListener('click', closeReport);
-  document.getElementById('reportOverlay').addEventListener('click', e => {
-    if (e.target === document.getElementById('reportOverlay')) closeReport();
-  });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReport(); });
-
-  function openReport() {
-    document.getElementById('reportOverlay').classList.add('open');
-    if (!document.getElementById('rptDay').value) document.getElementById('rptDay').value = new Date().toISOString().slice(0, 10);
-    if (!document.getElementById('rptYear').value) document.getElementById('rptYear').value = new Date().getFullYear();
-    loadReportStats();
-    searchCustomerBills();
-  }
-  function closeReport() { document.getElementById('reportOverlay').classList.remove('open'); }
-
-  document.getElementById('rptFilterType').addEventListener('change', () => {
-    const type = document.getElementById('rptFilterType').value;
-    document.getElementById('rptDay').style.display = type === 'day' ? '' : 'none';
-    document.getElementById('rptMonth').style.display = type === 'month' ? '' : 'none';
-    document.getElementById('rptYear').style.display = (type === 'month' || type === 'year') ? '' : 'none';
-  });
-  document.getElementById('rptApplyBtn').addEventListener('click', loadReportStats);
-
-  function getReportDateRange() {
-    const type = document.getElementById('rptFilterType').value;
-    const now = new Date();
-    let from, to;
-    if (type === 'day') {
-      const d = document.getElementById('rptDay').value || now.toISOString().slice(0, 10);
-      from = new Date(d + 'T00:00:00');
-      to = new Date(d + 'T23:59:59.999');
-    } else if (type === 'month') {
-      const month = +document.getElementById('rptMonth').value;
-      const year = +document.getElementById('rptYear').value || now.getFullYear();
-      from = new Date(year, month - 1, 1, 0, 0, 0);
-      to = new Date(year, month, 0, 23, 59, 59, 999);
-    } else if (type === 'year') {
-      const year = +document.getElementById('rptYear').value || now.getFullYear();
-      from = new Date(year, 0, 1, 0, 0, 0);
-      to = new Date(year, 11, 31, 23, 59, 59, 999);
-    } else {
-      from = new Date(2000, 0, 1);
-      to = new Date(2100, 0, 1);
-    }
-    return { from, to };
-  }
-
-  async function loadReportStats() {
-    const { from, to } = getReportDateRange();
-    document.getElementById('rptTotalSales').textContent = '…';
-    document.getElementById('rptTotalCustomers').textContent = '…';
-    document.getElementById('rptTotalBills').textContent = '…';
-    const { data, error } = await sb_pl.from('bills').select('customer_phone,total')
-      .gte('created_at', from.toISOString()).lte('created_at', to.toISOString());
-    if (error) {
-      document.getElementById('rptTotalSales').textContent = 'Error';
-      document.getElementById('rptTotalCustomers').textContent = 'Error';
-      document.getElementById('rptTotalBills').textContent = 'Error';
-      return;
-    }
-    const rows = data || [];
-    const totalSales = rows.reduce((sum, r) => sum + (+r.total || 0), 0);
-    const customers = new Set(rows.map(r => r.customer_phone));
-    document.getElementById('rptTotalSales').textContent = '₹' + totalSales.toFixed(2);
-    document.getElementById('rptTotalCustomers').textContent = customers.size;
-    document.getElementById('rptTotalBills').textContent = rows.length;
-  }
-
-  document.getElementById('rptSearchBtn').addEventListener('click', searchCustomerBills);
-  ['rptSearchName', 'rptSearchPhone'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') searchCustomerBills(); });
-  });
-
-  async function searchCustomerBills() {
-    const name    = document.getElementById('rptSearchName').value.trim();
-    const phone   = document.getElementById('rptSearchPhone').value.trim();
-    const box     = document.getElementById('rptResultsBox');
-    const summary = document.getElementById('rptCustSummary');
-
-    box.innerHTML = '<div class="order-empty">Loading…</div>';
-    let query = sb_pl.from('bills').select('*').order('created_at', { ascending: false });
-    if (phone) query = query.eq('customer_phone', phone);
-    if (name)  query = query.ilike('customer_name', `%${name}%`);
-    if (!name && !phone) query = query.limit(200); // unfiltered: show recent bills, capped
-    const { data, error } = await query;
-
-    if (error) {
-      box.innerHTML = `<div class="order-empty">Error: ${escape(error.message)}</div>`;
-      summary.style.display = 'none';
-      return;
-    }
-
-    const bills = data || [];
-    if (!bills.length) {
-      box.innerHTML = '<div class="order-empty">No bills yet.</div>';
-      summary.style.display = 'none';
-      return;
-    }
-
-    const totalValue = bills.reduce((sum, b) => sum + (+b.total || 0), 0);
-    document.getElementById('rptCustCount').textContent = bills.length;
-    document.getElementById('rptCustValue').textContent = '₹' + totalValue.toFixed(2);
-    summary.style.display = 'flex';
-
-    box.innerHTML = bills.map(b => {
-      const date = new Date(b.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      const items = Array.isArray(b.items) ? b.items : [];
-      const itemsText = items.map(it => `${it.name} × ${it.qty}`).join(', ') || 'No items recorded';
-      return `
-        <div class="rpt-bill-card">
-          <div class="rpt-bill-head">
-            <span class="rpt-bill-date">${date} — ${escape(b.customer_name)}</span>
-            <span class="rpt-bill-total">₹${(+b.total || 0).toFixed(2)}</span>
-          </div>
-          <div class="rpt-bill-items">${escape(itemsText)}</div>
-        </div>`;
-    }).join('');
-  }
 </script>
 </body>
 </html>
