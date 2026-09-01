@@ -1729,34 +1729,51 @@
   function exportReportExcel() {
     if (!CURRENT_BILLS.length) { alert('No bills to export.'); return; }
 
-    const billingRows = CURRENT_BILLS.map(b => ({
-      'Date':     new Date(b.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
-      'Customer Name':  b.customer_name || '',
-      'Phone Number':   b.customer_phone || '',
-      'Address':        b.customer_address || '',
-      'Total Amount (₹)': +b.total || 0
-    }));
+    const billingRows = CURRENT_BILLS.map(b => {
+      const items = Array.isArray(b.items) ? b.items : [];
+      const productNames = items.map(it => `${it.name}${it.qty ? ' × ' + it.qty : ''}`).join(', ');
+      return {
+        'Date':     new Date(b.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+        'Customer Name':  b.customer_name || '',
+        'Phone Number':   b.customer_phone || '',
+        'Address':        b.customer_address || '',
+        'Products':       productNames,
+        'Total Amount (₹)': +b.total || 0
+      };
+    });
 
-    const productRows = [];
+    const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const productMap = new Map(); // key: year|monthIndex|productName -> aggregated row
     CURRENT_BILLS.forEach(b => {
-      const date = new Date(b.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const d = new Date(b.created_at);
+      const year = d.getFullYear();
+      const monthIdx = d.getMonth();
       const items = Array.isArray(b.items) ? b.items : [];
       items.forEach(it => {
-        productRows.push({
-          'Date':     date,
-          'Product Name': it.name || '',
-          'Quantity Sold': +it.qty || 0
-        });
+        const productName = it.name || '';
+        const key = `${year}|${monthIdx}|${productName}`;
+        if (!productMap.has(key)) {
+          productMap.set(key, { year, monthIdx, month: MONTH_NAMES[monthIdx], product: productName, qty: 0 });
+        }
+        productMap.get(key).qty += (+it.qty || 0);
       });
     });
+    const productRows = [...productMap.values()]
+      .sort((a, b) => b.year - a.year || b.monthIdx - a.monthIdx || b.qty - a.qty)
+      .map(r => ({
+        'Month':          r.month,
+        'Year':           r.year,
+        'Product Name':   r.product,
+        'Quantity Sold':  r.qty
+      }));
 
     const wb = XLSX.utils.book_new();
     const ws1 = XLSX.utils.json_to_sheet(billingRows);
-    ws1['!cols'] = [{ wch: 12 }, { wch: 24 }, { wch: 15 }, { wch: 32 }, { wch: 16 }];
+    ws1['!cols'] = [{ wch: 12 }, { wch: 24 }, { wch: 15 }, { wch: 32 }, { wch: 45 }, { wch: 16 }];
     XLSX.utils.book_append_sheet(wb, ws1, 'Customer Billing');
 
     const ws2 = XLSX.utils.json_to_sheet(productRows);
-    ws2['!cols'] = [{ wch: 12 }, { wch: 34 }, { wch: 14 }];
+    ws2['!cols'] = [{ wch: 12 }, { wch: 8 }, { wch: 34 }, { wch: 14 }];
     XLSX.utils.book_append_sheet(wb, ws2, 'Product Sales');
 
     const today = new Date().toISOString().slice(0, 10);
