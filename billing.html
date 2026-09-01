@@ -676,6 +676,10 @@
         <input type="text" id="rptSearchName" placeholder="Search by customer name..." />
         <input type="tel" id="rptSearchPhone" placeholder="Search by phone number..." maxlength="10" inputmode="numeric" />
         <button class="search-btn" id="rptSearchBtn" type="button">Search</button>
+        <button class="search-btn" id="rptExportBtn" type="button" style="background:#059669;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export Excel
+        </button>
       </div>
       <div class="rpt-stats-row" id="rptCustSummary" style="display:none;margin-bottom:16px;">
         <div class="rpt-stat"><span class="rpt-stat-label">Total Purchases</span><span class="rpt-stat-value" id="rptCustCount">—</span></div>
@@ -688,6 +692,7 @@
   </div>
 </div>
 
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="products-data.js"></script>
 <script>
@@ -1657,6 +1662,7 @@
   }
 
   let ALL_BILLS = [];
+  let CURRENT_BILLS = [];
 
   async function loadAllBillsForSearch() {
     const box = document.getElementById('rptResultsBox');
@@ -1685,6 +1691,7 @@
     let bills = ALL_BILLS;
     if (name)  bills = bills.filter(b => (b.customer_name || '').toLowerCase().includes(name));
     if (phone) bills = bills.filter(b => (b.customer_phone || '').includes(phone));
+    CURRENT_BILLS = bills;
 
     if (!bills.length) {
       box.innerHTML = '<div class="order-empty">No bills yet.</div>';
@@ -1715,6 +1722,45 @@
           <div class="rpt-bill-items">${escape(itemsText)}</div>
         </div>`;
     }).join('');
+  }
+
+  document.getElementById('rptExportBtn').addEventListener('click', exportReportExcel);
+
+  function exportReportExcel() {
+    if (!CURRENT_BILLS.length) { alert('No bills to export.'); return; }
+
+    const billingRows = CURRENT_BILLS.map(b => ({
+      'Date':     new Date(b.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+      'Customer Name':  b.customer_name || '',
+      'Phone Number':   b.customer_phone || '',
+      'Address':        b.customer_address || '',
+      'Total Amount (₹)': +b.total || 0
+    }));
+
+    const productRows = [];
+    CURRENT_BILLS.forEach(b => {
+      const date = new Date(b.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const items = Array.isArray(b.items) ? b.items : [];
+      items.forEach(it => {
+        productRows.push({
+          'Date':     date,
+          'Product Name': it.name || '',
+          'Quantity Sold': +it.qty || 0
+        });
+      });
+    });
+
+    const wb = XLSX.utils.book_new();
+    const ws1 = XLSX.utils.json_to_sheet(billingRows);
+    ws1['!cols'] = [{ wch: 12 }, { wch: 24 }, { wch: 15 }, { wch: 32 }, { wch: 16 }];
+    XLSX.utils.book_append_sheet(wb, ws1, 'Customer Billing');
+
+    const ws2 = XLSX.utils.json_to_sheet(productRows);
+    ws2['!cols'] = [{ wch: 12 }, { wch: 34 }, { wch: 14 }];
+    XLSX.utils.book_append_sheet(wb, ws2, 'Product Sales');
+
+    const today = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `Billing_Report_${today}.xlsx`);
   }
 </script>
 </body>
