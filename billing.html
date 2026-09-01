@@ -1770,12 +1770,10 @@
     const wb = XLSX.utils.book_new();
     const ws1 = XLSX.utils.json_to_sheet(billingRows);
     ws1['!cols'] = [{ wch: 12 }, { wch: 24 }, { wch: 15 }, { wch: 32 }, { wch: 45 }, { wch: 16 }];
-    ws1['!autofilter'] = { ref: ws1['!ref'] };
     XLSX.utils.book_append_sheet(wb, ws1, 'Customer Billing');
 
     const ws2 = XLSX.utils.json_to_sheet(productRows);
     ws2['!cols'] = [{ wch: 12 }, { wch: 8 }, { wch: 34 }, { wch: 14 }];
-    ws2['!autofilter'] = { ref: ws2['!ref'] };
     XLSX.utils.book_append_sheet(wb, ws2, 'Product Sales');
 
     const today = new Date().toISOString().slice(0, 10);
