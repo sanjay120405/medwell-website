@@ -304,9 +304,10 @@
     .rpt-page-card h2 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: 16px; }
     .rpt-bill-list { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
     .rpt-filter-row, .rpt-search-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
-    .rpt-filter-row select, .rpt-filter-row input, .rpt-search-row input { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); }
-    .rpt-filter-row select:focus, .rpt-filter-row input:focus, .rpt-search-row input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    .rpt-filter-row select, .rpt-filter-row input, .rpt-search-row input, .rpt-search-row select { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); }
+    .rpt-filter-row select:focus, .rpt-filter-row input:focus, .rpt-search-row input:focus, .rpt-search-row select:focus { outline: none; border-color: var(--teal); background: var(--white); }
     .rpt-search-row input { flex: 1; min-width: 160px; }
+    .rpt-search-row #rptExportYear { flex: 0 0 90px; min-width: 90px; }
     .rpt-stats-row { display: flex; gap: 24px; flex-wrap: wrap; padding: 14px 16px; background: var(--off-white); border-radius: var(--radius-sm); margin-bottom: 14px; }
     .rpt-stat { display: flex; flex-direction: column; gap: 2px; }
     .rpt-stat-label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
@@ -676,6 +677,14 @@
         <input type="text" id="rptSearchName" placeholder="Search by customer name..." />
         <input type="tel" id="rptSearchPhone" placeholder="Search by phone number..." maxlength="10" inputmode="numeric" />
         <button class="search-btn" id="rptSearchBtn" type="button">Search</button>
+        <select id="rptExportMonth">
+          <option value="">All Months</option>
+          <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+          <option value="3">April</option><option value="4">May</option><option value="5">June</option>
+          <option value="6">July</option><option value="7">August</option><option value="8">September</option>
+          <option value="9">October</option><option value="10">November</option><option value="11">December</option>
+        </select>
+        <input type="number" id="rptExportYear" min="2020" max="2035" placeholder="Year" style="width:90px;" />
         <button class="search-btn" id="rptExportBtn" type="button" style="background:#059669;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export Excel
@@ -1600,6 +1609,8 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (!document.getElementById('rptDay').value) document.getElementById('rptDay').value = new Date().toISOString().slice(0, 10);
     if (!document.getElementById('rptYear').value) document.getElementById('rptYear').value = new Date().getFullYear();
+    if (!document.getElementById('rptExportMonth').value) document.getElementById('rptExportMonth').value = new Date().getMonth();
+    if (!document.getElementById('rptExportYear').value)  document.getElementById('rptExportYear').value = new Date().getFullYear();
     loadReportStats();
     loadAllBillsForSearch();
   }
@@ -1726,10 +1737,21 @@
 
   document.getElementById('rptExportBtn').addEventListener('click', exportReportExcel);
 
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
   function exportReportExcel() {
     if (!CURRENT_BILLS.length) { alert('No bills to export.'); return; }
 
-    const billingRows = CURRENT_BILLS.map(b => {
+    const filterMonth = document.getElementById('rptExportMonth').value; // '' or '0'-'11'
+    const filterYear  = document.getElementById('rptExportYear').value.trim();
+
+    let exportBills = CURRENT_BILLS;
+    if (filterMonth !== '') exportBills = exportBills.filter(b => new Date(b.created_at).getMonth() === +filterMonth);
+    if (filterYear)         exportBills = exportBills.filter(b => new Date(b.created_at).getFullYear() === +filterYear);
+
+    if (!exportBills.length) { alert('No bills found for that month/year.'); return; }
+
+    const billingRows = exportBills.map(b => {
       const items = Array.isArray(b.items) ? b.items : [];
       const productNames = items.map(it => `${it.name}${it.qty ? ' × ' + it.qty : ''}`).join(', ');
       return {
@@ -1742,9 +1764,8 @@
       };
     });
 
-    const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     const productMap = new Map(); // key: year|monthIndex|productName -> aggregated row
-    CURRENT_BILLS.forEach(b => {
+    exportBills.forEach(b => {
       const d = new Date(b.created_at);
       const year = d.getFullYear();
       const monthIdx = d.getMonth();
@@ -1776,8 +1797,12 @@
     ws2['!cols'] = [{ wch: 12 }, { wch: 8 }, { wch: 34 }, { wch: 14 }];
     XLSX.utils.book_append_sheet(wb, ws2, 'Product Sales');
 
-    const today = new Date().toISOString().slice(0, 10);
-    XLSX.writeFile(wb, `Billing_Report_${today}.xlsx`);
+    let label;
+    if (filterMonth !== '' && filterYear) label = `${MONTH_NAMES[+filterMonth]}_${filterYear}`;
+    else if (filterYear)                  label = filterYear;
+    else if (filterMonth !== '')          label = MONTH_NAMES[+filterMonth];
+    else                                  label = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `Billing_Report_${label}.xlsx`);
   }
 </script>
 </body>
