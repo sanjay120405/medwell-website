@@ -566,7 +566,7 @@
             <th>Pkg</th>
             <th>Company</th>
             <th>Molecule</th>
-            <th>Sales Rate (&#8377;)</th>
+            <th>New Sales Rate (&#8377;)</th>
             <th>Tax (%)</th>
             <th>MRP (&#8377;)</th>
             <th class="center">Qty</th>
@@ -1105,7 +1105,7 @@
         <td>${escape(p[2].trim())}</td>
         <td>${highlight(p[3], terms.company)}</td>
         <td class="molecule">${highlight(p[4], terms.molecule)}</td>
-        <td class="price">${p[6] > 0 ? '&#8377;' + p[6].toFixed(2) : '—'}</td>
+        <td class="price">${p[6] > 0 ? '&#8377;' + (p[6] * 1.30).toFixed(2) : '—'}</td>
         <td class="tax">${p[7]}%</td>
         <td class="mrp">${p[8] > 0 ? '&#8377;' + p[8].toFixed(2) : '—'}</td>
         <td class="center">
@@ -1212,7 +1212,7 @@
     } else {
       const prod = PRODUCTS.find(p => String(p[0]) === code);
       if (!prod) return;
-      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6], tax: +prod[7] || 0, qty: val });
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6] * 1.30, tax: +prod[7] || 0, qty: val });
     }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
@@ -1230,7 +1230,7 @@
     if (cart.some(c => c.code === code)) {
       cart = cart.filter(c => c.code !== code);
     } else {
-      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6], tax: +prod[7] || 0, qty: 1 });
+      cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6] * 1.30, tax: +prod[7] || 0, qty: 1 });
     }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
