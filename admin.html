@@ -113,14 +113,16 @@
       justify-content: space-between;
       box-shadow: 0 2px 14px rgba(4,64,64,.25);
     }
-    .ah-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+    .ah-left { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
     .ah-left img { height: 38px; }
-    .ah-left h1 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); }
-    .ah-center { display: flex; align-items: center; gap: 6px; }
-    .ah-tab { display: flex; align-items: center; gap: 8px; padding: 9px 22px; background: transparent; color: rgba(255,255,255,.55); border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all .2s; letter-spacing: .01em; }
+    .ah-left h1 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); white-space: nowrap; }
+    .ah-center { display: flex; align-items: center; gap: 6px; flex: 1 1 auto; min-width: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.3) transparent; }
+    .ah-center::-webkit-scrollbar { height: 4px; }
+    .ah-center::-webkit-scrollbar-thumb { background: rgba(255,255,255,.3); border-radius: 99px; }
+    .ah-tab { display: flex; align-items: center; gap: 8px; padding: 9px 22px; background: transparent; color: rgba(255,255,255,.55); border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all .2s; letter-spacing: .01em; white-space: nowrap; flex-shrink: 0; }
     .ah-tab:hover { background: rgba(255,255,255,.1); color: rgba(255,255,255,.85); }
     .ah-tab.active { background: rgba(255,255,255,.15); color: var(--white); }
-    .ah-right { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: flex-end; }
+    .ah-right { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; justify-content: flex-end; }
     .view-pl-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; background: rgba(255,255,255,.12); color: var(--white); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background .2s; text-decoration: none; }
     .view-pl-btn:hover { background: rgba(255,255,255,.22); }
     .logout-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; background: rgba(255,255,255,.12); color: var(--white); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background .2s; }
