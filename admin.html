@@ -334,20 +334,22 @@
     #tabPrices .cat-badge2 { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); background: var(--teal-light); padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
     #tabPrices .prices-card { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 20px 24px; margin: 18px 24px 0; }
     #tabPrices .prices-card h3 { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
-    #tabPrices .prices-add-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
-    #tabPrices .prices-field { display: flex; flex-direction: column; gap: 5px; }
+    #tabPrices .prices-add-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) auto; gap: 12px; align-items: end; }
+    #tabPrices .prices-field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
     #tabPrices .prices-field label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
-    #tabPrices .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] { height: 40px; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabPrices .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] { box-sizing: border-box; height: 40px; width: 100%; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
     #tabPrices .prices-add-row select:focus, #tabPrices .prices-add-row input:focus { outline: none; border-color: var(--teal); background: var(--white); }
-    #tabPrices .prices-add-row select { cursor: pointer; min-width: 170px; }
-    #tabPrices .prices-add-row input[type="number"] { width: 130px; }
-    #tabPrices .prices-add-row input[type="text"] { min-width: 220px; flex: 1 1 220px; }
-    #tabPrices .prices-add-row input[type="file"] { height: 40px; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--off-white); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text-muted); max-width: 240px; display: flex; align-items: center; cursor: pointer; }
+    #tabPrices .prices-add-row select { cursor: pointer; }
+    #tabPrices .prices-add-row input[type="file"] { box-sizing: border-box; height: 40px; width: 100%; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--off-white); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; cursor: pointer; }
     #tabPrices .prices-add-row input[type="file"]::file-selector-button { height: 28px; margin-right: 10px; padding: 0 14px; border: none; border-radius: 6px; background: var(--teal); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background .2s; }
     #tabPrices .prices-add-row input[type="file"]::file-selector-button:hover { background: var(--dark); }
-    #tabPrices .prices-add-btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 22px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    #tabPrices .prices-add-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 22px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; }
     #tabPrices .prices-add-btn:hover { background: var(--dark); }
     #tabPrices .prices-add-btn:disabled { opacity: .6; cursor: not-allowed; }
+    @media (max-width: 900px) {
+      #tabPrices .prices-add-row { grid-template-columns: 1fr 1fr; }
+      #tabPrices .prices-add-btn { grid-column: 1 / -1; }
+    }
     #tabPrices .prices-help { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
     #tabPrices .prices-err { font-size: 0.82rem; color: var(--red); min-height: 18px; margin-top: 10px; }
     #tabPrices .prices-bulk-log { margin-top: 12px; font-size: 0.82rem; color: var(--text); max-height: 200px; overflow-y: auto; }
