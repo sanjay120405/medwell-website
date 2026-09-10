@@ -136,6 +136,22 @@
     .stat-clickable:hover .stat-value { color: var(--teal-dark); }
     .stat-divider { width: 1px; height: 34px; background: var(--border); }
 
+    /* ── STAT POPUP (clickable stats list) ── */
+    .stat-popup-overlay { position: fixed; inset: 0; z-index: 6000; background: rgba(4,64,64,.45); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .stat-popup-overlay.show { opacity: 1; pointer-events: all; }
+    .stat-popup { background: var(--white); border-radius: 16px; width: 100%; max-width: 460px; max-height: 74vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.25); transform: translateY(12px); transition: transform .2s; }
+    .stat-popup-overlay.show .stat-popup { transform: translateY(0); }
+    .stat-popup-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .stat-popup-head h4 { font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--dark); }
+    .stat-popup-head span { font-size: 0.78rem; color: var(--text-muted); font-family: 'Poppins', sans-serif; }
+    .stat-popup-close { width: 28px; height: 28px; border-radius: 50%; background: var(--teal-light); color: var(--teal); border: none; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .stat-popup-body { overflow-y: auto; overflow-x: hidden; padding: 12px 20px 16px; }
+    .stat-popup-list { display: flex; flex-direction: column; gap: 4px; }
+    .stat-popup-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 0.84rem; color: var(--text); }
+    .spi-num { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); width: 26px; text-align: right; flex-shrink: 0; line-height: 1.5; }
+    .spi-name { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--dark); flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; word-break: break-word; line-height: 1.5; }
+    .spi-count { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700; background: var(--teal-light); color: var(--teal-dark); border-radius: 99px; padding: 2px 8px; flex-shrink: 0; white-space: nowrap; line-height: 1.5; }
+
     /* ── PRODUCTS INDIVIDUAL SEARCH ── */
     #tabProducts .prod-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
     #tabProducts .prod-search-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
@@ -725,19 +741,34 @@
       <span class="stat-value" id="statTotal">—</span>
     </div>
     <div class="stat-divider"></div>
-    <div class="stat">
-      <span class="stat-label">Showing</span>
-      <span class="stat-value" id="statShowing">—</span>
+    <div class="stat stat-clickable" onclick="openStatPopup('molecules')" title="View all molecules">
+      <span class="stat-label">Molecules</span>
+      <span class="stat-value" id="statMolecules">—</span>
     </div>
     <div class="stat-divider"></div>
-    <div class="stat">
+    <div class="stat stat-clickable" onclick="openStatPopup('companies')" title="View all companies">
       <span class="stat-label">Companies</span>
       <span class="stat-value" id="statCompanies">—</span>
     </div>
     <div class="stat-divider"></div>
-    <div class="stat">
+    <div class="stat stat-clickable" onclick="openStatPopup('categories')" title="View all categories">
       <span class="stat-label">Categories</span>
       <span class="stat-value" id="statCategories">—</span>
+    </div>
+  </div>
+
+  <div class="stat-popup-overlay" id="statPopupOverlay" onclick="closeStatPopup(event)">
+    <div class="stat-popup">
+      <div class="stat-popup-head">
+        <div>
+          <h4 id="statPopupTitle">—</h4>
+          <span id="statPopupCount"></span>
+        </div>
+        <button class="stat-popup-close" type="button" onclick="closeStatPopup()">✕</button>
+      </div>
+      <div class="stat-popup-body">
+        <div class="stat-popup-list" id="statPopupList"></div>
+      </div>
     </div>
   </div>
 
@@ -1660,6 +1691,7 @@
   /* ── STATS ──────────────────────────────────── */
   function refreshStats() {
     document.getElementById('statTotal').textContent = products.length;
+    document.getElementById('statMolecules').textContent = new Set(products.map(p => p[4]).filter(m => m != null && String(m).trim() !== '')).size;
     document.getElementById('statCompanies').textContent = new Set(products.map(p => p[3])).size;
     document.getElementById('statCategories').textContent = new Set(products.map(p => p[5])).size;
     document.getElementById('totalCount').textContent = products.length;
@@ -1679,7 +1711,6 @@
       (!qComp || String(p[3]).toLowerCase().includes(qComp)) &&
       (!qMol  || String(p[4]).toLowerCase().includes(qMol))
     );
-    document.getElementById('statShowing').textContent = filtered.length;
     document.getElementById('showingCount').textContent = filtered.length;
     renderTable();
   }
@@ -1690,6 +1721,31 @@
     document.getElementById('searchProdMol').value = '';
     runSearch();
   }
+
+  /* ── CLICKABLE STAT POPUP ───────────────────── */
+  function openStatPopup(type) {
+    const cfg = { molecules: { title: 'Molecules', col: 4 }, companies: { title: 'Companies', col: 3 }, categories: { title: 'Categories', col: 5 } }[type];
+    if (!cfg) return;
+    const map = {};
+    products.forEach(p => { const v = p[cfg.col]; if (v != null && String(v).trim() !== '') map[v] = (map[v] || 0) + 1; });
+    const items = Object.entries(map).sort((a, b) => a[0].localeCompare(b[0]));
+    document.getElementById('statPopupTitle').textContent = cfg.title;
+    document.getElementById('statPopupCount').textContent = `${items.length} total`;
+    document.getElementById('statPopupList').innerHTML = items.map(([name, count], i) => `
+      <div class="stat-popup-item">
+        <span class="spi-num">${i + 1}</span>
+        <span class="spi-name">${esc(name)}</span>
+        <span class="spi-count">${count} product${count !== 1 ? 's' : ''}</span>
+      </div>`).join('');
+    document.getElementById('statPopupOverlay').classList.add('show');
+  }
+
+  function closeStatPopup(e) {
+    if (!e || e.target === document.getElementById('statPopupOverlay')) {
+      document.getElementById('statPopupOverlay').classList.remove('show');
+    }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeStatPopup(); });
 
   /* ── TABLE ──────────────────────────────────── */
   function esc(s) {

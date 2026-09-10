@@ -143,14 +143,14 @@
     .stat-popup-head h4 { font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--dark); }
     .stat-popup-head span { font-size: 0.78rem; color: var(--text-muted); font-family: 'Poppins', sans-serif; }
     .stat-popup-close { width: 28px; height: 28px; border-radius: 50%; background: var(--teal-light); color: var(--teal); border: none; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .stat-popup-body { overflow-y: auto; padding: 12px 20px 16px; }
+    .stat-popup-body { overflow-y: auto; overflow-x: hidden; padding: 12px 20px 16px; }
     .stat-popup-list { display: flex; flex-direction: column; gap: 4px; }
-    .stat-popup-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 0.84rem; color: var(--text); transition: background .12s; }
+    .stat-popup-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 0.84rem; color: var(--text); transition: background .12s; }
     .stat-popup-item:hover { background: var(--teal-light); cursor: pointer; }
     .stat-popup-item:hover .spi-name { color: var(--teal-dark); }
-    .spi-num { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); width: 22px; text-align: right; flex-shrink: 0; }
-    .spi-name { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--dark); flex: 1; }
-    .spi-count { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700; background: var(--teal-light); color: var(--teal-dark); border-radius: 99px; padding: 2px 8px; flex-shrink: 0; }
+    .spi-num { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); width: 22px; text-align: right; flex-shrink: 0; line-height: 1.5; }
+    .spi-name { font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--dark); flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; word-break: break-word; line-height: 1.5; }
+    .spi-count { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700; background: var(--teal-light); color: var(--teal-dark); border-radius: 99px; padding: 2px 8px; flex-shrink: 0; white-space: nowrap; line-height: 1.5; }
     .mobile-menu { position: fixed; inset: 0; z-index: 999; background: var(--white); transform: translateX(100%); transition: transform .38s cubic-bezier(.4,0,.2,1); overflow-y: auto; padding: 24px; }
     .mobile-menu.open { transform: translateX(0); }
     .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
