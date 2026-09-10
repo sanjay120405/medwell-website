@@ -341,7 +341,7 @@
     #tabPrices .prices-bulk-log { margin-top: 12px; font-size: 0.82rem; color: var(--text); max-height: 200px; overflow-y: auto; }
     #tabPrices .prices-bulk-log div { padding: 3px 0; border-bottom: 1px solid var(--border); }
     #tabPrices .price-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); background: var(--off-white); }
-    #tabPrices .price-del-btn { background: none; border: none; color: var(--red); cursor: pointer; font-size: 0.9rem; padding: 4px; }
+    #tabPrices .toolbar { justify-content: center; }
 
     /* ── CUSTOMER LIST TAB ── */
     #tabCustomers .cl-stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
@@ -1174,6 +1174,7 @@
       <input type="number" id="admPAddPrice" placeholder="Price (₹)" min="0" step="0.01" style="width:120px;" />
       <input type="file" id="admPAddImage" accept="image/*" />
       <button class="tm-add-btn" id="admPAddBtn" type="button">+ Add Product</button>
+      <button class="cancel-btn" id="admPAddCancelBtn" type="button" style="display:none;">Cancel</button>
     </div>
     <p class="prices-err" id="admPAddErr"></p>
   </div>
@@ -3270,7 +3271,12 @@
                  value="${r.price != null && r.price !== '' ? r.price : ''}" data-id="${r.id}" />
           <span class="price-saved-tag" id="tag-${r.id}">Saved</span>
         </td>
-        <td><button type="button" class="price-del-btn" data-id="${r.id}" title="Delete">&#128465;</button></td>
+        <td>
+          <div class="actions">
+            <button type="button" class="edit-btn" data-id="${r.id}">Edit</button>
+            <button type="button" class="del-btn" data-id="${r.id}">Delete</button>
+          </div>
+        </td>
       </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">No products match your search.</td></tr>';
   }
 
@@ -3292,8 +3298,26 @@
     if (tag) { tag.classList.add('show'); setTimeout(() => tag.classList.remove('show'), 1500); }
   });
 
+  let admPricesEditingId = null;
+
   document.getElementById('admPricesTbody').addEventListener('click', async e => {
-    const btn = e.target.closest('.price-del-btn');
+    const editBtn = e.target.closest('.edit-btn');
+    if (editBtn) {
+      const row = ADM_PRICES_ROWS.find(r => r.id === +editBtn.dataset.id);
+      if (!row) return;
+      admPricesEditingId = row.id;
+      document.getElementById('admPAddCategory').value = row.category_id;
+      document.getElementById('admPAddName').value = row.product_name;
+      document.getElementById('admPAddPrice').value = row.price != null ? row.price : '';
+      document.getElementById('admPAddImage').value = '';
+      document.getElementById('admPAddBtn').textContent = 'Update Product';
+      document.getElementById('admPAddCancelBtn').style.display = '';
+      document.getElementById('admPAddErr').textContent = 'Editing "' + row.product_name + '" — leave image blank to keep the current one.';
+      document.querySelector('#tabPrices .prices-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const btn = e.target.closest('.del-btn');
     if (!btn) return;
     const id = +btn.dataset.id;
     const row = ADM_PRICES_ROWS.find(r => r.id === id);
@@ -3340,26 +3364,48 @@
     errEl.textContent = '';
     if (!name) { errEl.textContent = 'Product name is required.'; return; }
 
-    btn.disabled = true; btn.textContent = 'Adding…';
+    const isEditing = admPricesEditingId != null;
+    btn.disabled = true; btn.textContent = isEditing ? 'Updating…' : 'Adding…';
     try {
-      let imagePath = null;
-      if (file) imagePath = await admPricesUploadImage(categoryId, file);
       const price = priceRaw === '' ? null : parseFloat(priceRaw);
-      const { error } = await sb.from('catalog_products').insert({
-        category_id: categoryId, category_name: category.name, product_name: name,
-        image_path: imagePath, price, sort_order: 9999
-      });
-      if (error) throw new Error(error.message);
 
+      if (isEditing) {
+        const patch = { category_id: categoryId, category_name: category.name, product_name: name, price, updated_at: new Date().toISOString() };
+        if (file) patch.image_path = await admPricesUploadImage(categoryId, file);
+        const { error } = await sb.from('catalog_products').update(patch).eq('id', admPricesEditingId);
+        if (error) throw new Error(error.message);
+      } else {
+        let imagePath = null;
+        if (file) imagePath = await admPricesUploadImage(categoryId, file);
+        const { error } = await sb.from('catalog_products').insert({
+          category_id: categoryId, category_name: category.name, product_name: name,
+          image_path: imagePath, price, sort_order: 9999
+        });
+        if (error) throw new Error(error.message);
+      }
+
+      admPricesEditingId = null;
       document.getElementById('admPAddName').value = '';
       document.getElementById('admPAddPrice').value = '';
       document.getElementById('admPAddImage').value = '';
+      document.getElementById('admPAddCancelBtn').style.display = 'none';
       await admPricesInit();
     } catch (e) {
-      errEl.textContent = 'Could not add product: ' + e.message;
+      errEl.textContent = (isEditing ? 'Could not update product: ' : 'Could not add product: ') + e.message;
     } finally {
-      btn.disabled = false; btn.textContent = '+ Add Product';
+      btn.disabled = false;
+      btn.textContent = admPricesEditingId != null ? 'Update Product' : '+ Add Product';
     }
+  });
+
+  document.getElementById('admPAddCancelBtn').addEventListener('click', () => {
+    admPricesEditingId = null;
+    document.getElementById('admPAddName').value = '';
+    document.getElementById('admPAddPrice').value = '';
+    document.getElementById('admPAddImage').value = '';
+    document.getElementById('admPAddBtn').textContent = '+ Add Product';
+    document.getElementById('admPAddCancelBtn').style.display = 'none';
+    document.getElementById('admPAddErr').textContent = '';
   });
 
   // ── Bulk import ──
