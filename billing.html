@@ -302,8 +302,9 @@
     .order-item-name { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .order-item-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .order-item-price { font-size: 0.82rem; color: var(--text-muted); text-align: right; white-space: nowrap; display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
-    .order-price-input { width: 60px; text-align: right; padding: 3px 5px; border: 1.5px solid var(--border); border-radius: 5px; font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    .order-price-input { width: 60px; text-align: right; padding: 3px 5px; border: 1.5px solid var(--border); border-radius: 5px; font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text); background: var(--off-white); transition: border-color .2s; -moz-appearance: textfield; }
     .order-price-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    .order-price-input::-webkit-inner-spin-button, .order-price-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     .order-item-total { font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 700; color: var(--teal-dark); text-align: right; white-space: nowrap; }
     .order-item-remove { background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 1rem; padding: 2px; border-radius: 4px; justify-self: center; transition: background .2s; }
     .order-item-remove:hover { background: #fde8e8; }
