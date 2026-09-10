@@ -329,6 +329,8 @@
     #tabPrices .prices-search-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
     #tabPrices .price-input { width: 110px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text); background: var(--off-white); text-align: right; }
     #tabPrices .price-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabPrices .mrp-input { width: 100px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text-muted); background: var(--off-white); text-align: right; }
+    #tabPrices .mrp-input:focus { outline: none; border-color: var(--teal); background: var(--white); color: var(--text); }
     #tabPrices .price-saved-tag { font-size: 0.68rem; font-weight: 700; color: var(--teal); margin-left: 8px; opacity: 0; transition: opacity .3s; }
     #tabPrices .price-saved-tag.show { opacity: 1; }
     #tabPrices .cat-badge2 { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); background: var(--teal-light); padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
@@ -337,7 +339,7 @@
     #tabPrices .prices-add-row { display: flex; flex-wrap: nowrap; gap: 12px; align-items: end; overflow-x: auto; padding-bottom: 2px; }
     #tabPrices .prices-field { display: flex; flex-direction: column; gap: 5px; flex: 0 0 190px; min-width: 0; }
     #tabPrices .prices-field:nth-child(2) { flex: 1 1 240px; }
-    #tabPrices .prices-field:nth-child(3) { flex: 0 0 130px; }
+    #tabPrices .prices-field:nth-child(3), #tabPrices .prices-field:nth-child(4) { flex: 0 0 130px; }
     #tabPrices .prices-add-btn { flex: 0 0 auto; }
     #tabPrices .prices-field label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
     #tabPrices .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] { box-sizing: border-box; height: 40px; width: 100%; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
@@ -1200,6 +1202,10 @@
         <input type="number" id="admPAddPrice" placeholder="0.00" min="0" step="0.01" />
       </div>
       <div class="prices-field">
+        <label>MRP (₹)</label>
+        <input type="number" id="admPAddMrp" placeholder="Optional" min="0" step="0.01" />
+      </div>
+      <div class="prices-field">
         <label>Image</label>
         <input type="file" id="admPAddImage" accept="image/*" />
       </div>
@@ -1211,7 +1217,7 @@
   <!-- BULK IMPORT -->
   <div class="prices-card">
     <h3>Bulk Import</h3>
-    <p class="prices-help">1. Pick all the product image files below (any order). 2. Upload an Excel/CSV file with columns <b>Category</b>, <b>Product Name</b>, <b>Price</b>, <b>Image Filename</b> — Image Filename must exactly match one of the picked files' names.</p>
+    <p class="prices-help">1. Pick all the product image files below (any order). 2. Upload an Excel/CSV file with columns <b>Category</b>, <b>Product Name</b>, <b>Price</b>, <b>MRP</b> (optional — original price, shown struck-through with a discount % if higher than Price), <b>Image Filename</b> — Image Filename must exactly match one of the picked files' names.</p>
     <div class="prices-add-row">
       <div class="prices-field">
         <label>Product Images</label>
@@ -1233,7 +1239,7 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Image</th><th>Category</th><th>Product</th><th style="text-align:right;">Price (₹)</th><th></th></tr>
+          <tr><th>Image</th><th>Category</th><th>Product</th><th style="text-align:right;">Price (₹)</th><th style="text-align:right;">MRP (₹)</th><th></th></tr>
         </thead>
         <tbody id="admPricesTbody"></tbody>
       </table>
@@ -1326,6 +1332,10 @@
         <div class="ff">
           <label>Price (₹)</label>
           <input type="number" id="admPEditPrice" placeholder="0.00" step="0.01" min="0" />
+        </div>
+        <div class="ff">
+          <label>MRP (₹)</label>
+          <input type="number" id="admPEditMrp" placeholder="Optional" step="0.01" min="0" />
         </div>
         <div class="ff full">
           <label>Product Name *</label>
@@ -3357,31 +3367,53 @@
                  value="${r.price != null && r.price !== '' ? r.price : ''}" data-id="${r.id}" />
           <span class="price-saved-tag" id="tag-${r.id}">Saved</span>
         </td>
+        <td style="text-align:right;">
+          <input type="number" class="mrp-input" min="0" step="0.01" placeholder="—"
+                 value="${r.mrp != null && r.mrp !== '' ? r.mrp : ''}" data-id="${r.id}" />
+        </td>
         <td>
           <div class="actions">
             <button type="button" class="edit-btn" data-id="${r.id}">Edit</button>
             <button type="button" class="del-btn" data-id="${r.id}">Delete</button>
           </div>
         </td>
-      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">No products match your search.</td></tr>';
+      </tr>`).join('') || '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-muted);">No products match your search.</td></tr>';
   }
 
   document.getElementById('admPricesTbody').addEventListener('change', async e => {
-    const input = e.target.closest('.price-input');
-    if (!input) return;
-    const id = +input.dataset.id;
-    const val = input.value.trim();
-    const price = val === '' ? null : parseFloat(val);
+    const priceInput = e.target.closest('.price-input');
+    if (priceInput) {
+      const id = +priceInput.dataset.id;
+      const val = priceInput.value.trim();
+      const price = val === '' ? null : parseFloat(val);
 
-    const { error } = await sb.from('catalog_products').update({ price, updated_at: new Date().toISOString() }).eq('id', id);
-    if (error) { alert('Could not save price: ' + error.message); return; }
+      const { error } = await sb.from('catalog_products').update({ price, updated_at: new Date().toISOString() }).eq('id', id);
+      if (error) { alert('Could not save price: ' + error.message); return; }
 
-    const row = ADM_PRICES_ROWS.find(r => r.id === id);
-    if (row) row.price = price;
-    admPricesRefreshStats();
+      const row = ADM_PRICES_ROWS.find(r => r.id === id);
+      if (row) row.price = price;
+      admPricesRefreshStats();
 
-    const tag = document.getElementById('tag-' + id);
-    if (tag) { tag.classList.add('show'); setTimeout(() => tag.classList.remove('show'), 1500); }
+      const tag = document.getElementById('tag-' + id);
+      if (tag) { tag.classList.add('show'); setTimeout(() => tag.classList.remove('show'), 1500); }
+      return;
+    }
+
+    const mrpInput = e.target.closest('.mrp-input');
+    if (mrpInput) {
+      const id = +mrpInput.dataset.id;
+      const val = mrpInput.value.trim();
+      const mrp = val === '' ? null : parseFloat(val);
+
+      const { error } = await sb.from('catalog_products').update({ mrp, updated_at: new Date().toISOString() }).eq('id', id);
+      if (error) { alert('Could not save MRP: ' + error.message); return; }
+
+      const row = ADM_PRICES_ROWS.find(r => r.id === id);
+      if (row) row.mrp = mrp;
+
+      const tag = document.getElementById('tag-' + id);
+      if (tag) { tag.classList.add('show'); setTimeout(() => tag.classList.remove('show'), 1500); }
+    }
   });
 
   // ── Edit modal ──
@@ -3396,6 +3428,7 @@
     admPEditCategorySel.value = row.category_id;
     document.getElementById('admPEditName').value = row.product_name;
     document.getElementById('admPEditPrice').value = row.price != null ? row.price : '';
+    document.getElementById('admPEditMrp').value = row.mrp != null ? row.mrp : '';
     document.getElementById('admPEditImage').value = '';
     document.getElementById('admPEditErr').textContent = '';
     admPEditOverlay.classList.add('open');
@@ -3414,6 +3447,7 @@
     const category = CATEGORIES.find(c => c.id === categoryId);
     const name = document.getElementById('admPEditName').value.trim();
     const priceRaw = document.getElementById('admPEditPrice').value.trim();
+    const mrpRaw = document.getElementById('admPEditMrp').value.trim();
     const file = document.getElementById('admPEditImage').files[0];
 
     errEl.textContent = '';
@@ -3422,7 +3456,8 @@
     saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
     try {
       const price = priceRaw === '' ? null : parseFloat(priceRaw);
-      const patch = { category_id: categoryId, category_name: category.name, product_name: name, price, updated_at: new Date().toISOString() };
+      const mrp = mrpRaw === '' ? null : parseFloat(mrpRaw);
+      const patch = { category_id: categoryId, category_name: category.name, product_name: name, price, mrp, updated_at: new Date().toISOString() };
       if (file) patch.image_path = await admPricesUploadImage(categoryId, file);
       const { error } = await sb.from('catalog_products').update(patch).eq('id', id);
       if (error) throw new Error(error.message);
@@ -3506,6 +3541,7 @@
     const category = CATEGORIES.find(c => c.id === categoryId);
     const name = document.getElementById('admPAddName').value.trim();
     const priceRaw = document.getElementById('admPAddPrice').value.trim();
+    const mrpRaw = document.getElementById('admPAddMrp').value.trim();
     const file = document.getElementById('admPAddImage').files[0];
 
     errEl.textContent = '';
@@ -3514,16 +3550,18 @@
     btn.disabled = true; btn.textContent = 'Adding…';
     try {
       const price = priceRaw === '' ? null : parseFloat(priceRaw);
+      const mrp = mrpRaw === '' ? null : parseFloat(mrpRaw);
       let imagePath = null;
       if (file) imagePath = await admPricesUploadImage(categoryId, file);
       const { error } = await sb.from('catalog_products').insert({
         category_id: categoryId, category_name: category.name, product_name: name,
-        image_path: imagePath, price, sort_order: 9999
+        image_path: imagePath, price, mrp, sort_order: 9999
       });
       if (error) throw new Error(error.message);
 
       document.getElementById('admPAddName').value = '';
       document.getElementById('admPAddPrice').value = '';
+      document.getElementById('admPAddMrp').value = '';
       document.getElementById('admPAddImage').value = '';
       await admPricesInit();
     } catch (e) {
@@ -3562,6 +3600,7 @@
         const catInput = String(row['Category'] || '').trim();
         const name = String(row['Product Name'] || '').trim();
         const priceRaw = row['Price'];
+        const mrpRaw = row['MRP'];
         const imageFilename = String(row['Image Filename'] || '').trim();
 
         if (!name) { fail++; logLines.push('Skipped a row with no Product Name.'); continue; }
@@ -3579,9 +3618,10 @@
         }
 
         const price = priceRaw === '' || priceRaw == null ? null : parseFloat(priceRaw);
+        const mrp = mrpRaw === '' || mrpRaw == null ? null : parseFloat(mrpRaw);
         const { error } = await sb.from('catalog_products').insert({
           category_id: category.id, category_name: category.name, product_name: name,
-          image_path: imagePath, price, sort_order: 9999
+          image_path: imagePath, price, mrp, sort_order: 9999
         });
         if (error) { fail++; logLines.push(`"${name}": save failed — ${error.message}`); continue; }
         ok++;
