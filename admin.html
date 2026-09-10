@@ -322,6 +322,27 @@
     #tabTaskmaster .tm-del-btn:hover { color: #ef4444; }
     #tabTaskmaster .tm-empty { text-align: center; padding: 60px 24px; color: var(--text-muted); }
     #tabTaskmaster .tm-empty p { font-family: 'Poppins',sans-serif; font-size: 0.9rem; margin-top: 12px; }
+
+    /* ── PRODUCT PRICES TAB ── */
+    #tabPrices .prices-search-input { width: 100%; max-width: 340px; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabPrices .prices-search-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabPrices .price-input { width: 110px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text); background: var(--off-white); text-align: right; }
+    #tabPrices .price-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabPrices .price-saved-tag { font-size: 0.68rem; font-weight: 700; color: var(--teal); margin-left: 8px; opacity: 0; transition: opacity .3s; }
+    #tabPrices .price-saved-tag.show { opacity: 1; }
+    #tabPrices .cat-badge2 { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); background: var(--teal-light); padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+    #tabPrices .prices-card { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 20px 24px; margin: 18px 24px 0; }
+    #tabPrices .prices-card h3 { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
+    #tabPrices .prices-add-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    #tabPrices .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); }
+    #tabPrices .prices-add-row input[type="file"] { font-size: 0.82rem; max-width: 220px; }
+    #tabPrices .prices-help { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
+    #tabPrices .prices-err { font-size: 0.82rem; color: var(--red); min-height: 18px; margin-top: 8px; }
+    #tabPrices .prices-bulk-log { margin-top: 12px; font-size: 0.82rem; color: var(--text); max-height: 200px; overflow-y: auto; }
+    #tabPrices .prices-bulk-log div { padding: 3px 0; border-bottom: 1px solid var(--border); }
+    #tabPrices .price-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); background: var(--off-white); }
+    #tabPrices .price-del-btn { background: none; border: none; color: var(--red); cursor: pointer; font-size: 0.9rem; padding: 4px; }
+
     /* ── CUSTOMER LIST TAB ── */
     #tabCustomers .cl-stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
     #tabCustomers .cl-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
@@ -587,6 +608,7 @@
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="products-data.js"></script>
+<script src="catalog-data.js"></script>
 <body>
 
 <!-- ── LOGIN SCREEN ── -->
@@ -653,6 +675,10 @@
       <button class="ah-tab" id="tabBtnTaskmaster" onclick="switchTab('taskmaster')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
         Task Master
+      </button>
+      <button class="ah-tab" id="tabBtnPrices" onclick="switchTab('prices')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Product Prices
       </button>
       <a class="ah-tab" href="https://medwelldashboard.vercel.app/" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
@@ -1121,6 +1147,60 @@
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
         <p>No tasks yet. Add one above!</p>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT PRICES TAB -->
+<div id="tabPrices" style="display:none;">
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-label">Catalog Products</span>
+      <span class="stat-value" id="admPricesTotal">—</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-label">Prices Set</span>
+      <span class="stat-value" id="admPricesSet">—</span>
+    </div>
+  </div>
+
+  <!-- ADD SINGLE PRODUCT -->
+  <div class="prices-card">
+    <h3>Add Product</h3>
+    <div class="prices-add-row">
+      <select id="admPAddCategory"></select>
+      <input type="text" id="admPAddName" placeholder="Product name" />
+      <input type="number" id="admPAddPrice" placeholder="Price (₹)" min="0" step="0.01" style="width:120px;" />
+      <input type="file" id="admPAddImage" accept="image/*" />
+      <button class="tm-add-btn" id="admPAddBtn" type="button">+ Add Product</button>
+    </div>
+    <p class="prices-err" id="admPAddErr"></p>
+  </div>
+
+  <!-- BULK IMPORT -->
+  <div class="prices-card">
+    <h3>Bulk Import</h3>
+    <p class="prices-help">1. Pick all the product image files below (any order). 2. Upload an Excel/CSV file with columns <b>Category</b>, <b>Product Name</b>, <b>Price</b>, <b>Image Filename</b> — Image Filename must exactly match one of the picked files' names.</p>
+    <div class="prices-add-row">
+      <input type="file" id="admPBulkImages" accept="image/*" multiple />
+      <input type="file" id="admPBulkExcel" accept=".xlsx,.xls,.csv" />
+      <button class="tm-add-btn" id="admPBulkBtn" type="button">Import</button>
+    </div>
+    <div id="admPBulkLog" class="prices-bulk-log"></div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="admPricesSearch" class="prices-search-input" placeholder="Search product name…" autocomplete="off" oninput="admPricesRender()" />
+  </div>
+  <div class="table-section">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Image</th><th>Category</th><th>Product</th><th style="text-align:right;">Price (₹)</th><th></th></tr>
+        </thead>
+        <tbody id="admPricesTbody"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -1847,13 +1927,16 @@
     document.getElementById('tabTracking').style.display    = tab === 'tracking'   ? 'flex'  : 'none';
     document.getElementById('tabAttendance').style.display  = tab === 'attendance' ? 'block' : 'none';
     document.getElementById('tabTaskmaster').style.display  = tab === 'taskmaster' ? 'block' : 'none';
+    document.getElementById('tabPrices').style.display      = tab === 'prices'     ? 'block' : 'none';
     document.getElementById('tabBtnProducts').classList.toggle('active',    tab === 'products');
     document.getElementById('tabBtnCustomers').classList.toggle('active',   tab === 'customers');
     document.getElementById('tabBtnWholesale').classList.toggle('active',   tab === 'wholesale');
     document.getElementById('tabBtnTracking').classList.toggle('active',    tab === 'tracking');
     document.getElementById('tabBtnAttendance').classList.toggle('active',  tab === 'attendance');
     document.getElementById('tabBtnTaskmaster').classList.toggle('active',  tab === 'taskmaster');
+    document.getElementById('tabBtnPrices').classList.toggle('active',      tab === 'prices');
     if (tab === 'taskmaster') admTmLoadTasks();
+    if (tab === 'prices') admPricesInit();
     document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
     if (tab === 'tracking') {
       if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
@@ -3150,6 +3233,200 @@
   sb.channel('tasks_rt_admin')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => admTmLoadTasks())
     .subscribe();
+
+  /* ── CATALOG PRODUCTS (showcase catalog on products.html) ─── */
+  let ADM_PRICES_ROWS = []; // full catalog_products rows
+
+  function admPricesEsc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  // Populate the category dropdown once from CATEGORIES (catalog-data.js)
+  document.getElementById('admPAddCategory').innerHTML = CATEGORIES
+    .map(c => `<option value="${admPricesEsc(c.id)}">${admPricesEsc(c.name)}</option>`).join('');
+
+  async function admPricesInit() {
+    const { data, error } = await sb.from('catalog_products').select('*').order('category_id').order('sort_order');
+    if (error) { console.error('Catalog products load error:', error.message); return; }
+    ADM_PRICES_ROWS = data || [];
+    admPricesRefreshStats();
+    admPricesRender();
+  }
+
+  function admPricesRefreshStats() {
+    document.getElementById('admPricesTotal').textContent = ADM_PRICES_ROWS.length;
+    document.getElementById('admPricesSet').textContent = ADM_PRICES_ROWS.filter(r => r.price != null && r.price !== '').length;
+  }
+
+  function admPricesRender() {
+    const term = document.getElementById('admPricesSearch').value.trim().toLowerCase();
+    const tbody = document.getElementById('admPricesTbody');
+    const rows = ADM_PRICES_ROWS.filter(r => !term || r.product_name.toLowerCase().includes(term));
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td>${r.image_path ? `<img class="price-thumb" src="${admPricesEsc(r.image_path)}" alt="" />` : ''}</td>
+        <td><span class="cat-badge2">${admPricesEsc(r.category_name)}</span></td>
+        <td>${admPricesEsc(r.product_name)}</td>
+        <td style="text-align:right;">
+          <input type="number" class="price-input" min="0" step="0.01" placeholder="0.00"
+                 value="${r.price != null && r.price !== '' ? r.price : ''}" data-id="${r.id}" />
+          <span class="price-saved-tag" id="tag-${r.id}">Saved</span>
+        </td>
+        <td><button type="button" class="price-del-btn" data-id="${r.id}" title="Delete">&#128465;</button></td>
+      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">No products match your search.</td></tr>';
+  }
+
+  document.getElementById('admPricesTbody').addEventListener('change', async e => {
+    const input = e.target.closest('.price-input');
+    if (!input) return;
+    const id = +input.dataset.id;
+    const val = input.value.trim();
+    const price = val === '' ? null : parseFloat(val);
+
+    const { error } = await sb.from('catalog_products').update({ price, updated_at: new Date().toISOString() }).eq('id', id);
+    if (error) { alert('Could not save price: ' + error.message); return; }
+
+    const row = ADM_PRICES_ROWS.find(r => r.id === id);
+    if (row) row.price = price;
+    admPricesRefreshStats();
+
+    const tag = document.getElementById('tag-' + id);
+    if (tag) { tag.classList.add('show'); setTimeout(() => tag.classList.remove('show'), 1500); }
+  });
+
+  document.getElementById('admPricesTbody').addEventListener('click', async e => {
+    const btn = e.target.closest('.price-del-btn');
+    if (!btn) return;
+    const id = +btn.dataset.id;
+    const row = ADM_PRICES_ROWS.find(r => r.id === id);
+    if (!row || !confirm(`Delete "${row.product_name}"?`)) return;
+
+    const { error } = await sb.from('catalog_products').delete().eq('id', id);
+    if (error) { alert('Delete failed: ' + error.message); return; }
+
+    // Best-effort cleanup of the stored image file too.
+    if (row.image_path) {
+      const marker = '/object/public/catalog-images/';
+      const idx = row.image_path.indexOf(marker);
+      if (idx !== -1) {
+        const path = row.image_path.slice(idx + marker.length);
+        sb.storage.from('catalog-images').remove([path]).catch(() => {});
+      }
+    }
+
+    ADM_PRICES_ROWS = ADM_PRICES_ROWS.filter(r => r.id !== id);
+    admPricesRefreshStats();
+    admPricesRender();
+  });
+
+  function admPricesSanitize(name) { return String(name).replace(/[^a-zA-Z0-9._-]/g, '_'); }
+
+  async function admPricesUploadImage(categoryId, file) {
+    const path = `${categoryId}/${Date.now()}-${admPricesSanitize(file.name)}`;
+    const { error } = await sb.storage.from('catalog-images').upload(path, file, { upsert: true });
+    if (error) throw new Error(error.message);
+    const { data } = sb.storage.from('catalog-images').getPublicUrl(path);
+    return data.publicUrl;
+  }
+
+  // ── Add single product ──
+  document.getElementById('admPAddBtn').addEventListener('click', async () => {
+    const errEl = document.getElementById('admPAddErr');
+    const btn = document.getElementById('admPAddBtn');
+    const categoryId = document.getElementById('admPAddCategory').value;
+    const category = CATEGORIES.find(c => c.id === categoryId);
+    const name = document.getElementById('admPAddName').value.trim();
+    const priceRaw = document.getElementById('admPAddPrice').value.trim();
+    const file = document.getElementById('admPAddImage').files[0];
+
+    errEl.textContent = '';
+    if (!name) { errEl.textContent = 'Product name is required.'; return; }
+
+    btn.disabled = true; btn.textContent = 'Adding…';
+    try {
+      let imagePath = null;
+      if (file) imagePath = await admPricesUploadImage(categoryId, file);
+      const price = priceRaw === '' ? null : parseFloat(priceRaw);
+      const { error } = await sb.from('catalog_products').insert({
+        category_id: categoryId, category_name: category.name, product_name: name,
+        image_path: imagePath, price, sort_order: 9999
+      });
+      if (error) throw new Error(error.message);
+
+      document.getElementById('admPAddName').value = '';
+      document.getElementById('admPAddPrice').value = '';
+      document.getElementById('admPAddImage').value = '';
+      await admPricesInit();
+    } catch (e) {
+      errEl.textContent = 'Could not add product: ' + e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = '+ Add Product';
+    }
+  });
+
+  // ── Bulk import ──
+  document.getElementById('admPBulkBtn').addEventListener('click', async () => {
+    const log = document.getElementById('admPBulkLog');
+    const btn = document.getElementById('admPBulkBtn');
+    const imageFiles = Array.from(document.getElementById('admPBulkImages').files || []);
+    const excelFile = document.getElementById('admPBulkExcel').files[0];
+
+    if (!excelFile) { log.innerHTML = '<div>Please choose an Excel/CSV file.</div>'; return; }
+
+    const imageByName = {};
+    imageFiles.forEach(f => { imageByName[f.name] = f; });
+
+    btn.disabled = true; btn.textContent = 'Importing…';
+    log.innerHTML = '<div>Reading file…</div>';
+
+    try {
+      const buf = await excelFile.arrayBuffer();
+      const wb = XLSX.read(buf, { type: 'array' });
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const dataRows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+
+      let ok = 0, fail = 0;
+      const logLines = [];
+
+      for (const row of dataRows) {
+        const catInput = String(row['Category'] || '').trim();
+        const name = String(row['Product Name'] || '').trim();
+        const priceRaw = row['Price'];
+        const imageFilename = String(row['Image Filename'] || '').trim();
+
+        if (!name) { fail++; logLines.push('Skipped a row with no Product Name.'); continue; }
+
+        const category = CATEGORIES.find(c =>
+          c.id.toLowerCase() === catInput.toLowerCase() || c.name.toLowerCase() === catInput.toLowerCase());
+        if (!category) { fail++; logLines.push(`"${name}": unknown category "${catInput}".`); continue; }
+
+        let imagePath = null;
+        if (imageFilename) {
+          const file = imageByName[imageFilename];
+          if (!file) { fail++; logLines.push(`"${name}": image file "${imageFilename}" was not picked above.`); continue; }
+          try { imagePath = await admPricesUploadImage(category.id, file); }
+          catch (e) { fail++; logLines.push(`"${name}": image upload failed — ${e.message}`); continue; }
+        }
+
+        const price = priceRaw === '' || priceRaw == null ? null : parseFloat(priceRaw);
+        const { error } = await sb.from('catalog_products').insert({
+          category_id: category.id, category_name: category.name, product_name: name,
+          image_path: imagePath, price, sort_order: 9999
+        });
+        if (error) { fail++; logLines.push(`"${name}": save failed — ${error.message}`); continue; }
+        ok++;
+      }
+
+      logLines.unshift(`Done: ${ok} added, ${fail} failed.`);
+      log.innerHTML = logLines.map(l => `<div>${admPricesEsc(l)}</div>`).join('');
+
+      document.getElementById('admPBulkImages').value = '';
+      document.getElementById('admPBulkExcel').value = '';
+      await admPricesInit();
+    } catch (e) {
+      log.innerHTML = `<div>Import failed: ${admPricesEsc(e.message)}</div>`;
+    } finally {
+      btn.disabled = false; btn.textContent = 'Import';
+    }
+  });
 
 </script>
 </body>

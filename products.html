@@ -252,6 +252,10 @@
       font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600;
       color: var(--dark); line-height: 1.35; text-align: center;
     }
+    .prod-price {
+      font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800;
+      color: var(--teal); text-align: center; margin-top: 5px;
+    }
     .prod-enquire {
       display: block; margin: 8px auto 0; padding: 6px 14px;
       background: var(--teal-light); color: var(--teal);
@@ -354,6 +358,10 @@
     .lb-counter {
       font-size: 0.78rem; color: var(--text-muted);
       font-family: 'Poppins', sans-serif; flex-shrink: 0;
+    }
+    .lb-price {
+      font-size: 0.88rem; font-weight: 800; color: var(--teal);
+      font-family: 'Poppins', sans-serif; flex-shrink: 0; white-space: nowrap;
     }
 
     /* ── ANIMATIONS ── */
@@ -550,6 +558,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <div id="lbName" class="lb-name"></div>
+      <div id="lbPrice" class="lb-price"></div>
       <div id="lbCounter" class="lb-counter"></div>
       <button id="lbNext" class="lb-nav" aria-label="Next">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -558,154 +567,30 @@
   </div>
 </div>
 
+<script src="catalog-data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // ── Product data ──
-  const CATEGORIES = [
-    {
-      id: 'surgical-instruments',
-      name: 'Surgical Instruments',
-      desc: 'High-grade stainless steel tools for all surgical specialties',
-      thumb: 'surgical instruments.png',
-      folder: 'Surgical Instruments',
-      products: [
-        { name: 'Cheatle Forceps',           file: 'CHEATLE-FORCEPS.jpg.jpeg' },
-        { name: 'Dissecting Forceps',         file: 'Dissecting-Forceps.jpg.jpeg' },
-        { name: 'Allis Tissue Forceps',       file: 'thoms-allis-tissue-forceps.png' },
-        { name: 'Sponge Holding Forceps',     file: 'SPONGE-HOLDING.jpg.jpeg' },
-        { name: 'Dressing Scissors',          file: 'dressing-scissors-1.jpg.jpeg' },
-        { name: 'Mosquito Forceps',           file: 'mosquito-forceps.jpg.jpeg' },
-        { name: 'Artery Forceps',             file: 'artery-forceps.jpg.jpeg' },
-        { name: 'Needle Holder',              file: 'needle-holder.jpg.jpeg' },
-      ]
-    },
-    {
-      id: 'surgical-disposables',
-      name: 'Surgical Disposables',
-      desc: 'Sterile single-use items for infection prevention and hygiene',
-      thumb: 'Surgical Disposables.png',
-      folder: 'Surgical Disposables',
-      products: [
-        { name: 'Surgical Mask',              file: 'surgical-mask.jpg.jpeg' },
-        { name: 'Bandages',                   file: 'bandages.jpg.jpeg' },
-        { name: 'Disposable Surgical Cap',    file: 'disposable-surgical-cap.jpg.jpeg' },
-        { name: 'Non-Woven Shoe Cover',       file: 'shoe-cover-non-woven.jpg.jpeg' },
-        { name: 'Patient Gown',               file: 'patient-gown.jpg.jpeg' },
-        { name: 'Gauze Swabs',                file: 'gauze-swabs.jpg.jpeg' },
-      ]
-    },
-    {
-      id: 'hospital-furniture',
-      name: 'Hospital Furniture',
-      desc: 'Beds, trolleys, stretchers and complete ward equipment',
-      thumb: 'Hospital Furniture.png',
-      folder: 'Hospital Furniture',
-      products: [
-        { name: 'Hospital Stretcher',         file: 'hospital-stretcher.jpg.jpeg' },
-        { name: 'Revolving Stool',            file: 'REVOLVING-STOOL.jpg.jpeg' },
-        { name: 'ICU Bed',                    file: 'icu-bed.png' },
-        { name: 'Wheelchair',                 file: 'wheel-chairs.jpg.jpeg' },
-        { name: 'Plain Bed',                  file: 'plain-bed.jpg.jpeg' },
-        { name: 'Hospital Trolley',           file: 'hospital-trolley.jpg.jpeg' },
-        { name: 'Examination Table',          file: 'examination-table.jpg.jpeg' },
-        { name: 'Semi Fowler Bed',            file: 'SEMI-FOWLER-BED.jpg.jpeg' },
-        { name: 'IV Stand',                   file: 'IV-Stand.jpg.jpeg' },
-      ]
-    },
-    {
-      id: 'rehabilitation-aids',
-      name: 'Rehabilitation Aids',
-      desc: 'Supports, braces and mobility aids for recovery and comfort',
-      thumb: 'Patient Wheelchairs.png',
-      folder: 'Rehabilitation Aids',
-      products: [
-        { name: 'Commode Elevator',           file: 'Commode-Elevator.jpg.jpeg' },
-        { name: 'Knee Brace',                 file: 'knee-brace.jpeg' },
-        { name: 'Back Support Cushion',       file: 'back-support-cushion.jpg.jpeg' },
-        { name: 'Cervical Collar',            file: 'Cervical-Collar.jpeg' },
-        { name: 'Knee Cup',                   file: 'Kneecup.jpg.jpeg' },
-        { name: 'Round Ring Pillow',          file: 'round-ring-pillow.jpg.jpeg' },
-        { name: 'Cervical Pillow',            file: 'Cervical-Pillow.jpg.jpeg' },
-        { name: 'Coccyx Cushion',             file: 'coccyy-cushion.jpeg' },
-        { name: 'Knee Support',               file: 'knee_support_plain.jpg.jpeg' },
-        { name: 'Abdominal Support',          file: 'Reha-Aids-abdominal-support.jpg.jpeg' },
-        { name: 'Ankle Support',              file: 'Ankle-Support.jpg.jpeg' },
-        { name: 'Elbow Crutches',             file: 'thumbs_elbow-crutches.jpg.jpeg' },
-        { name: 'Varicose Vein Stockings',    file: 'varicose-vein-stockings.jpg.jpeg' },
-        { name: 'Lumbo Sacral Belt',          file: 'Lumbo-Sacral-belt.jpg.jpeg' },
-        { name: 'Arm Sling Pouch',            file: 'Arm-Sling-Pouch-Baggy.jpg.jpeg' },
-      ]
-    },
-    {
-      id: 'home-care',
-      name: 'Home Care',
-      desc: 'Essential home care products for patient comfort and hygiene',
-      thumb: 'Home Care Products.png',
-      folder: 'Home Care',
-      products: [
-        { name: 'Under Pad',                  file: 'thumbs_under-pad.jpg.jpeg' },
-        { name: 'Wet Wipes',                  file: 'HOME-CARE-WET-WIPES-2.jpeg' },
-        { name: 'Adult Diapers (Friends)',    file: 'ADULT-DIAPHERS-FRIENDS.jpg.jpeg' },
-        { name: 'Adult Diapers (Seni)',       file: 'ADULT-DIAPHERS-SENI.jpg.jpeg' },
-        { name: 'Air Bed',                    file: 'air-bed.jpg.jpeg' },
-        { name: 'Surgical Mask',              file: 'surgical-mask.jpg.jpeg' },
-        { name: 'Sitz Bath Basin',            file: 'Sitz-Bath-Basin.jpg.jpeg' },
-        { name: 'Wet Wipes Classic',          file: 'HOME-CARE-WET-WIPES.jpeg' },
-        { name: 'Water Bed',                  file: 'water_bed.jpg.jpeg' },
-        { name: 'Accu-Chek Instant Meter',    file: 'accuchekinstantmeter.png' },
-      ]
-    },
-    {
-      id: 'bp-apparatus',
-      name: 'BP Apparatus',
-      desc: 'Digital and manual blood pressure monitoring devices',
-      thumb: 'BP Apparatus.png',
-      folder: 'BP Apparatus',
-      products: [
-        { name: 'Diamond BP Apparatus',              file: 'diamond-bp-app.jpg.jpeg' },
-        { name: 'Beurer Digital BP Monitor',         file: 'BEURER-DIGITAL.jpg.jpeg' },
-        { name: 'Diamond Mercury BP Apparatus',      file: 'diamond-mercury-bp-apparatus.jpg.jpeg' },
-        { name: 'Diamond Clock Type BP',             file: 'DIAMOND-CLOCK-TYPE-BP.jpeg' },
-        { name: 'Diamond BP Stand',                  file: 'diamond-bp-stand.jpg.jpeg' },
-        { name: 'Diamond Dial BP Apparatus',         file: 'diamond-dial-bp-app.jpg.jpeg' },
-        { name: 'Omron Advanced BP HEM-7156',        file: 'OMRON-ADV-BP-HEM-7156.jpg.jpeg' },
-        { name: 'Omron BP Apparatus',                file: 'omaron-bp-app.jpg.jpeg' },
-      ]
-    },
-    {
-      id: 'ss-wares',
-      name: 'SS Wares',
-      desc: 'Stainless steel surgical trays, drums, bowls and sterilization equipment',
-      thumb: 'SS Wares.png',
-      folder: 'SS  wares',
-      products: [
-        { name: 'Dressing Drum',              file: 'dressing-drum.jpg.jpeg' },
-        { name: 'Kidney Tray',                file: 'kindney-tray.jpg.jpeg' },
-        { name: 'AutoClaves',                 file: 'AutoClaves.jpg.jpeg' },
-        { name: 'Instrument Tray with Cover', file: 'instrument-tray-with-cover.jpg.jpeg' },
-        { name: 'Bed Pan',                    file: 'Bed-Pan-patient-min.jpg.jpeg' },
-        { name: 'Electric Sterilizer',        file: 'sterilizer-electric.jpg.jpeg' },
-      ]
-    },
-    {
-      id: 'hospital-needs',
-      name: 'Hospital Needs',
-      desc: 'OT supplies, diagnostic instruments and essential hospital equipment',
-      thumb: 'Hospital Needs.png',
-      folder: 'Hospital Needs',
-      products: [
-        { name: 'Stethoscope',                file: 'thumbs_stethoscope-1.jpg.jpeg' },
-        { name: 'Flow Meter',                 file: 'FLOW-METER.jpg.jpeg' },
-        { name: 'Hand Gloves',                file: 'thumbs_hand-gloves.jpg.jpeg' },
-        { name: 'Laryngoscope',               file: 'laryngoscope-surgical_instrument.jpg.jpeg' },
-        { name: 'Compressor Nebulizer',       file: 'Compressor-Nebulizer.jpg.jpeg' },
-        { name: 'Needle Destroyer',           file: 'needle-destroyer.jpg.jpeg' },
-        { name: 'Ambu Bag',                   file: 'AMBU-BAG.jpg.jpeg' },
-        { name: 'Syringe & Needle',           file: 'Syringe-needle.jpg.jpeg' },
-        { name: "Doctor's Coat",              file: 'Doctors-coat.jpg.jpeg' },
-        { name: 'OT Dress',                   file: 'green-ot-dress.jpg' },
-      ]
-    },
-  ];
+  // ── Category metadata (id/name/desc/thumb) comes from catalog-data.js.
+  //    The actual product list per category (name, image, price) is
+  //    fetched from Supabase so admin.html can manage it in bulk. ──
+
+  const SB_URL = 'https://vogxaylmrzulbdltxrwv.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvZ3hheWxtcnp1bGJkbHR4cnd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNzIwNjksImV4cCI6MjA5Njg0ODA2OX0.ARbGKniGQzbwmLB93Vey3Mr2vXsLYZIlP4nJRMqhfts';
+  const sb = window.supabase.createClient(SB_URL, SB_KEY);
+
+  async function loadCatalogProducts() {
+    const { data, error } = await sb.from('catalog_products').select('*').order('sort_order', { ascending: true });
+    if (error) { console.error('Catalog load error:', error.message); return; }
+    const byCategory = {};
+    (data || []).forEach(r => {
+      (byCategory[r.category_id] = byCategory[r.category_id] || []).push({
+        name: r.product_name,
+        image_path: r.image_path,
+        price: r.price
+      });
+    });
+    CATEGORIES.forEach(cat => { cat.products = byCategory[cat.id] || []; });
+  }
 
   let activeId = CATEGORIES[0].id;
 
@@ -754,7 +639,11 @@
     cat.products.forEach((prod, i) => {
       const card = document.createElement('div');
       card.className = 'prod-card fade-in';
-      const src = `${cat.folder}/${prod.file}`;
+      const src = prod.image_path || '';
+      const price = prod.price;
+      const priceHtml = (price != null && price !== '')
+        ? `<div class="prod-price">&#8377;${Number(price).toFixed(2)}</div>`
+        : '';
       card.innerHTML = `
         <div class="prod-img-wrap">
           <img src="${src}" alt="${prod.name}" loading="lazy"
@@ -762,6 +651,7 @@
         </div>
         <div class="prod-info">
           <div class="prod-name">${prod.name}</div>
+          ${priceHtml}
         </div>
       `;
       card.addEventListener('click', () => openLightbox(cat, i));
@@ -798,6 +688,7 @@
   const lbOverlay = document.getElementById('lbOverlay');
   const lbImg     = document.getElementById('lbImg');
   const lbName    = document.getElementById('lbName');
+  const lbPrice   = document.getElementById('lbPrice');
   const lbCounter = document.getElementById('lbCounter');
   const lbPrev    = document.getElementById('lbPrev');
   const lbNext    = document.getElementById('lbNext');
@@ -817,10 +708,12 @@
   function updateLightbox() {
     const prod = lbCat.products[lbIdx];
     lbImg.style.opacity = '0';
-    lbImg.src = `${lbCat.folder}/${prod.file}`;
+    lbImg.src = prod.image_path || '';
     lbImg.alt = prod.name;
     lbImg.onload = () => { lbImg.style.opacity = '1'; };
     lbName.textContent = prod.name;
+    const price = prod.price;
+    lbPrice.textContent = (price != null && price !== '') ? '₹' + Number(price).toFixed(2) : '';
     lbCounter.textContent = `Image ${lbIdx + 1} of ${lbCat.products.length}`;
     lbPrev.disabled = lbIdx === 0;
     lbNext.disabled = lbIdx === lbCat.products.length - 1;
@@ -855,20 +748,25 @@
   // ── Init ──
   buildSidebar();
 
-  // ── Load from URL hash if present, otherwise default to first category ──
-  const hash = location.hash.replace('#', '');
-  if (hash && CATEGORIES.find(c => c.id === hash)) {
-    activeId = hash;
-    buildSidebar();
-    renderProducts(hash);
-    // Scroll mobile tab into view after short delay (DOM ready)
-    setTimeout(() => {
-      const activeBtn = document.querySelector(`.mob-cat-btn[data-id="${hash}"]`);
-      if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }, 100);
-  } else {
-    renderProducts(activeId);
-  }
+  (async () => {
+    await loadCatalogProducts(); // fetch products/images/prices before first render
+    buildSidebar(); // re-run now that real per-category counts are known
+
+    // ── Load from URL hash if present, otherwise default to first category ──
+    const hash = location.hash.replace('#', '');
+    if (hash && CATEGORIES.find(c => c.id === hash)) {
+      activeId = hash;
+      buildSidebar();
+      renderProducts(hash);
+      // Scroll mobile tab into view after short delay (DOM ready)
+      setTimeout(() => {
+        const activeBtn = document.querySelector(`.mob-cat-btn[data-id="${hash}"]`);
+        if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }, 100);
+    } else {
+      renderProducts(activeId);
+    }
+  })();
 </script>
 </body>
 </html>
