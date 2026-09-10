@@ -279,9 +279,8 @@
     .oh-empty, .oh-loading { font-size: 0.84rem; color: var(--text-muted); font-family: 'Poppins', sans-serif; }
     .oh-list { display: flex; flex-direction: column; gap: 8px; max-height: 210px; overflow-y: auto; }
     .oh-bill { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
-    .oh-bill-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .oh-bill-top { display: flex; align-items: center; gap: 10px; }
     .oh-date { font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--dark); }
-    .oh-total { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 800; color: var(--teal-dark); white-space: nowrap; }
     .oh-items { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
     .oh-item { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: baseline; font-size: 0.78rem; color: var(--text-muted); }
     .oh-item-name { color: var(--dark); font-weight: 600; font-family: 'Poppins', sans-serif; overflow-wrap: anywhere; }
@@ -1352,7 +1351,6 @@
         <div class="oh-bill">
           <div class="oh-bill-top">
             <span class="oh-date">${dateStr}</span>
-            <span class="oh-total">₹${(+b.total || 0).toFixed(2)}</span>
           </div>
           ${itemRows ? `<div class="oh-items">${itemRows}</div>` : ''}
         </div>`;
