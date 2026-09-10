@@ -1174,7 +1174,6 @@
       <input type="number" id="admPAddPrice" placeholder="Price (₹)" min="0" step="0.01" style="width:120px;" />
       <input type="file" id="admPAddImage" accept="image/*" />
       <button class="tm-add-btn" id="admPAddBtn" type="button">+ Add Product</button>
-      <button class="cancel-btn" id="admPAddCancelBtn" type="button" style="display:none;">Cancel</button>
     </div>
     <p class="prices-err" id="admPAddErr"></p>
   </div>
@@ -1270,6 +1269,55 @@
     <div class="confirm-ft">
       <button class="confirm-cancel" id="confirmCancelBtn">Cancel</button>
       <button class="confirm-delete-btn" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRODUCT PRICES: EDIT MODAL ── -->
+<div class="overlay" id="admPEditOverlay">
+  <div class="modal-card">
+    <div class="modal-hd">
+      <h3>Edit Product</h3>
+      <button class="modal-close-btn" id="admPEditCloseBtn">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="admPEditId" />
+      <div class="form-grid">
+        <div class="ff">
+          <label>Category</label>
+          <select id="admPEditCategory"></select>
+        </div>
+        <div class="ff">
+          <label>Price (₹)</label>
+          <input type="number" id="admPEditPrice" placeholder="0.00" step="0.01" min="0" />
+        </div>
+        <div class="ff full">
+          <label>Product Name *</label>
+          <input type="text" id="admPEditName" placeholder="Full product name" />
+        </div>
+        <div class="ff full">
+          <label>Replace Image</label>
+          <input type="file" id="admPEditImage" accept="image/*" />
+        </div>
+      </div>
+      <p class="prices-err" id="admPEditErr"></p>
+      <div class="modal-ft">
+        <button class="cancel-btn" id="admPEditCancelBtn">Cancel</button>
+        <button class="save-btn" id="admPEditSaveBtn">Save Product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRODUCT PRICES: DELETE CONFIRM MODAL ── -->
+<div class="overlay" id="admPDeleteOverlay">
+  <div class="confirm-card">
+    <div class="confirm-icon">🗑️</div>
+    <h3>Delete?</h3>
+    <p>Are you sure you want to delete<br /><strong id="admPDeleteName"></strong>?<br />This cannot be undone.</p>
+    <div class="confirm-ft">
+      <button class="confirm-cancel" id="admPDeleteCancelBtn">Cancel</button>
+      <button class="confirm-delete-btn" id="admPDeleteConfirmBtn">Delete</button>
     </div>
   </div>
 </div>
@@ -2879,6 +2927,8 @@
     if (!document.getElementById('whImportDialog').classList.contains('hidden'))  { closeWhImportDialog(null); return; }
     if (document.getElementById('editOverlay').classList.contains('open'))        { closeEdit(); return; }
     if (document.getElementById('confirmOverlay').classList.contains('open'))     { closeConfirm(); return; }
+    if (document.getElementById('admPEditOverlay').classList.contains('open'))    { closeAdmPEdit(); return; }
+    if (document.getElementById('admPDeleteOverlay').classList.contains('open'))  { closeAdmPDelete(); return; }
   });
 
   let rptCurrentData = null;
@@ -3298,36 +3348,81 @@
     if (tag) { tag.classList.add('show'); setTimeout(() => tag.classList.remove('show'), 1500); }
   });
 
-  let admPricesEditingId = null;
+  // ── Edit modal ──
+  const admPEditOverlay = document.getElementById('admPEditOverlay');
+  const admPEditCategorySel = document.getElementById('admPEditCategory');
+  if (admPEditCategorySel && !admPEditCategorySel.options.length) {
+    admPEditCategorySel.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  }
 
-  document.getElementById('admPricesTbody').addEventListener('click', async e => {
-    const editBtn = e.target.closest('.edit-btn');
-    if (editBtn) {
-      const row = ADM_PRICES_ROWS.find(r => r.id === +editBtn.dataset.id);
-      if (!row) return;
-      admPricesEditingId = row.id;
-      document.getElementById('admPAddCategory').value = row.category_id;
-      document.getElementById('admPAddName').value = row.product_name;
-      document.getElementById('admPAddPrice').value = row.price != null ? row.price : '';
-      document.getElementById('admPAddImage').value = '';
-      document.getElementById('admPAddBtn').textContent = 'Update Product';
-      document.getElementById('admPAddCancelBtn').style.display = '';
-      document.getElementById('admPAddErr').textContent = 'Editing "' + row.product_name + '" — leave image blank to keep the current one.';
-      document.querySelector('#tabPrices .prices-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
+  function openAdmPEdit(row) {
+    document.getElementById('admPEditId').value = row.id;
+    admPEditCategorySel.value = row.category_id;
+    document.getElementById('admPEditName').value = row.product_name;
+    document.getElementById('admPEditPrice').value = row.price != null ? row.price : '';
+    document.getElementById('admPEditImage').value = '';
+    document.getElementById('admPEditErr').textContent = '';
+    admPEditOverlay.classList.add('open');
+  }
+  function closeAdmPEdit() { admPEditOverlay.classList.remove('open'); }
+
+  document.getElementById('admPEditCloseBtn').addEventListener('click', closeAdmPEdit);
+  document.getElementById('admPEditCancelBtn').addEventListener('click', closeAdmPEdit);
+  admPEditOverlay.addEventListener('click', e => { if (e.target === admPEditOverlay) closeAdmPEdit(); });
+
+  document.getElementById('admPEditSaveBtn').addEventListener('click', async () => {
+    const errEl = document.getElementById('admPEditErr');
+    const saveBtn = document.getElementById('admPEditSaveBtn');
+    const id = +document.getElementById('admPEditId').value;
+    const categoryId = admPEditCategorySel.value;
+    const category = CATEGORIES.find(c => c.id === categoryId);
+    const name = document.getElementById('admPEditName').value.trim();
+    const priceRaw = document.getElementById('admPEditPrice').value.trim();
+    const file = document.getElementById('admPEditImage').files[0];
+
+    errEl.textContent = '';
+    if (!name) { errEl.textContent = 'Product name is required.'; return; }
+
+    saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+    try {
+      const price = priceRaw === '' ? null : parseFloat(priceRaw);
+      const patch = { category_id: categoryId, category_name: category.name, product_name: name, price, updated_at: new Date().toISOString() };
+      if (file) patch.image_path = await admPricesUploadImage(categoryId, file);
+      const { error } = await sb.from('catalog_products').update(patch).eq('id', id);
+      if (error) throw new Error(error.message);
+      closeAdmPEdit();
+      await admPricesInit();
+    } catch (e) {
+      errEl.textContent = 'Could not update product: ' + e.message;
+    } finally {
+      saveBtn.disabled = false; saveBtn.textContent = 'Save Product';
     }
+  });
 
-    const btn = e.target.closest('.del-btn');
-    if (!btn) return;
-    const id = +btn.dataset.id;
+  // ── Delete confirm modal ──
+  const admPDeleteOverlay = document.getElementById('admPDeleteOverlay');
+  let admPDeletePendingId = null;
+
+  function openAdmPDelete(row) {
+    admPDeletePendingId = row.id;
+    document.getElementById('admPDeleteName').textContent = row.product_name;
+    admPDeleteOverlay.classList.add('open');
+  }
+  function closeAdmPDelete() { admPDeletePendingId = null; admPDeleteOverlay.classList.remove('open'); }
+
+  document.getElementById('admPDeleteCancelBtn').addEventListener('click', closeAdmPDelete);
+  admPDeleteOverlay.addEventListener('click', e => { if (e.target === admPDeleteOverlay) closeAdmPDelete(); });
+
+  document.getElementById('admPDeleteConfirmBtn').addEventListener('click', async () => {
+    const id = admPDeletePendingId;
+    if (id == null) return;
     const row = ADM_PRICES_ROWS.find(r => r.id === id);
-    if (!row || !confirm(`Delete "${row.product_name}"?`)) return;
 
     const { error } = await sb.from('catalog_products').delete().eq('id', id);
     if (error) { alert('Delete failed: ' + error.message); return; }
 
     // Best-effort cleanup of the stored image file too.
-    if (row.image_path) {
+    if (row && row.image_path) {
       const marker = '/object/public/catalog-images/';
       const idx = row.image_path.indexOf(marker);
       if (idx !== -1) {
@@ -3339,6 +3434,22 @@
     ADM_PRICES_ROWS = ADM_PRICES_ROWS.filter(r => r.id !== id);
     admPricesRefreshStats();
     admPricesRender();
+    closeAdmPDelete();
+  });
+
+  document.getElementById('admPricesTbody').addEventListener('click', e => {
+    const editBtn = e.target.closest('.edit-btn');
+    if (editBtn) {
+      const row = ADM_PRICES_ROWS.find(r => r.id === +editBtn.dataset.id);
+      if (row) openAdmPEdit(row);
+      return;
+    }
+
+    const delBtn = e.target.closest('.del-btn');
+    if (delBtn) {
+      const row = ADM_PRICES_ROWS.find(r => r.id === +delBtn.dataset.id);
+      if (row) openAdmPDelete(row);
+    }
   });
 
   function admPricesSanitize(name) { return String(name).replace(/[^a-zA-Z0-9._-]/g, '_'); }
@@ -3364,48 +3475,27 @@
     errEl.textContent = '';
     if (!name) { errEl.textContent = 'Product name is required.'; return; }
 
-    const isEditing = admPricesEditingId != null;
-    btn.disabled = true; btn.textContent = isEditing ? 'Updating…' : 'Adding…';
+    btn.disabled = true; btn.textContent = 'Adding…';
     try {
       const price = priceRaw === '' ? null : parseFloat(priceRaw);
+      let imagePath = null;
+      if (file) imagePath = await admPricesUploadImage(categoryId, file);
+      const { error } = await sb.from('catalog_products').insert({
+        category_id: categoryId, category_name: category.name, product_name: name,
+        image_path: imagePath, price, sort_order: 9999
+      });
+      if (error) throw new Error(error.message);
 
-      if (isEditing) {
-        const patch = { category_id: categoryId, category_name: category.name, product_name: name, price, updated_at: new Date().toISOString() };
-        if (file) patch.image_path = await admPricesUploadImage(categoryId, file);
-        const { error } = await sb.from('catalog_products').update(patch).eq('id', admPricesEditingId);
-        if (error) throw new Error(error.message);
-      } else {
-        let imagePath = null;
-        if (file) imagePath = await admPricesUploadImage(categoryId, file);
-        const { error } = await sb.from('catalog_products').insert({
-          category_id: categoryId, category_name: category.name, product_name: name,
-          image_path: imagePath, price, sort_order: 9999
-        });
-        if (error) throw new Error(error.message);
-      }
-
-      admPricesEditingId = null;
       document.getElementById('admPAddName').value = '';
       document.getElementById('admPAddPrice').value = '';
       document.getElementById('admPAddImage').value = '';
-      document.getElementById('admPAddCancelBtn').style.display = 'none';
       await admPricesInit();
     } catch (e) {
-      errEl.textContent = (isEditing ? 'Could not update product: ' : 'Could not add product: ') + e.message;
+      errEl.textContent = 'Could not add product: ' + e.message;
     } finally {
       btn.disabled = false;
-      btn.textContent = admPricesEditingId != null ? 'Update Product' : '+ Add Product';
+      btn.textContent = '+ Add Product';
     }
-  });
-
-  document.getElementById('admPAddCancelBtn').addEventListener('click', () => {
-    admPricesEditingId = null;
-    document.getElementById('admPAddName').value = '';
-    document.getElementById('admPAddPrice').value = '';
-    document.getElementById('admPAddImage').value = '';
-    document.getElementById('admPAddBtn').textContent = '+ Add Product';
-    document.getElementById('admPAddCancelBtn').style.display = 'none';
-    document.getElementById('admPAddErr').textContent = '';
   });
 
   // ── Bulk import ──
