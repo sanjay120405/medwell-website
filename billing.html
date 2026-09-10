@@ -274,6 +274,16 @@
     .order-close { width: 32px; height: 32px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; border: none; flex-shrink: 0; }
     .order-body { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 18px; }
     .order-section-label { font-family: 'Poppins', sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+    .order-history { background: var(--teal-light); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+    .order-history .order-section-label { color: var(--teal-dark); margin-bottom: 10px; }
+    .oh-empty, .oh-loading { font-size: 0.84rem; color: var(--text-muted); font-family: 'Poppins', sans-serif; }
+    .oh-list { display: flex; flex-direction: column; gap: 8px; max-height: 210px; overflow-y: auto; }
+    .oh-bill { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+    .oh-bill-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .oh-date { font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--dark); }
+    .oh-total { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 800; color: var(--teal-dark); white-space: nowrap; }
+    .oh-items { margin-top: 4px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+    .oh-summary { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--teal-dark); display: flex; justify-content: space-between; gap: 10px; }
 
     /* Order items table */
     .order-items-box { border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
@@ -604,6 +614,10 @@
       <button class="order-close" id="orderClose">&#10005;</button>
     </div>
     <div class="order-body">
+      <div class="order-history" id="orderHistory" hidden>
+        <div class="order-section-label" id="orderHistoryLabel">Past Orders</div>
+        <div id="orderHistoryBody"></div>
+      </div>
       <div>
         <div class="order-section-label">Customer Details</div>
         <div style="display:flex;flex-direction:column;gap:12px;">
@@ -613,7 +627,7 @@
           </div>
           <div class="order-field">
             <label>Phone Number *</label>
-            <input class="order-input" id="orderPhone" type="tel" placeholder="10-digit mobile number — the bill is sent here" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" />
+            <input class="order-input" id="orderPhone" type="tel" placeholder="Enter 10 digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" />
           </div>
           <div class="order-field">
             <label>Address *</label>
@@ -1265,8 +1279,82 @@
     document.getElementById('orderPhone').value = '';
     document.getElementById('orderAddress').value = '';
     document.getElementById('orderError').textContent = '';
+    const hist = document.getElementById('orderHistory');
+    hist.hidden = true;
+    document.getElementById('orderHistoryBody').innerHTML = '';
     orderOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+  }
+
+  // ── Past orders lookup by phone ──────────────────────────────
+  let orderHistTimer = null;
+  document.getElementById('orderPhone').addEventListener('input', () => {
+    const phone = document.getElementById('orderPhone').value.trim();
+    clearTimeout(orderHistTimer);
+    if (!/^[0-9]{10}$/.test(phone)) {
+      document.getElementById('orderHistory').hidden = true;
+      return;
+    }
+    orderHistTimer = setTimeout(() => loadOrderHistory(phone), 350);
+  });
+
+  async function loadOrderHistory(phone) {
+    const hist = document.getElementById('orderHistory');
+    const body = document.getElementById('orderHistoryBody');
+    hist.hidden = false;
+    body.innerHTML = '<div class="oh-loading">Looking up past orders…</div>';
+
+    const { data, error } = await sb_pl.from('bills')
+      .select('created_at,customer_name,total,items')
+      .eq('customer_phone', phone)
+      .order('created_at', { ascending: false });
+
+    // Guard against a slower earlier lookup overwriting a newer one.
+    if (document.getElementById('orderPhone').value.trim() !== phone) return;
+
+    if (error) { body.innerHTML = '<div class="oh-empty">Could not load past orders.</div>'; return; }
+    if (!data || data.length === 0) {
+      document.getElementById('orderHistoryLabel').textContent = 'Past Orders';
+      body.innerHTML = '<div class="oh-empty">No previous orders for this number.</div>';
+      return;
+    }
+
+    const lastRec = data.find(b => b.customer_name);
+    const lastName = lastRec ? lastRec.customer_name : '';
+    document.getElementById('orderHistoryLabel').textContent =
+      lastName ? `Past Orders — ${lastName}` : 'Past Orders';
+    if (lastName && !document.getElementById('orderName').value.trim()) {
+      document.getElementById('orderName').value = lastName;
+    }
+
+    const grandTotal = data.reduce((s, b) => s + (+b.total || 0), 0);
+    const rows = data.map(b => {
+      const d = new Date(b.created_at);
+      const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const items = Array.isArray(b.items) ? b.items : [];
+      const itemsStr = items.length
+        ? items.map(it => `${ohEsc(it.name)}${it.qty ? ` ×${it.qty}` : ''}`).join(', ')
+        : '';
+      return `
+        <div class="oh-bill">
+          <div class="oh-bill-top">
+            <span class="oh-date">${dateStr}</span>
+            <span class="oh-total">₹${(+b.total || 0).toFixed(2)}</span>
+          </div>
+          ${itemsStr ? `<div class="oh-items">${itemsStr}</div>` : ''}
+        </div>`;
+    }).join('');
+
+    body.innerHTML = `
+      <div class="oh-list">${rows}</div>
+      <div class="oh-summary">
+        <span>${data.length} order${data.length !== 1 ? 's' : ''}</span>
+        <span>Total: ₹${grandTotal.toFixed(2)}</span>
+      </div>`;
+  }
+
+  function ohEsc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   function closeOrder() {
