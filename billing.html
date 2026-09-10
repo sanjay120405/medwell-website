@@ -282,7 +282,11 @@
     .oh-bill-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .oh-date { font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--dark); }
     .oh-total { font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 800; color: var(--teal-dark); white-space: nowrap; }
-    .oh-items { margin-top: 4px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+    .oh-items { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
+    .oh-item { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: baseline; font-size: 0.78rem; color: var(--text-muted); }
+    .oh-item-name { color: var(--dark); font-weight: 600; font-family: 'Poppins', sans-serif; overflow-wrap: anywhere; }
+    .oh-item-qp { white-space: nowrap; }
+    .oh-item-total { white-space: nowrap; font-weight: 700; color: var(--teal-dark); min-width: 64px; text-align: right; }
     .oh-summary { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); font-family: 'Poppins', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--teal-dark); display: flex; justify-content: space-between; gap: 10px; }
 
     /* Order items table */
@@ -1332,16 +1336,24 @@
       const d = new Date(b.created_at);
       const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       const items = Array.isArray(b.items) ? b.items : [];
-      const itemsStr = items.length
-        ? items.map(it => `${ohEsc(it.name)}${it.qty ? ` ×${it.qty}` : ''}`).join(', ')
-        : '';
+      const itemRows = items.map(it => {
+        const qty = +it.qty || 1;
+        const price = +it.price || 0;
+        const lineTotal = it.total != null ? (+it.total || 0) : price * qty;
+        return `
+          <div class="oh-item">
+            <span class="oh-item-name">${ohEsc(it.name)}</span>
+            <span class="oh-item-qp">₹${price.toFixed(2)} × ${qty}</span>
+            <span class="oh-item-total">₹${lineTotal.toFixed(2)}</span>
+          </div>`;
+      }).join('');
       return `
         <div class="oh-bill">
           <div class="oh-bill-top">
             <span class="oh-date">${dateStr}</span>
             <span class="oh-total">₹${(+b.total || 0).toFixed(2)}</span>
           </div>
-          ${itemsStr ? `<div class="oh-items">${itemsStr}</div>` : ''}
+          ${itemRows ? `<div class="oh-items">${itemRows}</div>` : ''}
         </div>`;
     }).join('');
 
