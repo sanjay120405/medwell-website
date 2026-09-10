@@ -212,8 +212,9 @@
     .ff { display: flex; flex-direction: column; gap: 5px; }
     .ff.full { grid-column: 1 / -1; }
     .ff label { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
-    .ff input { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--off-white); transition: border-color .2s; width: 100%; }
-    .ff input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    .ff input, .ff select { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--off-white); transition: border-color .2s; width: 100%; }
+    .ff select { cursor: pointer; }
+    .ff input:focus, .ff select:focus { outline: none; border-color: var(--teal); background: var(--white); }
     .modal-ft { display: flex; gap: 10px; justify-content: flex-end; }
     .cancel-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.84rem; font-weight: 600; border: 1.5px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: all .2s; }
     .cancel-btn:hover { border-color: var(--orange); color: var(--orange); }
@@ -333,11 +334,22 @@
     #tabPrices .cat-badge2 { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); background: var(--teal-light); padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
     #tabPrices .prices-card { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 20px 24px; margin: 18px 24px 0; }
     #tabPrices .prices-card h3 { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
-    #tabPrices .prices-add-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    #tabPrices .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] { padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); }
-    #tabPrices .prices-add-row input[type="file"] { font-size: 0.82rem; max-width: 220px; }
-    #tabPrices .prices-help { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
-    #tabPrices .prices-err { font-size: 0.82rem; color: var(--red); min-height: 18px; margin-top: 8px; }
+    #tabPrices .prices-add-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+    #tabPrices .prices-field { display: flex; flex-direction: column; gap: 5px; }
+    #tabPrices .prices-field label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    #tabPrices .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] { height: 40px; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabPrices .prices-add-row select:focus, #tabPrices .prices-add-row input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabPrices .prices-add-row select { cursor: pointer; min-width: 170px; }
+    #tabPrices .prices-add-row input[type="number"] { width: 130px; }
+    #tabPrices .prices-add-row input[type="text"] { min-width: 220px; flex: 1 1 220px; }
+    #tabPrices .prices-add-row input[type="file"] { height: 40px; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--off-white); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text-muted); max-width: 240px; display: flex; align-items: center; cursor: pointer; }
+    #tabPrices .prices-add-row input[type="file"]::file-selector-button { height: 28px; margin-right: 10px; padding: 0 14px; border: none; border-radius: 6px; background: var(--teal); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background .2s; }
+    #tabPrices .prices-add-row input[type="file"]::file-selector-button:hover { background: var(--dark); }
+    #tabPrices .prices-add-btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 22px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    #tabPrices .prices-add-btn:hover { background: var(--dark); }
+    #tabPrices .prices-add-btn:disabled { opacity: .6; cursor: not-allowed; }
+    #tabPrices .prices-help { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+    #tabPrices .prices-err { font-size: 0.82rem; color: var(--red); min-height: 18px; margin-top: 10px; }
     #tabPrices .prices-bulk-log { margin-top: 12px; font-size: 0.82rem; color: var(--text); max-height: 200px; overflow-y: auto; }
     #tabPrices .prices-bulk-log div { padding: 3px 0; border-bottom: 1px solid var(--border); }
     #tabPrices .price-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); background: var(--off-white); }
@@ -1169,11 +1181,23 @@
   <div class="prices-card">
     <h3>Add Product</h3>
     <div class="prices-add-row">
-      <select id="admPAddCategory"></select>
-      <input type="text" id="admPAddName" placeholder="Product name" />
-      <input type="number" id="admPAddPrice" placeholder="Price (₹)" min="0" step="0.01" style="width:120px;" />
-      <input type="file" id="admPAddImage" accept="image/*" />
-      <button class="tm-add-btn" id="admPAddBtn" type="button">+ Add Product</button>
+      <div class="prices-field">
+        <label>Category</label>
+        <select id="admPAddCategory"></select>
+      </div>
+      <div class="prices-field">
+        <label>Product Name</label>
+        <input type="text" id="admPAddName" placeholder="Product name" />
+      </div>
+      <div class="prices-field">
+        <label>Price (₹)</label>
+        <input type="number" id="admPAddPrice" placeholder="0.00" min="0" step="0.01" />
+      </div>
+      <div class="prices-field">
+        <label>Image</label>
+        <input type="file" id="admPAddImage" accept="image/*" />
+      </div>
+      <button class="prices-add-btn" id="admPAddBtn" type="button">+ Add Product</button>
     </div>
     <p class="prices-err" id="admPAddErr"></p>
   </div>
@@ -1183,9 +1207,15 @@
     <h3>Bulk Import</h3>
     <p class="prices-help">1. Pick all the product image files below (any order). 2. Upload an Excel/CSV file with columns <b>Category</b>, <b>Product Name</b>, <b>Price</b>, <b>Image Filename</b> — Image Filename must exactly match one of the picked files' names.</p>
     <div class="prices-add-row">
-      <input type="file" id="admPBulkImages" accept="image/*" multiple />
-      <input type="file" id="admPBulkExcel" accept=".xlsx,.xls,.csv" />
-      <button class="tm-add-btn" id="admPBulkBtn" type="button">Import</button>
+      <div class="prices-field">
+        <label>Product Images</label>
+        <input type="file" id="admPBulkImages" accept="image/*" multiple />
+      </div>
+      <div class="prices-field">
+        <label>Excel / CSV File</label>
+        <input type="file" id="admPBulkExcel" accept=".xlsx,.xls,.csv" />
+      </div>
+      <button class="prices-add-btn" id="admPBulkBtn" type="button">Import</button>
     </div>
     <div id="admPBulkLog" class="prices-bulk-log"></div>
   </div>
