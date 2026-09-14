@@ -212,6 +212,30 @@
     .content-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     .product-count-badge { background: var(--teal-light); color: var(--teal); font-family: 'Poppins', sans-serif; font-size: 0.76rem; font-weight: 700; padding: 5px 12px; border-radius: 99px; border: 1px solid var(--border); }
 
+    /* Search bar */
+    .search-bar {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 20px;
+      background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      padding: 4px 4px 4px 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .search-bar input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text);
+      padding: 10px 0;
+    }
+    .search-bar input::placeholder { color: var(--text-muted); }
+    .search-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--teal); color: white; border: none; cursor: pointer;
+      font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600;
+      padding: 10px 18px; border-radius: 8px; flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .search-btn:hover { background: var(--teal-dark); }
+    .search-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
     /* Product grid */
     .product-grid {
       display: grid;
@@ -522,6 +546,13 @@
 
   <!-- MAIN CONTENT -->
   <div class="products-content">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search products across all categories…" />
+      <button class="search-btn" id="searchBtn" type="button">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>
+        Search
+      </button>
+    </div>
     <div class="content-header">
       <div>
         <h2 class="content-title" id="contentTitle">Surgical Instruments</h2>
@@ -692,8 +723,85 @@
     });
   }
 
+  // ── Search across all categories ──
+  function renderSearchResults(query) {
+    const q = query.trim().toLowerCase();
+    document.querySelectorAll('.cat-item, .mob-cat-btn').forEach(el => el.classList.remove('active'));
+
+    document.getElementById('contentTitle').textContent = `Search results for "${query.trim()}"`;
+    document.getElementById('contentDesc').textContent = 'Matching products from all categories';
+
+    const results = [];
+    CATEGORIES.forEach(cat => {
+      cat.products.forEach((prod, i) => {
+        if (prod.name && prod.name.toLowerCase().includes(q)) results.push({ cat, prod, i });
+      });
+    });
+
+    document.getElementById('countBadge').textContent = results.length + ' Products';
+
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = '';
+
+    if (results.length === 0) {
+      grid.innerHTML = `<p style="color:var(--text-muted);font-size:0.9rem;">No products found. Try a different search term.</p>`;
+      return;
+    }
+
+    results.forEach(({ cat, prod, i }) => {
+      const card = document.createElement('div');
+      card.className = 'prod-card fade-in';
+      const src = prod.image_path || '';
+      const price = prod.price;
+      const mrp = prod.mrp;
+      const hasDiscount = price != null && price !== '' && mrp != null && mrp !== '' && Number(mrp) > Number(price);
+      const discountPct = hasDiscount ? Math.round((1 - Number(price) / Number(mrp)) * 100) : 0;
+      const priceHtml = (price != null && price !== '')
+        ? `<div class="prod-price">
+             ${hasDiscount ? `<span class="prod-mrp">&#8377;${Number(mrp).toFixed(2)}</span>` : ''}
+             <span class="prod-now">&#8377;${Number(price).toFixed(2)}</span>
+           </div>`
+        : '';
+      const badgeHtml = hasDiscount ? `<div class="prod-badge">-${discountPct}%</div>` : '';
+      card.innerHTML = `
+        <div class="prod-img-wrap">
+          ${badgeHtml}
+          <img src="${src}" alt="${prod.name}" loading="lazy"
+               onerror="this.src='';this.parentElement.style.background='var(--teal-light)'" />
+        </div>
+        <div class="prod-info">
+          <div class="prod-name">${prod.name}</div>
+          ${priceHtml}
+        </div>
+      `;
+      card.addEventListener('click', () => openLightbox(cat, i));
+      grid.appendChild(card);
+    });
+  }
+
+  function runSearch() {
+    const query = document.getElementById('searchInput').value;
+    if (query.trim() === '') {
+      renderProducts(activeId);
+      document.querySelectorAll('.cat-item, .mob-cat-btn').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === activeId);
+      });
+      return;
+    }
+    renderSearchResults(query);
+  }
+
+  document.getElementById('searchBtn').addEventListener('click', runSearch);
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') runSearch();
+  });
+  document.getElementById('searchInput').addEventListener('input', e => {
+    if (e.target.value.trim() === '') runSearch();
+  });
+
   // ── Select category ──
   function selectCategory(id) {
+    document.getElementById('searchInput').value = '';
     activeId = id;
 
     // update sidebar active state
