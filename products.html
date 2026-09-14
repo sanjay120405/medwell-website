@@ -795,9 +795,7 @@
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') runSearch();
   });
-  document.getElementById('searchInput').addEventListener('input', e => {
-    if (e.target.value.trim() === '') runSearch();
-  });
+  document.getElementById('searchInput').addEventListener('input', runSearch);
 
   // ── Select category ──
   function selectCategory(id) {
