@@ -1309,7 +1309,7 @@
     body.innerHTML = '<div class="oh-loading">Looking up past orders…</div>';
 
     const { data, error } = await sb_pl.from('bills')
-      .select('created_at,customer_name,total,items')
+      .select('created_at,customer_name,customer_address,total,items')
       .eq('customer_phone', phone)
       .order('created_at', { ascending: false });
 
@@ -1329,6 +1329,12 @@
       lastName ? `Past Orders — ${lastName}` : 'Past Orders';
     if (lastName && !document.getElementById('orderName').value.trim()) {
       document.getElementById('orderName').value = lastName;
+    }
+
+    const lastAddrRec = data.find(b => b.customer_address);
+    const lastAddress = lastAddrRec ? lastAddrRec.customer_address : '';
+    if (lastAddress && !document.getElementById('orderAddress').value.trim()) {
+      document.getElementById('orderAddress').value = lastAddress;
     }
 
     const grandTotal = data.reduce((s, b) => s + (+b.total || 0), 0);
