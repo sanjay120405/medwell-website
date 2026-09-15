@@ -265,10 +265,9 @@
     .cart-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 5px; background: white; color: var(--orange-dark); border-radius: 99px; font-size: 0.72rem; font-weight: 800; }
 
     /* ORDER MODAL */
-    .order-overlay { position: fixed; inset: 0; z-index: 6000; background: rgba(4,64,64,.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .25s; }
-    .order-overlay.open { opacity: 1; pointer-events: all; }
-    .order-card { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 680px; max-height: 92vh; overflow-y: auto; box-shadow: var(--shadow-lg); transform: scale(.94); transition: transform .25s; }
-    .order-overlay.open .order-card { transform: scale(1); }
+    .order-section { display: none; background: var(--off-white); border-bottom: 1px solid var(--border); padding: 24px 0; }
+    .order-section.open { display: block; }
+    .order-card { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 900px; margin: 0 auto; box-shadow: var(--shadow-sm); }
     .order-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0; margin-bottom: 16px; }
     .order-header h3 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--dark); }
     .order-close { width: 32px; height: 32px; border-radius: 50%; background: var(--teal-light); color: var(--teal); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; border: none; flex-shrink: 0; }
@@ -500,6 +499,53 @@
   </div>
 </div>
 
+<!-- BILL SUMMARY (shown inline, right below the stats bar, when Generate Bill is clicked) -->
+<div class="order-section" id="orderOverlay">
+  <div class="container">
+    <div class="order-card">
+      <div class="order-header">
+        <h3>Bill Summary</h3>
+        <button class="order-close" id="orderClose">&#10005;</button>
+      </div>
+      <div class="order-body">
+        <div class="order-history" id="orderHistory" hidden>
+          <div class="order-section-label" id="orderHistoryLabel">Past Orders</div>
+          <div id="orderHistoryBody"></div>
+        </div>
+        <div>
+          <div class="order-section-label">Customer Details</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="order-field">
+              <label>Customer Name *</label>
+              <input class="order-input" id="orderName" type="text" placeholder="Customer's full name" />
+            </div>
+            <div class="order-field">
+              <label>Phone Number *</label>
+              <input class="order-input" id="orderPhone" type="tel" placeholder="Enter 10 digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" />
+            </div>
+            <div class="order-field">
+              <label>Address *</label>
+              <input class="order-input" id="orderAddress" type="text" placeholder="Customer's address" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="order-section-label">Billed Items</div>
+          <div class="order-items-box" id="orderItemsList"></div>
+        </div>
+        <div class="order-error" id="orderError"></div>
+        <div class="order-footer">
+          <button class="order-cancel-btn" id="orderCancelBtn">Cancel</button>
+          <button class="order-place-btn" id="orderPlaceBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.428a.5.5 0 0 0 .619.612l5.717-1.485A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.518-5.157-1.416l-.371-.22-3.845.999 1.023-3.742-.242-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Send Bill on WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SEARCH SECTION -->
 <div class="search-section">
   <div class="container">
@@ -608,51 +654,6 @@
     </div>
   </div>
 </div>
-</div>
-
-<!-- ORDER MODAL -->
-<div class="order-overlay" id="orderOverlay">
-  <div class="order-card">
-    <div class="order-header">
-      <h3>Bill Summary</h3>
-      <button class="order-close" id="orderClose">&#10005;</button>
-    </div>
-    <div class="order-body">
-      <div class="order-history" id="orderHistory" hidden>
-        <div class="order-section-label" id="orderHistoryLabel">Past Orders</div>
-        <div id="orderHistoryBody"></div>
-      </div>
-      <div>
-        <div class="order-section-label">Customer Details</div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="order-field">
-            <label>Customer Name *</label>
-            <input class="order-input" id="orderName" type="text" placeholder="Customer's full name" />
-          </div>
-          <div class="order-field">
-            <label>Phone Number *</label>
-            <input class="order-input" id="orderPhone" type="tel" placeholder="Enter 10 digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" />
-          </div>
-          <div class="order-field">
-            <label>Address *</label>
-            <input class="order-input" id="orderAddress" type="text" placeholder="Customer's address" />
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="order-section-label">Billed Items</div>
-        <div class="order-items-box" id="orderItemsList"></div>
-      </div>
-      <div class="order-error" id="orderError"></div>
-      <div class="order-footer">
-        <button class="order-cancel-btn" id="orderCancelBtn">Cancel</button>
-        <button class="order-place-btn" id="orderPlaceBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.116 1.529 5.847L.057 23.428a.5.5 0 0 0 .619.612l5.717-1.485A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.518-5.157-1.416l-.371-.22-3.845.999 1.023-3.742-.242-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-          Send Bill on WhatsApp
-        </button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- REPORT (full page view) -->
@@ -1287,7 +1288,7 @@
     hist.hidden = true;
     document.getElementById('orderHistoryBody').innerHTML = '';
     orderOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    orderOverlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // ── Past orders lookup by phone ──────────────────────────────
@@ -1370,7 +1371,6 @@
 
   function closeOrder() {
     orderOverlay.classList.remove('open');
-    document.body.style.overflow = '';
   }
 
   function itemBase(c)  { return c.salesRate * c.qty; }
