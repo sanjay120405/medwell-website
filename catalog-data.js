@@ -39,16 +39,16 @@ const CATEGORIES = [
   },
   {
     id: 'home-care',
-    name: 'Home Care',
-    desc: 'Essential home care products for patient comfort and hygiene',
-    emoji: '🏠',
+    name: 'Diaper',
+    desc: 'Adult and baby diapers for comfort and hygiene',
+    emoji: '🍼',
     products: []
   },
   {
     id: 'bp-apparatus',
-    name: 'BP Apparatus',
-    desc: 'Digital and manual blood pressure monitoring devices',
-    emoji: '🫀',
+    name: 'Gloves',
+    desc: 'Surgical and examination gloves for hygiene and protection',
+    emoji: '🧤',
     products: []
   },
   {
