@@ -11,6 +11,7 @@
 const CATEGORIES = [
   {
     id: 'surgical-instruments',
+    slug: 'surgicalinstruments',
     name: 'Surgical Instruments',
     desc: 'High-grade stainless steel tools for all surgical specialties',
     emoji: '✂️',
@@ -18,6 +19,7 @@ const CATEGORIES = [
   },
   {
     id: 'surgical-disposables',
+    slug: 'surgicaldisposables',
     name: 'Surgical Disposables',
     desc: 'Sterile single-use items for infection prevention and hygiene',
     emoji: '🧤',
@@ -25,6 +27,7 @@ const CATEGORIES = [
   },
   {
     id: 'hospital-furniture',
+    slug: 'hospitalfurniture',
     name: 'Hospital Furniture',
     desc: 'Beds, trolleys, stretchers and complete ward equipment',
     emoji: '🛏️',
@@ -32,6 +35,7 @@ const CATEGORIES = [
   },
   {
     id: 'rehabilitation-aids',
+    slug: 'rehabilitationaids',
     name: 'Rehabilitation Aids',
     desc: 'Supports, braces and mobility aids for recovery and comfort',
     emoji: '♿',
@@ -39,6 +43,7 @@ const CATEGORIES = [
   },
   {
     id: 'home-care',
+    slug: 'homecare',
     name: 'Diaper',
     desc: 'Adult and baby diapers for comfort and hygiene',
     emoji: '🍼',
@@ -46,6 +51,7 @@ const CATEGORIES = [
   },
   {
     id: 'bp-apparatus',
+    slug: 'bpapparatus',
     name: 'Gloves',
     desc: 'Surgical and examination gloves for hygiene and protection',
     emoji: '🧤',
@@ -53,6 +59,7 @@ const CATEGORIES = [
   },
   {
     id: 'ss-wares',
+    slug: 'sswares',
     name: 'SS Wares',
     desc: 'Stainless steel surgical trays, drums, bowls and sterilization equipment',
     emoji: '🥣',
@@ -60,6 +67,7 @@ const CATEGORIES = [
   },
   {
     id: 'hospital-needs',
+    slug: 'hospitalneeds',
     name: 'Hospital Needs',
     desc: 'OT supplies, diagnostic instruments and essential hospital equipment',
     emoji: '🏥',
@@ -67,6 +75,7 @@ const CATEGORIES = [
   },
   {
     id: 'bp-monitor',
+    slug: 'bpmonitor',
     name: 'BP Monitor',
     desc: 'Digital and manual blood pressure monitors',
     emoji: '💓',
@@ -74,6 +83,7 @@ const CATEGORIES = [
   },
   {
     id: 'nebulizer',
+    slug: 'nebulizer',
     name: 'Nebulizer',
     desc: 'Nebulizers for respiratory care at home and hospital',
     emoji: '💨',
@@ -81,6 +91,7 @@ const CATEGORIES = [
   },
   {
     id: 'airbed',
+    slug: 'airbed',
     name: 'Airbed',
     desc: 'Air mattresses for bedsore prevention and patient comfort',
     emoji: '🛌',
@@ -88,6 +99,7 @@ const CATEGORIES = [
   },
   {
     id: 'suction-machine',
+    slug: 'suctionmachine',
     name: 'Suction Machine',
     desc: 'Portable and electric suction machines for clinical use',
     emoji: '🌀',
@@ -95,6 +107,7 @@ const CATEGORIES = [
   },
   {
     id: 'wipes',
+    slug: 'wipes',
     name: 'Wipes',
     desc: 'Wet wipes and cleansing wipes for patient hygiene',
     emoji: '🧻',
@@ -102,6 +115,7 @@ const CATEGORIES = [
   },
   {
     id: 'thermometer',
+    slug: 'thermometer',
     name: 'Thermometer',
     desc: 'Digital and infrared thermometers for accurate readings',
     emoji: '🌡️',
@@ -109,6 +123,7 @@ const CATEGORIES = [
   },
   {
     id: 'stethoscope',
+    slug: 'stethoscope',
     name: 'Stethoscope',
     desc: 'Stethoscopes for clinical examination and diagnosis',
     emoji: '🩺',
@@ -116,6 +131,7 @@ const CATEGORIES = [
   },
   {
     id: 'walker',
+    slug: 'walker',
     name: 'Walker',
     desc: 'Walking frames and walkers for mobility support',
     emoji: '🚶',
@@ -123,6 +139,7 @@ const CATEGORIES = [
   },
   {
     id: 'glucometer',
+    slug: 'glucometer',
     name: 'Glucometer',
     desc: 'Blood glucose monitoring devices and test strips',
     emoji: '🩸',
@@ -130,6 +147,7 @@ const CATEGORIES = [
   },
   {
     id: 'back-rest',
+    slug: 'backrest',
     name: 'Back Rest',
     desc: 'Adjustable back rests for bedridden patient comfort',
     emoji: '🪑',
@@ -137,6 +155,7 @@ const CATEGORIES = [
   },
   {
     id: 'commode-chair',
+    slug: 'commodechair',
     name: 'Commode Chair',
     desc: 'Commode chairs for patients with limited mobility',
     emoji: '🚽',
