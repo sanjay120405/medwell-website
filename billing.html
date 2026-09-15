@@ -265,8 +265,7 @@
     .cart-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 5px; background: white; color: var(--orange-dark); border-radius: 99px; font-size: 0.72rem; font-weight: 800; }
 
     /* ORDER MODAL */
-    .order-section { display: none; background: var(--off-white); border-bottom: 1px solid var(--border); padding: 24px 0; }
-    .order-section.open { display: block; }
+    .order-section { display: block; background: var(--off-white); border-bottom: 1px solid var(--border); padding: 24px 0; }
     .order-card { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 900px; margin: 0 auto; box-shadow: var(--shadow-sm); }
     .order-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0; margin-bottom: 16px; }
     .order-header h3 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--dark); }
@@ -1252,6 +1251,7 @@
       cart.push({ code, name: prod[1], company: prod[3], molecule: prod[4], salesRate: prod[6] * 1.30, tax: +prod[7] || 0, qty: 1 });
     }
     updateCartBadge();
+    renderOrderItems();
     renderTable(filteredRows, currentTerms);
   }
 
@@ -1271,7 +1271,7 @@
     if (item.qty <= 0) { removeFromCart(code); return; }
     updateCartBadge();
     renderTable(filteredRows, currentTerms);
-    if (document.getElementById('orderOverlay').classList.contains('open')) renderOrderItems();
+    renderOrderItems();
   }
 
   // ── ORDER MODAL ───────────────────────────────────────────────
@@ -1287,7 +1287,6 @@
     const hist = document.getElementById('orderHistory');
     hist.hidden = true;
     document.getElementById('orderHistoryBody').innerHTML = '';
-    orderOverlay.classList.add('open');
     orderOverlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -1370,7 +1369,16 @@
   }
 
   function closeOrder() {
-    orderOverlay.classList.remove('open');
+    cart = [];
+    updateCartBadge();
+    renderOrderItems();
+    renderTable(filteredRows, currentTerms);
+    document.getElementById('orderName').value = '';
+    document.getElementById('orderPhone').value = '';
+    document.getElementById('orderAddress').value = '';
+    document.getElementById('orderError').textContent = '';
+    document.getElementById('orderHistory').hidden = true;
+    document.getElementById('orderHistoryBody').innerHTML = '';
   }
 
   function itemBase(c)  { return c.salesRate * c.qty; }
@@ -1487,7 +1495,6 @@
   document.getElementById('checkoutBtn').addEventListener('click', openOrder);
   document.getElementById('orderClose').addEventListener('click', closeOrder);
   document.getElementById('orderCancelBtn').addEventListener('click', closeOrder);
-  orderOverlay.addEventListener('click', e => { if (e.target === orderOverlay) closeOrder(); });
 
   document.getElementById('orderPlaceBtn').addEventListener('click', async () => {
     const name    = document.getElementById('orderName').value.trim();
@@ -1617,6 +1624,7 @@
     document.getElementById('totalNum').textContent = TOTAL;
     renderTable(PRODUCTS, { product:'', company:'', molecule:'' });
     updateStats(PRODUCTS.length);
+    renderOrderItems();
   }
 
   // Realtime: refresh when admin makes any change
