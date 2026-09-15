@@ -43,7 +43,7 @@ const CATEGORIES = [
   },
   {
     id: 'home-care',
-    slug: 'homecare',
+    slug: 'diaper',
     name: 'Diaper',
     desc: 'Adult and baby diapers for comfort and hygiene',
     emoji: '🍼',
@@ -51,7 +51,7 @@ const CATEGORIES = [
   },
   {
     id: 'bp-apparatus',
-    slug: 'bpapparatus',
+    slug: 'gloves',
     name: 'Gloves',
     desc: 'Surgical and examination gloves for hygiene and protection',
     emoji: '🧤',
