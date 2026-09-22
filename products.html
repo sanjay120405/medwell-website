@@ -649,7 +649,7 @@
     CATEGORIES.forEach(cat => { cat.products = byCategory[cat.id] || []; });
   }
 
-  let activeId = window.FORCED_CATEGORY || CATEGORIES[0].id;
+  let activeId = window.FORCED_CATEGORY || null;
 
   // ── Build sidebar ──
   function buildSidebar() {
@@ -900,27 +900,24 @@
   }
 
   // ── Init ──
-  buildSidebar();
-
   (async () => {
+    await loadCategories();      // categories come from Supabase (catalog_categories)
+    buildSidebar();
+
     await loadCatalogProducts(); // fetch products/images/prices before first render
     buildSidebar(); // re-run now that real per-category counts are known
 
-    // ── Forced category (set by generated /product-category/<id>/ pages),
+    // ── Forced category (set by generated /product/<slug>/ pages),
     //    otherwise fall back to URL hash, otherwise first category ──
     const hash = window.FORCED_CATEGORY || location.hash.replace('#', '');
-    if (hash && CATEGORIES.find(c => c.id === hash)) {
-      activeId = hash;
-      buildSidebar();
-      renderProducts(hash);
-      // Scroll mobile tab into view after short delay (DOM ready)
-      setTimeout(() => {
-        const activeBtn = document.querySelector(`.mob-cat-btn[data-id="${hash}"]`);
-        if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }, 100);
-    } else {
-      renderProducts(activeId);
-    }
+    activeId = (hash && CATEGORIES.find(c => c.id === hash)) ? hash : (CATEGORIES[0] && CATEGORIES[0].id);
+    buildSidebar();
+    renderProducts(activeId);
+    // Scroll mobile tab into view after short delay (DOM ready)
+    setTimeout(() => {
+      const activeBtn = document.querySelector(`.mob-cat-btn[data-id="${activeId}"]`);
+      if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }, 100);
   })();
 </script>
 </body>

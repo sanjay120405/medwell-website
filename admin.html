@@ -341,37 +341,37 @@
     #tabTaskmaster .tm-empty p { font-family: 'Poppins',sans-serif; font-size: 0.9rem; margin-top: 12px; }
 
     /* ── PRODUCT PRICES TAB ── */
-    #tabPrices .prices-search-input { width: 100%; max-width: 340px; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
-    #tabPrices .prices-search-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
-    #tabPrices .price-input { width: 110px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text); background: var(--off-white); text-align: right; }
-    #tabPrices .price-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
-    #tabPrices .mrp-input { width: 100px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text-muted); background: var(--off-white); text-align: right; }
-    #tabPrices .mrp-input:focus { outline: none; border-color: var(--teal); background: var(--white); color: var(--text); }
-    #tabPrices .price-saved-tag { font-size: 0.68rem; font-weight: 700; color: var(--teal); margin-left: 8px; opacity: 0; transition: opacity .3s; }
-    #tabPrices .price-saved-tag.show { opacity: 1; }
-    #tabPrices .cat-badge2 { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); background: var(--teal-light); padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
-    #tabPrices .prices-card { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 20px 24px; margin: 18px 24px 0; }
-    #tabPrices .prices-card h3 { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
-    #tabPrices .prices-add-row { display: flex; flex-wrap: nowrap; gap: 12px; align-items: end; overflow-x: auto; padding-bottom: 2px; }
-    #tabPrices .prices-field { display: flex; flex-direction: column; gap: 5px; flex: 0 0 190px; min-width: 0; }
-    #tabPrices .prices-field:nth-child(2) { flex: 1 1 240px; }
-    #tabPrices .prices-field:nth-child(3), #tabPrices .prices-field:nth-child(4) { flex: 0 0 130px; }
-    #tabPrices .prices-add-btn { flex: 0 0 auto; }
-    #tabPrices .prices-field label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
-    #tabPrices .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] { box-sizing: border-box; height: 40px; width: 100%; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
-    #tabPrices .prices-add-row select:focus, #tabPrices .prices-add-row input:focus { outline: none; border-color: var(--teal); background: var(--white); }
-    #tabPrices .prices-add-row select { cursor: pointer; }
-    #tabPrices .prices-add-row input[type="file"] { box-sizing: border-box; height: 40px; width: 100%; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--off-white); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; cursor: pointer; }
-    #tabPrices .prices-add-row input[type="file"]::file-selector-button { height: 28px; margin-right: 10px; padding: 0 14px; border: none; border-radius: 6px; background: var(--teal); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background .2s; }
-    #tabPrices .prices-add-row input[type="file"]::file-selector-button:hover { background: var(--dark); }
-    #tabPrices .prices-add-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 22px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; }
-    #tabPrices .prices-add-btn:hover { background: var(--dark); }
-    #tabPrices .prices-add-btn:disabled { opacity: .6; cursor: not-allowed; }
-    #tabPrices .prices-help { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
-    #tabPrices .prices-err { font-size: 0.82rem; color: var(--red); min-height: 18px; margin-top: 10px; }
-    #tabPrices .prices-bulk-log { margin-top: 12px; font-size: 0.82rem; color: var(--text); max-height: 200px; overflow-y: auto; }
-    #tabPrices .prices-bulk-log div { padding: 3px 0; border-bottom: 1px solid var(--border); }
-    #tabPrices .price-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); background: var(--off-white); }
+    #tabPrices .prices-search-input , #tabMaster .prices-search-input { width: 100%; max-width: 340px; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabPrices .prices-search-input:focus , #tabMaster .prices-search-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabPrices .price-input , #tabMaster .price-input { width: 110px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text); background: var(--off-white); text-align: right; }
+    #tabPrices .price-input:focus , #tabMaster .price-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabPrices .mrp-input , #tabMaster .mrp-input { width: 100px; padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text-muted); background: var(--off-white); text-align: right; }
+    #tabPrices .mrp-input:focus , #tabMaster .mrp-input:focus { outline: none; border-color: var(--teal); background: var(--white); color: var(--text); }
+    #tabPrices .price-saved-tag , #tabMaster .price-saved-tag { font-size: 0.68rem; font-weight: 700; color: var(--teal); margin-left: 8px; opacity: 0; transition: opacity .3s; }
+    #tabPrices .price-saved-tag.show , #tabMaster .price-saved-tag.show { opacity: 1; }
+    #tabPrices .cat-badge2 , #tabMaster .cat-badge2 { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); background: var(--teal-light); padding: 3px 9px; border-radius: 99px; white-space: nowrap; }
+    #tabPrices .prices-card , #tabMaster .prices-card { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 20px 24px; margin: 18px 24px 0; }
+    #tabPrices .prices-card h3 , #tabMaster .prices-card h3 { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
+    #tabPrices .prices-add-row , #tabMaster .prices-add-row { display: flex; flex-wrap: nowrap; gap: 12px; align-items: end; overflow-x: auto; padding-bottom: 2px; }
+    #tabPrices .prices-field , #tabMaster .prices-field { display: flex; flex-direction: column; gap: 5px; flex: 0 0 190px; min-width: 0; }
+    #tabPrices .prices-field:nth-child(2) , #tabMaster .prices-field:nth-child(2) { flex: 1 1 240px; }
+    #tabPrices .prices-field:nth-child(3), #tabMaster .prices-field:nth-child(3), #tabPrices .prices-field:nth-child(4) , #tabMaster .prices-field:nth-child(4) { flex: 0 0 130px; }
+    #tabPrices .prices-add-btn , #tabMaster .prices-add-btn { flex: 0 0 auto; }
+    #tabPrices .prices-field label , #tabMaster .prices-field label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    #tabPrices .prices-add-row select, #tabMaster .prices-add-row select, #tabPrices .prices-add-row input[type="text"], #tabMaster .prices-add-row input[type="text"], #tabPrices .prices-add-row input[type="number"] , #tabMaster .prices-add-row input[type="number"] { box-sizing: border-box; height: 40px; width: 100%; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabPrices .prices-add-row select:focus, #tabMaster .prices-add-row select:focus, #tabPrices .prices-add-row input:focus , #tabMaster .prices-add-row input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabPrices .prices-add-row select , #tabMaster .prices-add-row select { cursor: pointer; }
+    #tabPrices .prices-add-row input[type="file"] , #tabMaster .prices-add-row input[type="file"] { box-sizing: border-box; height: 40px; width: 100%; padding: 0 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--off-white); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; cursor: pointer; }
+    #tabPrices .prices-add-row input[type="file"]::file-selector-button , #tabMaster .prices-add-row input[type="file"]::file-selector-button { height: 28px; margin-right: 10px; padding: 0 14px; border: none; border-radius: 6px; background: var(--teal); color: var(--white); font-family: 'Poppins', sans-serif; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: background .2s; }
+    #tabPrices .prices-add-row input[type="file"]::file-selector-button:hover , #tabMaster .prices-add-row input[type="file"]::file-selector-button:hover { background: var(--dark); }
+    #tabPrices .prices-add-btn , #tabMaster .prices-add-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 22px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.86rem; font-weight: 700; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    #tabPrices .prices-add-btn:hover , #tabMaster .prices-add-btn:hover { background: var(--dark); }
+    #tabPrices .prices-add-btn:disabled , #tabMaster .prices-add-btn:disabled { opacity: .6; cursor: not-allowed; }
+    #tabPrices .prices-help , #tabMaster .prices-help { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+    #tabPrices .prices-err , #tabMaster .prices-err { font-size: 0.82rem; color: var(--red); min-height: 18px; margin-top: 10px; }
+    #tabPrices .prices-bulk-log , #tabMaster .prices-bulk-log { margin-top: 12px; font-size: 0.82rem; color: var(--text); max-height: 200px; overflow-y: auto; }
+    #tabPrices .prices-bulk-log div , #tabMaster .prices-bulk-log div { padding: 3px 0; border-bottom: 1px solid var(--border); }
+    #tabPrices .price-thumb , #tabMaster .price-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); background: var(--off-white); }
     #tabPrices input[type="number"], #admPEditOverlay input[type="number"] { -moz-appearance: textfield; }
     #tabPrices input[type="number"]::-webkit-inner-spin-button,
     #tabPrices input[type="number"]::-webkit-outer-spin-button,
@@ -715,6 +715,10 @@
       <button class="ah-tab" id="tabBtnPrices" onclick="switchTab('prices')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         Product Prices
+      </button>
+      <button class="ah-tab" id="tabBtnMaster" onclick="switchTab('master')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Master
       </button>
       <a class="ah-tab" href="https://medwelldashboard.vercel.app/" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
@@ -1278,6 +1282,41 @@
   </div>
 </div>
 
+<!-- MASTER TAB (manage products.html categories) -->
+<div id="tabMaster" style="display:none;">
+  <div class="prices-card">
+    <h3>Add Category</h3>
+    <p class="prices-help">This controls the categories shown on products.html and the admin "Product Prices" tab. Adding a category here makes it usable right away — but it won't get its own <code>/product/&lt;slug&gt;/</code> page (like the others have) until that's generated and deployed separately.</p>
+    <div class="prices-add-row">
+      <div class="prices-field" style="flex:0 0 90px;">
+        <label>Emoji</label>
+        <input type="text" id="admMAddEmoji" placeholder="🏥" maxlength="4" />
+      </div>
+      <div class="prices-field">
+        <label>Name</label>
+        <input type="text" id="admMAddName" placeholder="e.g. Oxygen Concentrator" />
+      </div>
+      <div class="prices-field" style="flex:1 1 280px;">
+        <label>Description</label>
+        <input type="text" id="admMAddDesc" placeholder="Shown under the category name" />
+      </div>
+      <button class="prices-add-btn" id="admMAddBtn" type="button">+ Add Category</button>
+    </div>
+    <p class="prices-err" id="admMAddErr"></p>
+  </div>
+
+  <div class="table-section">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th></th><th>Emoji</th><th>Name</th><th>Description</th><th>URL slug</th><th></th></tr>
+        </thead>
+        <tbody id="admMasterTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- ── EDIT / ADD MODAL ── -->
 <div class="overlay" id="editOverlay">
   <div class="modal-card">
@@ -1635,6 +1674,7 @@
   async function bootAdmin() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('adminWrap').style.display = 'block';
+    await loadCategories();
     await initProducts();
     clLoadCustomers();
     whLoadItems();
@@ -2079,6 +2119,7 @@
     document.getElementById('tabAttendance').style.display  = tab === 'attendance' ? 'block' : 'none';
     document.getElementById('tabTaskmaster').style.display  = tab === 'taskmaster' ? 'block' : 'none';
     document.getElementById('tabPrices').style.display      = tab === 'prices'     ? 'block' : 'none';
+    document.getElementById('tabMaster').style.display      = tab === 'master'     ? 'block' : 'none';
     document.getElementById('tabBtnProducts').classList.toggle('active',    tab === 'products');
     document.getElementById('tabBtnCustomers').classList.toggle('active',   tab === 'customers');
     document.getElementById('tabBtnWholesale').classList.toggle('active',   tab === 'wholesale');
@@ -2086,8 +2127,10 @@
     document.getElementById('tabBtnAttendance').classList.toggle('active',  tab === 'attendance');
     document.getElementById('tabBtnTaskmaster').classList.toggle('active',  tab === 'taskmaster');
     document.getElementById('tabBtnPrices').classList.toggle('active',      tab === 'prices');
+    document.getElementById('tabBtnMaster').classList.toggle('active',      tab === 'master');
     if (tab === 'taskmaster') admTmLoadTasks();
     if (tab === 'prices') admPricesInit();
+    if (tab === 'master') admMasterInit();
     document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
     if (tab === 'tracking') {
       if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
@@ -3392,11 +3435,15 @@
 
   function admPricesEsc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
-  // Populate the category dropdown once from CATEGORIES (catalog-data.js)
-  document.getElementById('admPAddCategory').innerHTML = CATEGORIES
-    .map(c => `<option value="${admPricesEsc(c.id)}">${admPricesEsc(c.name)}</option>`).join('');
-
   async function admPricesInit() {
+    // Refresh the category dropdowns from CATEGORIES (Supabase catalog_categories,
+    // loaded in bootAdmin) each time, so Master tab changes show up immediately.
+    document.getElementById('admPAddCategory').innerHTML = CATEGORIES
+      .map(c => `<option value="${admPricesEsc(c.id)}">${admPricesEsc(c.name)}</option>`).join('');
+    if (admPEditCategorySel) {
+      admPEditCategorySel.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    }
+
     const { data, error } = await sb.from('catalog_products').select('*').order('category_id').order('sort_order');
     if (error) { console.error('Catalog products load error:', error.message); return; }
     ADM_PRICES_ROWS = data || [];
@@ -3475,9 +3522,6 @@
   // ── Edit modal ──
   const admPEditOverlay = document.getElementById('admPEditOverlay');
   const admPEditCategorySel = document.getElementById('admPEditCategory');
-  if (admPEditCategorySel && !admPEditCategorySel.options.length) {
-    admPEditCategorySel.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-  }
 
   function openAdmPEdit(row) {
     document.getElementById('admPEditId').value = row.id;
@@ -3693,6 +3737,150 @@
       log.innerHTML = `<div>Import failed: ${admPricesEsc(e.message)}</div>`;
     } finally {
       btn.disabled = false; btn.textContent = 'Import';
+    }
+  });
+
+  /* ── MASTER (manage products.html categories, Supabase catalog_categories) ── */
+
+  function admMasterSlugify(name, hyphen) {
+    const cleaned = String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, hyphen ? '-' : '');
+    return hyphen ? cleaned.replace(/^-+|-+$/g, '') : cleaned;
+  }
+
+  function admMasterInit() {
+    admMasterRender();
+  }
+
+  function admMasterRender() {
+    const tbody = document.getElementById('admMasterTbody');
+    const sorted = CATEGORIES.slice().sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    tbody.innerHTML = sorted.map((cat, i) => `
+      <tr data-id="${admPricesEsc(cat.id)}">
+        <td style="white-space:nowrap;">
+          <button class="prices-add-btn" style="padding:0 8px;height:28px;" onclick="admMasterMove('${cat.id}',-1)" ${i === 0 ? 'disabled' : ''}>&uarr;</button>
+          <button class="prices-add-btn" style="padding:0 8px;height:28px;" onclick="admMasterMove('${cat.id}',1)" ${i === sorted.length - 1 ? 'disabled' : ''}>&darr;</button>
+        </td>
+        <td><input type="text" class="price-input" style="width:56px;text-align:center;" maxlength="4" value="${admPricesEsc(cat.emoji)}" data-id="${cat.id}" data-field="emoji" oninput="admMasterMarkDirty('${cat.id}')" /></td>
+        <td><input type="text" class="price-input" style="width:170px;text-align:left;" value="${admPricesEsc(cat.name)}" data-id="${cat.id}" data-field="name" oninput="admMasterMarkDirty('${cat.id}')" /></td>
+        <td><input type="text" class="price-input" style="width:260px;text-align:left;" value="${admPricesEsc(cat.desc)}" data-id="${cat.id}" data-field="desc" oninput="admMasterMarkDirty('${cat.id}')" /></td>
+        <td><span class="cat-badge2">/product/${admPricesEsc(cat.slug)}/</span></td>
+        <td style="white-space:nowrap;">
+          <button class="prices-add-btn" id="admMSave-${admPricesEsc(cat.id)}" style="display:none;" onclick="admMasterSave('${cat.id}')">Save</button>
+          <span class="price-saved-tag" id="admMTag-${admPricesEsc(cat.id)}">Saved</span>
+          <button class="modal-close-btn" style="background:#fde8e8;color:#c0392b;" onclick="admMasterDelete('${cat.id}')" title="Delete category">✕</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function admMasterMarkDirty(id) {
+    const btn = document.getElementById('admMSave-' + id);
+    if (btn) btn.style.display = 'inline-flex';
+  }
+
+  async function admMasterSave(id) {
+    const row = document.querySelector(`#admMasterTbody tr[data-id="${CSS.escape(id)}"]`);
+    if (!row) return;
+    const emoji = row.querySelector('[data-field="emoji"]').value.trim();
+    const name = row.querySelector('[data-field="name"]').value.trim();
+    const desc = row.querySelector('[data-field="desc"]').value.trim();
+    if (!name) { alert('Category name cannot be empty.'); return; }
+
+    const { error } = await sb.from('catalog_categories').update({ name, description: desc, emoji }).eq('id', id);
+    if (error) { alert('Could not save category: ' + error.message); return; }
+
+    const cat = CATEGORIES.find(c => c.id === id);
+    if (cat) { cat.name = name; cat.desc = desc; cat.emoji = emoji; }
+
+    const saveBtn = document.getElementById('admMSave-' + id);
+    if (saveBtn) saveBtn.style.display = 'none';
+    const tag = document.getElementById('admMTag-' + id);
+    if (tag) { tag.classList.add('show'); setTimeout(() => tag.classList.remove('show'), 1500); }
+
+    // Category names feed the Product Prices dropdowns too.
+    document.getElementById('admPAddCategory').innerHTML = CATEGORIES
+      .map(c => `<option value="${admPricesEsc(c.id)}">${admPricesEsc(c.name)}</option>`).join('');
+    if (admPEditCategorySel) {
+      admPEditCategorySel.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    }
+  }
+
+  async function admMasterMove(id, dir) {
+    const sorted = CATEGORIES.slice().sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    const idx = sorted.findIndex(c => c.id === id);
+    const swapIdx = idx + dir;
+    if (idx === -1 || swapIdx < 0 || swapIdx >= sorted.length) return;
+
+    const a = sorted[idx], b = sorted[swapIdx];
+    const aOrder = a.sortOrder, bOrder = b.sortOrder;
+    a.sortOrder = bOrder; b.sortOrder = aOrder;
+
+    admMasterRender();
+
+    const [{ error: errA }, { error: errB }] = await Promise.all([
+      sb.from('catalog_categories').update({ sort_order: a.sortOrder }).eq('id', a.id),
+      sb.from('catalog_categories').update({ sort_order: b.sortOrder }).eq('id', b.id),
+    ]);
+    if (errA || errB) { alert('Could not save new order: ' + (errA || errB).message); a.sortOrder = aOrder; b.sortOrder = bOrder; admMasterRender(); }
+  }
+
+  async function admMasterDelete(id) {
+    const cat = CATEGORIES.find(c => c.id === id);
+    if (!cat) return;
+    const { count, error: countErr } = await sb.from('catalog_products').select('id', { count: 'exact', head: true }).eq('category_id', id);
+    if (countErr) { alert('Could not check category: ' + countErr.message); return; }
+    if (count > 0) {
+      alert(`"${cat.name}" has ${count} product${count === 1 ? '' : 's'} in the Product Prices catalog. Move or delete those first, then delete the category.`);
+      return;
+    }
+    if (!confirm(`Delete category "${cat.name}"? This cannot be undone.\n\nNote: this does not remove its /product/${cat.slug}/ page if one was deployed — ask Claude to take that down separately.`)) return;
+
+    const { error } = await sb.from('catalog_categories').delete().eq('id', id);
+    if (error) { alert('Could not delete category: ' + error.message); return; }
+
+    const i = CATEGORIES.findIndex(c => c.id === id);
+    if (i !== -1) CATEGORIES.splice(i, 1);
+    admMasterRender();
+  }
+
+  document.getElementById('admMAddBtn').addEventListener('click', async () => {
+    const errEl = document.getElementById('admMAddErr');
+    const btn = document.getElementById('admMAddBtn');
+    errEl.textContent = '';
+
+    const emoji = document.getElementById('admMAddEmoji').value.trim();
+    const name = document.getElementById('admMAddName').value.trim();
+    const desc = document.getElementById('admMAddDesc').value.trim();
+    if (!name) { errEl.textContent = 'Please enter a category name.'; return; }
+
+    const id = admMasterSlugify(name, true);
+    const slug = admMasterSlugify(name, false);
+    if (!id || !slug) { errEl.textContent = 'Please enter a valid category name.'; return; }
+    if (CATEGORIES.some(c => c.id === id || c.slug === slug)) {
+      errEl.textContent = 'A category with a matching name/URL already exists.';
+      return;
+    }
+
+    const sortOrder = CATEGORIES.reduce((max, c) => Math.max(max, c.sortOrder || 0), 0) + 1;
+
+    btn.disabled = true;
+    const { error } = await sb.from('catalog_categories').insert({
+      id, slug, name, description: desc, emoji, sort_order: sortOrder
+    });
+    btn.disabled = false;
+    if (error) { errEl.textContent = 'Could not add category: ' + error.message; return; }
+
+    CATEGORIES.push({ id, slug, name, desc, emoji, sortOrder, products: [] });
+    admMasterRender();
+
+    document.getElementById('admMAddEmoji').value = '';
+    document.getElementById('admMAddName').value = '';
+    document.getElementById('admMAddDesc').value = '';
+
+    document.getElementById('admPAddCategory').innerHTML = CATEGORIES
+      .map(c => `<option value="${admPricesEsc(c.id)}">${admPricesEsc(c.name)}</option>`).join('');
+    if (admPEditCategorySel) {
+      admPEditCategorySel.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     }
   });
 
