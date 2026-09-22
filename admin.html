@@ -3754,7 +3754,7 @@
 
   function admMasterRender() {
     const tbody = document.getElementById('admMasterTbody');
-    const sorted = CATEGORIES.slice().sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    const sorted = CATEGORIES.slice().sort((a, b) => (b.sortOrder || 0) - (a.sortOrder || 0)); // most recently added first
     tbody.innerHTML = sorted.map((cat, i) => `
       <tr data-id="${admPricesEsc(cat.id)}">
         <td style="white-space:nowrap;">
@@ -3807,7 +3807,7 @@
   }
 
   async function admMasterMove(id, dir) {
-    const sorted = CATEGORIES.slice().sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    const sorted = CATEGORIES.slice().sort((a, b) => (b.sortOrder || 0) - (a.sortOrder || 0)); // most recently added first
     const idx = sorted.findIndex(c => c.id === id);
     const swapIdx = idx + dir;
     if (idx === -1 || swapIdx < 0 || swapIdx >= sorted.length) return;
