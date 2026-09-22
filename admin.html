@@ -3445,7 +3445,7 @@
       admPEditCategorySel.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     }
 
-    const { data, error } = await sb.from('catalog_products').select('*').order('category_id').order('sort_order');
+    const { data, error } = await sb.from('catalog_products').select('*').order('created_at', { ascending: false });
     if (error) { console.error('Catalog products load error:', error.message); return; }
     ADM_PRICES_ROWS = data || [];
     admPricesRefreshStats();
