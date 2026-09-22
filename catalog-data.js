@@ -1,11 +1,10 @@
 // Category metadata for the showcase catalog (products.html + the
-// per-category /product/<slug>/ pages + admin.html's "Master" and
-// "Product Prices" tabs).
+// per-category /product/<slug>/ pages + admin.html's "Product Prices" tab).
 //
 // Categories themselves live in Supabase's `catalog_categories` table so
-// they can be added/renamed/reordered/deleted from the admin "Master" tab
-// without a code deploy. CATEGORIES_DEFAULT below is only a fallback used
-// if that table is empty or unreachable, so the site still renders.
+// they can be managed there without a code deploy. CATEGORIES_DEFAULT below
+// is only a fallback used if that table is empty or unreachable, so the
+// site still renders.
 //
 // `products` starts empty on every category and gets populated at runtime
 // from Supabase's `catalog_products` table (see loadCatalogProducts() in
