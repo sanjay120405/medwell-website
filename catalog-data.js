@@ -49,7 +49,7 @@ async function loadCategories() {
   let rows = null;
   try {
     const sb = window.supabase.createClient(CATALOG_SB_URL, CATALOG_SB_KEY);
-    const { data, error } = await sb.from('catalog_categories').select('*').order('sort_order', { ascending: true });
+    const { data, error } = await sb.from('catalog_categories').select('*').order('name', { ascending: true });
     if (error) throw error;
     rows = data;
   } catch (err) {
@@ -60,7 +60,8 @@ async function loadCategories() {
   if (rows && rows.length > 0) {
     categoriesFromRows(rows).forEach(c => CATEGORIES.push(c));
   } else {
-    CATEGORIES_DEFAULT.forEach((c, i) => CATEGORIES.push({ ...c, sortOrder: i, products: [] }));
+    CATEGORIES_DEFAULT.slice().sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((c, i) => CATEGORIES.push({ ...c, sortOrder: i, products: [] }));
   }
   return CATEGORIES;
 }
