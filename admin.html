@@ -3911,15 +3911,38 @@
 
   /* ── QUOTATION ───────────────────────────────── */
 
-  const QT_DEFAULT_COMPANY = {
-    name: 'MEDWELL LOGIX',
-    addr1: 'NO C21,4TH CROSS, THILLAI NAGAR EAST EXTENSION TIRUCHIRAPALLI',
-    addr2: 'NO C21,4TH CROSS, THILLAI NAGAR EAST EXTENSION TIRUCHIRAPALLI',
-    state: '33- Tamil Nadu',
-    phone: '99407-11559,95668-11559',
-    email: 'medwellsurgicals@gmail.com',
-    dl: 'TN/TRW/20B/00989, TN/TRW/21B/0989',
-    website: 'www.medwelllogix.in'
+  // Each quotation design is issued under a different company letterhead.
+  const QT_COMPANY_PRESETS = {
+    1: {
+      name: 'MEDWELL LOGIX',
+      addr1: 'NO C21,4TH CROSS, THILLAI NAGAR EAST EXTENSION TIRUCHIRAPALLI',
+      addr2: 'NO C21,4TH CROSS, THILLAI NAGAR EAST EXTENSION TIRUCHIRAPALLI',
+      state: '33- Tamil Nadu',
+      phone: '99407-11559,95668-11559',
+      email: 'medwellsurgicals@gmail.com',
+      dl: 'TN/TRW/20B/00989, TN/TRW/21B/0989',
+      website: 'www.medwelllogix.in'
+    },
+    2: {
+      name: 'PRADHANMANTRI BHARTIYA JANAUSHADHI KENDRA',
+      addr1: 'Door No 2/264 A, Ground Floor, Saral Nagar, Alavanthanallur, Maruthandakurichy,',
+      addr2: 'Malliyampathu, Tiruchirappalli, 620102',
+      state: '',
+      phone: '9940354445',
+      email: '',
+      dl: 'TN/TRE/20/00965, TN/TRE/21/00965',
+      website: ''
+    },
+    3: {
+      name: 'Sri Mayura Agencies',
+      addr1: '19, Thambiran St, Srinivasan Nagar, Thiruvanaikoil,',
+      addr2: 'Tiruchirappalli',
+      state: '',
+      phone: '8825897437',
+      email: '',
+      dl: '',
+      website: ''
+    }
   };
   const QT_DEFAULT_TERMS = [
     'Goods once sold will not be taken back or exchanged.',
@@ -3937,14 +3960,6 @@
     if (qtInited) { qtRenderPreview(); return; }
     qtInited = true;
 
-    document.getElementById('qtCoName').value = QT_DEFAULT_COMPANY.name;
-    document.getElementById('qtCoAddr1').value = QT_DEFAULT_COMPANY.addr1;
-    document.getElementById('qtCoAddr2').value = QT_DEFAULT_COMPANY.addr2;
-    document.getElementById('qtCoState').value = QT_DEFAULT_COMPANY.state;
-    document.getElementById('qtCoPhone').value = QT_DEFAULT_COMPANY.phone;
-    document.getElementById('qtCoEmail').value = QT_DEFAULT_COMPANY.email;
-    document.getElementById('qtCoDL').value = QT_DEFAULT_COMPANY.dl;
-    document.getElementById('qtCoWeb').value = QT_DEFAULT_COMPANY.website;
     document.getElementById('qtTerms').value = QT_DEFAULT_TERMS.join('\n');
     document.getElementById('qtInvDate').value = new Date().toISOString().slice(0, 10);
 
@@ -3958,11 +3973,25 @@
     qtSelectDesign(1);
   }
 
+  function qtApplyCompanyPreset(n) {
+    const c = QT_COMPANY_PRESETS[n];
+    if (!c) return;
+    document.getElementById('qtCoName').value = c.name;
+    document.getElementById('qtCoAddr1').value = c.addr1;
+    document.getElementById('qtCoAddr2').value = c.addr2;
+    document.getElementById('qtCoState').value = c.state;
+    document.getElementById('qtCoPhone').value = c.phone;
+    document.getElementById('qtCoEmail').value = c.email;
+    document.getElementById('qtCoDL').value = c.dl;
+    document.getElementById('qtCoWeb').value = c.website;
+  }
+
   function qtSelectDesign(n) {
     QT_DESIGN = n;
     document.querySelectorAll('.qt-design-btn').forEach(btn => {
       btn.classList.toggle('active', +btn.dataset.design === n);
     });
+    qtApplyCompanyPreset(n);
     qtRenderPreview();
   }
 
@@ -4129,11 +4158,11 @@
               <div class="qt1-co-name">${e(d.company.name)}</div>
               <div>${e(d.company.addr1)}</div>
               <div>${e(d.company.addr2)}</div>
-              <div>State Code : ${e(d.company.state)}</div>
-              <div>Phone : ${e(d.company.phone)}</div>
-              <div>E-mail Id: ${e(d.company.email)}</div>
-              <div>DL No. : ${e(d.company.dl)}</div>
-              <div>Website : ${e(d.company.website)}</div>
+              ${d.company.state ? `<div>State Code : ${e(d.company.state)}</div>` : ''}
+              ${d.company.phone ? `<div>Phone : ${e(d.company.phone)}</div>` : ''}
+              ${d.company.email ? `<div>E-mail Id: ${e(d.company.email)}</div>` : ''}
+              ${d.company.dl ? `<div>DL No. : ${e(d.company.dl)}</div>` : ''}
+              ${d.company.website ? `<div>Website : ${e(d.company.website)}</div>` : ''}
             </div>
             <div class="qt1-party">
               <div>Party Name : <b>${e(d.party.name)}</b></div>
@@ -4192,9 +4221,9 @@
             <div class="qt2-co-name">${e(d.company.name)}</div>
             <div class="qt2-co-sub">
               ${e(d.company.addr1)}<br/>
-              State Code: ${e(d.company.state)} &middot; Phone: ${e(d.company.phone)}<br/>
-              ${e(d.company.email)} &middot; ${e(d.company.website)}<br/>
-              DL No: ${e(d.company.dl)}
+              ${[d.company.state ? 'State Code: ' + e(d.company.state) : '', d.company.phone ? 'Phone: ' + e(d.company.phone) : ''].filter(Boolean).join(' &middot; ')}<br/>
+              ${[e(d.company.email), e(d.company.website)].filter(s => s).join(' &middot; ')}
+              ${d.company.dl ? `<br/>DL No: ${e(d.company.dl)}` : ''}
             </div>
           </div>
           <div class="qt2-badge">Quotation</div>
@@ -4255,10 +4284,7 @@
           <div>
             <div class="qt3-co-name">${e(d.company.name)}</div>
             <div class="qt3-co-sub">
-              ${e(d.company.addr1)}<br/>
-              ${e(d.company.phone)}<br/>
-              ${e(d.company.email)}<br/>
-              ${e(d.company.website)}
+              ${[d.company.addr1, d.company.phone, d.company.email, d.company.website].filter(Boolean).map(e).join('<br/>')}
             </div>
           </div>
           <div style="text-align:right;">
