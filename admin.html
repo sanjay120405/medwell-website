@@ -415,7 +415,8 @@
     .qt-item-del-btn { width: 26px; height: 26px; border-radius: 6px; background: #fde8e8; color: #c0392b; border: none; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
     .qt-print-btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 26px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background .2s; }
     .qt-print-btn:hover { background: var(--dark); }
-    .qt-preview-wrap { flex: 1 1 560px; min-width: 320px; overflow-x: auto; }
+    .qt-preview-wrap { flex: 1 1 560px; min-width: 0; overflow: hidden; }
+    .qt-preview-scale { width: 100%; overflow: hidden; }
     /* Matches the A4 page (210mm) the quotation prints onto, so the on-screen
        preview reflects the actual print output. */
     #qtPreview { width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; box-sizing: border-box; }
@@ -516,7 +517,8 @@
     @media print {
       body * { visibility: hidden; }
       #qtPreview, #qtPreview * { visibility: visible; }
-      #qtPreview { position: absolute; top: 0; left: 0; width: 210mm; min-height: 297mm; border: none; box-shadow: none; border-radius: 0; }
+      #qtPreview { position: absolute; top: 0; left: 0; width: 210mm !important; min-height: 297mm; border: none; box-shadow: none; border-radius: 0; transform: none !important; }
+      .qt-preview-scale, .qt-preview-wrap { overflow: visible !important; height: auto !important; }
     }
 
     /* ── CUSTOMER LIST TAB ── */
@@ -1503,7 +1505,9 @@
 
     <!-- PREVIEW (this is what prints) -->
     <div class="qt-preview-wrap">
-      <div id="qtPreview"></div>
+      <div class="qt-preview-scale" id="qtPreviewScale">
+        <div id="qtPreview"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -4159,7 +4163,25 @@
     const data = qtGetData();
     const html = QT_DESIGN === 1 ? qtRenderDesign1(data) : QT_DESIGN === 2 ? qtRenderDesign2(data) : qtRenderDesign3(data);
     document.getElementById('qtPreview').innerHTML = html;
+    qtFitPreview();
   }
+
+  // Scales the fixed-A4-width preview down to fit whatever width is
+  // available (narrow admin panel, phone screens, etc.) so nothing gets
+  // cut off — only affects the on-screen preview, never the actual print.
+  function qtFitPreview() {
+    const outer = document.getElementById('qtPreviewScale');
+    const el = document.getElementById('qtPreview');
+    if (!outer || !el) return;
+    const fullWidth = 794; // 210mm at 96dpi
+    const scale = Math.min(1, outer.clientWidth / fullWidth);
+    el.style.width = fullWidth + 'px';
+    el.style.transform = `scale(${scale})`;
+    el.style.transformOrigin = 'top left';
+    outer.style.height = (el.offsetHeight * scale) + 'px';
+  }
+
+  window.addEventListener('resize', () => { if (qtInited) qtFitPreview(); });
 
   function qtItemRowsHtml(data, numCells) {
     return data.items.map((it, i) => numCells(it, i)).join('');
