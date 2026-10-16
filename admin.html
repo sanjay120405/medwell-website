@@ -415,8 +415,10 @@
     .qt-item-del-btn { width: 26px; height: 26px; border-radius: 6px; background: #fde8e8; color: #c0392b; border: none; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
     .qt-print-btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 26px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background .2s; }
     .qt-print-btn:hover { background: var(--dark); }
-    .qt-preview-wrap { flex: 1 1 560px; min-width: 320px; }
-    #qtPreview { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; }
+    .qt-preview-wrap { flex: 1 1 560px; min-width: 320px; overflow-x: auto; }
+    /* Matches the A4 page (210mm) the quotation prints onto, so the on-screen
+       preview reflects the actual print output. */
+    #qtPreview { width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; box-sizing: border-box; }
 
     /* ── Design 1: classic bordered sale-quotation layout ── */
     .qt-d1 { font-family: 'Inter', Arial, sans-serif; color: #000; font-size: 11px; padding: 14px; }
@@ -492,10 +494,11 @@
     .qt-d3 .qt3-sign { margin-top: 50px; text-align: right; font-size: 11px; color: #555; }
     .qt-d3 .qt3-sign .line { border-top: 1px solid #222; width: 160px; margin-left: auto; padding-top: 6px; }
 
+    @page { size: A4; margin: 10mm; }
     @media print {
       body * { visibility: hidden; }
       #qtPreview, #qtPreview * { visibility: visible; }
-      #qtPreview { position: absolute; top: 0; left: 0; width: 100%; border: none; box-shadow: none; border-radius: 0; }
+      #qtPreview { position: absolute; top: 0; left: 0; width: 210mm; min-height: 297mm; border: none; box-shadow: none; border-radius: 0; }
     }
 
     /* ── CUSTOMER LIST TAB ── */
