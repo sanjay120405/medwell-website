@@ -649,7 +649,15 @@
         mrp: r.mrp
       });
     });
-    CATEGORIES.forEach(cat => { cat.products = byCategory[cat.id] || []; });
+    CATEGORIES.forEach(cat => {
+      const products = byCategory[cat.id] || [];
+      products.sort((a, b) => {
+        const pa = a.price != null && a.price !== '' ? Number(a.price) : Infinity;
+        const pb = b.price != null && b.price !== '' ? Number(b.price) : Infinity;
+        return pa - pb;
+      });
+      cat.products = products;
+    });
   }
 
   let activeId = window.FORCED_CATEGORY || null;
