@@ -380,6 +380,114 @@
     #admPEditOverlay input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     #tabPrices .toolbar { justify-content: center; }
 
+    /* ── QUOTATION TAB ── */
+    #tabQuotation .prices-card { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); padding: 20px 24px; margin: 18px 24px 0; }
+    #tabQuotation .prices-card h3 { font-family: 'Poppins', sans-serif; font-size: 0.92rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
+    #tabQuotation .prices-help { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0; line-height: 1.6; }
+    .qt-design-tabs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .qt-design-btn { padding: 9px 18px; border: 1.5px solid var(--border); background: var(--off-white); color: var(--text); border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all .2s; }
+    .qt-design-btn:hover { border-color: var(--teal); }
+    .qt-design-btn.active { background: var(--teal); border-color: var(--teal); color: var(--white); }
+    .qt-layout { display: flex; gap: 20px; align-items: flex-start; padding: 18px 24px 40px; flex-wrap: wrap; }
+    .qt-editor { flex: 1 1 420px; min-width: 320px; display: flex; flex-direction: column; gap: 0; }
+    .qt-editor .prices-card { margin: 0 0 16px; }
+    .qt-field-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .qt-field-grid .prices-field { flex: 1 1 160px; min-width: 140px; }
+    #tabQuotation .prices-field label { font-family: 'Poppins', sans-serif; font-size: 0.68rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: 5px; }
+    #tabQuotation .prices-field input, #tabQuotation .prices-field textarea { box-sizing: border-box; width: 100%; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.84rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
+    #tabQuotation .prices-field input:focus, #tabQuotation .prices-field textarea:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    #tabQuotation .prices-field textarea { resize: vertical; font-family: 'Inter', sans-serif; }
+    .qt-items-tbl { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    .qt-items-tbl th { text-align: left; padding: 6px 6px; border-bottom: 1.5px solid var(--border); font-family: 'Poppins', sans-serif; font-size: 0.66rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+    .qt-items-tbl td { padding: 4px 4px; }
+    .qt-items-tbl input { box-sizing: border-box; width: 100%; padding: 6px 6px; border: 1.5px solid var(--border); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text); background: var(--off-white); }
+    .qt-items-tbl input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    .qt-item-del-btn { width: 26px; height: 26px; border-radius: 6px; background: #fde8e8; color: #c0392b; border: none; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
+    .qt-print-btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 26px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background .2s; }
+    .qt-print-btn:hover { background: var(--dark); }
+    .qt-preview-wrap { flex: 1 1 560px; min-width: 320px; }
+    #qtPreview { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; }
+
+    /* ── Design 1: classic bordered sale-quotation layout ── */
+    .qt-d1 { font-family: 'Inter', Arial, sans-serif; color: #000; font-size: 11px; padding: 14px; }
+    .qt-d1 table { border-collapse: collapse; width: 100%; }
+    .qt-d1 .qt1-outer { border: 1.5px solid #000; }
+    .qt-d1 .qt1-title { text-align: center; font-weight: 800; font-size: 15px; padding: 6px; border-bottom: 1.5px solid #000; letter-spacing: .04em; }
+    .qt-d1 .qt1-head { display: flex; border-bottom: 1.5px solid #000; }
+    .qt-d1 .qt1-head > div { padding: 8px 10px; }
+    .qt-d1 .qt1-head .qt1-co { flex: 1 1 60%; border-right: 1.5px solid #000; }
+    .qt-d1 .qt1-head .qt1-party { flex: 1 1 40%; }
+    .qt-d1 .qt1-co-name { font-weight: 800; font-size: 13px; margin-bottom: 4px; }
+    .qt-d1 .qt1-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #000; font-size: 10.5px; }
+    .qt-d1 .qt1-row > span { padding: 5px 10px; }
+    .qt-d1 .qt1-items th, .qt-d1 .qt1-items td { border: 1px solid #000; padding: 4px 6px; font-size: 10px; }
+    .qt-d1 .qt1-items th { background: #f2f2f2; text-transform: uppercase; font-size: 9px; }
+    .qt-d1 .qt1-items td.num, .qt-d1 .qt1-items th.num { text-align: right; }
+    .qt-d1 .qt1-bottom { display: flex; border-top: 1.5px solid #000; }
+    .qt-d1 .qt1-terms { flex: 1 1 60%; padding: 8px 10px; border-right: 1.5px solid #000; font-size: 10px; }
+    .qt-d1 .qt1-terms b { display: block; margin-bottom: 4px; }
+    .qt-d1 .qt1-totals { flex: 1 1 40%; }
+    .qt-d1 .qt1-totals table { width: 100%; }
+    .qt-d1 .qt1-totals td { padding: 4px 10px; border-bottom: 1px solid #ccc; font-size: 10.5px; }
+    .qt-d1 .qt1-totals td:last-child { text-align: right; }
+    .qt-d1 .qt1-grand { background: #1a3a3a; color: #fff; font-weight: 800; }
+    .qt-d1 .qt1-sign { text-align: center; padding: 16px 10px 6px; font-size: 10.5px; }
+    .qt-d1 .qt1-words { border-top: 1.5px solid #000; padding: 6px 10px; font-weight: 700; font-size: 10.5px; }
+
+    /* ── Design 2: Medwell brand, teal/orange ── */
+    .qt-d2 { font-family: 'Inter', sans-serif; color: var(--text); font-size: 12px; }
+    .qt-d2 .qt2-head { background: linear-gradient(90deg, var(--teal-deeper), var(--teal-dark)); color: #fff; padding: 22px 26px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; }
+    .qt-d2 .qt2-co-name { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 19px; letter-spacing: .02em; }
+    .qt-d2 .qt2-co-sub { font-size: 10.5px; opacity: .85; margin-top: 6px; line-height: 1.6; max-width: 320px; }
+    .qt-d2 .qt2-badge { background: var(--orange); color: #fff; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 11px; letter-spacing: .08em; padding: 7px 16px; border-radius: 99px; text-transform: uppercase; }
+    .qt-d2 .qt2-meta { padding: 18px 26px 0; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .qt-d2 .qt2-meta-block { flex: 1 1 220px; }
+    .qt-d2 .qt2-meta-label { font-family: 'Poppins', sans-serif; font-size: 0.66rem; font-weight: 800; color: var(--teal-dark); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+    .qt-d2 .qt2-meta-block div.line { font-size: 11px; line-height: 1.7; }
+    .qt-d2 .qt2-items { margin: 20px 26px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .qt-d2 .qt2-items table { width: 100%; border-collapse: collapse; }
+    .qt-d2 .qt2-items th { background: var(--teal-light); color: var(--teal-dark); text-align: left; padding: 8px 10px; font-family: 'Poppins', sans-serif; font-size: 0.64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+    .qt-d2 .qt2-items td { padding: 8px 10px; border-top: 1px solid var(--border); font-size: 11px; }
+    .qt-d2 .qt2-items td.num, .qt-d2 .qt2-items th.num { text-align: right; }
+    .qt-d2 .qt2-bottom { margin: 18px 26px 0; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-bottom: 22px; }
+    .qt-d2 .qt2-terms { flex: 1 1 280px; font-size: 10.5px; color: var(--text-muted); line-height: 1.8; }
+    .qt-d2 .qt2-terms b { display: block; color: var(--text); margin-bottom: 4px; font-size: 11px; }
+    .qt-d2 .qt2-totals { flex: 0 0 240px; }
+    .qt-d2 .qt2-totals .trow { display: flex; justify-content: space-between; padding: 5px 0; font-size: 11.5px; border-bottom: 1px dashed var(--border); }
+    .qt-d2 .qt2-grand { background: var(--teal); color: #fff; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; margin-top: 10px; font-family: 'Poppins', sans-serif; font-weight: 800; }
+    .qt-d2 .qt2-words { font-size: 10.5px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+    .qt-d2 .qt2-sign { text-align: right; margin-top: 30px; font-size: 11px; }
+
+    /* ── Design 3: minimalist ── */
+    .qt-d3 { font-family: 'Inter', sans-serif; color: #222; font-size: 12px; padding: 30px 34px; }
+    .qt-d3 .qt3-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 26px; }
+    .qt-d3 .qt3-title { font-family: 'Poppins', sans-serif; font-size: 26px; font-weight: 300; letter-spacing: .1em; color: #ccc; text-transform: uppercase; }
+    .qt-d3 .qt3-co-name { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; }
+    .qt-d3 .qt3-co-sub { font-size: 10.5px; color: #777; margin-top: 4px; line-height: 1.6; max-width: 260px; }
+    .qt-d3 .qt3-meta { text-align: right; font-size: 10.5px; color: #777; line-height: 1.8; }
+    .qt-d3 .qt3-meta b { color: #222; }
+    .qt-d3 .qt3-divider { border: none; border-top: 1px solid #e5e5e5; margin: 18px 0; }
+    .qt-d3 .qt3-party-label { font-size: 0.65rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+    .qt-d3 .qt3-party { font-size: 11.5px; line-height: 1.7; }
+    .qt-d3 .qt3-items table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .qt-d3 .qt3-items th { text-align: left; padding: 8px 4px; font-size: 0.64rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1.5px solid #222; }
+    .qt-d3 .qt3-items td { padding: 10px 4px; font-size: 11.5px; border-bottom: 1px solid #eee; }
+    .qt-d3 .qt3-items td.num, .qt-d3 .qt3-items th.num { text-align: right; }
+    .qt-d3 .qt3-bottom { display: flex; justify-content: space-between; margin-top: 20px; gap: 24px; flex-wrap: wrap; }
+    .qt-d3 .qt3-terms { flex: 1 1 260px; font-size: 10px; color: #999; line-height: 1.9; }
+    .qt-d3 .qt3-totals { flex: 0 0 220px; }
+    .qt-d3 .qt3-totals .trow { display: flex; justify-content: space-between; padding: 4px 0; font-size: 11.5px; color: #555; }
+    .qt-d3 .qt3-grand { display: flex; justify-content: space-between; padding-top: 10px; margin-top: 8px; border-top: 1.5px solid #222; font-weight: 700; font-size: 14px; }
+    .qt-d3 .qt3-words { font-size: 10px; color: #999; margin-top: 10px; }
+    .qt-d3 .qt3-sign { margin-top: 50px; text-align: right; font-size: 11px; color: #555; }
+    .qt-d3 .qt3-sign .line { border-top: 1px solid #222; width: 160px; margin-left: auto; padding-top: 6px; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #qtPreview, #qtPreview * { visibility: visible; }
+      #qtPreview { position: absolute; top: 0; left: 0; width: 100%; border: none; box-shadow: none; border-radius: 0; }
+    }
+
     /* ── CUSTOMER LIST TAB ── */
     #tabCustomers .cl-stats-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
     #tabCustomers .cl-search-section { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 24px; }
@@ -716,6 +824,10 @@
       <button class="ah-tab" id="tabBtnPrices" onclick="switchTab('prices')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         Product Prices
+      </button>
+      <button class="ah-tab" id="tabBtnQuotation" onclick="switchTab('quotation')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+        Quotation
       </button>
       <a class="ah-tab" href="https://medwelldashboard.vercel.app/" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
@@ -1275,6 +1387,87 @@
         </thead>
         <tbody id="admPricesTbody"></tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTATION TAB -->
+<div id="tabQuotation" style="display:none;">
+  <div class="prices-card">
+    <h3>Quotation Design</h3>
+    <p class="prices-help" style="margin-bottom:14px;">Pick a design, fill in the details below, then print or save as PDF. Company details are pre-filled for Medwell Logix but editable.</p>
+    <div class="qt-design-tabs">
+      <button class="qt-design-btn active" data-design="1" onclick="qtSelectDesign(1)" type="button">Quotation 1</button>
+      <button class="qt-design-btn" data-design="2" onclick="qtSelectDesign(2)" type="button">Quotation 2</button>
+      <button class="qt-design-btn" data-design="3" onclick="qtSelectDesign(3)" type="button">Quotation 3</button>
+    </div>
+  </div>
+
+  <div class="qt-layout">
+    <!-- EDITOR (not printed) -->
+    <div class="qt-editor">
+      <div class="prices-card">
+        <h3>Company Details</h3>
+        <div class="qt-field-grid">
+          <div class="prices-field" style="flex:1 1 100%;"><label>Company Name</label><input type="text" id="qtCoName" /></div>
+          <div class="prices-field" style="flex:1 1 100%;"><label>Address Line 1</label><input type="text" id="qtCoAddr1" /></div>
+          <div class="prices-field" style="flex:1 1 100%;"><label>Address Line 2</label><input type="text" id="qtCoAddr2" /></div>
+          <div class="prices-field"><label>State Code</label><input type="text" id="qtCoState" /></div>
+          <div class="prices-field"><label>Phone</label><input type="text" id="qtCoPhone" /></div>
+          <div class="prices-field"><label>Email</label><input type="text" id="qtCoEmail" /></div>
+          <div class="prices-field"><label>DL No.</label><input type="text" id="qtCoDL" /></div>
+          <div class="prices-field"><label>Website</label><input type="text" id="qtCoWeb" /></div>
+        </div>
+      </div>
+
+      <div class="prices-card">
+        <h3>Party (Customer) Details</h3>
+        <div class="qt-field-grid">
+          <div class="prices-field"><label>Party Name</label><input type="text" id="qtPName" placeholder="Customer / hospital name" /></div>
+          <div class="prices-field"><label>Party Address</label><input type="text" id="qtPAddr" /></div>
+          <div class="prices-field"><label>State Code</label><input type="text" id="qtPState" placeholder="e.g. 33- Tamil Nadu" /></div>
+          <div class="prices-field"><label>Phone No.</label><input type="text" id="qtPPhone" /></div>
+          <div class="prices-field"><label>Email ID</label><input type="text" id="qtPEmail" /></div>
+          <div class="prices-field"><label>D.L No.</label><input type="text" id="qtPDL" /></div>
+          <div class="prices-field"><label>GSTIN</label><input type="text" id="qtGSTIN" /></div>
+          <div class="prices-field"><label>Invoice No.</label><input type="text" id="qtInvNo" placeholder="e.g. SQ00001" /></div>
+          <div class="prices-field"><label>Invoice Date</label><input type="date" id="qtInvDate" /></div>
+        </div>
+      </div>
+
+      <div class="prices-card">
+        <h3>Items</h3>
+        <div class="table-wrap">
+          <table class="qt-items-tbl">
+            <thead>
+              <tr><th>HSN</th><th>Description</th><th>Qty</th><th>MRP</th><th>Rate</th><th>Dis %</th><th>SGST %</th><th>CGST %</th><th></th></tr>
+            </thead>
+            <tbody id="qtItemsBody"></tbody>
+          </table>
+        </div>
+        <button class="prices-add-btn" type="button" onclick="qtAddItem()" style="margin-top:12px;">+ Add Item</button>
+      </div>
+
+      <div class="prices-card">
+        <h3>Totals &amp; Terms</h3>
+        <div class="qt-field-grid" style="margin-bottom:14px;">
+          <div class="prices-field"><label>Bill Discount (₹)</label><input type="number" id="qtBillDis" value="0" min="0" step="0.01" /></div>
+        </div>
+        <div class="prices-field">
+          <label>Terms &amp; Conditions (one per line)</label>
+          <textarea id="qtTerms" rows="4"></textarea>
+        </div>
+      </div>
+
+      <button class="qt-print-btn" type="button" id="qtPrintBtn" onclick="qtPrint()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+    </div>
+
+    <!-- PREVIEW (this is what prints) -->
+    <div class="qt-preview-wrap">
+      <div id="qtPreview"></div>
     </div>
   </div>
 </div>
@@ -2081,6 +2274,7 @@
     document.getElementById('tabAttendance').style.display  = tab === 'attendance' ? 'block' : 'none';
     document.getElementById('tabTaskmaster').style.display  = tab === 'taskmaster' ? 'block' : 'none';
     document.getElementById('tabPrices').style.display      = tab === 'prices'     ? 'block' : 'none';
+    document.getElementById('tabQuotation').style.display   = tab === 'quotation'  ? 'block' : 'none';
     document.getElementById('tabBtnProducts').classList.toggle('active',    tab === 'products');
     document.getElementById('tabBtnCustomers').classList.toggle('active',   tab === 'customers');
     document.getElementById('tabBtnWholesale').classList.toggle('active',   tab === 'wholesale');
@@ -2088,8 +2282,10 @@
     document.getElementById('tabBtnAttendance').classList.toggle('active',  tab === 'attendance');
     document.getElementById('tabBtnTaskmaster').classList.toggle('active',  tab === 'taskmaster');
     document.getElementById('tabBtnPrices').classList.toggle('active',      tab === 'prices');
+    document.getElementById('tabBtnQuotation').classList.toggle('active',   tab === 'quotation');
     if (tab === 'taskmaster') admTmLoadTasks();
     if (tab === 'prices') admPricesInit();
+    if (tab === 'quotation') qtInit();
     document.body.style.overflow = tab === 'tracking' ? 'hidden' : '';
     if (tab === 'tracking') {
       if (!tMap) { initTrackingMap(); loadLiveLocations(); subscribeTrackRealtime(); setInterval(loadLiveLocations, 30000); setInterval(renderTrackSidebar, 60000); }
@@ -3698,6 +3894,358 @@
       btn.disabled = false; btn.textContent = 'Import';
     }
   });
+
+  /* ── QUOTATION ───────────────────────────────── */
+
+  const QT_DEFAULT_COMPANY = {
+    name: 'MEDWELL LOGIX',
+    addr1: 'NO C21,4TH CROSS, THILLAI NAGAR EAST EXTENSION TIRUCHIRAPALLI',
+    addr2: 'NO C21,4TH CROSS, THILLAI NAGAR EAST EXTENSION TIRUCHIRAPALLI',
+    state: '33- Tamil Nadu',
+    phone: '99407-11559,95668-11559',
+    email: 'medwellsurgicals@gmail.com',
+    dl: 'TN/TRW/20B/00989, TN/TRW/21B/0989',
+    website: 'www.medwelllogix.in'
+  };
+  const QT_DEFAULT_TERMS = [
+    'Goods once sold will not be taken back or exchanged.',
+    'Bills not paid due date will attract 24% interest.',
+    'All disputes subject to Jurisdication only.',
+    'Prescribed Sales Tax declaration will be given.'
+  ];
+
+  let QT_DESIGN = 1;
+  let qtItems = [];
+  let qtItemSeq = 0;
+  let qtInited = false;
+
+  function qtInit() {
+    if (qtInited) { qtRenderPreview(); return; }
+    qtInited = true;
+
+    document.getElementById('qtCoName').value = QT_DEFAULT_COMPANY.name;
+    document.getElementById('qtCoAddr1').value = QT_DEFAULT_COMPANY.addr1;
+    document.getElementById('qtCoAddr2').value = QT_DEFAULT_COMPANY.addr2;
+    document.getElementById('qtCoState').value = QT_DEFAULT_COMPANY.state;
+    document.getElementById('qtCoPhone').value = QT_DEFAULT_COMPANY.phone;
+    document.getElementById('qtCoEmail').value = QT_DEFAULT_COMPANY.email;
+    document.getElementById('qtCoDL').value = QT_DEFAULT_COMPANY.dl;
+    document.getElementById('qtCoWeb').value = QT_DEFAULT_COMPANY.website;
+    document.getElementById('qtTerms').value = QT_DEFAULT_TERMS.join('\n');
+    document.getElementById('qtInvDate').value = new Date().toISOString().slice(0, 10);
+
+    ['qtCoName','qtCoAddr1','qtCoAddr2','qtCoState','qtCoPhone','qtCoEmail','qtCoDL','qtCoWeb',
+     'qtPName','qtPAddr','qtPState','qtPPhone','qtPEmail','qtPDL','qtGSTIN','qtInvNo','qtInvDate',
+     'qtBillDis','qtTerms'].forEach(id => {
+      document.getElementById(id).addEventListener('input', qtRenderPreview);
+    });
+
+    qtAddItem();
+    qtSelectDesign(1);
+  }
+
+  function qtSelectDesign(n) {
+    QT_DESIGN = n;
+    document.querySelectorAll('.qt-design-btn').forEach(btn => {
+      btn.classList.toggle('active', +btn.dataset.design === n);
+    });
+    qtRenderPreview();
+  }
+
+  function qtAddItem() {
+    qtItems.push({ uid: ++qtItemSeq, hsn: '', desc: '', qty: 1, mrp: 0, rate: 0, dis: 0, sgst: 9, cgst: 9 });
+    qtRenderItemsTable();
+    qtRenderPreview();
+  }
+
+  function qtRemoveItem(uid) {
+    qtItems = qtItems.filter(it => it.uid !== uid);
+    qtRenderItemsTable();
+    qtRenderPreview();
+  }
+
+  function qtRenderItemsTable() {
+    const tbody = document.getElementById('qtItemsBody');
+    tbody.innerHTML = qtItems.map(it => `
+      <tr data-uid="${it.uid}">
+        <td><input type="text" data-field="hsn" value="${admPricesEsc(it.hsn)}" style="width:60px;" /></td>
+        <td><input type="text" data-field="desc" value="${admPricesEsc(it.desc)}" style="min-width:140px;" /></td>
+        <td><input type="number" data-field="qty" value="${it.qty}" min="0" step="1" style="width:56px;" /></td>
+        <td><input type="number" data-field="mrp" value="${it.mrp}" min="0" step="0.01" style="width:70px;" /></td>
+        <td><input type="number" data-field="rate" value="${it.rate}" min="0" step="0.01" style="width:80px;" /></td>
+        <td><input type="number" data-field="dis" value="${it.dis}" min="0" max="100" step="0.01" style="width:56px;" /></td>
+        <td><input type="number" data-field="sgst" value="${it.sgst}" min="0" max="100" step="0.01" style="width:56px;" /></td>
+        <td><input type="number" data-field="cgst" value="${it.cgst}" min="0" max="100" step="0.01" style="width:56px;" /></td>
+        <td><button type="button" class="qt-item-del-btn" onclick="qtRemoveItem(${it.uid})" title="Remove item">✕</button></td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('qtItemsBody').addEventListener('input', e => {
+    const field = e.target.dataset.field;
+    if (!field) return;
+    const uid = +e.target.closest('tr').dataset.uid;
+    const item = qtItems.find(it => it.uid === uid);
+    if (!item) return;
+    item[field] = (field === 'hsn' || field === 'desc') ? e.target.value : (parseFloat(e.target.value) || 0);
+    qtRenderPreview();
+  });
+
+  function qtNumToWords(num) {
+    num = Math.round(Math.abs(num));
+    if (num === 0) return 'Zero';
+    const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+    const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+    function two(n) { return n < 20 ? ones[n] : tens[Math.floor(n/10)] + (n % 10 ? ' ' + ones[n % 10] : ''); }
+    function three(n) { return n < 100 ? two(n) : ones[Math.floor(n/100)] + ' Hundred' + (n % 100 ? ' ' + two(n % 100) : ''); }
+    const crore = Math.floor(num / 10000000); num %= 10000000;
+    const lakh = Math.floor(num / 100000); num %= 100000;
+    const thousand = Math.floor(num / 1000); num %= 1000;
+    const hundred = num;
+    const parts = [];
+    if (crore) parts.push(three(crore) + ' Crore');
+    if (lakh) parts.push(three(lakh) + ' Lakh');
+    if (thousand) parts.push(three(thousand) + ' Thousand');
+    if (hundred) parts.push(three(hundred));
+    return parts.join(' ');
+  }
+
+  function qtGetData() {
+    const v = id => document.getElementById(id).value.trim();
+    const items = qtItems.map(it => {
+      const base = it.qty * it.rate * (1 - (it.dis || 0) / 100);
+      const sgstAmt = base * (it.sgst || 0) / 100;
+      const cgstAmt = base * (it.cgst || 0) / 100;
+      return { ...it, amount: base, sgstAmt, cgstAmt };
+    });
+    const subTotal = items.reduce((s, it) => s + it.amount, 0);
+    const sgstTotal = items.reduce((s, it) => s + it.sgstAmt, 0);
+    const cgstTotal = items.reduce((s, it) => s + it.cgstAmt, 0);
+    const billDis = parseFloat(document.getElementById('qtBillDis').value) || 0;
+    const grandRaw = subTotal - billDis + sgstTotal + cgstTotal;
+    const grandTotal = Math.round(grandRaw);
+    const roundOff = grandTotal - grandRaw;
+    const terms = document.getElementById('qtTerms').value.split('\n').map(t => t.trim()).filter(Boolean);
+
+    return {
+      company: { name: v('qtCoName'), addr1: v('qtCoAddr1'), addr2: v('qtCoAddr2'), state: v('qtCoState'), phone: v('qtCoPhone'), email: v('qtCoEmail'), dl: v('qtCoDL'), website: v('qtCoWeb') },
+      party: { name: v('qtPName'), addr: v('qtPAddr'), state: v('qtPState'), phone: v('qtPPhone'), email: v('qtPEmail'), dl: v('qtPDL'), gstin: v('qtGSTIN') },
+      invNo: v('qtInvNo'),
+      invDate: v('qtInvDate'),
+      items, subTotal, sgstTotal, cgstTotal, billDis, roundOff, grandTotal, terms,
+      words: qtNumToWords(grandTotal) + ' only'
+    };
+  }
+
+  function qtFmtDate(iso) {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-');
+    return `${d}-${m}-${y}`;
+  }
+  function qtMoney(n) { return (n || 0).toFixed(2); }
+
+  function qtRenderPreview() {
+    const data = qtGetData();
+    const html = QT_DESIGN === 1 ? qtRenderDesign1(data) : QT_DESIGN === 2 ? qtRenderDesign2(data) : qtRenderDesign3(data);
+    document.getElementById('qtPreview').innerHTML = html;
+  }
+
+  function qtItemRowsHtml(data, numCells) {
+    return data.items.map((it, i) => numCells(it, i)).join('');
+  }
+
+  // ── Design 1: classic bordered sale-quotation (close to a Margbooks-style printout) ──
+  function qtRenderDesign1(d) {
+    const e = admPricesEsc;
+    const rows = d.items.map((it, i) => `
+      <tr>
+        <td>${i + 1}</td><td>${e(it.hsn)}</td><td>${e(it.desc)}</td>
+        <td class="num">${it.qty}</td><td class="num">${qtMoney(it.mrp)}</td><td class="num">${qtMoney(it.rate)}</td>
+        <td class="num">${it.dis}</td><td class="num">${it.sgst}</td><td class="num">${it.cgst}</td>
+        <td class="num">${qtMoney(it.amount)}</td>
+      </tr>`).join('');
+    return `
+      <div class="qt-d1">
+        <div class="qt1-outer">
+          <div class="qt1-title">SALE QUOTATION</div>
+          <div class="qt1-head">
+            <div class="qt1-co">
+              <div class="qt1-co-name">${e(d.company.name)}</div>
+              <div>${e(d.company.addr1)}</div>
+              <div>${e(d.company.addr2)}</div>
+              <div>State Code : ${e(d.company.state)}</div>
+              <div>Phone : ${e(d.company.phone)}</div>
+              <div>E-mail Id: ${e(d.company.email)}</div>
+              <div>DL No. : ${e(d.company.dl)}</div>
+              <div>Website : ${e(d.company.website)}</div>
+            </div>
+            <div class="qt1-party">
+              <div>Party Name : <b>${e(d.party.name)}</b></div>
+              <div>Party Add. : ${e(d.party.addr)}</div>
+              <div>State Code : ${e(d.party.state)}</div>
+              <div>Phone No. : ${e(d.party.phone)}</div>
+              <div>E-mail ID : ${e(d.party.email)}</div>
+              <div>D.L No. : ${e(d.party.dl)}</div>
+            </div>
+          </div>
+          <div class="qt1-row">
+            <span>GSTIN : ${e(d.party.gstin)}</span>
+            <span>Invoice No. : ${e(d.invNo)}</span>
+            <span>Invoice Date : ${qtFmtDate(d.invDate)}</span>
+          </div>
+          <table class="qt1-items">
+            <thead><tr><th>S.No.</th><th>HSN</th><th>Description</th><th class="num">Qty.</th><th class="num">MRP</th><th class="num">Rate</th><th class="num">Dis.%</th><th class="num">SGST</th><th class="num">CGST</th><th class="num">Amount</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+          <div class="qt1-words">Rs. ${d.words}</div>
+          <div class="qt1-bottom">
+            <div class="qt1-terms">
+              <b>Terms &amp; Conditions:</b>
+              ${d.terms.map((t, i) => `<div>${i + 1}) ${e(t)}</div>`).join('')}
+              <div class="qt1-sign">For ${e(d.company.name)}<br/><br/><br/>Authorised Signatory</div>
+            </div>
+            <div class="qt1-totals">
+              <table>
+                <tr><td>Sub Total</td><td>${qtMoney(d.subTotal)}</td></tr>
+                <tr><td>Bill Dis</td><td>${qtMoney(d.billDis)}</td></tr>
+                <tr><td>SGST</td><td>${qtMoney(d.sgstTotal)}</td></tr>
+                <tr><td>CGST</td><td>${qtMoney(d.cgstTotal)}</td></tr>
+                <tr><td>Round Off</td><td>${qtMoney(d.roundOff)}</td></tr>
+                <tr class="qt1-grand"><td>Grand Total</td><td>${qtMoney(d.grandTotal)}</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ── Design 2: Medwell brand (teal/orange) ──
+  function qtRenderDesign2(d) {
+    const e = admPricesEsc;
+    const rows = d.items.map((it, i) => `
+      <tr>
+        <td>${i + 1}</td><td>${e(it.hsn)}</td><td>${e(it.desc)}</td>
+        <td class="num">${it.qty}</td><td class="num">${qtMoney(it.rate)}</td>
+        <td class="num">${it.dis}%</td><td class="num">${it.sgst + it.cgst}%</td>
+        <td class="num">${qtMoney(it.amount)}</td>
+      </tr>`).join('');
+    return `
+      <div class="qt-d2">
+        <div class="qt2-head">
+          <div>
+            <div class="qt2-co-name">${e(d.company.name)}</div>
+            <div class="qt2-co-sub">
+              ${e(d.company.addr1)}<br/>
+              State Code: ${e(d.company.state)} &middot; Phone: ${e(d.company.phone)}<br/>
+              ${e(d.company.email)} &middot; ${e(d.company.website)}<br/>
+              DL No: ${e(d.company.dl)}
+            </div>
+          </div>
+          <div class="qt2-badge">Quotation</div>
+        </div>
+        <div class="qt2-meta">
+          <div class="qt2-meta-block">
+            <div class="qt2-meta-label">Billed To</div>
+            <div class="line"><b>${e(d.party.name)}</b></div>
+            <div class="line">${e(d.party.addr)}</div>
+            <div class="line">${e(d.party.state)}</div>
+            <div class="line">${e(d.party.phone)} ${d.party.email ? ' &middot; ' + e(d.party.email) : ''}</div>
+            ${d.party.gstin ? `<div class="line">GSTIN: ${e(d.party.gstin)}</div>` : ''}
+          </div>
+          <div class="qt2-meta-block" style="text-align:right;">
+            <div class="qt2-meta-label">Quotation Details</div>
+            <div class="line">No: <b>${e(d.invNo)}</b></div>
+            <div class="line">Date: ${qtFmtDate(d.invDate)}</div>
+          </div>
+        </div>
+        <div class="qt2-items">
+          <table>
+            <thead><tr><th>#</th><th>HSN</th><th>Description</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Dis</th><th class="num">GST</th><th class="num">Amount</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="qt2-bottom">
+          <div class="qt2-terms">
+            <b>Terms &amp; Conditions</b>
+            ${d.terms.map((t, i) => `<div>${i + 1}. ${e(t)}</div>`).join('')}
+            <div class="qt2-sign">For ${e(d.company.name)}<br/><br/><br/>Authorised Signatory</div>
+          </div>
+          <div class="qt2-totals">
+            <div class="trow"><span>Sub Total</span><span>₹${qtMoney(d.subTotal)}</span></div>
+            <div class="trow"><span>Bill Discount</span><span>₹${qtMoney(d.billDis)}</span></div>
+            <div class="trow"><span>SGST</span><span>₹${qtMoney(d.sgstTotal)}</span></div>
+            <div class="trow"><span>CGST</span><span>₹${qtMoney(d.cgstTotal)}</span></div>
+            <div class="trow"><span>Round Off</span><span>₹${qtMoney(d.roundOff)}</span></div>
+            <div class="qt2-grand"><span>Grand Total</span><span>₹${qtMoney(d.grandTotal)}</span></div>
+            <div class="qt2-words">Rupees ${d.words}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ── Design 3: minimalist ──
+  function qtRenderDesign3(d) {
+    const e = admPricesEsc;
+    const rows = d.items.map((it, i) => `
+      <tr>
+        <td>${e(it.desc)}${it.hsn ? `<br/><span style="color:#aaa;font-size:9.5px;">HSN ${e(it.hsn)}</span>` : ''}</td>
+        <td class="num">${it.qty}</td><td class="num">${qtMoney(it.rate)}</td>
+        <td class="num">${it.dis}%</td><td class="num">${it.sgst + it.cgst}%</td>
+        <td class="num">${qtMoney(it.amount)}</td>
+      </tr>`).join('');
+    return `
+      <div class="qt-d3">
+        <div class="qt3-head">
+          <div>
+            <div class="qt3-co-name">${e(d.company.name)}</div>
+            <div class="qt3-co-sub">
+              ${e(d.company.addr1)}<br/>
+              ${e(d.company.phone)}<br/>
+              ${e(d.company.email)}<br/>
+              ${e(d.company.website)}
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="qt3-title">Quotation</div>
+            <div class="qt3-meta" style="margin-top:8px;">
+              <div><b>No.</b> ${e(d.invNo)}</div>
+              <div><b>Date.</b> ${qtFmtDate(d.invDate)}</div>
+            </div>
+          </div>
+        </div>
+        <hr class="qt3-divider" />
+        <div class="qt3-party-label">Prepared For</div>
+        <div class="qt3-party">
+          <b>${e(d.party.name)}</b><br/>
+          ${e(d.party.addr)}${d.party.state ? ', ' + e(d.party.state) : ''}<br/>
+          ${d.party.phone ? e(d.party.phone) : ''}${d.party.email ? ' &middot; ' + e(d.party.email) : ''}
+          ${d.party.gstin ? `<br/>GSTIN ${e(d.party.gstin)}` : ''}
+        </div>
+        <div class="qt3-items">
+          <table>
+            <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Dis</th><th class="num">GST</th><th class="num">Amount</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="qt3-bottom">
+          <div class="qt3-terms">
+            ${d.terms.map((t, i) => `${i + 1}. ${e(t)}<br/>`).join('')}
+            <div class="qt3-sign"><div class="line">Authorised Signatory, ${e(d.company.name)}</div></div>
+          </div>
+          <div class="qt3-totals">
+            <div class="trow"><span>Sub Total</span><span>${qtMoney(d.subTotal)}</span></div>
+            <div class="trow"><span>Bill Discount</span><span>${qtMoney(d.billDis)}</span></div>
+            <div class="trow"><span>SGST</span><span>${qtMoney(d.sgstTotal)}</span></div>
+            <div class="trow"><span>CGST</span><span>${qtMoney(d.cgstTotal)}</span></div>
+            <div class="trow"><span>Round Off</span><span>${qtMoney(d.roundOff)}</span></div>
+            <div class="qt3-grand"><span>Total</span><span>₹${qtMoney(d.grandTotal)}</span></div>
+            <div class="qt3-words">${d.words}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function qtPrint() { window.print(); }
 
 </script>
 </body>
