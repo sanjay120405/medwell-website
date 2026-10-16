@@ -397,6 +397,16 @@
     #tabQuotation .prices-field input, #tabQuotation .prices-field textarea { box-sizing: border-box; width: 100%; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.84rem; color: var(--text); background: var(--off-white); transition: border-color .2s; }
     #tabQuotation .prices-field input:focus, #tabQuotation .prices-field textarea:focus { outline: none; border-color: var(--teal); background: var(--white); }
     #tabQuotation .prices-field textarea { resize: vertical; font-family: 'Inter', sans-serif; }
+    .qt-prod-search { position: relative; }
+    .qt-prod-search input { box-sizing: border-box; width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); background: var(--off-white); }
+    .qt-prod-search input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+    .qt-prod-results { position: absolute; z-index: 20; top: calc(100% + 4px); left: 0; right: 0; max-height: 260px; overflow-y: auto; background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); }
+    .qt-prod-result { padding: 9px 12px; cursor: pointer; border-bottom: 1px solid var(--border); }
+    .qt-prod-result:last-child { border-bottom: none; }
+    .qt-prod-result:hover { background: var(--teal-light); }
+    .qt-prod-result .qpr-name { font-size: 0.84rem; font-weight: 600; color: var(--text); }
+    .qt-prod-result .qpr-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+    .qt-prod-empty { padding: 10px 12px; font-size: 0.8rem; color: var(--text-muted); }
     .qt-items-tbl { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
     .qt-items-tbl th { text-align: left; padding: 6px 6px; border-bottom: 1.5px solid var(--border); font-family: 'Poppins', sans-serif; font-size: 0.66rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
     .qt-items-tbl td { padding: 4px 4px; }
@@ -1437,7 +1447,11 @@
 
       <div class="prices-card">
         <h3>Items</h3>
-        <div class="table-wrap">
+        <div class="qt-prod-search">
+          <input type="text" id="qtProdSearch" placeholder="Search Web Order products to add…" autocomplete="off" />
+          <div id="qtProdResults" class="qt-prod-results" hidden></div>
+        </div>
+        <div class="table-wrap" style="margin-top:14px;">
           <table class="qt-items-tbl">
             <thead>
               <tr><th>HSN</th><th>Description</th><th>Qty</th><th>MRP</th><th>Rate</th><th>Dis %</th><th>SGST %</th><th>CGST %</th><th></th></tr>
@@ -1445,7 +1459,7 @@
             <tbody id="qtItemsBody"></tbody>
           </table>
         </div>
-        <button class="prices-add-btn" type="button" onclick="qtAddItem()" style="margin-top:12px;">+ Add Item</button>
+        <button class="prices-add-btn" type="button" onclick="qtAddItem()" style="margin-top:12px;">+ Add Blank Item</button>
       </div>
 
       <div class="prices-card">
@@ -3957,6 +3971,48 @@
     qtRenderItemsTable();
     qtRenderPreview();
   }
+
+  // ── Add items from the Web Order product catalog (same `products` list
+  //    used by the Products tab / billing.html / pricelist.html) ──
+  function qtAddItemFromProduct(code) {
+    const prod = products.find(p => String(p[0]) === String(code));
+    if (!prod) return;
+    const [, name, , , , , salesRate, tax, mrp] = prod;
+    const rate = Math.round((salesRate || 0) * 1.30 * 100) / 100; // New Sales Rate, matches billing.html
+    qtItems.push({
+      uid: ++qtItemSeq, hsn: '', desc: name, qty: 1,
+      mrp: +mrp || 0, rate, dis: 0,
+      sgst: (+tax || 0) / 2, cgst: (+tax || 0) / 2
+    });
+    qtRenderItemsTable();
+    qtRenderPreview();
+    document.getElementById('qtProdSearch').value = '';
+    document.getElementById('qtProdResults').hidden = true;
+  }
+
+  document.getElementById('qtProdSearch').addEventListener('input', e => {
+    const term = e.target.value.trim().toLowerCase();
+    const box = document.getElementById('qtProdResults');
+    if (!term) { box.hidden = true; box.innerHTML = ''; return; }
+
+    const matches = products.filter(p => String(p[1]).toLowerCase().includes(term)).slice(0, 15);
+    if (matches.length === 0) {
+      box.innerHTML = '<div class="qt-prod-empty">No matching products.</div>';
+    } else {
+      box.innerHTML = matches.map(p => `
+        <div class="qt-prod-result" onclick="qtAddItemFromProduct('${admPricesEsc(String(p[0]))}')">
+          <div class="qpr-name">${admPricesEsc(p[1])}</div>
+          <div class="qpr-meta">${admPricesEsc(p[3] || '')} &middot; ₹${(((+p[6] || 0) * 1.30)).toFixed(2)}</div>
+        </div>
+      `).join('');
+    }
+    box.hidden = false;
+  });
+
+  document.addEventListener('click', e => {
+    const wrap = document.querySelector('.qt-prod-search');
+    if (wrap && !wrap.contains(e.target)) document.getElementById('qtProdResults').hidden = true;
+  });
 
   function qtRemoveItem(uid) {
     qtItems = qtItems.filter(it => it.uid !== uid);
