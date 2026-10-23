@@ -517,8 +517,13 @@
       .admin-header, .qt-design-tabs, #tabQuotation > .prices-card, .qt-editor { display: none !important; }
       body * { visibility: hidden; }
       #qtPreview, #qtPreview * { visibility: visible; }
-      #qtPreview { position: absolute; top: 0; left: 0; width: 210mm !important; min-height: 297mm; border: none; box-shadow: none; border-radius: 0; transform: none !important; }
+      #qtPreview { position: absolute; top: 0; left: 0; width: 210mm !important; min-height: auto !important; border: none; box-shadow: none; border-radius: 0; transform: none !important; }
       .qt-preview-scale, .qt-preview-wrap { overflow: visible !important; height: auto !important; }
+      /* Let the quotation size to its actual content instead of being
+         stretched to a full 297mm page — a short quotation (few items)
+         would otherwise print with a large empty gap pushed down to a
+         bottom section that no longer has a real page edge to sit at. */
+      .qt-d1, .qt-d2, .qt-d3 { min-height: auto !important; }
     }
 
     /* ── CUSTOMER LIST TAB ── */
