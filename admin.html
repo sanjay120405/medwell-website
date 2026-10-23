@@ -452,18 +452,30 @@
     .qt-d1 .qt1-co-name { font-weight: 800; font-size: 12.5px; margin-bottom: 4px; }
     .qt-d1 .qt1-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #000; font-size: 10px; }
     .qt-d1 .qt1-row > span { padding: 5px 10px; }
-    .qt-d1 .qt1-items th, .qt-d1 .qt1-items td { border: 1px solid #000; }
+    .qt-d1 .qt1-items th, .qt-d1 .qt1-items td { border: 1px solid #000; position: relative; z-index: 1; }
     .qt-d1 .qt1-items th { background: #f2f2f2; color: #000; font-size: 8.5px; }
-    .qt-d1 .qt1-words { border-top: 1.5px solid #000; padding: 6px 10px; font-weight: 700; font-size: 10px; }
+    .qt-d1 .qt1-items-wrap { position: relative; }
+    /* Faint diagonal company-name watermark behind the item table, matching
+       the reference Margbooks printout. */
+    .qt-d1 .qt1-watermark {
+      position: absolute; top: 15%; left: 50%; width: 80%;
+      transform: translateX(-50%) rotate(-30deg);
+      text-align: center; font-size: 34px; font-weight: 800; line-height: 1.15;
+      color: rgba(0,0,0,.08); pointer-events: none; user-select: none; z-index: 0;
+    }
     .qt-d1 .qt1-bottom { display: flex; }
     .qt-spacer { flex-shrink: 0; }
     .qt-d1 .qt1-terms { flex: 1 1 60%; padding: 8px 10px; border-right: 1.5px solid #000; font-size: 9.5px; }
+    .qt-d1 .qt1-gstline { font-size: 8.5px; color: #333; margin-bottom: 8px; }
     .qt-d1 .qt1-terms b { display: block; margin-bottom: 4px; }
     .qt-d1 .qt1-totals { flex: 1 1 40%; }
     .qt-d1 .qt1-totals td { padding: 4px 10px; border-bottom: 1px solid #ccc; font-size: 10px; vertical-align: middle; }
     .qt-d1 .qt1-totals td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
-    .qt-d1 .qt1-grand { background: #1a3a3a; color: #fff; font-weight: 800; }
     .qt-d1 .qt1-sign { text-align: center; padding: 16px 10px 6px; font-size: 10px; }
+    .qt-d1 .qt1-grandrow { display: flex; align-items: center; justify-content: space-between; border-top: 1.5px solid #000; font-weight: 700; font-size: 10.5px; }
+    .qt-d1 .qt1-words { padding: 6px 10px; flex: 1; }
+    .qt-d1 .qt1-grand { background: #1a3a3a; color: #fff; font-weight: 800; padding: 6px 10px; display: flex; gap: 16px; flex-shrink: 0; }
+    .qt-d1 .qt1-grand span:last-child { font-variant-numeric: tabular-nums; }
 
     /* ── Design 2: Medwell brand, teal/orange ── */
     .qt-d2 { font-family: 'Inter', sans-serif; color: var(--text); font-size: 12px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 297mm; }
@@ -4326,6 +4338,13 @@
   // ── Design 1: classic black/white bordered sale-quotation ──
   function qtRenderDesign1(d) {
     const e = admPricesEsc;
+    // Mirrors the reference PDF's "GST <subtotal>*<sgst>+<cgst>% = <sgstAmt>
+    // SGST+<cgstAmt> CGST" line — uses the first item's rates, matching the
+    // reference's assumption that every line shares the same tax rate.
+    const rate = d.items[0] || { sgst: 0, cgst: 0 };
+    const gstLine = d.items.length
+      ? `GST ${qtMoney(d.subTotal)}*${rate.sgst}.0+${rate.cgst}.0% = ${qtMoney(d.sgstTotal)} SGST+${qtMoney(d.cgstTotal)} CGST`
+      : '';
     return `
       <div class="qt-d1">
         <div class="qt1-outer">
@@ -4344,15 +4363,18 @@
             <span>Invoice No. : ${e(d.invNo)}</span>
             <span>Invoice Date : ${qtFmtDate(d.invDate)}</span>
           </div>
-          <table class="qt1-items qt-items-table">
-            ${qtItemsColgroup()}
-            <thead>${qtItemsHeadRow()}</thead>
-            <tbody>${qtItemsBodyRows(d, e)}</tbody>
-          </table>
-          <div class="qt1-words">Rs. ${d.words}</div>
+          <div class="qt1-items-wrap">
+            <div class="qt1-watermark">${e(d.company.name)}</div>
+            <table class="qt1-items qt-items-table">
+              ${qtItemsColgroup()}
+              <thead>${qtItemsHeadRow()}</thead>
+              <tbody>${qtItemsBodyRows(d, e)}</tbody>
+            </table>
+          </div>
           <div class="qt-spacer"></div>
           <div class="qt1-bottom">
             <div class="qt1-terms">
+              ${gstLine ? `<div class="qt1-gstline">${e(gstLine)}</div>` : ''}
               <b>Terms &amp; Conditions:</b>
               ${d.terms.map((t, i) => `<div>${i + 1}) ${e(t)}</div>`).join('')}
               <div class="qt1-sign">For ${e(d.company.name)}<br/><br/><br/>Authorised Signatory</div>
@@ -4364,9 +4386,12 @@
                 <tr><td>SGST</td><td>${qtMoney(d.sgstTotal)}</td></tr>
                 <tr><td>CGST</td><td>${qtMoney(d.cgstTotal)}</td></tr>
                 <tr><td>Round Off</td><td>${qtMoney(d.roundOff)}</td></tr>
-                <tr class="qt1-grand"><td>Grand Total</td><td>${qtMoney(d.grandTotal)}</td></tr>
               </table>
             </div>
+          </div>
+          <div class="qt1-grandrow">
+            <div class="qt1-words">Rs. ${d.words}</div>
+            <div class="qt1-grand"><span>Grand Total</span><span>${qtMoney(d.grandTotal)}</span></div>
           </div>
         </div>
       </div>`;
