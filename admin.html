@@ -530,11 +530,15 @@
          save ink — without this, Design 2's teal header band, orange
          badge, and teal grand-total box would print plain white/black
          instead of matching the on-screen branding. */
-      html, body, #qtPreview, #qtPreview * {
+      #qtPreview, #qtPreview * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         color-adjust: exact !important;
       }
+      /* body's own off-white background should stay stripped (plain white)
+         during print — forcing it to render is what revealed a visible
+         tinted gap wherever the quotation box doesn't fill the full page. */
+      body { background: #fff !important; }
       /* visibility:hidden alone keeps these in document flow, so their real
          (often tall) height still counted toward page count, forcing a
          near-empty 2nd page. Remove them from flow entirely instead. */
