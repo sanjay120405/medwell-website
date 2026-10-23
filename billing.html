@@ -695,6 +695,7 @@
         <input type="text" id="rptSearchName" placeholder="Search by customer name..." />
         <input type="tel" id="rptSearchPhone" placeholder="Search by phone number..." maxlength="10" inputmode="numeric" />
         <button class="search-btn" id="rptSearchBtn" type="button">Search</button>
+        <input type="date" id="rptExportDate" title="Export bills for one specific day" style="width:150px;" />
         <select id="rptExportMonth">
           <option value="">All Months</option>
           <option value="0">January</option><option value="1">February</option><option value="2">March</option>
@@ -1855,14 +1856,24 @@
   function exportReportExcel() {
     if (!CURRENT_BILLS.length) { alert('No bills to export.'); return; }
 
+    const filterDate  = document.getElementById('rptExportDate').value; // '' or 'YYYY-MM-DD'
     const filterMonth = document.getElementById('rptExportMonth').value; // '' or '0'-'11'
     const filterYear  = document.getElementById('rptExportYear').value.trim();
 
     let exportBills = CURRENT_BILLS;
-    if (filterMonth !== '') exportBills = exportBills.filter(b => new Date(b.created_at).getMonth() === +filterMonth);
-    if (filterYear)         exportBills = exportBills.filter(b => new Date(b.created_at).getFullYear() === +filterYear);
+    if (filterDate) {
+      // A specific day takes precedence over the month/year dropdowns.
+      exportBills = exportBills.filter(b => {
+        const d = new Date(b.created_at);
+        const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        return local === filterDate;
+      });
+    } else {
+      if (filterMonth !== '') exportBills = exportBills.filter(b => new Date(b.created_at).getMonth() === +filterMonth);
+      if (filterYear)         exportBills = exportBills.filter(b => new Date(b.created_at).getFullYear() === +filterYear);
+    }
 
-    if (!exportBills.length) { alert('No bills found for that month/year.'); return; }
+    if (!exportBills.length) { alert('No bills found for that date/month/year.'); return; }
 
     const billingRows = exportBills.map(b => {
       const items = Array.isArray(b.items) ? b.items : [];
@@ -1911,7 +1922,8 @@
     XLSX.utils.book_append_sheet(wb, ws2, 'Product Sales');
 
     let label;
-    if (filterMonth !== '' && filterYear) label = `${MONTH_NAMES[+filterMonth]}_${filterYear}`;
+    if (filterDate)                       label = filterDate;
+    else if (filterMonth !== '' && filterYear) label = `${MONTH_NAMES[+filterMonth]}_${filterYear}`;
     else if (filterYear)                  label = filterYear;
     else if (filterMonth !== '')          label = MONTH_NAMES[+filterMonth];
     else                                  label = new Date().toISOString().slice(0, 10);
