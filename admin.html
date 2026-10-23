@@ -388,8 +388,8 @@
     .qt-design-btn { padding: 9px 18px; border: 1.5px solid var(--border); background: var(--off-white); color: var(--text); border-radius: 99px; font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all .2s; }
     .qt-design-btn:hover { border-color: var(--teal); }
     .qt-design-btn.active { background: var(--teal); border-color: var(--teal); color: var(--white); }
-    .qt-layout { display: flex; flex-direction: column; gap: 20px; padding: 18px 24px 40px; }
-    .qt-editor { width: 100%; display: flex; flex-direction: column; gap: 0; }
+    .qt-layout { display: flex; gap: 20px; align-items: flex-start; padding: 18px 24px 40px; flex-wrap: wrap; }
+    .qt-editor { flex: 1 1 420px; min-width: 320px; display: flex; flex-direction: column; gap: 0; }
     .qt-editor .prices-card { margin: 0 0 16px; }
     .qt-field-grid { display: flex; flex-wrap: wrap; gap: 12px; }
     .qt-field-grid .prices-field { flex: 1 1 160px; min-width: 140px; }
@@ -415,7 +415,7 @@
     .qt-item-del-btn { width: 26px; height: 26px; border-radius: 6px; background: #fde8e8; color: #c0392b; border: none; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
     .qt-print-btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 26px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background .2s; }
     .qt-print-btn:hover { background: var(--dark); }
-    .qt-preview-wrap { width: 100%; }
+    .qt-preview-wrap { flex: 1 1 560px; min-width: 0; }
     .qt-preview-scale { width: 100%; }
     /* Fluid width that tops out at the A4 page (210mm) the quotation prints
        onto, so it never gets clipped on a narrower screen — it just shrinks
