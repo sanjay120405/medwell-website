@@ -511,6 +511,10 @@
 
     @page { size: A4; margin: 0; }
     @media print {
+      /* visibility:hidden alone keeps these in document flow, so their real
+         (often tall) height still counted toward page count, forcing a
+         near-empty 2nd page. Remove them from flow entirely instead. */
+      .admin-header, .qt-design-tabs, #tabQuotation > .prices-card, .qt-editor { display: none !important; }
       body * { visibility: hidden; }
       #qtPreview, #qtPreview * { visibility: visible; }
       #qtPreview { position: absolute; top: 0; left: 0; width: 210mm !important; min-height: 297mm; border: none; box-shadow: none; border-radius: 0; transform: none !important; }
