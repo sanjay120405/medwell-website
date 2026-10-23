@@ -524,7 +524,13 @@
     /* 8mm page margin leaves a 297mm - 16mm = 281mm tall printable area;
        every forced min-height below must match that exactly (not the full
        297mm) or the overflow reintroduces a near-empty 2nd page. */
-    @page { size: A4; margin: 8mm; }
+    /* Zero page margin is deliberate: a nonzero @page margin risks a
+       Windows print-driver stacking its own default margin on top of ours,
+       making our height math (min-height matched to the "printable area")
+       unreliable and leaving a gap before the true page edge. Each design
+       already has its own internal padding for visual breathing room, so
+       the content itself still never touches the physical paper edge. */
+    @page { size: A4; margin: 0; }
     @media print {
       /* Browsers strip background colors/images on print by default to
          save ink — without this, Design 2's teal header band, orange
@@ -556,15 +562,15 @@
         width: 100% !important; max-width: none !important; overflow: visible !important; height: auto !important;
       }
       #qtPreview {
-        width: 100% !important; max-width: none !important; min-height: calc(297mm - 16mm) !important; margin: 0 !important;
+        width: 100% !important; max-width: none !important; min-height: 297mm !important; margin: 0 !important;
         border: none !important; box-shadow: none !important; border-radius: 0 !important; transform: none !important;
       }
       /* Stretch short quotations (few items) to fill the page, with
          totals/signature pinned to the bottom via margin-top:auto on
          .qt1-bottom/.qt2-bottom/.qt3-badges, instead of leaving blank
          space below a short item table. */
-      .qt-d1, .qt-d2, .qt-d3 { min-height: calc(297mm - 16mm) !important; }
-      .qt-d1 .qt1-outer { min-height: calc(297mm - 16mm - 28px) !important; }
+      .qt-d1, .qt-d2, .qt-d3 { min-height: 297mm !important; }
+      .qt-d1 .qt1-outer { min-height: calc(297mm - 28px) !important; }
       tr, thead, .qt1-bottom, .qt2-bottom, .qt3-badges, .qt3-footer { break-inside: avoid; page-break-inside: avoid; }
       thead { display: table-header-group; }
     }
