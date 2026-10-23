@@ -470,8 +470,16 @@
     .qt-d2 .qt2-meta-block { flex: 1 1 220px; }
     .qt-d2 .qt2-meta-label { font-family: 'Poppins', sans-serif; font-size: 0.66rem; font-weight: 800; color: var(--teal-dark); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
     .qt-d2 .qt2-meta-block div.line { font-size: 11px; line-height: 1.7; }
-    .qt-d2 .qt2-items { margin: 20px 26px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    /* No overflow:hidden here — clipping a few sub-pixels of fixed-layout
+       table width rounding would silently cut off whole trailing columns
+       instead of just rounding a corner. Rounded corners come from the
+       header cells themselves instead (first-child/last-child below). */
+    .qt-d2 .qt2-items { margin: 20px 26px 0; border: 1px solid var(--border); border-radius: 10px; }
     .qt-d2 .qt2-items th { background: var(--teal-light); color: var(--teal-dark); font-family: 'Poppins', sans-serif; font-size: 0.56rem; font-weight: 800; letter-spacing: .03em; }
+    .qt-d2 .qt2-items thead th:first-child { border-top-left-radius: 9px; }
+    .qt-d2 .qt2-items thead th:last-child { border-top-right-radius: 9px; }
+    .qt-d2 .qt2-items tbody tr:last-child td:first-child { border-bottom-left-radius: 9px; }
+    .qt-d2 .qt2-items tbody tr:last-child td:last-child { border-bottom-right-radius: 9px; }
     .qt-d2 .qt2-items td { border-top: 1px solid var(--border); }
     .qt-d2 .qt2-bottom { margin: 18px 26px 0; margin-top: auto; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-bottom: 22px; }
     .qt-d2 .qt2-terms { flex: 1 1 280px; font-size: 10.5px; color: var(--text-muted); line-height: 1.8; }
@@ -518,6 +526,15 @@
        297mm) or the overflow reintroduces a near-empty 2nd page. */
     @page { size: A4; margin: 8mm; }
     @media print {
+      /* Browsers strip background colors/images on print by default to
+         save ink — without this, Design 2's teal header band, orange
+         badge, and teal grand-total box would print plain white/black
+         instead of matching the on-screen branding. */
+      html, body, #qtPreview, #qtPreview * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
       /* visibility:hidden alone keeps these in document flow, so their real
          (often tall) height still counted toward page count, forcing a
          near-empty 2nd page. Remove them from flow entirely instead. */
