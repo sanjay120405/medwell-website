@@ -4239,6 +4239,16 @@
 
   function qtFillSpacer(container, spacer, targetPx) {
     if (!container || !spacer) return;
+    // Measure at the TRUE print width (210mm), not whatever narrower width
+    // #qtPreview happens to be rendered at on screen (it shares the window
+    // with the editor form, so it's often narrower there) — a narrower
+    // measurement width makes text wrap more, inflating the "natural"
+    // height and producing a too-small spacer that doesn't match how the
+    // content will actually lay out at full width in print.
+    const preview = document.getElementById('qtPreview');
+    const prevPreviewWidth = preview ? preview.style.width : null;
+    if (preview) preview.style.width = '210mm';
+
     // Temporarily zero out the container's own CSS min-height while
     // measuring — otherwise scrollHeight already includes that forced
     // height, making (target - natural) always compute to ~0.
@@ -4249,6 +4259,8 @@
     const naturalPx = container.scrollHeight;
     spacer.style.height = Math.max(0, targetPx - naturalPx) + 'px';
     container.style.minHeight = prevMinHeight;
+
+    if (preview) preview.style.width = prevPreviewWidth || '';
   }
 
   function qtFillSpacers() {
