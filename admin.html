@@ -517,8 +517,20 @@
       .admin-header, .qt-design-tabs, #tabQuotation > .prices-card, .qt-editor { display: none !important; }
       body * { visibility: hidden; }
       #qtPreview, #qtPreview * { visibility: visible; }
-      #qtPreview { position: absolute; top: 0; left: 0; width: 210mm !important; min-height: auto !important; border: none; box-shadow: none; border-radius: 0; transform: none !important; }
-      .qt-preview-scale, .qt-preview-wrap { overflow: visible !important; height: auto !important; }
+
+      /* With the bulky siblings above removed from flow, the preview is
+         now the only real content left — let it flow normally (not
+         position:absolute) and reset every box in its ancestor chain to
+         zero margin/padding at 100% width, so it spans the full page
+         edge-to-edge instead of sitting in a narrower, offset box. */
+      #tabQuotation, .qt-layout, .qt-preview-wrap, .qt-preview-scale {
+        margin: 0 !important; padding: 0 !important; display: block !important;
+        width: 100% !important; max-width: none !important; overflow: visible !important; height: auto !important;
+      }
+      #qtPreview {
+        width: 100% !important; max-width: none !important; min-height: auto !important; margin: 0 !important;
+        border: none !important; box-shadow: none !important; border-radius: 0 !important; transform: none !important;
+      }
       /* Let the quotation size to its actual content instead of being
          stretched to a full 297mm page — a short quotation (few items)
          would otherwise print with a large empty gap pushed down to a
