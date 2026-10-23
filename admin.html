@@ -482,9 +482,6 @@
     .qt-d2 .qt2-items tbody tr:last-child td:first-child { border-bottom-left-radius: 9px; }
     .qt-d2 .qt2-items tbody tr:last-child td:last-child { border-bottom-right-radius: 9px; }
     .qt-d2 .qt2-items td { border-top: 1px solid var(--border); }
-    /* Unlike Design 1/3, this sits right after the item table instead of
-       being pushed to the bottom of the page — keeps terms/totals close
-       together for a short quotation rather than leaving a tall gap. */
     .qt-d2 .qt2-bottom { margin: 18px 26px 0; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-bottom: 22px; }
     .qt-d2 .qt2-terms { flex: 1 1 280px; font-size: 10.5px; color: var(--text-muted); line-height: 1.8; }
     .qt-d2 .qt2-terms b { display: block; color: var(--text); margin-bottom: 4px; font-size: 11px; }
@@ -4254,6 +4251,8 @@
     if (!preview) return;
     if (QT_DESIGN === 1) {
       qtFillSpacer(preview.querySelector('.qt1-outer'), preview.querySelector('.qt1-outer > .qt-spacer'), QT_PAGE_PX - 28);
+    } else if (QT_DESIGN === 2) {
+      qtFillSpacer(preview.querySelector('.qt-d2'), preview.querySelector('.qt-d2 > .qt-spacer'), QT_PAGE_PX);
     } else if (QT_DESIGN === 3) {
       qtFillSpacer(preview.querySelector('.qt-d3'), preview.querySelector('.qt-d3 > .qt-spacer'), QT_PAGE_PX);
     }
@@ -4387,6 +4386,7 @@
             <tbody>${qtItemsBodyRows(d, e)}</tbody>
           </table>
         </div>
+        <div class="qt-spacer"></div>
         <div class="qt2-bottom">
           <div class="qt2-terms">
             <b>Terms &amp; Conditions</b>
