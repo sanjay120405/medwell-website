@@ -450,7 +450,8 @@
     .qt-d1 .qt1-items th, .qt-d1 .qt1-items td { border: 1px solid #000; }
     .qt-d1 .qt1-items th { background: #f2f2f2; font-size: 8.5px; }
     .qt-d1 .qt1-words { border-top: 1.5px solid #000; padding: 6px 10px; font-weight: 700; font-size: 10px; }
-    .qt-d1 .qt1-bottom { display: flex; margin-top: auto; }
+    .qt-d1 .qt1-bottom { display: flex; }
+    .qt-spacer { flex-shrink: 0; }
     .qt-d1 .qt1-terms { flex: 1 1 60%; padding: 8px 10px; border-right: 1.5px solid #000; font-size: 9.5px; }
     .qt-d1 .qt1-terms b { display: block; margin-bottom: 4px; }
     .qt-d1 .qt1-totals { flex: 1 1 40%; }
@@ -515,7 +516,7 @@
        badges/footer together and pushes that whole group to the bottom of
        the page — otherwise totals sat right after the table with a big
        empty gap before the footer group further down. */
-    .qt-d3 .qt3-totals-wrap { display: flex; justify-content: flex-end; margin: 10px 34px 0; margin-top: auto; }
+    .qt-d3 .qt3-totals-wrap { display: flex; justify-content: flex-end; margin: 10px 34px 0; }
     .qt-d3 .qt3-totals { width: 220px; background: #f7f9fd; border-radius: 8px; overflow: hidden; }
     .qt-d3 .qt3-totals .trow { display: flex; justify-content: space-between; padding: 5px 12px; font-size: 10px; }
     .qt-d3 .qt3-grand { background: #13294b; color: #fff; font-weight: 800; padding: 7px 12px; display: flex; justify-content: space-between; font-size: 11px; }
@@ -4224,7 +4225,42 @@
     const data = qtGetData();
     const html = QT_DESIGN === 1 ? qtRenderDesign1(data) : QT_DESIGN === 2 ? qtRenderDesign2(data) : qtRenderDesign3(data);
     document.getElementById('qtPreview').innerHTML = html;
+    qtFillSpacers();
   }
+
+  // Design 1 and 3 stretch short quotations to the full page by measuring
+  // the actual rendered content and setting an explicit spacer height —
+  // CSS flex "push to bottom" (margin-top:auto on a min-height container)
+  // proved unreliable here (inconsistent gaps on screen and in print), so
+  // this computes the exact pixel gap directly instead of trusting it.
+  const QT_PAGE_PX = 297 * 96 / 25.4; // 297mm in CSS px (96dpi), matches @page/min-height
+
+  function qtFillSpacer(container, spacer, targetPx) {
+    if (!container || !spacer) return;
+    // Temporarily zero out the container's own CSS min-height while
+    // measuring — otherwise scrollHeight already includes that forced
+    // height, making (target - natural) always compute to ~0.
+    const prevMinHeight = container.style.minHeight;
+    container.style.minHeight = '0px';
+    spacer.style.height = '0px';
+    void container.offsetHeight; // force reflow before measuring
+    const naturalPx = container.scrollHeight;
+    spacer.style.height = Math.max(0, targetPx - naturalPx) + 'px';
+    container.style.minHeight = prevMinHeight;
+  }
+
+  function qtFillSpacers() {
+    const preview = document.getElementById('qtPreview');
+    if (!preview) return;
+    if (QT_DESIGN === 1) {
+      qtFillSpacer(preview.querySelector('.qt1-outer'), preview.querySelector('.qt1-outer > .qt-spacer'), QT_PAGE_PX - 28);
+    } else if (QT_DESIGN === 3) {
+      qtFillSpacer(preview.querySelector('.qt-d3'), preview.querySelector('.qt-d3 > .qt-spacer'), QT_PAGE_PX);
+    }
+  }
+
+  window.addEventListener('beforeprint', qtFillSpacers);
+  window.addEventListener('resize', () => { if (qtInited) qtFillSpacers(); });
 
   // Shared across all 3 designs — same content/column set as the reference
   // quotation PDF, only the visual styling differs per design.
@@ -4298,6 +4334,7 @@
             <tbody>${qtItemsBodyRows(d, e)}</tbody>
           </table>
           <div class="qt1-words">Rs. ${d.words}</div>
+          <div class="qt-spacer"></div>
           <div class="qt1-bottom">
             <div class="qt1-terms">
               <b>Terms &amp; Conditions:</b>
@@ -4411,6 +4448,7 @@
           <thead>${qtItemsHeadRow()}</thead>
           <tbody>${qtItemsBodyRows(d, e)}</tbody>
         </table>
+        <div class="qt-spacer"></div>
         <div class="qt3-totals-wrap">
           <div class="qt3-totals">
             <div class="trow"><span>Sub Total</span><span>₹${qtMoney(d.subTotal)}</span></div>
