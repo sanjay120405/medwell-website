@@ -422,41 +422,32 @@
        to fit instead, same as the rest of the page. */
     #qtPreview { width: 100%; max-width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); box-sizing: border-box; }
 
-    /* ── Design 1: flat corporate (navy/blue), with a quote-box header ── */
-    .qt-d1 { font-family: 'Inter', sans-serif; color: #1a2744; font-size: 11.5px; padding: 32px 36px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 297mm; }
-    .qt-d1 .qt1-top { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #e3eaf5; padding-bottom: 16px; gap: 16px; }
-    .qt-d1 .qt1-brand { display: flex; align-items: center; gap: 12px; }
-    .qt-d1 .qt1-logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg,#1d4e89,#13294b); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 18px; flex-shrink: 0; }
-    .qt-d1 .qt1-brand-name { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 15px; color: #13294b; }
-    .qt-d1 .qt1-brand-tag { font-size: 9.5px; color: #7a8aa3; margin-top: 2px; }
-    .qt-d1 .qt1-contact { text-align: right; font-size: 10px; color: #4a5a78; line-height: 1.9; }
-    .qt-d1 .qt1-hero { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-top: 22px; }
-    .qt-d1 .qt1-hero-label { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 12px; color: #1d4e89; letter-spacing: .06em; }
-    .qt-d1 .qt1-hero-title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 27px; color: #13294b; letter-spacing: .02em; margin-top: -2px; }
-    .qt-d1 .qt1-hero-sub { font-size: 10.5px; color: #5a6a85; max-width: 270px; margin-top: 8px; line-height: 1.6; }
-    .qt-d1 .qt1-hero-box { background: #eef4fc; border: 1px solid #d7e3f3; border-radius: 10px; padding: 12px 16px; min-width: 200px; flex-shrink: 0; }
-    .qt-d1 .qt1-hero-box .trow { display: flex; justify-content: space-between; gap: 10px; font-size: 10.5px; padding: 3px 0; }
-    .qt-d1 .qt1-hero-box .trow span:first-child { color: #5a6a85; }
-    .qt-d1 .qt1-hero-box .trow span:last-child { font-weight: 700; color: #13294b; }
-    .qt-d1 .qt1-parties { display: flex; gap: 16px; margin-top: 22px; }
-    .qt-d1 .qt1-party-box { flex: 1 1 50%; background: #eef4fc; border: 1px solid #d7e3f3; border-radius: 10px; padding: 12px 14px; font-size: 10.5px; line-height: 1.7; }
-    .qt-d1 .qt1-party-head { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 10px; color: #1d4e89; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-    .qt-d1 .qt1-items { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 22px; font-size: 10.5px; }
-    .qt-d1 .qt1-items th { background: #13294b; color: #fff; text-align: left; padding: 9px 10px; font-family: 'Poppins', sans-serif; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; overflow-wrap: break-word; }
-    .qt-d1 .qt1-items td { padding: 8px 10px; border-bottom: 1px solid #e9eef7; overflow-wrap: break-word; }
+    /* ── Design 1: classic black/white bordered sale-quotation ── */
+    .qt-d1 { font-family: 'Inter', Arial, sans-serif; color: #000; font-size: 10.5px; padding: 14px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 297mm; }
+    .qt-d1 table { border-collapse: collapse; width: 100%; }
+    .qt-d1 .qt1-outer { border: 1.5px solid #000; display: flex; flex-direction: column; flex: 1; }
+    .qt-d1 .qt1-title { text-align: center; font-weight: 800; font-size: 14px; padding: 6px; border-bottom: 1.5px solid #000; letter-spacing: .04em; }
+    .qt-d1 .qt1-head { display: flex; border-bottom: 1.5px solid #000; }
+    .qt-d1 .qt1-head > div { padding: 8px 10px; }
+    .qt-d1 .qt1-co { flex: 1 1 60%; border-right: 1.5px solid #000; }
+    .qt-d1 .qt1-party { flex: 1 1 40%; }
+    .qt-d1 .qt1-co-name { font-weight: 800; font-size: 12.5px; margin-bottom: 4px; }
+    .qt-d1 .qt1-row { display: flex; justify-content: space-between; border-bottom: 1.5px solid #000; font-size: 10px; }
+    .qt-d1 .qt1-row > span { padding: 5px 10px; }
+    .qt-d1 .qt1-items { table-layout: fixed; }
+    .qt-d1 .qt1-items th, .qt-d1 .qt1-items td { border: 1px solid #000; padding: 4px 5px; font-size: 9.5px; overflow-wrap: break-word; }
+    .qt-d1 .qt1-items th { background: #f2f2f2; text-transform: uppercase; font-size: 8.5px; }
     .qt-d1 .qt1-items td.num, .qt-d1 .qt1-items th.num { text-align: right; }
-    .qt-d1 .qt1-bottom { display: flex; justify-content: flex-end; margin-top: 14px; }
-    .qt-d1 .qt1-totals { width: 240px; border-radius: 8px; overflow: hidden; }
-    .qt-d1 .qt1-totals .trow { display: flex; justify-content: space-between; padding: 6px 12px; font-size: 10.5px; background: #eef4fc; border-bottom: 1px solid #fff; }
-    .qt-d1 .qt1-grand { background: #13294b; color: #fff; font-weight: 800; font-size: 12px; }
-    .qt-d1 .qt1-foot { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-top: 28px; gap: 20px; flex-wrap: wrap; }
-    .qt-d1 .qt1-terms { flex: 1 1 60%; font-size: 10px; color: #4a5a78; }
-    .qt-d1 .qt1-terms b { display: block; color: #13294b; font-family: 'Poppins', sans-serif; font-size: 11px; margin-bottom: 6px; }
-    .qt-d1 .qt1-terms div { margin-bottom: 3px; }
-    .qt-d1 .qt1-sign { margin-top: 16px; font-size: 10.5px; color: #4a5a78; font-style: italic; }
-    .qt-d1 .qt1-ribbon { background: linear-gradient(135deg,#1d4e89,#13294b); color: #fff; border-radius: 10px; padding: 14px 18px; text-align: right; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; min-width: 160px; flex-shrink: 0; }
-    .qt-d1 .qt1-ribbon small { display: block; font-weight: 400; font-size: 9px; opacity: .85; margin-top: 2px; }
-    .qt-d1 .qt1-words { font-size: 10px; color: #5a6a85; margin-top: 10px; }
+    .qt-d1 .qt1-words { border-top: 1.5px solid #000; padding: 6px 10px; font-weight: 700; font-size: 10px; }
+    .qt-d1 .qt1-bottom { display: flex; margin-top: auto; }
+    .qt-d1 .qt1-terms { flex: 1 1 60%; padding: 8px 10px; border-right: 1.5px solid #000; font-size: 9.5px; }
+    .qt-d1 .qt1-terms b { display: block; margin-bottom: 4px; }
+    .qt-d1 .qt1-totals { flex: 1 1 40%; }
+    .qt-d1 .qt1-totals table { width: 100%; }
+    .qt-d1 .qt1-totals td { padding: 4px 10px; border-bottom: 1px solid #ccc; font-size: 10px; }
+    .qt-d1 .qt1-totals td:last-child { text-align: right; }
+    .qt-d1 .qt1-grand { background: #1a3a3a; color: #fff; font-weight: 800; }
+    .qt-d1 .qt1-sign { text-align: center; padding: 16px 10px 6px; font-size: 10px; }
 
     /* ── Design 2: Medwell brand, teal/orange ── */
     .qt-d2 { font-family: 'Inter', sans-serif; color: var(--text); font-size: 12px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 297mm; }
@@ -471,8 +462,8 @@
     .qt-d2 .qt2-items { margin: 20px 26px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
     .qt-d2 .qt2-items table { width: 100%; table-layout: fixed; border-collapse: collapse; }
     .qt-d2 .qt2-items th, .qt-d2 .qt2-items td { overflow-wrap: break-word; }
-    .qt-d2 .qt2-items th { background: var(--teal-light); color: var(--teal-dark); text-align: left; padding: 8px 10px; font-family: 'Poppins', sans-serif; font-size: 0.64rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
-    .qt-d2 .qt2-items td { padding: 8px 10px; border-top: 1px solid var(--border); font-size: 11px; }
+    .qt-d2 .qt2-items th { background: var(--teal-light); color: var(--teal-dark); text-align: left; padding: 7px 7px; font-family: 'Poppins', sans-serif; font-size: 0.56rem; font-weight: 800; text-transform: uppercase; letter-spacing: .03em; }
+    .qt-d2 .qt2-items td { padding: 6px 7px; border-top: 1px solid var(--border); font-size: 9.5px; }
     .qt-d2 .qt2-items td.num, .qt-d2 .qt2-items th.num { text-align: right; }
     .qt-d2 .qt2-bottom { margin: 18px 26px 0; margin-top: auto; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-bottom: 22px; }
     .qt-d2 .qt2-terms { flex: 1 1 280px; font-size: 10.5px; color: var(--text-muted); line-height: 1.8; }
@@ -492,22 +483,22 @@
     .qt-d3 .qt3-logo { width: 34px; height: 34px; border-radius: 8px; background: #fff; color: #13294b; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 15px; flex-shrink: 0; }
     .qt-d3 .qt3-brand-name { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14px; }
     .qt-d3 .qt3-tags { font-size: 8.5px; letter-spacing: .06em; opacity: .75; text-transform: uppercase; }
-    .qt-d3 .qt3-title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 23px; margin-top: 16px; position: relative; z-index: 1; }
-    .qt-d3 .qt3-tagline { font-size: 9.5px; opacity: .85; margin-top: 6px; position: relative; z-index: 1; }
-    .qt-d3 .qt3-meta-row { display: flex; gap: 26px; padding: 12px 34px; background: #eef4fc; font-size: 10px; color: #2d3f5e; flex-wrap: wrap; }
+    .qt-d3 .qt3-title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 22px; margin-top: 14px; position: relative; z-index: 1; }
+    .qt-d3 .qt3-meta-row { display: flex; gap: 26px; padding: 10px 34px; background: #eef4fc; font-size: 10px; color: #2d3f5e; flex-wrap: wrap; }
     .qt-d3 .qt3-meta-row b { color: #13294b; }
-    .qt-d3 .qt3-parties { display: flex; gap: 16px; padding: 18px 34px 0; }
-    .qt-d3 .qt3-party-box { flex: 1 1 50%; background: #f7f9fd; border: 1px solid #e3eaf5; border-radius: 8px; padding: 10px 14px; font-size: 10.5px; line-height: 1.7; }
+    .qt-d3 .qt3-parties { display: flex; gap: 16px; padding: 16px 34px 0; }
+    .qt-d3 .qt3-party-box { flex: 1 1 50%; background: #f7f9fd; border: 1px solid #e3eaf5; border-radius: 8px; padding: 10px 14px; font-size: 10px; line-height: 1.6; }
     .qt-d3 .qt3-party-head { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 9.5px; color: #1d4e89; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
-    .qt-d3 .qt3-items { width: calc(100% - 68px); table-layout: fixed; margin: 18px 34px 0; border-collapse: collapse; font-size: 10.5px; }
+    .qt-d3 .qt3-items { width: calc(100% - 68px); table-layout: fixed; margin: 16px 34px 0; border-collapse: collapse; font-size: 9.5px; }
     .qt-d3 .qt3-items th, .qt-d3 .qt3-items td { overflow-wrap: break-word; }
-    .qt-d3 .qt3-items th { background: #13294b; color: #fff; text-align: left; padding: 8px 9px; font-family: 'Poppins', sans-serif; font-size: 9px; font-weight: 700; text-transform: uppercase; }
-    .qt-d3 .qt3-items td { padding: 7px 9px; border-bottom: 1px solid #eef1f7; }
+    .qt-d3 .qt3-items th { background: #13294b; color: #fff; text-align: left; padding: 7px 7px; font-family: 'Poppins', sans-serif; font-size: 8px; font-weight: 700; text-transform: uppercase; }
+    .qt-d3 .qt3-items td { padding: 6px 7px; border-bottom: 1px solid #eef1f7; }
     .qt-d3 .qt3-items td.num, .qt-d3 .qt3-items th.num { text-align: right; }
     .qt-d3 .qt3-totals-wrap { display: flex; justify-content: flex-end; margin: 10px 34px 0; }
     .qt-d3 .qt3-totals { width: 220px; background: #f7f9fd; border-radius: 8px; overflow: hidden; }
     .qt-d3 .qt3-totals .trow { display: flex; justify-content: space-between; padding: 5px 12px; font-size: 10px; }
     .qt-d3 .qt3-grand { background: #13294b; color: #fff; font-weight: 800; padding: 7px 12px; display: flex; justify-content: space-between; font-size: 11px; }
+    .qt-d3 .qt3-words { text-align: right; margin: 6px 34px 0; font-size: 10px; color: #2d3f5e; font-style: italic; }
     .qt-d3 .qt3-badges { display: flex; justify-content: space-around; background: #f0f4fa; margin-top: auto; padding: 14px 20px; gap: 10px; flex-wrap: wrap; }
     .qt-d3 .qt3-badge { text-align: center; font-size: 8.5px; color: #2d3f5e; max-width: 90px; }
     .qt-d3 .qt3-badge .bi { width: 26px; height: 26px; border-radius: 50%; background: #dce8fb; color: #1d4e89; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 12px; }
@@ -1465,10 +1456,11 @@
           <div class="prices-field"><label>Phone No.</label><input type="text" id="qtPPhone" /></div>
           <div class="prices-field"><label>Email ID</label><input type="text" id="qtPEmail" /></div>
           <div class="prices-field"><label>D.L No.</label><input type="text" id="qtPDL" /></div>
+          <div class="prices-field"><label>LR No</label><input type="text" id="qtLrNo" /></div>
+          <div class="prices-field"><label>LR Date</label><input type="date" id="qtLrDate" /></div>
           <div class="prices-field"><label>GSTIN</label><input type="text" id="qtGSTIN" /></div>
           <div class="prices-field"><label>Invoice No.</label><input type="text" id="qtInvNo" placeholder="e.g. SQ00001" /></div>
           <div class="prices-field"><label>Invoice Date</label><input type="date" id="qtInvDate" /></div>
-          <div class="prices-field"><label>Valid Till</label><input type="date" id="qtValidTill" /></div>
         </div>
       </div>
 
@@ -1481,7 +1473,7 @@
         <div class="table-wrap" style="margin-top:14px;">
           <table class="qt-items-tbl">
             <thead>
-              <tr><th>HSN</th><th>Description</th><th>Qty</th><th>MRP</th><th>Rate</th><th>Dis %</th><th>SGST %</th><th>CGST %</th><th></th></tr>
+              <tr><th>HSN</th><th>Description</th><th>Batch</th><th>Exp</th><th>Qty</th><th>MRP</th><th>Rate</th><th>Dis %</th><th>SGST %</th><th>CGST %</th><th></th></tr>
             </thead>
             <tbody id="qtItemsBody"></tbody>
           </table>
@@ -3990,13 +3982,10 @@
     qtInited = true;
 
     document.getElementById('qtTerms').value = QT_DEFAULT_TERMS.join('\n');
-    const today = new Date();
-    const validTill = new Date(today.getTime() + 15 * 86400000);
-    document.getElementById('qtInvDate').value = today.toISOString().slice(0, 10);
-    document.getElementById('qtValidTill').value = validTill.toISOString().slice(0, 10);
+    document.getElementById('qtInvDate').value = new Date().toISOString().slice(0, 10);
 
     ['qtCoName','qtCoAddr1','qtCoAddr2','qtCoState','qtCoPhone','qtCoEmail','qtCoDL','qtCoWeb',
-     'qtPName','qtPAddr','qtPState','qtPPhone','qtPEmail','qtPDL','qtGSTIN','qtInvNo','qtInvDate','qtValidTill',
+     'qtPName','qtPAddr','qtPState','qtPPhone','qtPEmail','qtPDL','qtLrNo','qtLrDate','qtGSTIN','qtInvNo','qtInvDate',
      'qtBillDis','qtTerms'].forEach(id => {
       document.getElementById(id).addEventListener('input', qtRenderPreview);
     });
@@ -4028,7 +4017,7 @@
   }
 
   function qtAddItem() {
-    qtItems.push({ uid: ++qtItemSeq, hsn: '', desc: '', qty: 1, mrp: 0, rate: 0, dis: 0, sgst: 9, cgst: 9 });
+    qtItems.push({ uid: ++qtItemSeq, hsn: '', desc: '', batch: '', exp: '', qty: 1, mrp: 0, rate: 0, dis: 0, sgst: 9, cgst: 9 });
     qtRenderItemsTable();
     qtRenderPreview();
   }
@@ -4041,7 +4030,7 @@
     const [, name, , , , , salesRate, tax, mrp] = prod;
     const rate = Math.round((salesRate || 0) * 1.30 * 100) / 100; // New Sales Rate, matches billing.html
     qtItems.push({
-      uid: ++qtItemSeq, hsn: '', desc: name, qty: 1,
+      uid: ++qtItemSeq, hsn: '', desc: name, batch: '', exp: '', qty: 1,
       mrp: +mrp || 0, rate, dis: 0,
       sgst: (+tax || 0) / 2, cgst: (+tax || 0) / 2
     });
@@ -4087,6 +4076,8 @@
       <tr data-uid="${it.uid}">
         <td><input type="text" data-field="hsn" value="${admPricesEsc(it.hsn)}" style="width:60px;" /></td>
         <td><input type="text" data-field="desc" value="${admPricesEsc(it.desc)}" style="min-width:140px;" /></td>
+        <td><input type="text" data-field="batch" value="${admPricesEsc(it.batch)}" style="width:60px;" /></td>
+        <td><input type="text" data-field="exp" value="${admPricesEsc(it.exp)}" style="width:70px;" /></td>
         <td><input type="number" data-field="qty" value="${it.qty}" min="0" step="1" style="width:56px;" /></td>
         <td><input type="number" data-field="mrp" value="${it.mrp}" min="0" step="0.01" style="width:70px;" /></td>
         <td><input type="number" data-field="rate" value="${it.rate}" min="0" step="0.01" style="width:80px;" /></td>
@@ -4104,7 +4095,8 @@
     const uid = +e.target.closest('tr').dataset.uid;
     const item = qtItems.find(it => it.uid === uid);
     if (!item) return;
-    item[field] = (field === 'hsn' || field === 'desc') ? e.target.value : (parseFloat(e.target.value) || 0);
+    const textFields = ['hsn', 'desc', 'batch', 'exp'];
+    item[field] = textFields.includes(field) ? e.target.value : (parseFloat(e.target.value) || 0);
     qtRenderPreview();
   });
 
@@ -4146,10 +4138,9 @@
 
     return {
       company: { name: v('qtCoName'), addr1: v('qtCoAddr1'), addr2: v('qtCoAddr2'), state: v('qtCoState'), phone: v('qtCoPhone'), email: v('qtCoEmail'), dl: v('qtCoDL'), website: v('qtCoWeb') },
-      party: { name: v('qtPName'), addr: v('qtPAddr'), state: v('qtPState'), phone: v('qtPPhone'), email: v('qtPEmail'), dl: v('qtPDL'), gstin: v('qtGSTIN') },
+      party: { name: v('qtPName'), addr: v('qtPAddr'), state: v('qtPState'), phone: v('qtPPhone'), email: v('qtPEmail'), dl: v('qtPDL'), lrNo: v('qtLrNo'), lrDate: v('qtLrDate'), gstin: v('qtGSTIN') },
       invNo: v('qtInvNo'),
       invDate: v('qtInvDate'),
-      validTill: v('qtValidTill'),
       items, subTotal, sgstTotal, cgstTotal, billDis, roundOff, grandTotal, terms,
       words: qtNumToWords(grandTotal) + ' only'
     };
@@ -4168,78 +4159,95 @@
     document.getElementById('qtPreview').innerHTML = html;
   }
 
-  function qtItemRowsHtml(data, numCells) {
-    return data.items.map((it, i) => numCells(it, i)).join('');
+  // Shared across all 3 designs — same content/column set as the reference
+  // quotation PDF, only the visual styling differs per design.
+  function qtItemsColgroup() {
+    return `<colgroup>
+      <col style="width:4%"><col style="width:7%"><col style="width:21%"><col style="width:8%"><col style="width:8%">
+      <col style="width:6%"><col style="width:8%"><col style="width:8%"><col style="width:6%"><col style="width:6%"><col style="width:6%"><col style="width:12%">
+    </colgroup>`;
+  }
+  function qtItemsHeadRow() {
+    return `<tr>
+      <th>S.No.</th><th>HSN</th><th>Description</th><th>Batch</th><th>Exp</th>
+      <th class="num">Qty.</th><th class="num">MRP</th><th class="num">Rate</th><th class="num">Dis.%</th><th class="num">SGST</th><th class="num">CGST</th><th class="num">Amount</th>
+    </tr>`;
+  }
+  function qtItemsBodyRows(d, e) {
+    return d.items.map((it, i) => `
+      <tr>
+        <td>${i + 1}</td><td>${e(it.hsn)}</td><td>${e(it.desc)}</td><td>${e(it.batch)}</td><td>${e(it.exp)}</td>
+        <td class="num">${it.qty}</td><td class="num">${qtMoney(it.mrp)}</td><td class="num">${qtMoney(it.rate)}</td>
+        <td class="num">${it.dis}</td><td class="num">${it.sgst}</td><td class="num">${it.cgst}</td><td class="num">${qtMoney(it.amount)}</td>
+      </tr>`).join('');
+  }
+  function qtPartyLines(d, e) {
+    return [
+      `Party Name : <b>${e(d.party.name)}</b>`,
+      `Party Add. : ${e(d.party.addr)}`,
+      `State Code : ${e(d.party.state)}`,
+      `Phone No. : ${e(d.party.phone)}`,
+      `E-mail ID : ${e(d.party.email)}`,
+      `D.L No. : ${e(d.party.dl)}`,
+      `LR No : ${e(d.party.lrNo)}`,
+      `LR Date : ${qtFmtDate(d.party.lrDate)}`
+    ];
+  }
+  function qtCompanyLines(d, e) {
+    return [
+      d.company.addr1, d.company.addr2,
+      d.company.state ? `State Code : ${e(d.company.state)}` : '',
+      d.company.phone ? `Phone : ${e(d.company.phone)}` : '',
+      d.company.email ? `E-mail Id: ${e(d.company.email)}` : '',
+      d.company.dl ? `DL No. : ${e(d.company.dl)}` : '',
+      d.company.website ? `Website : ${e(d.company.website)}` : ''
+    ].filter(Boolean);
   }
 
-  // ── Design 1: flat corporate layout with a quote summary box ──
+  // ── Design 1: classic black/white bordered sale-quotation ──
   function qtRenderDesign1(d) {
     const e = admPricesEsc;
-    const initial = (d.company.name || '?').trim().charAt(0).toUpperCase();
-    const rows = d.items.map((it, i) => `
-      <tr>
-        <td>${i + 1}</td><td>${e(it.desc)}</td><td>${e(it.hsn)}</td>
-        <td class="num">${it.qty}</td><td class="num">${qtMoney(it.rate)}</td><td class="num">${qtMoney(it.amount)}</td>
-      </tr>`).join('');
     return `
       <div class="qt-d1">
-        <div class="qt1-top">
-          <div class="qt1-brand">
-            <div class="qt1-logo">${e(initial)}</div>
-            <div>
-              <div class="qt1-brand-name">${e(d.company.name)}</div>
-              <div class="qt1-brand-tag">Quality Products. Trusted Service.</div>
+        <div class="qt1-outer">
+          <div class="qt1-title">SALE QUOTATION</div>
+          <div class="qt1-head">
+            <div class="qt1-co">
+              <div class="qt1-co-name">${e(d.company.name)}</div>
+              ${qtCompanyLines(d, e).map(l => `<div>${l}</div>`).join('')}
+            </div>
+            <div class="qt1-party">
+              ${qtPartyLines(d, e).map(l => `<div>${l}</div>`).join('')}
             </div>
           </div>
-          <div class="qt1-contact">
-            ${d.company.phone ? `<div>${e(d.company.phone)}</div>` : ''}
-            ${d.company.email ? `<div>${e(d.company.email)}</div>` : ''}
-            <div>${e(d.company.addr1)}</div>
+          <div class="qt1-row">
+            <span>GSTIN : ${e(d.party.gstin)}</span>
+            <span>Invoice No. : ${e(d.invNo)}</span>
+            <span>Invoice Date : ${qtFmtDate(d.invDate)}</span>
           </div>
-        </div>
-        <div class="qt1-hero">
-          <div>
-            <div class="qt1-hero-label">PRODUCT</div>
-            <div class="qt1-hero-title">QUOTATION</div>
-            <div class="qt1-hero-sub">Thank you for your interest in our products. We are pleased to submit the following quotation for your kind consideration.</div>
+          <table class="qt1-items">
+            ${qtItemsColgroup()}
+            <thead>${qtItemsHeadRow()}</thead>
+            <tbody>${qtItemsBodyRows(d, e)}</tbody>
+          </table>
+          <div class="qt1-words">Rs. ${d.words}</div>
+          <div class="qt1-bottom">
+            <div class="qt1-terms">
+              <b>Terms &amp; Conditions:</b>
+              ${d.terms.map((t, i) => `<div>${i + 1}) ${e(t)}</div>`).join('')}
+              <div class="qt1-sign">For ${e(d.company.name)}<br/><br/><br/>Authorised Signatory</div>
+            </div>
+            <div class="qt1-totals">
+              <table>
+                <tr><td>Sub Total</td><td>${qtMoney(d.subTotal)}</td></tr>
+                <tr><td>Bill Dis</td><td>${qtMoney(d.billDis)}</td></tr>
+                <tr><td>SGST</td><td>${qtMoney(d.sgstTotal)}</td></tr>
+                <tr><td>CGST</td><td>${qtMoney(d.cgstTotal)}</td></tr>
+                <tr><td>Round Off</td><td>${qtMoney(d.roundOff)}</td></tr>
+                <tr class="qt1-grand"><td>Grand Total</td><td>${qtMoney(d.grandTotal)}</td></tr>
+              </table>
+            </div>
           </div>
-          <div class="qt1-hero-box">
-            <div class="trow"><span>Quotation No</span><span>${e(d.invNo)}</span></div>
-            <div class="trow"><span>Date</span><span>${qtFmtDate(d.invDate)}</span></div>
-            <div class="trow"><span>Valid Till</span><span>${qtFmtDate(d.validTill)}</span></div>
-          </div>
-        </div>
-        <div class="qt1-parties">
-          <div class="qt1-party-box">
-            <div class="qt1-party-head">Bill To</div>
-            <b>${e(d.party.name)}</b><br/>${e(d.party.addr)}${d.party.state ? ', ' + e(d.party.state) : ''}
-            ${d.party.gstin ? `<br/>GSTIN : ${e(d.party.gstin)}` : ''}
-          </div>
-          <div class="qt1-party-box">
-            <div class="qt1-party-head">Ship To</div>
-            <b>${e(d.party.name)}</b><br/>${e(d.party.addr)}${d.party.state ? ', ' + e(d.party.state) : ''}
-            ${d.party.gstin ? `<br/>GSTIN : ${e(d.party.gstin)}` : ''}
-          </div>
-        </div>
-        <table class="qt1-items">
-          <thead><tr><th>#</th><th>Product Name</th><th>HSN Code</th><th class="num">Quantity</th><th class="num">Unit Price (₹)</th><th class="num">Total (₹)</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-        <div class="qt1-bottom">
-          <div class="qt1-totals">
-            <div class="trow"><span>Sub Total</span><span>₹${qtMoney(d.subTotal)}</span></div>
-            <div class="trow"><span>GST</span><span>₹${qtMoney(d.sgstTotal + d.cgstTotal)}</span></div>
-            <div class="trow qt1-grand"><span>Grand Total</span><span>₹${qtMoney(d.grandTotal)}</span></div>
-          </div>
-        </div>
-        <div class="qt1-words">Rupees ${d.words}</div>
-        <div class="qt1-foot">
-          <div class="qt1-terms">
-            <b>Terms &amp; Conditions</b>
-            ${d.terms.map((t, i) => `<div>${i + 1}. ${e(t)}</div>`).join('')}
-            <div class="qt1-sign">Best Regards,<br/>Sales Team<br/>${e(d.company.name)}</div>
-          </div>
-          <div class="qt1-ribbon">Quality Products<small>For a Healthier Tomorrow</small></div>
         </div>
       </div>`;
   }
@@ -4247,46 +4255,32 @@
   // ── Design 2: Medwell brand (teal/orange) ──
   function qtRenderDesign2(d) {
     const e = admPricesEsc;
-    const rows = d.items.map((it, i) => `
-      <tr>
-        <td>${i + 1}</td><td>${e(it.hsn)}</td><td>${e(it.desc)}</td>
-        <td class="num">${it.qty}</td><td class="num">${qtMoney(it.rate)}</td>
-        <td class="num">${it.dis}%</td><td class="num">${it.sgst + it.cgst}%</td>
-        <td class="num">${qtMoney(it.amount)}</td>
-      </tr>`).join('');
     return `
       <div class="qt-d2">
         <div class="qt2-head">
           <div>
             <div class="qt2-co-name">${e(d.company.name)}</div>
-            <div class="qt2-co-sub">
-              ${e(d.company.addr1)}<br/>
-              ${[d.company.state ? 'State Code: ' + e(d.company.state) : '', d.company.phone ? 'Phone: ' + e(d.company.phone) : ''].filter(Boolean).join(' &middot; ')}<br/>
-              ${[e(d.company.email), e(d.company.website)].filter(s => s).join(' &middot; ')}
-              ${d.company.dl ? `<br/>DL No: ${e(d.company.dl)}` : ''}
-            </div>
+            <div class="qt2-co-sub">${qtCompanyLines(d, e).join('<br/>')}</div>
           </div>
           <div class="qt2-badge">Quotation</div>
         </div>
         <div class="qt2-meta">
           <div class="qt2-meta-block">
-            <div class="qt2-meta-label">Billed To</div>
-            <div class="line"><b>${e(d.party.name)}</b></div>
-            <div class="line">${e(d.party.addr)}</div>
-            <div class="line">${e(d.party.state)}</div>
-            <div class="line">${e(d.party.phone)} ${d.party.email ? ' &middot; ' + e(d.party.email) : ''}</div>
-            ${d.party.gstin ? `<div class="line">GSTIN: ${e(d.party.gstin)}</div>` : ''}
+            <div class="qt2-meta-label">Party Details</div>
+            ${qtPartyLines(d, e).map(l => `<div class="line">${l}</div>`).join('')}
           </div>
           <div class="qt2-meta-block" style="text-align:right;">
             <div class="qt2-meta-label">Quotation Details</div>
-            <div class="line">No: <b>${e(d.invNo)}</b></div>
-            <div class="line">Date: ${qtFmtDate(d.invDate)}</div>
+            <div class="line">GSTIN : ${e(d.party.gstin)}</div>
+            <div class="line">Invoice No. : <b>${e(d.invNo)}</b></div>
+            <div class="line">Invoice Date : ${qtFmtDate(d.invDate)}</div>
           </div>
         </div>
         <div class="qt2-items">
           <table>
-            <thead><tr><th>#</th><th>HSN</th><th>Description</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Dis</th><th class="num">GST</th><th class="num">Amount</th></tr></thead>
-            <tbody>${rows}</tbody>
+            ${qtItemsColgroup()}
+            <thead>${qtItemsHeadRow()}</thead>
+            <tbody>${qtItemsBodyRows(d, e)}</tbody>
           </table>
         </div>
         <div class="qt2-bottom">
@@ -4312,11 +4306,6 @@
   function qtRenderDesign3(d) {
     const e = admPricesEsc;
     const initial = (d.company.name || '?').trim().charAt(0).toUpperCase();
-    const rows = d.items.map((it, i) => `
-      <tr>
-        <td>${i + 1}</td><td>${e(it.desc)}</td><td>${e(it.hsn)}</td>
-        <td class="num">${it.qty}</td><td class="num">${qtMoney(it.rate)}</td><td class="num">${qtMoney(it.amount)}</td>
-      </tr>`).join('');
     const badges = [
       ['✓', 'High Quality Products'],
       ['₹', 'Competitive Pricing'],
@@ -4333,36 +4322,38 @@
             </div>
             <div class="qt3-tags">Pharmaceuticals &middot; Medical Devices &middot; Healthcare Products</div>
           </div>
-          <div class="qt3-title">PRODUCT QUOTATION</div>
-          <div class="qt3-tagline">Trusted Quality &nbsp;|&nbsp; Reliable Supply &nbsp;|&nbsp; Your Health Our Priority</div>
+          <div class="qt3-title">SALE QUOTATION</div>
         </div>
         <div class="qt3-meta-row">
-          <div><b>Quotation No</b> : ${e(d.invNo)}</div>
-          <div><b>Date</b> : ${qtFmtDate(d.invDate)}</div>
-          <div><b>Valid Till</b> : ${qtFmtDate(d.validTill)}</div>
+          <div><b>GSTIN</b> : ${e(d.party.gstin)}</div>
+          <div><b>Invoice No.</b> : ${e(d.invNo)}</div>
+          <div><b>Invoice Date</b> : ${qtFmtDate(d.invDate)}</div>
         </div>
         <div class="qt3-parties">
           <div class="qt3-party-box">
-            <div class="qt3-party-head">Bill To</div>
-            <b>${e(d.party.name)}</b><br/>${e(d.party.addr)}${d.party.state ? ', ' + e(d.party.state) : ''}
-            ${d.party.gstin ? `<br/>GSTIN: ${e(d.party.gstin)}` : ''}
+            <div class="qt3-party-head">Company Details</div>
+            ${qtCompanyLines(d, e).map(l => `<div>${l}</div>`).join('')}
           </div>
           <div class="qt3-party-box">
-            <div class="qt3-party-head">Ship To</div>
-            <b>${e(d.party.name)}</b><br/>${e(d.party.addr)}${d.party.state ? ', ' + e(d.party.state) : ''}
-            ${d.party.gstin ? `<br/>GSTIN: ${e(d.party.gstin)}` : ''}
+            <div class="qt3-party-head">Party Details</div>
+            ${qtPartyLines(d, e).map(l => `<div>${l}</div>`).join('')}
           </div>
         </div>
         <table class="qt3-items">
-          <thead><tr><th>#</th><th>Product Name</th><th>HSN Code</th><th class="num">Quantity</th><th class="num">Unit Price (₹)</th><th class="num">Total (₹)</th></tr></thead>
-          <tbody>${rows}</tbody>
+          ${qtItemsColgroup()}
+          <thead>${qtItemsHeadRow()}</thead>
+          <tbody>${qtItemsBodyRows(d, e)}</tbody>
         </table>
         <div class="qt3-totals-wrap">
           <div class="qt3-totals">
             <div class="trow"><span>Sub Total</span><span>₹${qtMoney(d.subTotal)}</span></div>
-            <div class="trow"><span>GST</span><span>₹${qtMoney(d.sgstTotal + d.cgstTotal)}</span></div>
+            <div class="trow"><span>Bill Discount</span><span>₹${qtMoney(d.billDis)}</span></div>
+            <div class="trow"><span>SGST</span><span>₹${qtMoney(d.sgstTotal)}</span></div>
+            <div class="trow"><span>CGST</span><span>₹${qtMoney(d.cgstTotal)}</span></div>
+            <div class="trow"><span>Round Off</span><span>₹${qtMoney(d.roundOff)}</span></div>
             <div class="qt3-grand"><span>Grand Total</span><span>₹${qtMoney(d.grandTotal)}</span></div>
           </div>
+          <div class="qt3-words">Rupees ${d.words}</div>
         </div>
         <div class="qt3-badges">${badges}</div>
         <div class="qt3-footer">
@@ -4371,13 +4362,9 @@
             ${d.terms.map((t, i) => `<div>${i + 1}. ${e(t)}</div>`).join('')}
           </div>
           <div>
-            <b>Best Regards,</b>
-            <div>Sales Team</div>
-            <div>${e(d.company.name)}</div>
-            ${d.company.phone ? `<div>${e(d.company.phone)}</div>` : ''}
-            ${d.company.email ? `<div>${e(d.company.email)}</div>` : ''}
+            <b>For ${e(d.company.name)}</b>
+            <div style="margin-top:14px;">Authorised Signatory</div>
           </div>
-          <div class="script">Quality Health Care<br/>Solutions</div>
         </div>
       </div>`;
   }
