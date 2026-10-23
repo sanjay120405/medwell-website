@@ -509,7 +509,10 @@
     .qt-d3 .qt3-footer div { margin-bottom: 2px; }
     .qt-d3 .qt3-footer .script { font-style: italic; font-family: Georgia, serif; font-size: 13px; color: #fff; text-align: right; align-self: center; }
 
-    @page { size: A4; margin: 0; }
+    /* 8mm page margin leaves a 297mm - 16mm = 281mm tall printable area;
+       every forced min-height below must match that exactly (not the full
+       297mm) or the overflow reintroduces a near-empty 2nd page. */
+    @page { size: A4; margin: 8mm; }
     @media print {
       /* visibility:hidden alone keeps these in document flow, so their real
          (often tall) height still counted toward page count, forcing a
@@ -528,14 +531,16 @@
         width: 100% !important; max-width: none !important; overflow: visible !important; height: auto !important;
       }
       #qtPreview {
-        width: 100% !important; max-width: none !important; min-height: auto !important; margin: 0 !important;
+        width: 100% !important; max-width: none !important; min-height: calc(297mm - 16mm) !important; margin: 0 !important;
         border: none !important; box-shadow: none !important; border-radius: 0 !important; transform: none !important;
       }
-      /* Let the quotation size to its actual content instead of being
-         stretched to a full 297mm page — a short quotation (few items)
-         would otherwise print with a large empty gap pushed down to a
-         bottom section that no longer has a real page edge to sit at. */
-      .qt-d1, .qt-d2, .qt-d3 { min-height: auto !important; }
+      /* Stretch short quotations (few items) to fill the page, with
+         totals/signature pinned to the bottom via margin-top:auto on
+         .qt1-bottom/.qt2-bottom/.qt3-badges, instead of leaving blank
+         space below a short item table. */
+      .qt-d1, .qt-d2, .qt-d3 { min-height: calc(297mm - 16mm) !important; }
+      tr, thead, .qt1-bottom, .qt2-bottom, .qt3-badges, .qt3-footer { break-inside: avoid; page-break-inside: avoid; }
+      thead { display: table-header-group; }
     }
 
     /* ── CUSTOMER LIST TAB ── */
