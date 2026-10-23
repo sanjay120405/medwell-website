@@ -415,11 +415,12 @@
     .qt-item-del-btn { width: 26px; height: 26px; border-radius: 6px; background: #fde8e8; color: #c0392b; border: none; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
     .qt-print-btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 26px; background: var(--teal); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Poppins',sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background .2s; }
     .qt-print-btn:hover { background: var(--dark); }
-    .qt-preview-wrap { flex: 1 1 560px; min-width: 0; overflow: hidden; }
-    .qt-preview-scale { width: 100%; overflow: hidden; }
-    /* Matches the A4 page (210mm) the quotation prints onto, so the on-screen
-       preview reflects the actual print output. */
-    #qtPreview { width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; box-sizing: border-box; }
+    .qt-preview-wrap { flex: 1 1 560px; min-width: 0; }
+    .qt-preview-scale { width: 100%; }
+    /* Fluid width that tops out at the A4 page (210mm) the quotation prints
+       onto, so it never gets clipped on a narrower screen — it just shrinks
+       to fit instead, same as the rest of the page. */
+    #qtPreview { width: 100%; max-width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); box-sizing: border-box; }
 
     /* ── Design 1: flat corporate (navy/blue), with a quote-box header ── */
     .qt-d1 { font-family: 'Inter', sans-serif; color: #1a2744; font-size: 11.5px; padding: 32px 36px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 297mm; }
@@ -4163,25 +4164,7 @@
     const data = qtGetData();
     const html = QT_DESIGN === 1 ? qtRenderDesign1(data) : QT_DESIGN === 2 ? qtRenderDesign2(data) : qtRenderDesign3(data);
     document.getElementById('qtPreview').innerHTML = html;
-    qtFitPreview();
   }
-
-  // Scales the fixed-A4-width preview down to fit whatever width is
-  // available (narrow admin panel, phone screens, etc.) so nothing gets
-  // cut off — only affects the on-screen preview, never the actual print.
-  function qtFitPreview() {
-    const outer = document.getElementById('qtPreviewScale');
-    const el = document.getElementById('qtPreview');
-    if (!outer || !el) return;
-    const fullWidth = 794; // 210mm at 96dpi
-    const scale = Math.min(1, outer.clientWidth / fullWidth);
-    el.style.width = fullWidth + 'px';
-    el.style.transform = `scale(${scale})`;
-    el.style.transformOrigin = 'top left';
-    outer.style.height = (el.offsetHeight * scale) + 'px';
-  }
-
-  window.addEventListener('resize', () => { if (qtInited) qtFitPreview(); });
 
   function qtItemRowsHtml(data, numCells) {
     return data.items.map((it, i) => numCells(it, i)).join('');
