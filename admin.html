@@ -4474,7 +4474,14 @@
       </div>`;
   }
 
-  function qtPrint() { window.print(); }
+  function qtPrint() {
+    // Recompute the spacer right here, synchronously, instead of relying
+    // only on the beforeprint event — its exact timing relative to when
+    // print-media CSS is actually applied is inconsistent across browsers,
+    // which left stale (too-small) spacer heights in some cases.
+    qtFillSpacers();
+    window.print();
+  }
 
 </script>
 </body>
