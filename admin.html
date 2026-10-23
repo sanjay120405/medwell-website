@@ -432,9 +432,13 @@
     .qt-items-table th.num, .qt-items-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
 
     /* ── Design 1: classic black/white bordered sale-quotation ── */
-    .qt-d1 { font-family: 'Inter', Arial, sans-serif; color: #000; font-size: 10.5px; padding: 14px; box-sizing: border-box; display: flex; flex-direction: column; min-height: 297mm; }
+    .qt-d1 { font-family: 'Inter', Arial, sans-serif; color: #000; font-size: 10.5px; padding: 14px; box-sizing: border-box; min-height: 297mm; }
     .qt-d1 table { border-collapse: collapse; width: 100%; }
-    .qt-d1 .qt1-outer { border: 1.5px solid #000; display: flex; flex-direction: column; flex: 1; }
+    /* qt1-outer gets its own explicit min-height (not flex:1 inherited from
+       .qt-d1) so the margin-top:auto push below is a single-level flex
+       calculation — double-nested flex-grow chains are handled
+       inconsistently by print/pagination engines. */
+    .qt-d1 .qt1-outer { border: 1.5px solid #000; box-sizing: border-box; display: flex; flex-direction: column; min-height: calc(297mm - 28px); }
     .qt-d1 .qt1-title { text-align: center; font-weight: 800; font-size: 14px; padding: 6px; border-bottom: 1.5px solid #000; letter-spacing: .04em; }
     .qt-d1 .qt1-head { display: flex; border-bottom: 1.5px solid #000; }
     .qt-d1 .qt1-head > div { padding: 8px 10px; }
@@ -539,6 +543,7 @@
          .qt1-bottom/.qt2-bottom/.qt3-badges, instead of leaving blank
          space below a short item table. */
       .qt-d1, .qt-d2, .qt-d3 { min-height: calc(297mm - 16mm) !important; }
+      .qt-d1 .qt1-outer { min-height: calc(297mm - 16mm - 28px) !important; }
       tr, thead, .qt1-bottom, .qt2-bottom, .qt3-badges, .qt3-footer { break-inside: avoid; page-break-inside: avoid; }
       thead { display: table-header-group; }
     }
