@@ -460,8 +460,10 @@
     .qt-d1 .qt1-gstline { font-size: 8.5px; color: #333; margin-bottom: 8px; }
     .qt-d1 .qt1-terms b { display: block; margin-bottom: 4px; }
     .qt-d1 .qt1-totals { flex: 1 1 40%; }
-    .qt-d1 .qt1-totals td { padding: 4px 10px; border-bottom: 1px solid #ccc; font-size: 10px; vertical-align: middle; }
-    .qt-d1 .qt1-totals td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .qt-d1 .qt1-totals table { table-layout: fixed; }
+    .qt-d1 .qt1-totals td { padding: 4px 10px; border-bottom: 1px solid #ccc; font-size: 10px; vertical-align: middle; box-sizing: border-box; overflow: hidden; }
+    .qt-d1 .qt1-totals td:first-child { width: 55%; }
+    .qt-d1 .qt1-totals td:last-child { width: 45%; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .qt-d1 .qt1-sign { text-align: center; padding: 16px 10px 6px; font-size: 10px; }
     .qt-d1 .qt1-grandrow { display: flex; align-items: center; justify-content: space-between; border-top: 1.5px solid #000; font-weight: 700; font-size: 10.5px; }
     .qt-d1 .qt1-words { padding: 6px 10px; flex: 1; }
