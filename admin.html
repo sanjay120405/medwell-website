@@ -4256,14 +4256,20 @@
 
     // Temporarily zero out the container's own CSS min-height while
     // measuring — otherwise scrollHeight already includes that forced
-    // height, making (target - natural) always compute to ~0.
-    const prevMinHeight = container.style.minHeight;
-    container.style.minHeight = '0px';
+    // height, making (target - natural) always compute to ~0. Must use
+    // setProperty(...,'important') here: the print stylesheet sets
+    // min-height with !important, which a plain (non-important) inline
+    // style can NEVER override — that mismatch was silently defeating this
+    // reset specifically during print, collapsing the spacer to 0.
+    const prevMinHeight = container.style.getPropertyValue('min-height');
+    const prevMinHeightPriority = container.style.getPropertyPriority('min-height');
+    container.style.setProperty('min-height', '0px', 'important');
     spacer.style.height = '0px';
     void container.offsetHeight; // force reflow before measuring
     const naturalPx = container.scrollHeight;
     spacer.style.height = Math.max(0, targetPx - naturalPx) + 'px';
-    container.style.minHeight = prevMinHeight;
+    if (prevMinHeight) container.style.setProperty('min-height', prevMinHeight, prevMinHeightPriority);
+    else container.style.removeProperty('min-height');
 
     if (preview) preview.style.width = prevPreviewWidth || '';
   }
