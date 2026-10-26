@@ -4254,22 +4254,26 @@
     const prevPreviewWidth = preview ? preview.style.width : null;
     if (preview) preview.style.width = '210mm';
 
-    // Temporarily zero out the container's own CSS min-height while
-    // measuring — otherwise scrollHeight already includes that forced
-    // height, making (target - natural) always compute to ~0. Must use
-    // setProperty(...,'important') here: the print stylesheet sets
-    // min-height with !important, which a plain (non-important) inline
-    // style can NEVER override — that mismatch was silently defeating this
-    // reset specifically during print, collapsing the spacer to 0.
-    const prevMinHeight = container.style.getPropertyValue('min-height');
-    const prevMinHeightPriority = container.style.getPropertyPriority('min-height');
-    container.style.setProperty('min-height', '0px', 'important');
+    // Measure where the LAST child's bottom edge actually sits, relative to
+    // the container's own top edge, via getBoundingClientRect — NOT the
+    // container's own scrollHeight. scrollHeight reflects the container's
+    // full box, which min-height (set with !important in the print
+    // stylesheet, impossible to clear via a plain inline style) inflates to
+    // the full target height — that made every previous version of this
+    // calculation collapse to ~0 during print specifically. A child's
+    // rendered position is unaffected by the PARENT's min-height; children
+    // just flow normally from the top regardless of how much extra space
+    // min-height adds below them. getBoundingClientRect (viewport
+    // coordinates) is used instead of offsetTop because offsetTop is
+    // relative to the nearest *positioned* ancestor, not necessarily this
+    // container, since these containers don't set position themselves.
     spacer.style.height = '0px';
     void container.offsetHeight; // force reflow before measuring
-    const naturalPx = container.scrollHeight;
+    const lastChild = container.lastElementChild;
+    const naturalPx = lastChild
+      ? (lastChild.getBoundingClientRect().bottom - container.getBoundingClientRect().top)
+      : container.scrollHeight;
     spacer.style.height = Math.max(0, targetPx - naturalPx) + 'px';
-    if (prevMinHeight) container.style.setProperty('min-height', prevMinHeight, prevMinHeightPriority);
-    else container.style.removeProperty('min-height');
 
     if (preview) preview.style.width = prevPreviewWidth || '';
   }
