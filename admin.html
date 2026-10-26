@@ -455,7 +455,14 @@
     .qt-d1 .qt1-items th, .qt-d1 .qt1-items td { border: 1px solid #000; }
     .qt-d1 .qt1-items th { background: #f2f2f2; color: #000; font-size: 8.5px; }
     .qt-d1 .qt1-bottom { display: flex; }
-    .qt-spacer { flex-shrink: 0; }
+    /* flex-grow:1 lets the browser's own layout engine consume whatever
+       space is left in the column, computed fresh at whatever point print
+       rendering actually happens — this doesn't depend on JS running at
+       the right moment relative to when @media print styles take effect,
+       which is what made the earlier JS pixel-measurement approach
+       unreliable (it measured in screen layout, before the print
+       stylesheet's full-width resets were actually applied). */
+    .qt-spacer { flex: 1 0 0; min-height: 0; }
     .qt-d1 .qt1-terms { flex: 1 1 60%; padding: 8px 10px; border-right: 1.5px solid #000; font-size: 9.5px; }
     .qt-d1 .qt1-gstline { font-size: 8.5px; color: #333; margin-bottom: 8px; }
     .qt-d1 .qt1-terms b { display: block; margin-bottom: 4px; }
@@ -580,10 +587,11 @@
         width: 100% !important; max-width: none !important; min-height: 297mm !important; margin: 0 !important;
         border: none !important; box-shadow: none !important; border-radius: 0 !important; transform: none !important;
       }
-      /* Stretch short quotations (few items) to fill the page, with
-         totals/signature pinned to the bottom via margin-top:auto on
-         .qt1-bottom/.qt2-bottom/.qt3-badges, instead of leaving blank
-         space below a short item table. */
+      /* Stretch short quotations (few items) to fill the page: forcing
+         min-height here makes each design's flex column at least one full
+         page tall, and its .qt-spacer child (flex:1 0 0, see its own rule)
+         grows to consume whatever room is left, pushing the totals/terms/
+         signature group that follows it down to the true bottom edge. */
       .qt-d1, .qt-d2, .qt-d3 { min-height: 297mm !important; }
       .qt-d1 .qt1-outer { min-height: calc(297mm - 28px) !important; }
       tr, thead, .qt1-bottom, .qt2-bottom, .qt3-badges, .qt3-footer { break-inside: avoid; page-break-inside: avoid; }
@@ -4232,66 +4240,7 @@
     const data = qtGetData();
     const html = QT_DESIGN === 1 ? qtRenderDesign1(data) : QT_DESIGN === 2 ? qtRenderDesign2(data) : qtRenderDesign3(data);
     document.getElementById('qtPreview').innerHTML = html;
-    qtFillSpacers();
   }
-
-  // Design 1 and 3 stretch short quotations to the full page by measuring
-  // the actual rendered content and setting an explicit spacer height —
-  // CSS flex "push to bottom" (margin-top:auto on a min-height container)
-  // proved unreliable here (inconsistent gaps on screen and in print), so
-  // this computes the exact pixel gap directly instead of trusting it.
-  const QT_PAGE_PX = 297 * 96 / 25.4; // 297mm in CSS px (96dpi), matches @page/min-height
-
-  function qtFillSpacer(container, spacer, targetPx) {
-    if (!container || !spacer) return;
-    // Measure at the TRUE print width (210mm), not whatever narrower width
-    // #qtPreview happens to be rendered at on screen (it shares the window
-    // with the editor form, so it's often narrower there) — a narrower
-    // measurement width makes text wrap more, inflating the "natural"
-    // height and producing a too-small spacer that doesn't match how the
-    // content will actually lay out at full width in print.
-    const preview = document.getElementById('qtPreview');
-    const prevPreviewWidth = preview ? preview.style.width : null;
-    if (preview) preview.style.width = '210mm';
-
-    // Measure where the LAST child's bottom edge actually sits, relative to
-    // the container's own top edge, via getBoundingClientRect — NOT the
-    // container's own scrollHeight. scrollHeight reflects the container's
-    // full box, which min-height (set with !important in the print
-    // stylesheet, impossible to clear via a plain inline style) inflates to
-    // the full target height — that made every previous version of this
-    // calculation collapse to ~0 during print specifically. A child's
-    // rendered position is unaffected by the PARENT's min-height; children
-    // just flow normally from the top regardless of how much extra space
-    // min-height adds below them. getBoundingClientRect (viewport
-    // coordinates) is used instead of offsetTop because offsetTop is
-    // relative to the nearest *positioned* ancestor, not necessarily this
-    // container, since these containers don't set position themselves.
-    spacer.style.height = '0px';
-    void container.offsetHeight; // force reflow before measuring
-    const lastChild = container.lastElementChild;
-    const naturalPx = lastChild
-      ? (lastChild.getBoundingClientRect().bottom - container.getBoundingClientRect().top)
-      : container.scrollHeight;
-    spacer.style.height = Math.max(0, targetPx - naturalPx) + 'px';
-
-    if (preview) preview.style.width = prevPreviewWidth || '';
-  }
-
-  function qtFillSpacers() {
-    const preview = document.getElementById('qtPreview');
-    if (!preview) return;
-    if (QT_DESIGN === 1) {
-      qtFillSpacer(preview.querySelector('.qt1-outer'), preview.querySelector('.qt1-outer > .qt-spacer'), QT_PAGE_PX - 28);
-    } else if (QT_DESIGN === 2) {
-      qtFillSpacer(preview.querySelector('.qt-d2'), preview.querySelector('.qt-d2 > .qt-spacer'), QT_PAGE_PX);
-    } else if (QT_DESIGN === 3) {
-      qtFillSpacer(preview.querySelector('.qt-d3'), preview.querySelector('.qt-d3 > .qt-spacer'), QT_PAGE_PX);
-    }
-  }
-
-  window.addEventListener('beforeprint', qtFillSpacers);
-  window.addEventListener('resize', () => { if (qtInited) qtFillSpacers(); });
 
   // Shared across all 3 designs — same content/column set as the reference
   // quotation PDF, only the visual styling differs per design.
@@ -4517,11 +4466,6 @@
   }
 
   function qtPrint() {
-    // Recompute the spacer right here, synchronously, instead of relying
-    // only on the beforeprint event — its exact timing relative to when
-    // print-media CSS is actually applied is inconsistent across browsers,
-    // which left stale (too-small) spacer heights in some cases.
-    qtFillSpacers();
     window.print();
   }
 
